@@ -1,0 +1,52 @@
+<svg height="1em" viewBox="0 0 300 300">
+  <defs>
+    <filter id="paperEffect">
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.04"
+        numOctaves="5"
+        result="noise"
+      />
+      <feDiffuseLighting
+        in="noise"
+        lightingColor="#fff"
+        surfaceScale="2"
+        result="texture"
+      >
+        <feDistantLight azimuth="45" elevation="60" />
+      </feDiffuseLighting>
+
+      <feTurbulence
+        type="turbulence"
+        baseFrequency="0.05"
+        numOctaves="3"
+        seed="5"
+        result="tornNoise"
+      />
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="tornNoise"
+        scale="10"
+        xChannelSelector="R"
+        yChannelSelector="G"
+        result="tornEdges"
+      />
+
+      <feBlend
+        in="texture"
+        in2="tornEdges"
+        mode="multiply"
+        result="combined"
+      />
+    </filter>
+  </defs>
+
+  <rect
+    x="10"
+    y="10"
+    width="280"
+    height="280"
+    fill="#ffffff"
+    filter="url(#paperEffect)"
+  />
+</svg>
