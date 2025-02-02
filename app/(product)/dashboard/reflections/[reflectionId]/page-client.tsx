@@ -8,6 +8,7 @@ import type { Editor } from "@tiptap/react";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { mutate } from "swr";
+import ReflectionsMenuBar from "@/components/reflections/ReflectionsMenuBar";
 
 export default function ReflectionEditorClientPage() {
   const params = useParams() as { reflectionId: string };
@@ -48,17 +49,20 @@ export default function ReflectionEditorClientPage() {
   }
 
   return (
-    <div className="h-full w-full grid grid-cols-7">
-      <div className="col-span-5">
-        <Toolbar />
-        <Tiptap
-          saveStatus={saveStatus}
-          charsCount={charsCount}
-          content={reflection.content}
-          onContentUpdate={debouncedUpdates}
-        />
+    <div className="h-full w-full p-2">
+      <ReflectionsMenuBar reflection={reflection} />
+      <div className="grid grid-cols-7 pl-2">
+        <div className="col-span-5">
+          <Toolbar />
+          <Tiptap
+            saveStatus={saveStatus}
+            charsCount={charsCount}
+            content={reflection.content}
+            onContentUpdate={debouncedUpdates}
+          />
+        </div>
+        <div className="col-span-2">menu</div>
       </div>
-      <div className="col-span-2">menu</div>
     </div>
   );
 }

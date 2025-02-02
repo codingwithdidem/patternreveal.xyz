@@ -59,7 +59,7 @@ export const PATCH = withPermissions(
       });
     }
 
-    const { content } = data;
+    const { title, content } = data;
 
     console.log("content", content);
 
@@ -69,6 +69,7 @@ export const PATCH = withPermissions(
           id: reflectionId
         },
         data: {
+          title,
           content: JSON.stringify(content)
         }
       });

@@ -20,17 +20,17 @@ const menuItems = [
   {
     title: "Moods",
     icon: Activity,
-    url: "dashboard/moods"
+    url: "/dashboard/moods"
   },
   {
     title: "Reflections",
     icon: Activity,
-    url: "dashboard/reflections"
+    url: "/dashboard/reflections"
   },
   {
     title: "Settings",
     icon: Settings,
-    url: "dashboard/settings"
+    url: "/dashboard/settings"
   }
 ];
 

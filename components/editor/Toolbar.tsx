@@ -137,7 +137,7 @@ export default function Toolbar() {
   ];
 
   return (
-    <div className="bg-[#f1f4f9] min-h-10 px-2.5 py-1.5 rounded-3xl flex items-center gap-x-0.5 overflow-x-auto">
+    <div className="bg-[#f1f4f9] min-h-10 px-2.5 py-1 rounded-3xl flex items-center gap-x-0.5 overflow-x-auto -mb-2">
       {sections[0].map((section) => (
         <ToolbarButton
           key={section.label}

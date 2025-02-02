@@ -32,6 +32,7 @@ const Tiptap = ({
   const { setEditor } = useEditorStore();
 
   const editor = useEditor({
+    immediatelyRender: true,
     extensions: [
       StarterKit.configure({
         heading: {

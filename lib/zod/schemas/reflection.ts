@@ -14,5 +14,6 @@ export const deleteReflectionSchema = z.object({
 });
 
 export const updateReflectionSchema = z.object({
+  title: z.string().max(32).optional().describe("The title of the reflection."),
   content: z.any().describe("The content of the reflection.")
 });
