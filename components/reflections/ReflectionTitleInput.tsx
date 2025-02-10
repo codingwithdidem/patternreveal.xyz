@@ -44,10 +44,10 @@ export default function ReflectionTitleInput({
   };
 
   return (
-    <div>
+    <div className="z-10">
       {isEditing ? (
-        <form className="relative w-fit max-w-[50ch] bg-red-600">
-          <span className="invisible whitespace-pre px-1.5 text-lg">
+        <form className="relative w-fit max-w-[50ch]">
+          <span className="invisible whitespace-pre px-1.5 text-md">
             {value || ""}
           </span>
           <input
@@ -55,7 +55,7 @@ export default function ReflectionTitleInput({
             value={value}
             onChange={handleChange}
             onBlur={() => setIsEditing(false)}
-            className="absolute inset-0 text-lg px-1.5 text-black bg-transparent truncate"
+            className="absolute inset-0 text-md px-1.5 text-black bg-transparent truncate"
           />
         </form>
       ) : (
@@ -65,7 +65,7 @@ export default function ReflectionTitleInput({
             setTimeout(() => inputRef.current?.focus(), 0); // Focus input after click
           }}
           onKeyUp={(e) => e.key === "Enter" && setIsEditing(true)}
-          className="text-lg px-1.5 truncate cursor-pointer"
+          className="text-md px-1.5 truncate cursor-pointer"
         >
           {title}
         </span>

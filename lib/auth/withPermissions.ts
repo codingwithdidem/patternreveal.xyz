@@ -33,7 +33,6 @@ export const withPermissions = (
       const searchParams = Object.fromEntries(new URL(req.url).searchParams);
       const session = await getSession();
       const awaitedParams = await params;
-      console.log("SESSION", session);
 
       if (!session?.user?.id) {
         throw new ManipulatedIOApiError({

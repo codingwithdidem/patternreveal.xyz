@@ -17,3 +17,8 @@ export const updateReflectionSchema = z.object({
   title: z.string().max(32).optional().describe("The title of the reflection."),
   content: z.any().describe("The content of the reflection.")
 });
+
+export const analyzeReflectionSchema = z.object({
+  reflectionId: z.string().describe("The ID of the reflection to analyze."),
+  story: z.string().describe("The story to analyze.")
+});

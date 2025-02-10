@@ -1,0 +1,77 @@
+[
+  {
+    "story": "He always makes me feel like I'm crazy. He'll tell me I’m overreacting when I express how I feel. It’s like I can't trust my own emotions anymore.",
+    "label": "Gaslighting",
+    "reasoning": "This is gaslighting because the abuser manipulates the victim into doubting their own perception of reality, making them question their emotions and sanity."
+  },
+  {
+    "story": "She keeps saying that no one else will love me like she does. I should be grateful because she's the only one who cares about me.",
+    "label": "Emotional Manipulation",
+    "reasoning": "This is emotional manipulation because the abuser makes the victim feel undeserving of love from others, creating emotional dependency."
+  },
+  {
+    "story": "Whenever I try to talk about something important to me, he just brushes me off, saying I’m not worth listening to.",
+    "label": "Verbal Abuse",
+    "reasoning": "This is verbal abuse because the abuser dismisses and belittles the victim’s feelings, using words to devalue them."
+  },
+  {
+    "story": "She gets mad at me when I spend time with my friends and calls me selfish for not focusing on her.",
+    "label": "Control",
+    "reasoning": "This is a form of control, where the abuser isolates the victim by demanding all their attention and making them feel guilty for maintaining outside relationships."
+  },
+  {
+    "story": "We had a disagreement, but we calmly talked through it, and I listened to her concerns. We both agreed on a solution.",
+    "label": "Non-Abusive",
+    "reasoning": "This is a healthy, non-abusive situation where both partners communicate respectfully and resolve conflicts in a calm manner."
+  },
+  {
+    "story": "He tells me I shouldn't have an opinion on anything because I’m ‘just a woman.’",
+    "label": "Sexism / Verbal Abuse",
+    "reasoning": "This is verbal abuse rooted in sexism. The abuser uses gender-based insults to degrade and silence the victim."
+  },
+  {
+    "story": "We disagree sometimes, but he always listens to me and supports my ideas. He respects my decisions.",
+    "label": "Non-Abusive",
+    "reasoning": "This is an example of mutual respect in a relationship, where both partners listen and value each other's opinions."
+  },
+  {
+    "story": "Every time I bring up my concerns, he threatens to leave or says it’s my fault he’s unhappy.",
+    "label": "Emotional Abuse",
+    "reasoning": "This is emotional abuse because it involves manipulation and guilt-tripping, making the victim feel responsible for the abuser's emotions and causing emotional distress."
+  },
+  {
+    "story": "He hit the wall when I disagreed with him. It was like he was about to hit me, but he stopped.",
+    "label": "Physical Abuse",
+    "reasoning": "While no direct physical harm was caused, the threat of violence (hitting the wall) and intimidation are hallmarks of physical abuse."
+  },
+  {
+    "story": "We went out for a walk, shared our thoughts, and laughed together. It was a good day with no arguments.",
+    "label": "Non-Abusive",
+    "reasoning": "This is a healthy scenario where both partners engage in positive and enjoyable activities together without conflict."
+  },
+  {
+    "story": "She pressures me to spend money on things I can't afford, then gets mad when I say no.",
+    "label": "Financial Abuse",
+    "reasoning": "This is financial abuse because the abuser exerts control over the victim's finances, manipulating them into making financial decisions that are not in their best interest."
+  },
+  {
+    "story": "He always tries to make me feel responsible for his moods. If he’s upset, he blames me for everything.",
+    "label": "Emotional Manipulation",
+    "reasoning": "This is emotional manipulation as it makes the victim feel responsible for the abuser's emotions, forcing them to cater to the abuser's needs at the expense of their own well-being."
+  },
+  {
+    "story": "Whenever we argue, he turns the blame on me, even though I’m just trying to express my concerns.",
+    "label": "Gaslighting",
+    "reasoning": "This is gaslighting, where the abuser deflects responsibility and manipulates the victim into questioning their own actions and reality."
+  },
+  {
+    "story": "He only wants to be with me when it’s convenient for him, and if I need something from him, he ignores me.",
+    "label": "Emotional Neglect",
+    "reasoning": "This is emotional neglect, where the abuser consistently ignores the victim's needs, offering emotional support only when it suits them."
+  },
+  {
+    "story": "She respects my personal space and encourages me to spend time with my friends. We both trust each other.",
+    "label": "Non-Abusive",
+    "reasoning": "This is a healthy relationship based on trust, where both partners respect each other’s personal boundaries and independence."
+  }
+]

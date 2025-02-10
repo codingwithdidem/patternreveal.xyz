@@ -35,6 +35,7 @@ export default function ReflectionsClientPage() {
         method: "POST",
         body: JSON.stringify({
           title: "Untitled Reflection",
+          initialContent: "",
           content: ""
         }),
         headers: {

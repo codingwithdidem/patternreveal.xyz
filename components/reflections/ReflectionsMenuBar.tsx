@@ -4,7 +4,6 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarSeparator,
   MenubarShortcut,
   MenubarSub,
   MenubarSubTrigger,
@@ -12,14 +11,17 @@ import {
   MenubarTrigger
 } from "@/components/ui/menubar";
 import {
+  DownloadIcon,
   FileCodeIcon,
   FileIcon,
   FileJsonIcon,
-  FileTypeIcon
+  FileTypeIcon,
+  SparklesIcon
 } from "lucide-react";
 import ReflectionTitleInput from "./ReflectionTitleInput";
 import type { Reflection } from "@prisma/client";
 import { useEditorStore } from "@/lib/store/useEditorStore";
+import { RainbowButton } from "../magicui/rainbow-button";
 
 type ReflectionsMenuBarProps = {
   reflection: Reflection;
@@ -73,40 +75,79 @@ export default function ReflectionsMenuBar({
     onDownload(blob, `${reflection.title}.txt`);
   };
 
+  const onAnalyzeReflection = async () => {
+    if (!editor) return;
+
+    const text = editor.getText();
+
+    // Send text to the server for analysis
+
+    try {
+      const response = await fetch("/api/analyze", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          reflectionId: reflection.id,
+          story: text
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data);
+      } else {
+        console.error("Failed to analyze text");
+      }
+    } catch (error) {
+      console.error("Failed to analyze text", error);
+    }
+  };
+
   return (
-    <div className="flex items-center gap-1">
-      <FileIcon size={36} />
-      <div className="flex flex-col">
-        <ReflectionTitleInput
-          title={reflection.title}
-          reflectionId={reflection.id}
-        />
-        <Menubar className="border-none shadow-none -ml-2">
-          <MenubarMenu>
-            <MenubarTrigger>File</MenubarTrigger>
-            <MenubarContent className="print:hidden">
-              <MenubarSub>
-                <MenubarSubTrigger>
-                  <FileIcon size={16} className="mr-2" /> Download
-                </MenubarSubTrigger>
-                <MenubarSubContent>
-                  <MenubarItem onClick={onSaveJSON}>
-                    <FileJsonIcon size={16} className="mr-2" /> JSON
-                    <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem onClick={onSaveHTML}>
-                    <FileCodeIcon size={16} className="mr-2" /> HTML
-                    <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                  <MenubarItem onClick={onSaveText}>
-                    <FileTypeIcon size={16} className="mr-2" /> Plain Text
-                    <MenubarShortcut>⌘T</MenubarShortcut>
-                  </MenubarItem>
-                </MenubarSubContent>
-              </MenubarSub>
-            </MenubarContent>
-          </MenubarMenu>
-        </Menubar>
+    <div className="flex items-center gap-1 w-full px-2">
+      <div className="flex items-center gap-1 w-full">
+        <FileIcon size={36} />
+        <div className="flex flex-col w-full">
+          <ReflectionTitleInput
+            title={reflection.title}
+            reflectionId={reflection.id}
+          />
+
+          <Menubar className="border-none shadow-none -ml-2 -mt-1">
+            <MenubarMenu>
+              <MenubarTrigger>File</MenubarTrigger>
+              <MenubarContent className="print:hidden">
+                <MenubarSub>
+                  <MenubarSubTrigger>
+                    <DownloadIcon size={16} className="mr-2" /> Download
+                  </MenubarSubTrigger>
+                  <MenubarSubContent>
+                    <MenubarItem onClick={onSaveJSON}>
+                      <FileJsonIcon size={16} className="mr-2" /> JSON
+                    </MenubarItem>
+                    <MenubarItem onClick={onSaveHTML}>
+                      <FileCodeIcon size={16} className="mr-2" /> HTML
+                    </MenubarItem>
+                    <MenubarItem onClick={onSaveText}>
+                      <FileTypeIcon size={16} className="mr-2" /> Plain Text
+                    </MenubarItem>
+                  </MenubarSubContent>
+                </MenubarSub>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
+        </div>
+      </div>
+      <div className="flex items-center gap-1">
+        <RainbowButton
+          className="h-10 px-4 rounded-full"
+          onClick={onAnalyzeReflection}
+        >
+          <SparklesIcon size={16} className="mr-2" />
+          Analyze
+        </RainbowButton>
       </div>
     </div>
   );

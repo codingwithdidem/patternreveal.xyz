@@ -56,13 +56,11 @@ export const POST = withPermissions(
         }
       });
 
-      console.log(response);
-
       return NextResponse.json(response, {
         headers
       });
-    } catch {
-      console.log("smth");
+    } catch (err) {
+      console.log("smth", err);
       throw new ManipulatedIOApiError({
         code: "internal_server_error",
         message: "Failed to create reflection."
