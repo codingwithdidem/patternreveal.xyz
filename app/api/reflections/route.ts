@@ -13,11 +13,17 @@ import { NextResponse } from "next/server";
  */
 export const GET = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
+    console.log("session", session);
     const response = await prisma.reflection.findMany({
       where: {
         userId: session.user.id
+      },
+      include: {
+        analysisReport: true
       }
     });
+
+    console.log("response", response);
 
     return NextResponse.json(response, {
       headers

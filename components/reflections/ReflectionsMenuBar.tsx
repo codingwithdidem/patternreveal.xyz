@@ -19,18 +19,24 @@ import {
   SparklesIcon
 } from "lucide-react";
 import ReflectionTitleInput from "./ReflectionTitleInput";
-import type { Reflection } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { useEditorStore } from "@/lib/store/useEditorStore";
 import { RainbowButton } from "../magicui/rainbow-button";
 
 type ReflectionsMenuBarProps = {
-  reflection: Reflection;
+  reflection: Prisma.ReflectionGetPayload<{
+    include: {
+      analysisReport: true;
+    };
+  }>;
+  onAnalyze: (text: string) => void;
 };
 
 export default function ReflectionsMenuBar({
   reflection
 }: ReflectionsMenuBarProps) {
   const { editor } = useEditorStore();
+
   const onDownload = (blob: Blob, filename: string) => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -80,29 +86,7 @@ export default function ReflectionsMenuBar({
 
     const text = editor.getText();
 
-    // Send text to the server for analysis
-
-    try {
-      const response = await fetch("/api/analyze", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          reflectionId: reflection.id,
-          story: text
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log(data);
-      } else {
-        console.error("Failed to analyze text");
-      }
-    } catch (error) {
-      console.error("Failed to analyze text", error);
-    }
+    onAnalyze(text);
   };
 
   return (

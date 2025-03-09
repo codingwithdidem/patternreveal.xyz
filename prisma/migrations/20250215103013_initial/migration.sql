@@ -1,3 +1,6 @@
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS "vector";
+
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('USER', 'ADMIN');
 
@@ -16,6 +19,7 @@ CREATE TABLE "Embedding" (
     "id" TEXT NOT NULL,
     "resourceId" TEXT NOT NULL,
     "content" TEXT NOT NULL,
+    "embedding" vector(1536),
 
     CONSTRAINT "Embedding_pkey" PRIMARY KEY ("id")
 );
@@ -63,6 +67,9 @@ CREATE INDEX "Resource_updatedAt_idx" ON "Resource"("updatedAt");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- AddForeignKey
+ALTER TABLE "Embedding" ADD CONSTRAINT "Embedding_resourceId_fkey" FOREIGN KEY ("resourceId") REFERENCES "Resource"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Mood" ADD CONSTRAINT "Mood_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

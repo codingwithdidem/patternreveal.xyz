@@ -27,20 +27,34 @@ export default function ReflectionsClientPage() {
   const router = useRouter();
   const { reflections, error } = useReflections();
 
-  console.log(reflections);
-
   const createReflection = async () => {
     try {
       const response = await fetch("/api/reflections", {
         method: "POST",
         body: JSON.stringify({
           title: "Untitled Reflection",
-          initialContent: "",
-          content: ""
-        }),
-        headers: {
-          "Content-Type": "application/json"
-        }
+          initialContent: JSON.stringify({
+            type: "doc",
+            content: [
+              {
+                type: "paragraph",
+                content: [{ type: "text", text: "Start writing..." }]
+              }
+            ]
+          }),
+          content: JSON.stringify({
+            type: "doc",
+            content: [
+              {
+                type: "paragraph",
+                content: [{ type: "text", text: "Start writing..." }]
+              }
+            ]
+          }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
       });
 
       if (response.status === 200) {

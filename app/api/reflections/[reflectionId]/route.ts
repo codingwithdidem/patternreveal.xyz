@@ -12,16 +12,15 @@ export const GET = withPermissions(
   async ({ headers, session, params }) => {
     const { reflectionId } = params;
 
-    console.log("REFLECTION ID", reflectionId);
-
     const reflection = await prisma.reflection.findUnique({
       where: {
         id: reflectionId,
         userId: session.user.id
+      },
+      include: {
+        analysisReport: true
       }
     });
-
-    console.log("response,", reflection);
 
     if (!reflection) {
       return NextResponse.json(

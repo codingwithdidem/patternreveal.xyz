@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import type { SWRConfiguration } from "swr";
 import { fetcher } from "./fetcher";
-import type { Reflection } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 
 export default function useReflections(swrOpts: SWRConfiguration = {}) {
   const {
@@ -9,7 +9,13 @@ export default function useReflections(swrOpts: SWRConfiguration = {}) {
     error,
     isLoading,
     isValidating
-  } = useSWR<Reflection[]>("/api/reflections", fetcher, {
+  } = useSWR<
+    Prisma.ReflectionGetPayload<{
+      include: {
+        analysisReport: true;
+      };
+    }>[]
+  >("/api/reflections", fetcher, {
     dedupingInterval: 20000,
     revalidateOnFocus: false,
     keepPreviousData: true,

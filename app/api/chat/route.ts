@@ -1,4 +1,3 @@
-import { createResource } from "@/lib/actions/resources";
 import { findRelevantContent } from "@/lib/ai/embedding";
 import { openai } from "@ai-sdk/openai";
 import { streamText, tool } from "ai";
@@ -12,28 +11,49 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: openai("gpt-4o"),
-    system: `You are a helpful assistant. Check your knowledge base before answering any questions.
-    Only respond to questions using information from tool calls.
-    if no relevant information is found in the tool calls, respond, "Sorry, I don't know."`,
+    system: `You are an expert in the field of abuse in relationships. 
+    You will receive a user's reflection of their day and they may ask questions about abuse in their relationships.
+    IMPORTANT: Always analyze the reflection first using the getInformation tool before responding.
+    
+    When analyzing reflections:
+    1. Look for patterns or signs that might indicate concerning behavior
+    2. Consider both explicit and implicit signs in the reflection
+    3. Use the knowledge base to provide relevant, evidence-based insights
+    4. If you find concerning patterns, explain them clearly
+    
+    For follow-up questions:
+    1. Check the knowledge base using the getInformation tool
+    2. Provide specific, relevant information from the knowledge base
+    3. If no relevant information is found, explain why and suggest seeking professional help
+    
+    Never say "I don't know" without first checking the knowledge base and analyzing the content.`,
     messages,
     tools: {
-      addResource: tool({
-        description: `add a resource to your knowledge base.
-          If the user provides a random piece of knowledge unprompted, use this tool without asking for confirmation.`,
-        parameters: z.object({
-          content: z
-            .string()
-            .describe("the content or resource to add to the knowledge base")
-        }),
-        execute: async ({ content }) => createResource({ content })
-      }),
       getInformation: tool({
         description:
-          "get information from your knowledge base to answer questions.",
+          "get information from your knowledge base to analyze reflections and answer questions",
         parameters: z.object({
-          question: z.string().describe("the users question")
+          question: z
+            .string()
+            .describe("the user's reflection or question to analyze")
         }),
-        execute: async ({ question }) => findRelevantContent(question)
+        execute: async ({ question }) => {
+          // First try to find exact matches
+          let relevantContent = await findRelevantContent(question);
+
+          // If no results, try breaking down the content into smaller chunks
+          if (relevantContent.length === 0) {
+            const sentences = question.split(/[.!?]+/).filter(Boolean);
+            for (const sentence of sentences) {
+              const results = await findRelevantContent(sentence);
+              relevantContent = [...relevantContent, ...results];
+            }
+          }
+
+          return relevantContent.map(({ content }) => ({
+            content
+          }));
+        }
       })
     }
   });

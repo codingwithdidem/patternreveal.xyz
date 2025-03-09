@@ -7,14 +7,18 @@ import {
   TableHeader,
   TableRow
 } from "@/components/ui/table";
-import type { Reflection } from "@prisma/client";
+import type { Prisma, Reflection } from "@prisma/client";
 import { FileIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import ReflectionsActionMenu from "./ReflectionsActionMenu";
 
 type ReflectionsTableProps = {
-  reflections: Reflection[];
+  reflections: Prisma.ReflectionGetPayload<{
+    include: {
+      analysisReport: true;
+    };
+  }>[];
 };
 
 export default function ReflectionsTable({

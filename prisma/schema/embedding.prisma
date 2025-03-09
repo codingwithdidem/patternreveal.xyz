@@ -1,24 +1,18 @@
-
 model Resource {
-  id         String   @id @default(cuid()) 
-  content    String   
-  createdAt  DateTime @default(now()) 
-  updatedAt  DateTime @default(now()) 
+  id         String      @id @default(cuid())
+  content    String
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @default(now())
+  embeddings Embedding[]
 
-  embeddings Embedding[] // Define relation to Embedding model
-
-  @@index([createdAt]) // Optional: index on createdAt for faster queries
-  @@index([updatedAt]) // Optional: index on updatedAt for faster queries
+  @@index([createdAt])
+  @@index([updatedAt])
 }
 
-
 model Embedding {
-  id         String   @id @default(cuid()) 
+  id         String      @id @default(cuid())
   resourceId String
-  content    String   
-  embedding  Unsupported("vector(1536)")
-
-  resource   Resource @relation(fields: [resourceId], references: [id], onDelete: Cascade)
-
-  // @@index([embedding], name: "embeddingIndex" ) // Custom index for vector (handle manually)
+  content    String
+  embedding  Unsupported("vector(1536)")?
+  resource   Resource    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 }

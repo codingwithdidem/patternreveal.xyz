@@ -3,6 +3,10 @@ import { parseRequestBody } from "@/lib/api/utils";
 import { withPermissions } from "@/lib/auth/withPermissions";
 import { NextResponse } from "next/server";
 import { analyzeReflectionSchema } from "@/lib/zod/schemas/reflection";
+import { generateObject } from "ai";
+import { openai } from "@ai-sdk/openai";
+import { analysisSchema } from "@/lib/zod/schemas/analysis";
+import prisma from "@/lib/prisma";
 
 export const POST = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
@@ -25,25 +29,52 @@ export const POST = withPermissions(
     });
 
     try {
-      const response = await fetch(
-        "https://cr7ldmkxrv6a7eai.us-east-1.aws.endpoints.huggingface.cloud",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer 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`
-          },
-          body: JSON.stringify({
-            inputs: story
-          })
+      const { object, usage } = await generateObject({
+        model: openai("gpt-4-turbo"),
+        system: `
+         You are an expert in the field of psychology. Based on the reflection provided,
+         generate a detailed analysis of the user's reflection. 
+        `,
+        prompt: `
+          The following is the user's reflection that needs to be analyzed:
+          ${story}
+        `,
+        schema: analysisSchema
+      });
+
+      if (!object) {
+        throw new ManipulatedIOApiError({
+          code: "internal_server_error",
+          message: "Failed to generate analysis."
+        });
+      }
+
+      // Save the analysis to the database
+      const response = await prisma.reflection.update({
+        where: {
+          id: reflectionId
+        },
+        data: {
+          analysisReport: {
+            upsert: {
+              create: {
+                report: object
+              },
+              update: {
+                report: object
+              }
+            }
+          }
         }
-      );
+      });
 
-      const result = await response.json();
+      console.log({
+        response,
+        object,
+        usage
+      });
 
-      console.log(result);
-
-      return NextResponse.json(result, {
+      return NextResponse.json(object, {
         headers
       });
     } catch (error) {
