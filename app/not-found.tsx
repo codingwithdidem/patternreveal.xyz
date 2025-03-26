@@ -18,7 +18,7 @@ export default function NotFound() {
         <div className="flex flex-col space-y-4">
           <h1 className="text-6xl font-bold">404</h1>
           <Link
-            href="/"
+            href="/dashboard"
             className="flex h-9 w-fit items-center justify-center rounded-md border border-black bg-black px-4 text-sm text-white hover:bg-neutral-800"
           >
             Go back home

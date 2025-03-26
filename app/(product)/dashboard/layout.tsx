@@ -4,7 +4,6 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { authOptions } from "@/lib/auth/authOptions";
 
 import type { Metadata } from "next";
-import { getServerSession } from "next-auth";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -16,13 +15,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOptions);
   return (
-    <Providers session={session}>
-      <SidebarProvider>
-        <AppSidebar />
-        <main className="w-full">{children}</main>
-      </SidebarProvider>
-    </Providers>
+    <SidebarProvider>
+      <AppSidebar />
+      <main className="w-full">{children}</main>
+    </SidebarProvider>
   );
 }

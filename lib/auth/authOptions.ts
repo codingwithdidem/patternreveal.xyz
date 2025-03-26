@@ -103,10 +103,23 @@ export const authOptions: NextAuthOptions = {
     strategy: "jwt"
   },
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user, trigger }) => {
       if (user) {
         token.user = user;
       }
+
+      // refresh the user's data if they update their name / email
+      if (trigger === "update") {
+        const refreshedUser = await prisma.user.findUnique({
+          where: { id: token.sub }
+        });
+        if (refreshedUser) {
+          token.user = refreshedUser;
+        } else {
+          return {};
+        }
+      }
+
       return token;
     },
     session: async ({ session, token }) => {

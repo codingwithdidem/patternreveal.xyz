@@ -27,11 +27,11 @@ export default function ReflectionsTable({
   const router = useRouter();
 
   const onRowClick = (reflectionId: string) => {
-    router.push(`/dashboard/reflections/${reflectionId}`);
+    router.push(`/reports/${reflectionId}`);
   };
 
   const onOpenInNewTabClick = (reflectionId: string) => {
-    window.open(`/dashboard/reflections/${reflectionId}`, "_blank");
+    window.open(`/reports/${reflectionId}`, "_blank");
   };
 
   return (

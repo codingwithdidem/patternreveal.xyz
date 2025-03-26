@@ -45,6 +45,8 @@ model Reflection {
   analysisReport AnalysisReport?
   userId         String
   createdAt      DateTime @default(now())
+  linkId         String?
+  shortLink      String?
   user           User     @relation(fields: [userId], references: [id])
 }
 

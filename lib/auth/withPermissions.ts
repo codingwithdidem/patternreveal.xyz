@@ -34,6 +34,8 @@ export const withPermissions = (
       const session = await getSession();
       const awaitedParams = await params;
 
+      console.log("session", session);
+
       if (!session?.user?.id) {
         throw new ManipulatedIOApiError({
           code: "unauthorized",

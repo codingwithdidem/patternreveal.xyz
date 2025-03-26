@@ -27,7 +27,7 @@ const Tiptap = ({
   content,
   onContentUpdate,
   saveStatus,
-  charsCount,
+  charsCount
 }: TiptapProps) => {
   const { setEditor } = useEditorStore();
 
@@ -36,32 +36,32 @@ const Tiptap = ({
     extensions: [
       StarterKit.configure({
         heading: {
-          levels: [1, 2, 3, 4, 5, 6],
+          levels: [1, 2, 3, 4, 5, 6]
         },
         bulletList: {
           HTMLAttributes: {
-            class: cx("list-disc list-outside leading-3 -mt-2"),
-          },
+            class: cx("list-disc list-outside leading-3 -mt-2")
+          }
         },
         orderedList: {
           HTMLAttributes: {
-            class: cx("list-decimal list-outside leading-3 -mt-2"),
-          },
-        },
+            class: cx("list-decimal list-outside leading-3 -mt-2")
+          }
+        }
       }),
       TaskList.configure({
         HTMLAttributes: {
-          class: cx("not-prose pl-2"),
-        },
+          class: cx("not-prose pl-2")
+        }
       }),
       TaskItem.configure({
         nested: true,
         HTMLAttributes: {
-          class: cx("flex gap-2 items-start my-2"),
-        },
+          class: cx("flex gap-2 items-start my-2")
+        }
       }),
       TextAlign.configure({
-        types: ["heading", "paragraph"],
+        types: ["heading", "paragraph"]
       }),
       CharacterCount,
       Placeholder.configure({
@@ -84,14 +84,14 @@ It’s like I’m walking on eggshells every moment we’re together, trying not
 
 By the time I went to bed, I felt invisible. Like I’m not even a person to him—just someone who’s there to serve his needs and absorb his anger.
         `,
-        includeChildren: true,
+        includeChildren: true
       }),
       FontFamily,
       TextStyle,
       Underline,
       Color,
       Highlight.configure({
-        multicolor: true,
+        multicolor: true
       }),
       Link.configure({
         openOnClick: false,
@@ -130,7 +130,7 @@ By the time I went to bed, I felt invisible. Like I’m not even a person to him
             // disallowed domains
             const disallowedDomains = [
               "example-phishing.com",
-              "malicious-site.net",
+              "malicious-site.net"
             ];
             const domain = parsedUrl.hostname;
 
@@ -147,18 +147,27 @@ By the time I went to bed, I felt invisible. Like I’m not even a person to him
         HTMLAttributes: {
           class: cx(
             "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer"
-          ),
-        },
-      }),
+          )
+        }
+      })
     ],
-    content: JSON.parse(content),
+    content: content
+      ? JSON.parse(content)
+      : {
+          type: "doc",
+          content: [
+            {
+              type: "paragraph"
+            }
+          ]
+        },
     autofocus: true,
     editorProps: {
       attributes: {
         style: "padding-left: 56px; padding-right: 56px;",
         class:
-          "prose prose-pink prose-sm sm:prose-base focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-h-[1054px] min-w-[816px] pt-10 pr-14 pb-10 cursor-text selection:bg-gray-950 selection:text-white bg-[url('https://s.ytimg.com/yt/imgbin/www-refreshbg-vflC3wnbM.png')]",
-      },
+          "prose prose-pink prose-sm sm:prose-base focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col min-h-[1054px] min-w-[816px] pt-10 pr-14 pb-10 cursor-text selection:bg-gray-950 selection:text-white bg-[url('https://s.ytimg.com/yt/imgbin/www-refreshbg-vflC3wnbM.png')]"
+      }
     },
     onCreate: ({ editor }) => {
       setEditor(editor);
@@ -184,7 +193,7 @@ By the time I went to bed, I felt invisible. Like I’m not even a person to him
     },
     onContentError: ({ editor }) => {
       setEditor(editor);
-    },
+    }
   });
 
   return (

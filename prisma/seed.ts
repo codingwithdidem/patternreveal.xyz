@@ -3,14 +3,16 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 async function main() {
   const didem = await prisma.user.upsert({
-    where: { email: "didem@prisma.io" },
+    where: { email: "kucukkaraaslan.didem@gmail.com" },
     update: {},
     create: {
-      email: "didem@prisma.io",
-      name: "Didem",
+      email: "kucukkaraaslan.didem@gmail.com",
+      name: "Didem Küçükkaraaslan",
       password: await hashPassword("mysoul")
     }
   });
+
+  console.log({ didem });
 
   const reflection = await prisma.reflection.create({
     data: {

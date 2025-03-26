@@ -22,7 +22,7 @@ importers:
         version: 3.3.3
       '@langchain/community':
         specifier: ^0.3.30
-        version: 0.3.30(@browserbasehq/sdk@2.3.0)(@browserbasehq/stagehand@1.12.0(@playwright/test@1.50.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(zod@3.24.1))(@huggingface/transformers@3.3.3)(@ibm-cloud/watsonx-ai@1.5.0(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1))))(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1)))(axios@1.7.9)(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.1.2)(ignore@5.3.2)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(pdf-parse@1.1.1)(playwright@1.50.1)(ws@8.18.0)
+        version: 0.3.30(@browserbasehq/sdk@2.3.0)(@browserbasehq/stagehand@1.12.0(@playwright/test@1.50.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(zod@3.24.1))(@huggingface/transformers@3.3.3)(@ibm-cloud/watsonx-ai@1.5.0(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1))))(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1)))(@upstash/redis@1.34.6)(axios@1.7.9)(crypto-js@4.2.0)(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.1.2)(ignore@5.3.2)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(pdf-parse@1.1.1)(playwright@1.50.1)(ws@8.18.0)
       '@langchain/core':
         specifier: ^0.3.39
         version: 0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1))
@@ -122,9 +122,15 @@ importers:
       '@tiptap/starter-kit':
         specifier: ^2.11.0
         version: 2.11.0
+      '@upstash/redis':
+        specifier: ^1.34.6
+        version: 1.34.6
       '@vercel/blob':
         specifier: ^0.27.1
         version: 0.27.1
+      '@vercel/functions':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@xenova/transformers':
         specifier: ^2.17.2
         version: 2.17.2
@@ -146,6 +152,9 @@ importers:
       date-fns:
         specifier: ^4.1.0
         version: 4.1.0
+      dub:
+        specifier: ^0.61.0
+        version: 0.61.0(zod@3.24.1)
       framer-motion:
         specifier: ^12.4.7
         version: 12.4.7(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
@@ -155,18 +164,27 @@ importers:
       lucide-react:
         specifier: ^0.468.0
         version: 0.468.0(react@19.0.0-rc-66855b96-20241106)
+      motion:
+        specifier: ^12.5.0
+        version: 12.5.0(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
       next:
         specifier: 15.0.3
         version: 15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
       next-auth:
         specifier: ^4.24.10
         version: 4.24.10(next@15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
+      next-safe-action:
+        specifier: ^7.10.4
+        version: 7.10.4(next@15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)(zod@3.24.1)
       onnxruntime-node:
         specifier: ^1.20.1
         version: 1.20.1
       pdf-parse:
         specifier: ^1.1.1
         version: 1.1.1
+      posthog-js:
+        specifier: ^1.233.0
+        version: 1.233.0
       react:
         specifier: 19.0.0-rc-66855b96-20241106
         version: 19.0.0-rc-66855b96-20241106
@@ -206,6 +224,9 @@ importers:
       use-debounce:
         specifier: ^10.0.4
         version: 10.0.4(react@19.0.0-rc-66855b96-20241106)
+      usehooks-ts:
+        specifier: ^3.1.1
+        version: 3.1.1(react@19.0.0-rc-66855b96-20241106)
       zod:
         specifier: ^3.24.1
         version: 3.24.1
@@ -3255,9 +3276,21 @@ packages:
   '@ungap/structured-clone@1.2.0':
     resolution: {integrity: sha512-zuVdFrMJiuCDQUMCzQaD6KL28MjnqqN8XnAqiEq9PNm/hCPTSGfrXCOfwj1ow4LFb/tNymJPwsNbVePc1xFqrQ==}
 
+  '@upstash/redis@1.34.6':
+    resolution: {integrity: sha512-/ic+NszsXyIl2P8aExL7xETxgmzyhn6txG4senGDgd524bypGEJs1TMzLDeOV+PFVuacc10wZVJLIj6aRZZNaw==}
+
   '@vercel/blob@0.27.1':
     resolution: {integrity: sha512-X5EG9W1cZW+Nbt/XdrJJSl5DzCXXn1JRP5nfFwkpFD03nB6uh6BldwX4syElHcciM4Pih8CS7Ri1mtLCJvxSHA==}
     engines: {node: '>=16.14'}
+
+  '@vercel/functions@2.0.0':
+    resolution: {integrity: sha512-BSwIihLHoV18gerKZJyGuqd3rtaYM6rJvET1kOwKktshucyaHXTJel7Cxegs+sdX0NZqsX4LO2MFnMU2jG01Cw==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@aws-sdk/credential-provider-web-identity': '*'
+    peerDependenciesMeta:
+      '@aws-sdk/credential-provider-web-identity':
+        optional: true
 
   '@xenova/transformers@2.17.2':
     resolution: {integrity: sha512-lZmHqzrVIkSvZdKZEx7IYY51TK0WDrC8eR0c5IMnBsO8di8are1zzw8BlLhyO2TklZKLN5UffNGs1IJwT6oOqQ==}
@@ -3648,6 +3681,9 @@ packages:
   core-js-compat@3.39.0:
     resolution: {integrity: sha512-VgEUx3VwlExr5no0tXlBt+silBvhTryPwCXRI2Id1PN8WTKu7MreethvddqOubrYxkFdv/RnYrqlv1sFNAUelw==}
 
+  core-js@3.41.0:
+    resolution: {integrity: sha512-SJ4/EHwS36QMJd6h/Rg+GyR4A5xE0FSI3eZ+iBVpfqf1x0eTSg1smWLHrA+2jQThZSh97fmSgFSU8B61nxosxA==}
+
   cors@2.8.5:
     resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
     engines: {node: '>= 0.10'}
@@ -3670,6 +3706,9 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
+
+  crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   css-select@5.1.0:
     resolution: {integrity: sha512-nwoRF1rvRRnnCqqY7updORDsuqKzqYJ28+oSMaJMMgOauh3fvwHqMS7EZpIPqK8GL+g9mKxF1vP/ZjSeNjEVHg==}
@@ -3828,6 +3867,16 @@ packages:
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
+
+  dub@0.61.0:
+    resolution: {integrity: sha512-O5Co3rJgNizBs70lKkZvLAUrKnhFFvh2u9+NbTmGjIguxWak2BEl2aeY+DdmdPPLNXd6MXWiva9Xm/HWKxVRDA==}
+    hasBin: true
+    peerDependencies:
+      '@modelcontextprotocol/sdk': ^1.5.0
+      zod: '>= 3'
+    peerDependenciesMeta:
+      '@modelcontextprotocol/sdk':
+        optional: true
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -4090,6 +4139,9 @@ packages:
   fastq@1.17.1:
     resolution: {integrity: sha512-sRVD3lWVIXWg6By68ZN7vho9a1pQcN/WBFaAAsDDFzlJjvoGx0P8z7V1t72grFJfJhu3YPZBuu25f7Kaw2jN1w==}
 
+  fflate@0.4.8:
+    resolution: {integrity: sha512-FJqqoDBR00Mdj9ppamLa/Y7vxm+PRmNWA67N846RvsoYVMKB4q3y/de5PA7gUmRMYK/8CMz2GDZQmCRN1wBcWA==}
+
   file-entry-cache@6.0.1:
     resolution: {integrity: sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==}
     engines: {node: ^10.12.0 || >=12.0.0}
@@ -4156,6 +4208,20 @@ packages:
 
   framer-motion@12.4.7:
     resolution: {integrity: sha512-VhrcbtcAMXfxlrjeHPpWVu2+mkcoR31e02aNSR7OUS/hZAciKa8q6o3YN2mA1h+jjscRsSyKvX6E1CiY/7OLMw==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+
+  framer-motion@12.5.0:
+    resolution: {integrity: sha512-buPlioFbH9/W7rDzYh1C09AuZHAk2D1xTA1BlounJ2Rb9aRg84OXexP0GLd+R83v0khURdMX7b5MKnGTaSg5iA==}
     peerDependencies:
       '@emotion/is-prop-valid': '*'
       react: ^18.0.0 || ^19.0.0
@@ -4982,8 +5048,28 @@ packages:
   motion-dom@12.4.5:
     resolution: {integrity: sha512-Q2xmhuyYug1CGTo0jdsL05EQ4RhIYXlggFS/yPhQQRNzbrhjKQ1tbjThx5Plv68aX31LsUQRq4uIkuDxdO5vRQ==}
 
+  motion-dom@12.5.0:
+    resolution: {integrity: sha512-uH2PETDh7m+Hjd1UQQ56yHqwn83SAwNjimNPE/kC+Kds0t4Yh7+29rfo5wezVFpPOv57U4IuWved5d1x0kNhbQ==}
+
   motion-utils@12.0.0:
     resolution: {integrity: sha512-MNFiBKbbqnmvOjkPyOKgHUp3Q6oiokLkI1bEwm5QA28cxMZrv0CbbBGDNmhF6DIXsi1pCQBSs0dX8xjeER1tmA==}
+
+  motion-utils@12.5.0:
+    resolution: {integrity: sha512-+hFFzvimn0sBMP9iPxBa9OtRX35ZQ3py0UHnb8U29VD+d8lQ8zH3dTygJWqK7av2v6yhg7scj9iZuvTS0f4+SA==}
+
+  motion@12.5.0:
+    resolution: {integrity: sha512-BTAYKszMmTvXSsIyeHNMPSicjWgUA4j7OmZv1xPpthm4sPub3ch66fy9U7BhJ1uXNL3YeprsIegzuvps3FkEMw==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
 
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
@@ -5022,6 +5108,27 @@ packages:
       '@auth/core':
         optional: true
       nodemailer:
+        optional: true
+
+  next-safe-action@7.10.4:
+    resolution: {integrity: sha512-rZE89DTNgiTJ8oPQBOZm+jd0Uf/pLkN+GE3PndER6vWqHGYGN7HMLvhpggkbE8W4TGp+qM7CPyrXye1wCjZLVg==}
+    engines: {node: '>=18.17'}
+    peerDependencies:
+      '@sinclair/typebox': '>= 0.33.3'
+      next: '>= 14.0.0'
+      react: '>= 18.2.0'
+      react-dom: '>= 18.2.0'
+      valibot: '>= 0.36.0'
+      yup: '>= 1.0.0'
+      zod: '>= 3.0.0'
+    peerDependenciesMeta:
+      '@sinclair/typebox':
+        optional: true
+      valibot:
+        optional: true
+      yup:
+        optional: true
+      zod:
         optional: true
 
   next@14.2.16:
@@ -5371,6 +5478,17 @@ packages:
   postcss@8.4.49:
     resolution: {integrity: sha512-OCVPnIObs4N29kxTjzLfUryOkvZEq+pf8jTF0lg8E7uETuWHA+v7j3c/xJmiqpX450191LlmZfUKkXxkTry7nA==}
     engines: {node: ^10 || ^12 || >=14}
+
+  posthog-js@1.233.0:
+    resolution: {integrity: sha512-79AIWVwxbxA57wxUFZdg2gDdz57Z6OjGT4DmbH/mVudVutVsoAj2Oxvncz9s0LSSULZ3ag0LFcYZfLanGmXa5w==}
+    peerDependencies:
+      '@rrweb/types': 2.0.0-alpha.17
+      rrweb-snapshot: 2.0.0-alpha.17
+    peerDependenciesMeta:
+      '@rrweb/types':
+        optional: true
+      rrweb-snapshot:
+        optional: true
 
   preact-render-to-string@5.2.6:
     resolution: {integrity: sha512-JyhErpYOvBV1hEPwIxc/fHWXPfnEGdRKxc8gFdAZ7XV4tlzyzG847XAyEZqoDnynP88akM4eaHcSOzNcLWFguw==}
@@ -6229,6 +6347,12 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
+  usehooks-ts@3.1.1:
+    resolution: {integrity: sha512-I4diPp9Cq6ieSUH2wu+fDAVQO43xwtulo+fKEidHUwZPnYImbtkTjzIJYcDcJqxgmX31GVqNFURodvcgHcW0pA==}
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      react: ^16.8.0  || ^17 || ^18 || ^19 || ^19.0.0-rc
+
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
@@ -6262,6 +6386,9 @@ packages:
   web-streams-polyfill@4.0.0-beta.3:
     resolution: {integrity: sha512-QW95TCTaHmsYfHDybGMwO5IJIM93I/6vTRk+daHTWFPhwh+C8Cg7j7XyKrwrj8Ib6vYXe0ocYNrmzY4xAAN6ug==}
     engines: {node: '>= 14'}
+
+  web-vitals@4.2.4:
+    resolution: {integrity: sha512-r4DIlprAGwJ7YM11VZp4R884m0Vmgr6EAKe3P+kO0PPj3Unqyvv59rczf6UiGcb9Z8QxZVcqKNwv/g0WNdWwsw==}
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
@@ -7599,7 +7726,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@langchain/community@0.3.30(@browserbasehq/sdk@2.3.0)(@browserbasehq/stagehand@1.12.0(@playwright/test@1.50.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(zod@3.24.1))(@huggingface/transformers@3.3.3)(@ibm-cloud/watsonx-ai@1.5.0(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1))))(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1)))(axios@1.7.9)(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.1.2)(ignore@5.3.2)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(pdf-parse@1.1.1)(playwright@1.50.1)(ws@8.18.0)':
+  '@langchain/community@0.3.30(@browserbasehq/sdk@2.3.0)(@browserbasehq/stagehand@1.12.0(@playwright/test@1.50.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(zod@3.24.1))(@huggingface/transformers@3.3.3)(@ibm-cloud/watsonx-ai@1.5.0(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1))))(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1)))(@upstash/redis@1.34.6)(axios@1.7.9)(crypto-js@4.2.0)(html-to-text@9.0.5)(ibm-cloud-sdk-core@5.1.2)(ignore@5.3.2)(jsonwebtoken@9.0.2)(lodash@4.17.21)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(pdf-parse@1.1.1)(playwright@1.50.1)(ws@8.18.0)':
     dependencies:
       '@browserbasehq/stagehand': 1.12.0(@playwright/test@1.50.1)(deepmerge@4.3.1)(dotenv@16.4.7)(openai@4.84.0(ws@8.18.0)(zod@3.24.1))(zod@3.24.1)
       '@ibm-cloud/watsonx-ai': 1.5.0(@langchain/core@0.3.39(openai@4.84.0(ws@8.18.0)(zod@3.24.1)))
@@ -7619,6 +7746,8 @@ snapshots:
     optionalDependencies:
       '@browserbasehq/sdk': 2.3.0
       '@huggingface/transformers': 3.3.3
+      '@upstash/redis': 1.34.6
+      crypto-js: 4.2.0
       html-to-text: 9.0.5
       ignore: 5.3.2
       jsonwebtoken: 9.0.2
@@ -9055,6 +9184,10 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
+  '@upstash/redis@1.34.6':
+    dependencies:
+      crypto-js: 4.2.0
+
   '@vercel/blob@0.27.1':
     dependencies:
       async-retry: 1.3.3
@@ -9062,6 +9195,8 @@ snapshots:
       is-node-process: 1.2.0
       throttleit: 2.1.0
       undici: 5.28.5
+
+  '@vercel/functions@2.0.0': {}
 
   '@xenova/transformers@2.17.2':
     dependencies:
@@ -9480,6 +9615,8 @@ snapshots:
     dependencies:
       browserslist: 4.24.2
 
+  core-js@3.41.0: {}
+
   cors@2.8.5:
     dependencies:
       object-assign: 4.1.1
@@ -9503,6 +9640,8 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  crypto-js@4.2.0: {}
 
   css-select@5.1.0:
     dependencies:
@@ -9648,6 +9787,10 @@ snapshots:
       tslib: 2.8.1
 
   dotenv@16.4.7: {}
+
+  dub@0.61.0(zod@3.24.1):
+    dependencies:
+      zod: 3.24.1
 
   eastasianwidth@0.2.0: {}
 
@@ -10099,6 +10242,8 @@ snapshots:
     dependencies:
       reusify: 1.0.4
 
+  fflate@0.4.8: {}
+
   file-entry-cache@6.0.1:
     dependencies:
       flat-cache: 3.2.0
@@ -10168,6 +10313,15 @@ snapshots:
     dependencies:
       motion-dom: 12.4.5
       motion-utils: 12.0.0
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 19.0.0-rc-66855b96-20241106
+      react-dom: 19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106)
+
+  framer-motion@12.5.0(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106):
+    dependencies:
+      motion-dom: 12.5.0
+      motion-utils: 12.5.0
       tslib: 2.8.1
     optionalDependencies:
       react: 19.0.0-rc-66855b96-20241106
@@ -11170,7 +11324,21 @@ snapshots:
     dependencies:
       motion-utils: 12.0.0
 
+  motion-dom@12.5.0:
+    dependencies:
+      motion-utils: 12.5.0
+
   motion-utils@12.0.0: {}
+
+  motion-utils@12.5.0: {}
+
+  motion@12.5.0(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106):
+    dependencies:
+      framer-motion: 12.5.0(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
+      tslib: 2.8.1
+    optionalDependencies:
+      react: 19.0.0-rc-66855b96-20241106
+      react-dom: 19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106)
 
   ms@2.1.3: {}
 
@@ -11204,6 +11372,14 @@ snapshots:
       react: 19.0.0-rc-66855b96-20241106
       react-dom: 19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106)
       uuid: 8.3.2
+
+  next-safe-action@7.10.4(next@15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106))(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)(zod@3.24.1):
+    dependencies:
+      next: 15.0.3(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106)
+      react: 19.0.0-rc-66855b96-20241106
+      react-dom: 19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106)
+    optionalDependencies:
+      zod: 3.24.1
 
   next@14.2.16(@babel/core@7.24.5)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0-rc-66855b96-20241106(react@19.0.0-rc-66855b96-20241106))(react@19.0.0-rc-66855b96-20241106):
     dependencies:
@@ -11577,6 +11753,13 @@ snapshots:
       nanoid: 3.3.8
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  posthog-js@1.233.0:
+    dependencies:
+      core-js: 3.41.0
+      fflate: 0.4.8
+      preact: 10.25.1
+      web-vitals: 4.2.4
 
   preact-render-to-string@5.2.6(preact@10.25.1):
     dependencies:
@@ -12697,6 +12880,11 @@ snapshots:
     dependencies:
       react: 19.0.0-rc-66855b96-20241106
 
+  usehooks-ts@3.1.1(react@19.0.0-rc-66855b96-20241106):
+    dependencies:
+      lodash.debounce: 4.0.8
+      react: 19.0.0-rc-66855b96-20241106
+
   util-deprecate@1.0.2: {}
 
   uuid@10.0.0: {}
@@ -12724,6 +12912,8 @@ snapshots:
       defaults: 1.0.4
 
   web-streams-polyfill@4.0.0-beta.3: {}
+
+  web-vitals@4.2.4: {}
 
   webidl-conversions@3.0.1: {}
 

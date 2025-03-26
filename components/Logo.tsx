@@ -1,13 +1,9 @@
 import { LogoIcon } from "@/components/icons";
-import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type LogoProps = {
   className?: string;
 };
 export default function Logo({ className }: LogoProps) {
-  return (
-    <Link href={"/"} className={className}>
-      <LogoIcon className="w-36 h-auto" />
-    </Link>
-  );
+  return <LogoIcon className={cn("w-36 h-auto", className)} />;
 }

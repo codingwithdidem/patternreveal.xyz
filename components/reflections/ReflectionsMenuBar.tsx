@@ -16,12 +16,19 @@ import {
   FileIcon,
   FileJsonIcon,
   FileTypeIcon,
+  Loader2Icon,
+  Share2Icon,
   SparklesIcon
 } from "lucide-react";
 import ReflectionTitleInput from "./ReflectionTitleInput";
 import type { Prisma } from "@prisma/client";
 import { useEditorStore } from "@/lib/store/useEditorStore";
-import { RainbowButton } from "../magicui/rainbow-button";
+import { RainbowButton } from "@/components/magicui/rainbow-button";
+import { Button } from "@/components/ui/button";
+import { useAction } from "next-safe-action/hooks";
+import { createReflectionReportLinkAction } from "@/lib/actions/create-reflection-report-link";
+import { toast } from "sonner";
+import { usePostHog } from "posthog-js/react";
 
 type ReflectionsMenuBarProps = {
   reflection: Prisma.ReflectionGetPayload<{
@@ -35,6 +42,7 @@ type ReflectionsMenuBarProps = {
 export default function ReflectionsMenuBar({
   reflection
 }: ReflectionsMenuBarProps) {
+  const posthog = usePostHog();
   const { editor } = useEditorStore();
 
   const onDownload = (blob: Blob, filename: string) => {
@@ -89,6 +97,24 @@ export default function ReflectionsMenuBar({
     onAnalyze(text);
   };
 
+  const shareReflectionReport = useAction(createReflectionReportLinkAction, {
+    onSuccess: ({ data }) => {
+      navigator.clipboard.writeText(data?.reportLink ?? "");
+      // Capture reflection report shared event
+      posthog.capture("reflection_report_shared", {
+        report_id: reflection.id,
+        report_title: reflection.title,
+        report_link: data?.reportLink
+      });
+
+      toast.success("Reflection report link copied to clipboard");
+    },
+    onError: (error) => {
+      console.error(error);
+      toast.error("Failed to share reflection report");
+    }
+  });
+
   return (
     <div className="flex items-center gap-1 w-full px-2">
       <div className="flex items-center gap-1 w-full">
@@ -124,7 +150,28 @@ export default function ReflectionsMenuBar({
           </Menubar>
         </div>
       </div>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
+        <Button
+          variant={"outline"}
+          className="rounded-full px-4 h-10 text-base"
+          onClick={() => {
+            shareReflectionReport.execute({
+              baseUrl: window.location.origin,
+              reflectionId: reflection.id,
+              expiresAt: new Date(
+                Date.now() + 7 * 24 * 60 * 60 * 1000 // 1 week
+              ).toISOString()
+            });
+          }}
+          disabled={shareReflectionReport.isExecuting}
+        >
+          {shareReflectionReport.isExecuting ? (
+            <Loader2Icon size={16} className="mr-1 animate-spin" />
+          ) : (
+            <Share2Icon size={16} className="mr-1" />
+          )}
+          Share
+        </Button>
         <RainbowButton
           className="h-10 px-4 rounded-full"
           onClick={onAnalyzeReflection}
