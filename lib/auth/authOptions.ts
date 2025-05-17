@@ -60,8 +60,6 @@ export const authOptions: NextAuthOptions = {
           }
         });
 
-        console.log("user", user);
-
         if (!user || !user.password) {
           throw new Error("invalid-credentials");
         }

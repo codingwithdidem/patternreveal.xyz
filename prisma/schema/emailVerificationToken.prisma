@@ -1,0 +1,9 @@
+
+
+model EmailVerificationToken {
+  identifier String
+  token      String @unique
+  expires    DateTime
+
+  @@index([identifier, token]) 
+}

@@ -3,10 +3,13 @@
 import AnimatedEmptyState from "@/components/AnimatedEmptyState";
 import ReflectionsTable from "@/components/reflections/ReflectionsTable";
 import { Button } from "@/components/ui/button";
+import { FilterSelect } from "@/components/ui/filter/filter-select";
 import useReflections from "@/lib/swr/use-reflections";
-import { FlagIcon } from "lucide-react";
+import { ActivityIcon, FlagIcon, TriangleAlert } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import type { ComponentProps } from "react";
+import useReflectionQueryParams from "@/hooks/nuqs/useReflectionQueryParams";
 
 const redFlags = [
   {
@@ -26,6 +29,19 @@ const redFlags = [
 export default function ReflectionsClientPage() {
   const router = useRouter();
   const { reflections, error } = useReflections();
+
+  const { filters: activeFilters, setFilters } = useReflectionQueryParams();
+  console.log("activeFilters", activeFilters);
+
+  // Transform activeFilters into the format expected by FilterSelect
+  const transformedActiveFilters = Object.entries(activeFilters)
+    .filter(([_, values]) => Array.isArray(values) && values.length > 0)
+    .flatMap(([key, values]) =>
+      values.map((value) => ({
+        key,
+        value
+      }))
+    );
 
   const createReflection = async () => {
     try {
@@ -78,10 +94,93 @@ export default function ReflectionsClientPage() {
     return <div>Loading...</div>;
   }
 
+  const filters: ComponentProps<typeof FilterSelect>["filters"] = [
+    {
+      key: "status",
+      label: "Status",
+      icon: <ActivityIcon className="size-4" />,
+      separatorAfter: true,
+      multiple: true,
+      options: [
+        {
+          label: "Analyzed",
+          value: "analyzed",
+          icon: <FlagIcon className="size-4" />
+        },
+        {
+          label: "Not Analyzed",
+          value: "not-analyzed",
+          icon: <FlagIcon className="size-4" />
+        }
+      ]
+    },
+    {
+      key: "content",
+      label: "Content",
+      icon: <TriangleAlert className="size-4" />,
+      separatorAfter: false,
+      multiple: true,
+      options: [
+        {
+          label: "Abusive",
+          value: "abusive",
+          icon: <FlagIcon className="size-4" />
+        },
+        {
+          label: "Not Abusive",
+          value: "not-abusive",
+          icon: <FlagIcon className="size-4" />
+        }
+      ]
+    }
+  ];
+
   return (
     <div className="p-4 h-full w-full">
       {reflections && reflections?.length > 0 ? (
-        <ReflectionsTable reflections={reflections} />
+        <div className="flex flex-col gap-2 items-start py-10 max-w-6xl mx-auto">
+          <div className="flex items-center justify-between w-full">
+            <div className="">
+              <FilterSelect
+                filters={filters}
+                activeFilters={transformedActiveFilters}
+                onSelect={async (key, value) => {
+                  setFilters((prev) => {
+                    const currentValues = Array.isArray(
+                      prev[key as keyof typeof prev]
+                    )
+                      ? prev[key as keyof typeof prev]
+                      : [];
+
+                    if (!currentValues.includes(String(value))) {
+                      return {
+                        ...prev,
+                        [key]: [...currentValues, String(value)]
+                      };
+                    }
+                    return prev;
+                  });
+                }}
+                onRemove={(key, value) => {
+                  setFilters((prev) => {
+                    const currentValues = Array.isArray(
+                      prev[key as keyof typeof prev]
+                    )
+                      ? prev[key as keyof typeof prev]
+                      : [];
+
+                    return {
+                      ...prev,
+                      [key]: currentValues.filter((v) => v !== String(value))
+                    };
+                  });
+                }}
+              />
+            </div>
+            <Button onClick={createReflection}>Create Reflection</Button>
+          </div>
+          <ReflectionsTable reflections={reflections} />
+        </div>
       ) : (
         <AnimatedEmptyState
           title="No reflections found"

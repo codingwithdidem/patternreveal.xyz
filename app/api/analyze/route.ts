@@ -5,8 +5,10 @@ import { NextResponse } from "next/server";
 import { analyzeReflectionSchema } from "@/lib/zod/schemas/reflection";
 import { generateObject } from "ai";
 import { openai } from "@ai-sdk/openai";
-import { analysisSchema } from "@/lib/zod/schemas/analysis";
+import { type Analysis, analysisSchema } from "@/lib/zod/schemas/analysis";
 import prisma from "@/lib/prisma";
+import { waitUntil } from "@vercel/functions";
+import { record_reflection_report } from "@/lib/tinybird/record_reflection_report";
 
 export const POST = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
@@ -22,11 +24,6 @@ export const POST = withPermissions(
     }
 
     const { reflectionId, story } = data;
-
-    console.log({
-      reflectionId,
-      story
-    });
 
     try {
       const { object, usage } = await generateObject({
@@ -74,11 +71,32 @@ export const POST = withPermissions(
         usage
       });
 
+      if (!session?.user?.id) {
+        throw new ManipulatedIOApiError({
+          code: "unauthorized",
+          message: "User ID is required"
+        });
+      }
+
+      if (!reflectionId) {
+        throw new ManipulatedIOApiError({
+          code: "bad_request",
+          message: "Reflection ID is required"
+        });
+      }
+
+      waitUntil(
+        record_reflection_report({
+          id: reflectionId,
+          userId: session.user.id,
+          report: object as Analysis
+        })
+      );
+
       return NextResponse.json(object, {
         headers
       });
     } catch (error) {
-      console.log("smth", error);
       throw new ManipulatedIOApiError({
         code: "internal_server_error",
         message: "Failed to create mood."

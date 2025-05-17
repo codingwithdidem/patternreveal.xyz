@@ -10,7 +10,6 @@ import { NextResponse } from "next/server";
  */
 export const GET = withPermissions(
   async ({ headers, session, params }) => {
-    console.log("holala");
     const { reflectionId } = params;
 
     const reflection = await prisma.reflection.findUnique({

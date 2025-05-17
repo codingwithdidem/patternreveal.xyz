@@ -12,22 +12,19 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"
+    "/((?!api|_next/static|_next/image|public|favicon.ico|sitemap.xml|robots.txt).*)"
   ]
 };
 
 export default async function middleware(request: NextRequest) {
   const { domain, path, fullPath, searchParamsString } = parse(request);
 
-  console.log({ domain, path, fullPath, searchParamsString });
-
   const user = await getUserViaToken(request);
 
   if (
     !user &&
-    !path.startsWith("/") &&
     !path.startsWith("/login") &&
-    !path.startsWith("/signup") &&
+    !path.startsWith("/register") &&
     !path.startsWith("/forgot-password") &&
     !path.startsWith("/reset-password") &&
     !path.startsWith("/api")
@@ -40,11 +37,17 @@ export default async function middleware(request: NextRequest) {
     );
   } else if (user) {
     if (
-      ["/login", "/signup", "/forgot-password", "/reset-password"].includes(
-        path
-      )
+      [
+        "/",
+        "/login",
+        "/signup",
+        "/forgot-password",
+        "/reset-password"
+      ].includes(path)
     )
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      return NextResponse.redirect(
+        new URL("/dashboard/reflections", request.url)
+      );
   }
 
   return NextResponse.next();

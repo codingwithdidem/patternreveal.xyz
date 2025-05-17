@@ -7,6 +7,7 @@ import { PostHogProvider as PHProvider } from "posthog-js/react";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
 import SuspendedPostHogPageView from "./PostHogPageView";
+import { KeyboardShortcutProvider } from "@/hooks/use-keyboard-shortcut";
 
 export default function Providers({
   session,
@@ -33,7 +34,7 @@ export default function Providers({
       <PHProvider client={posthog}>
         <TooltipProvider>
           <SuspendedPostHogPageView />
-          {children}
+          <KeyboardShortcutProvider>{children}</KeyboardShortcutProvider>
         </TooltipProvider>
       </PHProvider>
     </SessionProvider>

@@ -35,7 +35,7 @@ export default function ReflectionsTable({
   };
 
   return (
-    <Table className="mx-auto max-w-5xl mt-20">
+    <Table>
       <TableCaption>A list of your recent reflections.</TableCaption>
       <TableHeader>
         <TableRow className="hover:bg-transparent border-none">

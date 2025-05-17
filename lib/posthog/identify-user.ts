@@ -7,6 +7,5 @@ type PosthogUser = {
 };
 
 export const identifyUser = ({ userId, name, email }: PosthogUser) => {
-  console.log("Identifying user", userId, name, email);
   posthog.identify(userId, { email, name });
 };

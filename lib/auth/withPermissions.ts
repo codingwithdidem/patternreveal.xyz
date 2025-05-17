@@ -34,8 +34,6 @@ export const withPermissions = (
       const session = await getSession();
       const awaitedParams = await params;
 
-      console.log("session", session);
-
       if (!session?.user?.id) {
         throw new ManipulatedIOApiError({
           code: "unauthorized",
@@ -52,7 +50,7 @@ export const withPermissions = (
         permissions
       });
     } catch (error) {
-      console.log("hello", error);
+      console.error(error);
       throw new ManipulatedIOApiError({
         code: "internal_server_error",
         message: "Failed to process the request."

@@ -12,8 +12,6 @@ async function main() {
     }
   });
 
-  console.log({ didem });
-
   const reflection = await prisma.reflection.create({
     data: {
       title: "Untitled Reflection",

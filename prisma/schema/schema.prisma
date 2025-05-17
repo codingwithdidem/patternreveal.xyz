@@ -45,9 +45,23 @@ model Reflection {
   analysisReport AnalysisReport?
   userId         String
   createdAt      DateTime @default(now())
-  linkId         String?
-  shortLink      String?
   user           User     @relation(fields: [userId], references: [id])
+  report         Report?
+}
+
+model Report {
+  id           String     @id @default(cuid())
+  reflectionId String     @unique
+  reflection   Reflection @relation(fields: [reflectionId], references: [id])
+  linkId       String?
+  shortLink    String?
+  expiresAt    DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  /// Whether the report should be indexed by search engines
+  index        Boolean    @default(false)
+  /// Optional password to protect the report. If set, users must enter this password to view the report
+  password     String?
 }
 
 enum Role {

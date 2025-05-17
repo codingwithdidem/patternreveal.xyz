@@ -53,7 +53,7 @@ export default function LoginForm() {
       const response = await signIn("credentials", {
         redirect: false,
         email,
-        callbackUrl: "/dashboard",
+        callbackUrl: "/dashboard/reflections",
         password
       });
 

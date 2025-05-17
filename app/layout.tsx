@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 import "./globals.css";
 
 const satoshi = localFont({
@@ -26,7 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${satoshi.variable} ${erode.variable} antialiased`}>
         <Toaster />
-        {children}
+        <NuqsAdapter>{children}</NuqsAdapter>
       </body>
     </html>
   );

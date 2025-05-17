@@ -10,7 +10,7 @@ export default function LoginPage() {
           <h3 className="text-sm text-gray-500">
             {`Don't have an account yet?`}
             <Link
-              href="/(product)/(auth)/register"
+              href="/register"
               className="ml-1 underline-offset-2 underline font-semibold hover:text-blue-500 transition-colors duration-400"
             >
               Sign up

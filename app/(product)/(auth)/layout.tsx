@@ -1,5 +1,7 @@
 import BackgroundPattern from "@/components/BackgroundPattern";
 import Logo from "@/components/Logo";
+import Image from "next/image";
+import exampleReflectionReport from "@/public/images/example-report.png";
 
 export default async function Layout({
   children
@@ -11,7 +13,14 @@ export default async function Layout({
         <Logo className="absolute left-4 top-3 z-10" />
         <div className="grid grid-cols-5 w-full">
           <div className="col-span-3">{children}</div>
-          <div className="col-span-2 bg-red-400" />
+          <div className="col-span-2 flex items-center justify-center bg-black p-2">
+            <Image
+              src={exampleReflectionReport}
+              alt="Example Reflection Report"
+              priority
+              className="object-cover rounded-sm"
+            />
+          </div>
         </div>
       </div>
     </div>
