@@ -1,18 +1,24 @@
 import { getServerSession } from "next-auth";
 import type { NextAuthOptions } from "next-auth";
-// import GoogleProvider from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
 import EmailProvider from "next-auth/providers/email";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-
-// import { PrismaAdapter } from "@next-auth/prisma-adapter";
-
 import { sendEmail } from "@/emails/send";
 import { LoginLink } from "@/emails/login-link";
 import prisma from "@/lib/prisma";
 import { validatePassword } from "./password";
 import { User } from "@prisma/client";
 import { UserProps } from "../types";
+import { ratelimit } from "../upstash/ratelimit";
+import {
+  exceededLoginAttemptsThreshold,
+  incrementLoginAttempts,
+  isAccountLocked
+} from "./lock-account";
+import StripeWelcomeEmail from "@/emails/stripe-welcome";
+import { waitUntil } from "@vercel/functions";
+import { createContact } from "../resend/create-contact";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -29,7 +35,7 @@ export const authOptions: NextAuthOptions = {
     //         react: LoginLink({ url, email: identifier })
     //       });
     //     }
-    //   }
+    //   }onboarding@resend.dev
     // }),
     CredentialsProvider({
       id: "credentials",
@@ -40,14 +46,19 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        console.log("authorize", credentials);
         if (!credentials?.email || !credentials?.password) {
           throw new Error("no-credentials");
         }
 
         const { email, password } = credentials;
 
-        // TODO: Add rate limit for brute force attacks
+        const { success } = await ratelimit(3, "1 m").limit(
+          `login-attempts:${email}`
+        );
+
+        if (!success) {
+          throw new Error("too-many-login-attempts");
+        }
 
         const user = await prisma.user.findUnique({
           where: { email },
@@ -56,7 +67,10 @@ export const authOptions: NextAuthOptions = {
             email: true,
             password: true,
             name: true,
-            emailVerified: true
+            image: true,
+            invalidLoginAttempts: true,
+            emailVerified: true,
+            lockedAt: true
           }
         });
 
@@ -64,43 +78,111 @@ export const authOptions: NextAuthOptions = {
           throw new Error("invalid-credentials");
         }
 
+        if (exceededLoginAttemptsThreshold(user)) {
+          throw new Error("exceeded-login-attempts");
+        }
+
         const passwordMatch = await validatePassword(password, user.password);
 
         if (!passwordMatch) {
+          const exceededLoginAttempts = exceededLoginAttemptsThreshold(
+            await incrementLoginAttempts(user)
+          );
+
+          if (exceededLoginAttempts) {
+            throw new Error("exceeded-login-attempts");
+          }
+
           throw new Error("invalid-credentials");
         }
 
-        // if (!user.emailVerified) {
-        //   throw new Error("email-not-verified");
-        // }
+        if (!user.emailVerified) {
+          throw new Error("email-not-verified");
+        }
+
+        // Reset the login attempts
+        await prisma.user.update({
+          where: { id: user.id },
+          data: { invalidLoginAttempts: 0 }
+        });
 
         return {
           id: user.id,
           name: user.name,
           email: user.email,
-          image: ""
+          image: user.image
         };
       }
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      allowDangerousEmailAccountLinking: true,
+      profile(profile, tokens) {
+        return {
+          id: profile.sub,
+          name: profile.name,
+          email: profile.email,
+          image: profile.picture
+        };
+      },
+      style: { logo: "/google.svg", bg: "#fff", text: "#000" }
     })
-
-    // TODO: Add more providers here
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID as string,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    //   profile(profile) {
-    //     return {
-    //       // Return all the profile information you need.
-    //       // The only truly required field is `id`
-    //       // to be able identify the account when added to a database
-    //     };
-    //   }
-    // })
   ],
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt"
   },
+  pages: {
+    signIn: "/login",
+    error: "/login"
+  },
   callbacks: {
+    signIn: async ({ user, account, profile }) => {
+      if (!user.email) {
+        return false;
+      }
+
+      const dbUser = await prisma.user.findUnique({
+        where: { email: user.email },
+        select: { lockedAt: true }
+      });
+
+      if (dbUser?.lockedAt) {
+        return false;
+      }
+
+      if (account?.provider === "google") {
+        const userExists = await prisma.user.findUnique({
+          where: { email: user.email },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true
+          }
+        });
+
+        if (!userExists || !profile) return true;
+
+        // update the user's name and image
+        if (userExists && profile) {
+          const userAlreadyHasImage = userExists.image;
+
+          const updatedUser = await prisma.user.update({
+            where: { email: user.email },
+            data: {
+              ...(userExists.name ? {} : { name: profile.name }),
+              ...(userAlreadyHasImage ? {} : { image: profile["picture"] })
+            }
+          });
+
+          return true;
+        }
+      }
+
+      return true;
+    },
     jwt: async ({ token, user, trigger }) => {
       if (user) {
         token.user = user;
@@ -108,8 +190,15 @@ export const authOptions: NextAuthOptions = {
 
       // refresh the user's data if they update their name / email
       if (trigger === "update") {
+        console.log("trigger", trigger);
         const refreshedUser = await prisma.user.findUnique({
-          where: { id: token.sub }
+          where: { id: token.sub },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true
+          }
         });
         if (refreshedUser) {
           token.user = refreshedUser;
@@ -128,6 +217,34 @@ export const authOptions: NextAuthOptions = {
       };
 
       return session;
+    }
+  },
+  events: {
+    async signIn(message) {
+      if (message.isNewUser) {
+        const user = await prisma.user.findUnique({
+          where: { id: message.user.id }
+        });
+
+        if (!user) return;
+        //  TODO: Check if user is really new
+
+        waitUntil(
+          Promise.allSettled([
+            createContact({
+              email: user.email,
+              name: user.name ?? ""
+            }),
+            sendEmail({
+              email: user.email,
+              subject: "Welcome to Manipulated.io",
+              react: StripeWelcomeEmail(),
+              // Send the email 5 minutes from now
+              scheduledAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
+            })
+          ])
+        );
+      }
     }
   }
 };

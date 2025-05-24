@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["postgresqlExtensions", "prismaSchemaFolder"]
+  previewFeatures = ["postgresqlExtensions", "fullTextSearch", "fullTextIndex", "driverAdapters", "prismaSchemaFolder", "omitApi"]
 }
 
 datasource db {
@@ -10,14 +10,49 @@ datasource db {
 }
 
 model User {
-  id            String       @id @default(cuid())
-  name          String?
-  email         String       @unique
-  emailVerified DateTime?
-  password      String?
-  createdAt     DateTime     @default(now())
-  moods         Mood[]
-  reflections   Reflection[]
+  id                   String          @id @default(cuid())
+  name                 String?
+  email                String          @unique
+  emailVerified        DateTime?
+  password             String?
+  createdAt            DateTime        @default(now())
+  image                String?
+  invalidLoginAttempts Int             @default(0)
+  lockedAt             DateTime?
+  accounts             Account[]
+  moods                Mood[]
+  reflections          Reflection[]
+  sessions             Session[]
+  defaultWorkspace     String? // The default workspace slug for the user
+  workspaces           WorkspaceUser[]
+}
+
+model Account {
+  userId            String
+  providerAccountId String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  access_token      String?
+  expires_at        Int?
+  id_token          String?
+  provider          String
+  refresh_token     String?
+  scope             String?
+  session_state     String?
+  token_type        String?
+  type              String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Mood {
@@ -30,29 +65,16 @@ model Mood {
 }
 
 model AnalysisReport {
-  id              String   @id @default(cuid())
-  report          Json    
-  reflectionId    String   @unique
-  createdAt       DateTime @default(now())
-  reflection      Reflection @relation(fields: [reflectionId], references: [id])
-}
-
-model Reflection {
-  id             String   @id @default(cuid())
-  title          String
-  initialContent String?
-  content        String
-  analysisReport AnalysisReport?
-  userId         String
-  createdAt      DateTime @default(now())
-  user           User     @relation(fields: [userId], references: [id])
-  report         Report?
+  id           String     @id @default(cuid())
+  report       Json
+  reflectionId String     @unique
+  createdAt    DateTime   @default(now())
+  reflection   Reflection @relation(fields: [reflectionId], references: [id])
 }
 
 model Report {
   id           String     @id @default(cuid())
   reflectionId String     @unique
-  reflection   Reflection @relation(fields: [reflectionId], references: [id])
   linkId       String?
   shortLink    String?
   expiresAt    DateTime?
@@ -62,9 +84,5 @@ model Report {
   index        Boolean    @default(false)
   /// Optional password to protect the report. If set, users must enter this password to view the report
   password     String?
-}
-
-enum Role {
-  USER
-  ADMIN
+  reflection   Reflection @relation(fields: [reflectionId], references: [id])
 }

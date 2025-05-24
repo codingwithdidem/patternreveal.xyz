@@ -77,7 +77,7 @@ export default function ReflectionsClientPage() {
         toast.success("Reflection created successfully");
         // Redirect to the newly created reflection
         const { id } = await response.json();
-        router.push(`/dashboard/reflections/${id}`);
+        router.push(`/reports/${id}`);
       } else {
         const { error } = await response.json();
         console.error(error);

@@ -16,7 +16,7 @@ import type { z } from "zod";
 import { loginSchema } from "@/lib/zod/schemas/auth";
 import { signIn } from "next-auth/react";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export const errorCodes = {
   "no-credentials": "Please provide an email and password.",
@@ -34,6 +34,8 @@ export const errorCodes = {
 };
 
 export default function LoginForm() {
+  const searchParams = useSearchParams();
+  const finalNext = searchParams.get("next");
   const router = useRouter();
 
   const form = useForm<z.infer<typeof loginSchema>>({
@@ -60,6 +62,7 @@ export default function LoginForm() {
       if (!response) return;
 
       if (!response.ok && response.error) {
+        console.log("response.error", response);
         if (response.error in errorCodes) {
           toast.error(errorCodes[response.error]);
         } else {
@@ -67,8 +70,6 @@ export default function LoginForm() {
         }
         return;
       }
-
-      console.log(response);
 
       router.push(response.url || "/dashboard");
     } else {
@@ -78,7 +79,15 @@ export default function LoginForm() {
 
   return (
     <div className="flex flex-col mt-4 px-10">
-      <Button variant={"outline"}>
+      <Button
+        variant={"outline"}
+        onClick={() =>
+          signIn("google", {
+            redirect: false,
+            callbackUrl: finalNext || "/dashboard/reflections"
+          })
+        }
+      >
         <GoogleIcon />
         Continue with Google
       </Button>

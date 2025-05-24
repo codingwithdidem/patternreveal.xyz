@@ -10,9 +10,9 @@ model Resource {
 }
 
 model Embedding {
-  id         String      @id @default(cuid())
+  id         String                 @id @default(cuid())
   resourceId String
   content    String
-  embedding  Unsupported("vector(1536)")?
-  resource   Resource    @relation(fields: [resourceId], references: [id], onDelete: Cascade)
+  embedding  Unsupported("vector")?
+  resource   Resource               @relation(fields: [resourceId], references: [id], onDelete: Cascade)
 }

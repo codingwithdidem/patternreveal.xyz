@@ -1,0 +1,13 @@
+model Reflection {
+  id             String          @id @default(cuid())
+  title          String
+  initialContent String?
+  content        String
+  userId         String
+  createdAt      DateTime        @default(now())
+  analysisReport AnalysisReport?
+  user           User            @relation(fields: [userId], references: [id])
+  report         Report?
+  Workspace      Workspace?      @relation(fields: [workspaceId], references: [id])
+  workspaceId    String?
+}

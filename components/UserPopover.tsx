@@ -6,6 +6,7 @@ import {
   PopoverTrigger
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
+import { truncate } from "@/utils/functions/truncate";
 import UserAvatar from "@components/UserAvatar";
 import { LogOut, Settings } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -18,7 +19,6 @@ export default function UserPopover() {
 
   const [openPopover, setOpenPopover] = useState(false);
 
-  console.log(session?.user);
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover}>
       <PopoverTrigger asChild>
@@ -37,15 +37,17 @@ export default function UserPopover() {
           )}
         </button>
       </PopoverTrigger>
-      <PopoverContent align="start" sideOffset={8} className="sm:w-56 p-0">
+      <PopoverContent align="start" sideOffset={8} className="sm:w-64 p-0">
         <div className="flex flex-col w-full gap-1 rounded-md bg-white p-2">
           <div className="p-2">
             {session?.user ? (
               <div className="">
                 <h3 className="text-sm text-neutral-900">
-                  {session.user.name}
+                  {truncate(session.user.name, 30)}
                 </h3>
-                <p className="text-sm text-neutral-600">{session.user.email}</p>
+                <p className="text-sm text-neutral-600">
+                  {truncate(session.user.email, 30)}
+                </p>
               </div>
             ) : (
               <div className="flex flex-col gap-1">

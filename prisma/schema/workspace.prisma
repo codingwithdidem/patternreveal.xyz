@@ -1,0 +1,81 @@
+enum Role {
+  OWNER
+  MEMBER
+}
+
+model WorkspaceUser {
+  id          String @id @default(uuid())
+  workspaceId String
+  userId      String
+  role        Role   @default(MEMBER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, workspaceId])
+  @@index([workspaceId])
+}
+
+model Workspace {
+  id         String  @id @default(uuid())
+  name       String
+  slug       String  @unique
+  logo       String?
+  inviteCode String  @unique
+
+  plan              String    @default("free")
+  stripeId          String?   @unique // Stripe subscription id
+  billingCycleStart Int? // Day of the month the billing cycle starts
+  paymentFailedAt   DateTime?
+
+  totalReflections Int @default(0)
+
+  usage            Int @default(0) // Total usage of the workspace
+  usageLimit       Int @default(1000) // Total usage limit of the workspace
+  reflectionsUsage Int @default(0) // Total reflections usage of the workspace
+  reflectionsLimit Int @default(20) // Total reflections usage limit of the workspace
+  aiUsage          Int @default(0) // Total AI usage of the workspace
+  aiLimit          Int @default(10) // Total AI usage limit of the workspace
+
+  store Json? // General key-value store for things like persisting toggles, dismissing popups, etc.
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  users       WorkspaceUser[]
+  invites     WorkspaceInvite[]
+  reflections Reflection[]
+  sentEmails  SentEmail[]
+
+  @@index([slug])
+  @@index([stripeId])
+}
+
+model WorkspaceInvite {
+  email       String
+  expires     DateTime
+  role        Role     @default(MEMBER)
+  workspaceId String
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([email, workspaceId])
+  @@index([workspaceId])
+}
+
+model SentEmail {
+  id          String @id @default(uuid())
+  type        String
+  workspaceId String
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@index([workspaceId])
+}

@@ -52,13 +52,10 @@ export const POST = withPermissions(
         }
       });
 
-      console.log(response);
-
       return NextResponse.json(response, {
         headers
       });
     } catch {
-      console.log("smth");
       throw new ManipulatedIOApiError({
         code: "internal_server_error",
         message: "Failed to create mood."

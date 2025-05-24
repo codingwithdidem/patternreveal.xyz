@@ -1,5 +1,11 @@
 import Link from "next/link";
 import LoginForm from "@/components/LoginForm";
+import { constructMetadata } from "@/utils/functions/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Sign in to Manipulated.io",
+  canonicalUrl: "https://manipulated.io/login"
+});
 
 export default function LoginPage() {
   return (

@@ -10,9 +10,18 @@ import {
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
-  SidebarMenuItem
+  SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem
 } from "@components/ui/sidebar";
-import { BellRing, ChevronLeft, LucideIcon, User2Icon } from "lucide-react";
+import {
+  BellRing,
+  ChevronDown,
+  ChevronLeft,
+  LucideIcon,
+  User2Icon
+} from "lucide-react";
 import Link from "next/link";
 import UserPopover from "@components/UserPopover";
 import Logo from "@components/Logo";
@@ -31,6 +40,15 @@ import { BookTextIcon } from "./ui/book-text";
 import { SettingsGearIcon } from "./ui/settings-gear";
 import type { Session } from "next-auth";
 import { BellIcon } from "./ui/bell";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger
+} from "./ui/collapsible";
+import useReflections from "@/lib/swr/use-reflections";
+import usePopularReflections from "@/lib/swr/use-popular-reflections";
+import { truncate } from "@/utils/functions/truncate";
+import { capitalizeFirstChar } from "@/utils/functions/capitalize-first-char";
 
 export type NavItemCommon = {
   name: string;
@@ -46,6 +64,7 @@ export type NavItemType = NavItemCommon & {
     | ComponentType<SVGProps<SVGSVGElement>>
     | ForwardRefExoticComponent<any>;
   items?: NavSubItemType[];
+  subItems?: NavSubItemType[];
 };
 
 type SidebarNavAreas<T extends Record<any, any>> = Record<
@@ -67,8 +86,9 @@ const NAV_AREAS: SidebarNavAreas<{
   queryString: string;
   showNews?: boolean;
   session?: Session | null;
+  topReflections?: Array<{ id: string; title: string }>;
 }> = {
-  dashboard: ({ pathname, queryString, showNews }) => ({
+  dashboard: ({ pathname, queryString, showNews, topReflections }) => ({
     showNews,
     direction: "left",
     content: [
@@ -76,14 +96,18 @@ const NAV_AREAS: SidebarNavAreas<{
         name: "Dashboard",
         items: [
           {
+            name: "Reflections",
+            icon: BookTextIcon,
+            href: `/dashboard/reflections${pathname === "/dashboard/reflections" ? "" : queryString}`,
+            subItems: topReflections?.map((reflection) => ({
+              name: reflection.title,
+              href: `/dashboard/reflections/${reflection.id}`
+            }))
+          },
+          {
             name: "Moods",
             icon: ActivityIcon,
             href: `/dashboard/moods${pathname === "/dashboard/moods" ? "" : queryString}`
-          },
-          {
-            name: "Reflections",
-            icon: BookTextIcon,
-            href: `/dashboard/reflections${pathname === "/dashboard/reflections" ? "" : queryString}`
           },
           {
             name: "Settings",
@@ -121,6 +145,9 @@ export default function AppSidebar() {
   const pathname = usePathname();
   const { data: session } = useSession();
 
+  const { reflections: topReflections, isLoading: isTopReflectionsLoading } =
+    usePopularReflections();
+
   const currentArea = useMemo(() => {
     return pathname.startsWith("/dashboard/settings")
       ? "settings"
@@ -136,7 +163,8 @@ export default function AppSidebar() {
               pathname,
               session,
               showNews: false,
-              queryString: ""
+              queryString: "",
+              topReflections
             });
             const { title, backHref } = areaProps;
 
@@ -173,7 +201,8 @@ export default function AppSidebar() {
             pathname,
             session,
             queryString: "",
-            showNews: false
+            showNews: false,
+            topReflections
           });
           return (
             <div
@@ -195,16 +224,39 @@ export default function AppSidebar() {
                   <SidebarGroupContent>
                     {name && <SidebarGroupLabel>{name}</SidebarGroupLabel>}
                     <SidebarMenu>
-                      {items.map(({ name, href, icon: Icon }) => (
-                        <SidebarMenuItem key={name}>
-                          <SidebarMenuButton asChild>
-                            <Link href={href}>
-                              <Icon className="w-8 h-8" />
-                              <span>{name}</span>
-                            </Link>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
+                      {items.map(
+                        ({ name, href, icon: Icon, exact, subItems }) => {
+                          const isActive = useMemo(() => {
+                            const hrefWithoutQuery = href.split("?")[0];
+                            return exact
+                              ? pathname === hrefWithoutQuery
+                              : pathname.startsWith(hrefWithoutQuery);
+                          }, [pathname, href, exact]);
+                          return (
+                            <SidebarMenuItem key={name}>
+                              <SidebarMenuButton asChild isActive={isActive}>
+                                <Link href={href}>
+                                  <Icon className="w-8 h-8" />
+                                  <span>{name}</span>
+                                </Link>
+                              </SidebarMenuButton>
+                              {subItems && (
+                                <SidebarMenuSub>
+                                  {subItems.map(({ name, href }) => (
+                                    <SidebarMenuSubItem key={href}>
+                                      <SidebarMenuSubButton>
+                                        {capitalizeFirstChar(
+                                          truncate(name, 24) ?? ""
+                                        )}
+                                      </SidebarMenuSubButton>
+                                    </SidebarMenuSubItem>
+                                  ))}
+                                </SidebarMenuSub>
+                              )}
+                            </SidebarMenuItem>
+                          );
+                        }
+                      )}
                     </SidebarMenu>
                   </SidebarGroupContent>
                 </SidebarGroup>

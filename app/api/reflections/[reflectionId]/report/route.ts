@@ -20,10 +20,6 @@ export const GET = withPermissions(
         }
       });
 
-      console.log("report is", report);
-
-      console.log("Raw report from DB:", report);
-
       if (!report) {
         return NextResponse.json({ shortLink: null }, { headers });
       }
@@ -35,8 +31,6 @@ export const GET = withPermissions(
         updatedAt: report.updatedAt.toISOString(),
         expiresAt: report.expiresAt?.toISOString() || null
       };
-
-      console.log("Report with converted dates:", reportWithDates);
 
       try {
         const parsedReport = reportSchema.parse(reportWithDates);

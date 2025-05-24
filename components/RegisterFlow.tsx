@@ -22,7 +22,7 @@ import { useRegisterFlow } from "@/lib/store/useRegisterFlow";
 import { truncate } from "@/utils/functions/truncate";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "./ui/input-otp";
 import { verifyEmailAction } from "@/lib/actions/verify-email";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
@@ -138,6 +138,8 @@ function VerifyEmail() {
 
 function SignUp() {
   const { setStep, setEmail, setName, setPassword } = useRegisterFlow();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
 
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
@@ -188,7 +190,11 @@ function SignUp() {
       <div className="flex flex-col mt-4 px-10 w-full">
         <Button
           variant={"outline"}
-          onClick={() => console.log("Google button clicked")}
+          onClick={() =>
+            signIn("google", {
+              ...(next && next.length > 0 ? { callbackUrl: next } : {})
+            })
+          }
         >
           <GoogleIcon />
           Continue with Google

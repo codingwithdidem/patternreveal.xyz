@@ -6,6 +6,7 @@ import { actionClient } from "./safe-action";
 import { z } from "zod";
 import { waitUntil } from "@vercel/functions";
 import { hashPassword } from "../auth/password";
+import { ratelimit } from "../upstash/ratelimit";
 
 const verifyEmailSchema = z.object({
   code: z.string().length(6),
@@ -20,6 +21,17 @@ export const verifyEmailAction = actionClient
       flattenValidationErrors(ve).fieldErrors
   })
   .action(async ({ parsedInput: { name, email, password, code } }) => {
+    const rateLimitKey = `signup:attempts:${email}`;
+
+    const { remaining: remainingAttempts } = await ratelimit(
+      5,
+      "1 d"
+    ).getRemaining(rateLimitKey);
+
+    if (remainingAttempts <= 0) {
+      throw new Error("Too many attempts, please try again later.");
+    }
+
     const verificationToken = await prisma.emailVerificationToken.findUnique({
       where: {
         identifier: email,

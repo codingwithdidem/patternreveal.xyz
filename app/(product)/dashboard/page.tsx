@@ -8,9 +8,7 @@ export default function Home() {
   const { data: session } = useSession();
 
   useEffect(() => {
-    console.log(session);
     if (session?.user) {
-      console.log(session.user);
       identifyUser({
         userId: session.user["id"],
         email: session.user.email,

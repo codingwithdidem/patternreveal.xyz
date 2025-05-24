@@ -93,6 +93,10 @@
   }
 }
 
+::selection {
+  @apply bg-primary text-primary-foreground;
+}
+
 /* Placeholder (at the top) */
 .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);

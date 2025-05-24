@@ -13,17 +13,17 @@ import { NextResponse } from "next/server";
  */
 export const GET = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
-    console.log("session", session);
     const response = await prisma.reflection.findMany({
       where: {
         userId: session.user.id
       },
       include: {
         analysisReport: true
+      },
+      orderBy: {
+        createdAt: "desc" // Sort by createdAt in descending order (newest first)
       }
     });
-
-    console.log("response", response);
 
     return NextResponse.json(response, {
       headers
@@ -66,7 +66,6 @@ export const POST = withPermissions(
         headers
       });
     } catch (err) {
-      console.log("smth", err);
       throw new ManipulatedIOApiError({
         code: "internal_server_error",
         message: "Failed to create reflection."
@@ -86,8 +85,6 @@ export const POST = withPermissions(
  */
 export const DELETE = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
-    console.log("searchparams", searchParams);
-
     const { success, data } =
       await deleteReflectionSchema.safeParse(searchParams);
 
@@ -100,8 +97,6 @@ export const DELETE = withPermissions(
 
     const { reflectionId } = data;
 
-    console.log(reflectionId);
-
     try {
       const response = await prisma.reflection.delete({
         where: {
@@ -109,13 +104,10 @@ export const DELETE = withPermissions(
         }
       });
 
-      console.log(response);
-
       return NextResponse.json(response, {
         headers
       });
     } catch {
-      console.log("smth");
       throw new ManipulatedIOApiError({
         code: "internal_server_error",
         message: "Failed to delete reflection."

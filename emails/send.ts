@@ -13,7 +13,7 @@ export const sendEmail = async ({
 }) => {
   return await resend.emails.send({
     to: email,
-    from: from || "Didem from Manipulated.io  <codingwithdidem@gmail.com>",
+    from: from || "onboarding@resend.dev",
     subject,
     text,
     react
