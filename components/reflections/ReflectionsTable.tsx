@@ -45,7 +45,7 @@ export default function ReflectionsTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {reflections.map((reflection) => (
+        {reflections?.map((reflection) => (
           <TableRow
             key={reflection.id}
             onClick={() => onRowClick(reflection.id)}

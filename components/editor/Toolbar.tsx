@@ -22,8 +22,9 @@ import LinkButton from "./tools/Link";
 import Headings from "./tools/Headings";
 import Fonts from "./tools/Fonts";
 import ToolbarButton from "./ToolbarButton";
+import { cx } from "class-variance-authority";
 
-export default function Toolbar() {
+export default function Toolbar({ className }: { className?: string }) {
   const { editor } = useEditorStore();
 
   const sections = [
@@ -137,7 +138,12 @@ export default function Toolbar() {
   ];
 
   return (
-    <div className="bg-[#f1f4f9] min-h-10 px-2.5 py-1 rounded-3xl flex items-center gap-x-0.5 overflow-x-auto -mb-2">
+    <div
+      className={cx(
+        "bg-[#f1f4f9] min-h-10 px-2.5 py-1 rounded-3xl flex items-center gap-x-0.5 overflow-x-auto -mb-2",
+        className
+      )}
+    >
       {sections[0].map((section) => (
         <ToolbarButton
           key={section.label}

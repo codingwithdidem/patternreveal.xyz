@@ -1,7 +1,10 @@
 import type { PermissionAction } from "@/lib/rbac/permissions";
 import { getSession } from "./authOptions";
 import type { UserProps } from "../types";
-import { ManipulatedIOApiError } from "../api/errors";
+import {
+  handleAndReturnErrorResponse,
+  ManipulatedIOApiError
+} from "../api/errors";
 
 type WithPermissionsHandler = (args: {
   req: Request;
@@ -50,11 +53,7 @@ export const withPermissions = (
         permissions
       });
     } catch (error) {
-      console.error(error);
-      throw new ManipulatedIOApiError({
-        code: "internal_server_error",
-        message: "Failed to process the request."
-      });
+      return handleAndReturnErrorResponse(error);
     }
   };
 };

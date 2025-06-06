@@ -13,18 +13,18 @@ import { FormField } from "../ui/form";
 import { Input } from "../ui/input";
 import slugify from "slugify";
 import { zodResolver } from "@hookform/resolvers/zod";
-import NextButton from "@/app/(product)/(onboarding)/onboarding/next-button";
-import {
-  OnboardingSteps,
-  useOnboardingFlow
-} from "@/lib/onboarding/useOnboardingFlow";
 import { Button } from "../ui/button";
 import { toast } from "sonner";
+import { usePostHog } from "posthog-js/react";
+import { mutate } from "swr";
 
-export default function CreateWorkspaceForm() {
-  const posthog = usePo
+export default function CreateWorkspaceForm({
+  onSuccess
+}: {
+  onSuccess?: (data: z.infer<typeof createWorkspaceSchema>) => void;
+}) {
+  const posthog = usePostHog();
   const { update } = useSession();
-  const { moveToStep } = useOnboardingFlow();
 
   const form = useForm<z.infer<typeof createWorkspaceSchema>>({
     resolver: zodResolver(createWorkspaceSchema),
@@ -46,23 +46,22 @@ export default function CreateWorkspaceForm() {
 
       if (res.ok) {
         const { id: workspaceId } = await res.json();
-
-        // track workspace creation event
+        // Track workspace creation event
         posthog.capture("workspace_created", {
           workspace_id: workspaceId,
           workspace_name: data.name,
           workspace_slug: data.slug
         });
+
         await Promise.all([mutate("/api/workspaces"), update()]);
         onSuccess?.(data);
       } else {
-        const error = await res.json();
+        const { error } = await res.json();
         const message = error.message;
 
-        if (message.includes("slug")) {
-          form.setError("slug", {
-            message
-          });
+        if (message.toLowerCase().includes("slug")) {
+          toast.error(message);
+          return form.setError("slug", { message });
         }
 
         toast.error(message);
@@ -70,8 +69,12 @@ export default function CreateWorkspaceForm() {
           message: "Failed to create workspace"
         });
       }
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      toast.error("Failed to create workspace.");
+      console.error("Failed to create workspace", e);
+      form.setError("root.serverError", {
+        message: "Failed to create workspace"
+      });
     }
   };
 

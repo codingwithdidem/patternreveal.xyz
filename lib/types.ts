@@ -1,3 +1,5 @@
+import type { plans } from "./zod/schemas/plan";
+
 export interface UserProps {
   id: string;
   name: string;
@@ -6,7 +8,20 @@ export interface UserProps {
   createdAt: Date;
   source: string | null;
   defaultWorkspace?: string;
-  isMachine: boolean;
   hasPassword: boolean;
   provider: string | null;
 }
+
+export interface WorkspaceWithUsers {
+  id: string;
+  name: string;
+  slug: string;
+  users: {
+    role: "OWNER" | "MEMBER";
+  }[];
+  plan: PlanProps;
+  stripeId: string;
+  createdAt: Date;
+}
+
+export type PlanProps = (typeof plans)[number];

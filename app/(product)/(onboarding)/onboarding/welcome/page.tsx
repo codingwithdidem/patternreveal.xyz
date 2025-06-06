@@ -1,5 +1,4 @@
 import TrackSignUp from "@/components/TrackSignUp";
-import { OnboardingSteps } from "@/lib/onboarding/useOnboardingFlow";
 import NextButton from "../next-button";
 
 export default function WelcomePage() {
@@ -14,7 +13,7 @@ export default function WelcomePage() {
         daily relationship reflections.
       </p>
       <div className="mt-4">
-        <NextButton step={OnboardingSteps.WORKSPACE} text="Get Started" />
+        <NextButton step="workspace" text="Get Started" />
       </div>
     </div>
   );

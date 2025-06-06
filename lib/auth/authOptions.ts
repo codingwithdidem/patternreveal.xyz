@@ -249,6 +249,16 @@ export const authOptions: NextAuthOptions = {
   }
 };
 
+export interface Session {
+  user: {
+    id: string;
+    name: string;
+    email: string;
+    image?: string;
+    defaultWorkspace?: string;
+  };
+}
+
 export const getSession = () =>
   getServerSession(authOptions) as Promise<{
     user: UserProps;

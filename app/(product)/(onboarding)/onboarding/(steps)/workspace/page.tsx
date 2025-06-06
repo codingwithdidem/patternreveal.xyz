@@ -1,6 +1,4 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import CreateWorkspaceForm from "@/components/workspaces/create-workspace-form";
+import WorkspaceForm from "./form";
 
 export default function WorkspacePage() {
   return (
@@ -13,7 +11,7 @@ export default function WorkspacePage() {
         reflections. You can create a workspace for your team, your family, or
         your friends.
       </p>
-      <CreateWorkspaceForm />
+      <WorkspaceForm />
     </div>
   );
 }

@@ -22,12 +22,14 @@ type TiptapProps = {
   saveStatus: string;
   charsCount: number;
   onContentUpdate: (editor: Editor) => void;
+  className?: string;
 };
 const Tiptap = ({
   content,
   onContentUpdate,
   saveStatus,
-  charsCount
+  charsCount,
+  className
 }: TiptapProps) => {
   const { setEditor } = useEditorStore();
 
@@ -198,7 +200,12 @@ By the time I went to bed, I felt invisible. Like I’m not even a person to him
 
   return (
     <div className="size-full overflow-x-auto w-full font-[family-name:var(--font-satoshi) rounded-md print:p-0 print:bg-white print:overflow-visible">
-      <div className="relative flex justify-center py-4 w-full print:py-0 print:w-full print:min-w-0 mx-auto">
+      <div
+        className={cx(
+          "relative flex justify-center w-full print:py-0 print:w-full print:min-w-0 mx-auto",
+          className
+        )}
+      >
         <div className="flex absolute right-8 top-6 z-10 mb-5 gap-2">
           <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
             {saveStatus}

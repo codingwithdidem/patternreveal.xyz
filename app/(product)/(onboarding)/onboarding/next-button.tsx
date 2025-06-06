@@ -1,14 +1,16 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import type { OnboardingSteps } from "@/lib/onboarding/useOnboardingFlow";
-import { useOnboardingFlow } from "@/lib/onboarding/useOnboardingFlow";
+import {
+  type OnboardingStep,
+  useOnboardingFlow
+} from "@/lib/onboarding/useOnboardingFlow";
 
 export default function NextButton({
   step,
   text
 }: {
-  step: OnboardingSteps;
+  step: OnboardingStep;
   text: string;
 }) {
   const { moveToStep } = useOnboardingFlow();

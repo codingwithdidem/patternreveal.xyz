@@ -26,7 +26,11 @@ export function constructMetadata({
     ...((url || canonicalUrl) && {
       canonical: url || canonicalUrl
     }),
-    title: fullTitle || `${title} | Manipulated.io`,
+    title:
+      fullTitle ||
+      (title
+        ? `${title} | Manipulated.io`
+        : "Manipulated.io - AI-powered reflections"),
     description,
     icons: {
       icon: "/favicon.ico"

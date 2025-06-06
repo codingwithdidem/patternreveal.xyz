@@ -5,11 +5,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { updateOnboardingProgress } from "../actions/update-onboarding-progress";
 
-export enum OnboardingSteps {
-  WORKSPACE = "workspace",
-  INVITE = "invite",
-  COMPLETE = "complete"
-}
+export const ONBOARDING_STEPS = [
+  "welcome",
+  "workspace",
+  "invite",
+  "plan",
+  "complete"
+] as const;
+
+export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
 
 export const useOnboardingFlow = () => {
   const router = useRouter();
@@ -33,15 +37,18 @@ export const useOnboardingFlow = () => {
   );
 
   const moveToStep = useCallback(
-    async (step: OnboardingSteps, providedSlug?: string) => {
+    async (step: OnboardingStep, providedSlug?: string) => {
       execute({
         onboardingStep: step
       });
 
+      console.log({
+        step,
+        providedSlug
+      });
+
       const queryParams =
-        step === OnboardingSteps.WORKSPACE
-          ? ""
-          : `?workspace=${providedSlug || slug}`;
+        step === "workspace" ? "" : `?workspace=${providedSlug || slug}`;
       router.push(`/onboarding/${step}${queryParams}`);
     },
     [execute, router, slug]
@@ -49,7 +56,7 @@ export const useOnboardingFlow = () => {
 
   const finishOnboarding = useCallback(async () => {
     await executeAsync({
-      onboardingStep: OnboardingSteps.COMPLETE
+      onboardingStep: "complete"
     });
   }, [executeAsync]);
 
