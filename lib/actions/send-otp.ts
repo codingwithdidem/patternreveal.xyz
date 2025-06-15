@@ -34,6 +34,8 @@ export const sendOtpAction = actionClient
       throw new Error("User already exists, please login.");
     }
 
+    console.log("email", email);
+
     const otpCode = generateOTP();
 
     console.log(otpCode);

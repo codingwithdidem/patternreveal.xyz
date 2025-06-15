@@ -26,7 +26,7 @@ import Link from "next/link";
 import UserPopover from "@components/UserPopover";
 import Logo from "@components/Logo";
 import MoodTracker from "@components/mood-tracker/MoodTracker";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
   ComponentType,
@@ -49,6 +49,8 @@ import useReflections from "@/lib/swr/use-reflections";
 import usePopularReflections from "@/lib/swr/use-popular-reflections";
 import { truncate } from "@/utils/functions/truncate";
 import { capitalizeFirstChar } from "@/utils/functions/capitalize-first-char";
+import WorkspaceSwitcher from "./workspaces/workspace-switcher";
+import WorkspaceDropdown from "./workspaces/workspace-dropdown";
 
 export type NavItemCommon = {
   name: string;
@@ -73,6 +75,7 @@ type SidebarNavAreas<T extends Record<any, any>> = Record<
     title?: string;
     backHref?: string;
     showNews?: boolean;
+    showWorkspaceDropdown?: boolean;
     direction?: "left" | "right";
     content: {
       name?: string;
@@ -82,14 +85,17 @@ type SidebarNavAreas<T extends Record<any, any>> = Record<
 >;
 
 const NAV_AREAS: SidebarNavAreas<{
+  slug: string;
   pathname: string;
   queryString: string;
   showNews?: boolean;
+  showWorkspaceDropdown?: boolean;
   session?: Session | null;
   topReflections?: Array<{ id: string; title: string }>;
 }> = {
-  dashboard: ({ pathname, queryString, showNews, topReflections }) => ({
+  dashboard: ({ slug, pathname, queryString, showNews, topReflections }) => ({
     showNews,
+    showWorkspaceDropdown: true,
     direction: "left",
     content: [
       {
@@ -98,7 +104,7 @@ const NAV_AREAS: SidebarNavAreas<{
           {
             name: "Reflections",
             icon: BookTextIcon,
-            href: `/dashboard/reflections${pathname === "/dashboard/reflections" ? "" : queryString}`,
+            href: `/${slug}/reflections${pathname === `/${slug}/reflections` ? "" : queryString}`,
             subItems: topReflections?.map((reflection) => ({
               name: reflection.title,
               href: `/dashboard/reflections/${reflection.id}`
@@ -107,20 +113,20 @@ const NAV_AREAS: SidebarNavAreas<{
           {
             name: "Moods",
             icon: ActivityIcon,
-            href: `/dashboard/moods${pathname === "/dashboard/moods" ? "" : queryString}`
+            href: `/${slug}/moods${pathname === `/${slug}/moods` ? "" : queryString}`
           },
           {
             name: "Settings",
             icon: SettingsGearIcon,
-            href: `/dashboard/settings${pathname === "/settings" ? "" : queryString}`
+            href: `/${slug}/settings${pathname === `/${slug}/settings` ? "" : queryString}`
           }
         ]
       }
     ]
   }),
-  settings: ({ session }) => ({
+  settings: ({ slug, session }) => ({
     title: "Settings",
-    backHref: "/dashboard",
+    backHref: `/${slug}`,
     content: [
       {
         name: "Account",
@@ -128,12 +134,12 @@ const NAV_AREAS: SidebarNavAreas<{
           {
             name: "Profile",
             icon: User2Icon,
-            href: "/dashboard/settings/profile"
+            href: `/${slug}/settings/profile`
           },
           {
             name: "Notifications",
             icon: BellRing,
-            href: "/dashboard/settings/notifications"
+            href: `/${slug}/settings/notifications`
           }
         ]
       }
@@ -143,16 +149,17 @@ const NAV_AREAS: SidebarNavAreas<{
 
 export default function AppSidebar() {
   const pathname = usePathname();
+  const { slug } = useParams<{ slug: string }>();
   const { data: session } = useSession();
+
+  console.log("slug", slug);
 
   const { reflections: topReflections, isLoading: isTopReflectionsLoading } =
     usePopularReflections();
 
   const currentArea = useMemo(() => {
-    return pathname.startsWith("/dashboard/settings")
-      ? "settings"
-      : "dashboard";
-  }, [pathname]);
+    return pathname.startsWith(`/${slug}/settings`) ? "settings" : "dashboard";
+  }, [pathname, slug]);
 
   return (
     <Sidebar className="font-[family-name:var(--font-satoshi)]">
@@ -160,6 +167,7 @@ export default function AppSidebar() {
         <div className="flex items-center justify-between">
           {Object.entries(NAV_AREAS).map(([area, areaConfig]) => {
             const areaProps = areaConfig({
+              slug,
               pathname,
               session,
               showNews: false,
@@ -197,13 +205,15 @@ export default function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="px-1">
         {Object.entries(NAV_AREAS).map(([area, areaConfig]) => {
-          const { content, showNews, direction } = areaConfig({
-            pathname,
-            session,
-            queryString: "",
-            showNews: false,
-            topReflections
-          });
+          const { content, showNews, showWorkspaceDropdown, direction } =
+            areaConfig({
+              slug,
+              pathname,
+              session,
+              queryString: "",
+              showNews: false,
+              topReflections
+            });
           return (
             <div
               key={area}
@@ -219,6 +229,9 @@ export default function AppSidebar() {
               )}
               {...{ inert: area !== currentArea ? true : undefined }}
             >
+              <div className="mx-2 mt-2">
+                {showWorkspaceDropdown && <WorkspaceDropdown />}
+              </div>
               {content.map(({ name, items }) => (
                 <SidebarGroup key={name}>
                   <SidebarGroupContent>

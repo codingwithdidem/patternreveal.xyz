@@ -8,5 +8,7 @@ export async function getUserViaToken(req: NextRequest) {
     secret: process.env.NEXTAUTH_SECRET
   })) as { email?: string; user?: UserProps };
 
+  console.log(session);
+
   return session?.user;
 }

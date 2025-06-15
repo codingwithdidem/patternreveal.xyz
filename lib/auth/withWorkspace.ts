@@ -34,24 +34,59 @@ export const withWorkspace = (
     const searchParams = getSearchParams(req.url);
     const awaitedParams = await params;
 
-    let headers = {};
+    console.log({
+      url: req.url,
+      params: awaitedParams,
+      searchParams
+    });
+
+    const headers = {};
     let workspace: WorkspaceWithUsers | undefined;
 
     try {
       let session: Session | undefined;
-      let workspaceId: string | undefined;
-      let workspaceSlug: string | undefined;
-      let permissions: PermissionAction[] = [];
+      const permissions: PermissionAction[] = [];
 
       const idOrSlug =
-        params?.idOrSlug ||
+        awaitedParams?.idOrSlug ||
         searchParams.workspaceId ||
-        params?.slug ||
+        awaitedParams?.slug ||
         searchParams.projectSlug;
 
-      if (idOrSlug) {
-        workspaceSlug = idOrSlug;
+      console.log({
+        awaitedParamsIdOrSlug: awaitedParams?.idOrSlug,
+        searchParamsWorkspaceId: searchParams.workspaceId,
+        awaitedParamsSlug: awaitedParams?.slug,
+        searchParamsProjectSlug: searchParams.projectSlug
+      });
+
+      if (!idOrSlug) {
+        throw new ManipulatedIOApiError({
+          code: "bad_request",
+          message: "Workspace ID or slug is required."
+        });
       }
+
+      // Check if idOrSlug is a UUID or starts with ws_ (workspace ID) or is a slug
+      const isUUID =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+          idOrSlug
+        );
+      const isWorkspaceId = isUUID;
+      const workspaceId = isWorkspaceId ? idOrSlug : undefined;
+      const workspaceSlug = !isWorkspaceId ? idOrSlug : undefined;
+
+      console.log("Workspace lookup:", {
+        idOrSlug,
+        isUUID,
+        isWorkspaceId,
+        workspaceId,
+        workspaceSlug,
+        query: {
+          id: workspaceId || undefined,
+          slug: workspaceSlug || undefined
+        }
+      });
 
       session = await getSession();
 
@@ -62,11 +97,13 @@ export const withWorkspace = (
         });
       }
 
-      workspace = (await prisma.workspace.findUnique({
-        where: {
-          id: workspaceId || undefined,
-          slug: workspaceSlug || undefined
-        },
+      console.log({
+        workspaceId,
+        workspaceSlug
+      });
+
+      workspace = (await prisma.workspace.findFirst({
+        where: workspaceId ? { id: workspaceId } : { slug: workspaceSlug },
         include: {
           users: {
             where: {
@@ -79,10 +116,23 @@ export const withWorkspace = (
         }
       })) as WorkspaceWithUsers;
 
-      console.log("workspace is", workspace);
+      console.log("Workspace query result:", {
+        found: !!workspace,
+        workspaceId: workspace?.id,
+        workspaceSlug: workspace?.slug,
+        userInWorkspace: workspace?.users?.length > 0,
+        query: workspaceId ? { id: workspaceId } : { slug: workspaceSlug }
+      });
 
       // workspace doesn't exist
       if (!workspace || !workspace.users) {
+        console.log("Workspace not found details:", {
+          searchedById: !!workspaceId,
+          searchedBySlug: !!workspaceSlug,
+          workspaceId,
+          workspaceSlug,
+          userId: session.user.id
+        });
         throw new ManipulatedIOApiError({
           code: "not_found",
           message: "Workspace not found."
@@ -140,7 +190,11 @@ export const withWorkspace = (
         workspace,
         permissions
       });
-    } catch (error) {
+    } catch (error: unknown) {
+      console.log(
+        "error",
+        error instanceof Error ? error.stack : String(error)
+      );
       throw new ManipulatedIOApiError({
         code: "internal_server_error",
         message: "Failed to process the request."

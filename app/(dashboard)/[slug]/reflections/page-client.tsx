@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { ComponentProps } from "react";
 import useReflectionQueryParams from "@/hooks/nuqs/useReflectionQueryParams";
+import useWorkspace from "@/lib/swr/use-workspace";
 
 const redFlags = [
   {
@@ -28,10 +29,10 @@ const redFlags = [
 
 export default function ReflectionsClientPage() {
   const router = useRouter();
+  const { id: workspaceId } = useWorkspace();
   const { reflections, error } = useReflections();
 
   const { filters: activeFilters, setFilters } = useReflectionQueryParams();
-  console.log("activeFilters", activeFilters);
 
   // Transform activeFilters into the format expected by FilterSelect
   const transformedActiveFilters = Object.entries(activeFilters)
@@ -45,33 +46,36 @@ export default function ReflectionsClientPage() {
 
   const createReflection = async () => {
     try {
-      const response = await fetch("/api/reflections", {
-        method: "POST",
-        body: JSON.stringify({
-          title: "Untitled Reflection",
-          initialContent: JSON.stringify({
-            type: "doc",
-            content: [
-              {
-                type: "paragraph",
-                content: [{ type: "text", text: "Start writing..." }]
-              }
-            ]
-          }),
-          content: JSON.stringify({
-            type: "doc",
-            content: [
-              {
-                type: "paragraph",
-                content: [{ type: "text", text: "Start writing..." }]
-              }
-            ]
-          }),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        })
-      });
+      const response = await fetch(
+        `/api/reflections?workspaceId=${workspaceId}`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            title: "Untitled Reflection",
+            initialContent: JSON.stringify({
+              type: "doc",
+              content: [
+                {
+                  type: "paragraph",
+                  content: [{ type: "text", text: "Start writing..." }]
+                }
+              ]
+            }),
+            content: JSON.stringify({
+              type: "doc",
+              content: [
+                {
+                  type: "paragraph",
+                  content: [{ type: "text", text: "Start writing..." }]
+                }
+              ]
+            }),
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+        }
+      );
 
       if (response.status === 200) {
         toast.success("Reflection created successfully");

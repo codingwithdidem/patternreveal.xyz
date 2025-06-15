@@ -25,9 +25,10 @@ import { verifyEmailAction } from "@/lib/actions/verify-email";
 import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { ResendOTPButton } from "./resend-otp-button";
 
 export default function RegisterFlow() {
-  const { step, setStep } = useRegisterFlow();
+  const { step } = useRegisterFlow();
 
   return step === "sign-up" ? <SignUp /> : <VerifyEmail />;
 }
@@ -123,15 +124,7 @@ function VerifyEmail() {
         </Form>
       </div>
 
-      <h3 className="text-sm text-gray-500 mt-4">
-        {`Already have an account?`}
-        <Link
-          href="/login"
-          className="ml-1 underline-offset-2 underline font-semibold hover:text-blue-500 transition-colors duration-400"
-        >
-          Sign in
-        </Link>
-      </h3>
+      <ResendOTPButton email={email} />
     </div>
   );
 }

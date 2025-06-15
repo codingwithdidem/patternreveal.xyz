@@ -43,6 +43,8 @@ export const verifyEmailAction = actionClient
       throw new Error("Invalid verification code");
     }
 
+    console.log(verificationToken);
+
     // Check if the token has expired
     if (verificationToken.expires < new Date()) {
       waitUntil(

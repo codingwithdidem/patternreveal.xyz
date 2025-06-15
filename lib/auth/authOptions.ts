@@ -184,20 +184,36 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
     jwt: async ({ token, user, trigger }) => {
+      const refreshedUser = await prisma.user.findUnique({
+        where: { id: token.sub },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          image: true,
+          createdAt: true,
+          defaultWorkspace: true
+        }
+      });
       if (user) {
-        token.user = user;
+        console.log("user", user);
+        token.user = {
+          ...user,
+          defaultWorkspace: refreshedUser?.defaultWorkspace,
+          createdAt: refreshedUser?.createdAt.toISOString()
+        };
       }
 
       // refresh the user's data if they update their name / email
       if (trigger === "update") {
-        console.log("trigger", trigger);
         const refreshedUser = await prisma.user.findUnique({
           where: { id: token.sub },
           select: {
             id: true,
             name: true,
             email: true,
-            image: true
+            image: true,
+            createdAt: true
           }
         });
         if (refreshedUser) {

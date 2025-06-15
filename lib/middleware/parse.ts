@@ -8,12 +8,15 @@ export const parse = (req: NextRequest) => {
   const searchParamsString = new URLSearchParams(
     req.nextUrl.searchParams
   ).toString();
+  const searchParamsObj = Object.fromEntries(req.nextUrl.searchParams);
+
   const fullPath = searchParamsString ? `${path}?${searchParamsString}` : path;
 
   return {
     domain,
     path,
     fullPath,
+    searchParamsObj,
     searchParamsString
   };
 };

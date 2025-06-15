@@ -12,6 +12,25 @@ import { nanoid } from "@/utils/functions/nanoid";
 import { NextResponse } from "next/server";
 import { waitUntil } from "@vercel/functions";
 
+export const GET = withPermissions(
+  async ({ session }) => {
+    const workspaces = await prisma.workspace.findMany({
+      where: {
+        users: {
+          some: {
+            userId: session.user.id
+          }
+        }
+      }
+    });
+
+    return NextResponse.json(workspaces);
+  },
+  {
+    requiredPermissions: []
+  }
+);
+
 export const POST = withPermissions(
   async ({ req, session }) => {
     const { name, slug } = await createWorkspaceSchema.parseAsync(

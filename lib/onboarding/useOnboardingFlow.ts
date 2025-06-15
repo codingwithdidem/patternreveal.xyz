@@ -4,10 +4,12 @@ import { useAction } from "next-safe-action/hooks";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { updateOnboardingProgress } from "../actions/update-onboarding-progress";
+import useWorkspace from "../swr/use-workspace";
 
 export const ONBOARDING_STEPS = [
   "welcome",
   "workspace",
+  "reflection",
   "invite",
   "plan",
   "complete"
@@ -18,7 +20,7 @@ export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
 export const useOnboardingFlow = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { slug: workspaceSlug } = { slug: null };
+  const { slug: workspaceSlug } = useWorkspace();
   const slug = workspaceSlug || searchParams.get("workspace");
 
   const { execute, executeAsync, isPending, hasSucceeded } = useAction(
@@ -58,6 +60,8 @@ export const useOnboardingFlow = () => {
     await executeAsync({
       onboardingStep: "complete"
     });
+
+    router.push(slug ? `/${slug}` : "/");
   }, [executeAsync]);
 
   return {

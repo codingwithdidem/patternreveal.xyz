@@ -3,7 +3,15 @@
 import { z } from "zod";
 import { authenticatedActionClient } from "./safe-action";
 import { redis } from "../upstash/redis";
-import { ONBOARDING_STEPS } from "../onboarding/useOnboardingFlow";
+
+const ONBOARDING_STEPS = [
+  "welcome",
+  "workspace",
+  "reflection",
+  "invite",
+  "plan",
+  "complete"
+] as const;
 
 // Generate a new client secret for an integration
 export const updateOnboardingProgress = authenticatedActionClient
@@ -19,8 +27,11 @@ export const updateOnboardingProgress = authenticatedActionClient
 
     try {
       await redis.set(`onboarding-step:${ctx.user.id}`, onboardingStep);
-    } catch (e) {
-      console.error("Failed to update onboarding step", e.stack);
+    } catch (e: unknown) {
+      console.error(
+        "Failed to update onboarding step",
+        e instanceof Error ? e.stack : e
+      );
       throw new Error("Failed to update onboarding step");
     }
 

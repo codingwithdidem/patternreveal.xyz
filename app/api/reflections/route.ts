@@ -1,6 +1,7 @@
 import { ManipulatedIOApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withPermissions } from "@/lib/auth/withPermissions";
+import { withWorkspace } from "@/lib/auth/withWorkspace";
 import prisma from "@/lib/prisma";
 import {
   createReflectionSchema,
@@ -11,11 +12,11 @@ import { NextResponse } from "next/server";
 /**
  * Get all reflection entries. Requires the `reflection.read` permission.
  */
-export const GET = withPermissions(
-  async ({ req, headers, session, searchParams, permissions }) => {
+export const GET = withWorkspace(
+  async ({ req, headers, workspace }) => {
     const response = await prisma.reflection.findMany({
       where: {
-        userId: session.user.id
+        workspaceId: workspace.id
       },
       include: {
         analysisReport: true
@@ -37,8 +38,8 @@ export const GET = withPermissions(
 /**
  * Create a new reflection entry. Requires the `reflection.write` permission.
  */
-export const POST = withPermissions(
-  async ({ req, headers, session, searchParams, permissions }) => {
+export const POST = withWorkspace(
+  async ({ req, headers, workspace, session }) => {
     const { success, data } = await createReflectionSchema.safeParse(
       await parseRequestBody(req)
     );
@@ -58,6 +59,7 @@ export const POST = withPermissions(
           title,
           initialContent,
           content,
+          workspaceId: workspace.id,
           userId: session.user.id
         }
       });
@@ -83,8 +85,8 @@ export const POST = withPermissions(
  * @param reflectionId The ID of the reflection to delete.
  * @returns The deleted reflection.
  */
-export const DELETE = withPermissions(
-  async ({ req, headers, session, searchParams, permissions }) => {
+export const DELETE = withWorkspace(
+  async ({ req, headers, workspace, searchParams }) => {
     const { success, data } =
       await deleteReflectionSchema.safeParse(searchParams);
 
@@ -100,7 +102,8 @@ export const DELETE = withPermissions(
     try {
       const response = await prisma.reflection.delete({
         where: {
-          id: reflectionId
+          id: reflectionId,
+          workspaceId: workspace.id
         }
       });
 
