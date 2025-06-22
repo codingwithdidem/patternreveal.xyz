@@ -3,7 +3,7 @@ import { getSession } from "./authOptions";
 import type { UserProps } from "../types";
 import {
   handleAndReturnErrorResponse,
-  ManipulatedIOApiError
+  PatternRevealApiError
 } from "../api/errors";
 
 type WithPermissionsHandler = (args: {
@@ -38,7 +38,7 @@ export const withPermissions = (
       const awaitedParams = await params;
 
       if (!session?.user?.id) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "unauthorized",
           message: "You need to be logged in to access this resource."
         });

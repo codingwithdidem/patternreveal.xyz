@@ -22,15 +22,15 @@ export function constructMetadata({
   canonicalUrl
 }: ConstructMetadataProps): Metadata {
   return {
-    metadataBase: new URL("https://manipulated.io"),
+    metadataBase: new URL("https://patternreveal.xyz"),
     ...((url || canonicalUrl) && {
       canonical: url || canonicalUrl
     }),
     title:
       fullTitle ||
       (title
-        ? `${title} | Manipulated.io`
-        : "Manipulated.io - AI-powered reflections"),
+        ? `${title} | patternreveal.xyz`
+        : "patternreveal.xyz - AI-powered reflections"),
     description,
     icons: {
       icon: "/favicon.ico"
@@ -56,7 +56,7 @@ export function constructMetadata({
       ...(video && {
         player: video
       }),
-      creator: "@manipulated_io"
+      creator: "@patternreveal_xyz"
     },
     ...(noIndex && {
       robots: {

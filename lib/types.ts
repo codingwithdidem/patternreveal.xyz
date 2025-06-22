@@ -20,7 +20,7 @@ export interface WorkspaceWithUsers {
     role: "OWNER" | "MEMBER";
   }[];
   plan: PlanProps;
-  stripeId: string;
+  paddleId: string;
   createdAt: Date;
 }
 

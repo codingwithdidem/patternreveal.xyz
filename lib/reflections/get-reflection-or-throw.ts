@@ -1,4 +1,4 @@
-import { ManipulatedIOApiError } from "@/lib/api/errors";
+import { PatternRevealApiError } from "@/lib/api/errors";
 import prisma from "@/lib/prisma";
 
 type GetReflectionOrThrowParams = {
@@ -15,7 +15,7 @@ export async function getReflectionOrThrow({
   });
 
   if (!reflection) {
-    throw new ManipulatedIOApiError({
+    throw new PatternRevealApiError({
       code: "not_found",
       message: "Reflection not found"
     });

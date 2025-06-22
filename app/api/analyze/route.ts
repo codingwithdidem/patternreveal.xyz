@@ -1,4 +1,4 @@
-import { ManipulatedIOApiError } from "@/lib/api/errors";
+import { PatternRevealApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withPermissions } from "@/lib/auth/withPermissions";
 import { NextResponse } from "next/server";
@@ -17,7 +17,7 @@ export const POST = withPermissions(
     );
 
     if (!success) {
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "bad_request",
         message: "Invalid request body format."
       });
@@ -40,7 +40,7 @@ export const POST = withPermissions(
       });
 
       if (!object) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "internal_server_error",
           message: "Failed to generate analysis."
         });
@@ -72,14 +72,14 @@ export const POST = withPermissions(
       });
 
       if (!session?.user?.id) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "unauthorized",
           message: "User ID is required"
         });
       }
 
       if (!reflectionId) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "bad_request",
           message: "Reflection ID is required"
         });
@@ -97,7 +97,7 @@ export const POST = withPermissions(
         headers
       });
     } catch (error) {
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to create mood."
       });

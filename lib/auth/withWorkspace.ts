@@ -1,4 +1,4 @@
-import { ManipulatedIOApiError } from "@/lib/api/errors";
+import { PatternRevealApiError } from "@/lib/api/errors";
 import type { PermissionAction } from "../rbac/permissions";
 import { getSession, type Session } from "./authOptions";
 import prisma from "../prisma";
@@ -61,7 +61,7 @@ export const withWorkspace = (
       });
 
       if (!idOrSlug) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "bad_request",
           message: "Workspace ID or slug is required."
         });
@@ -91,7 +91,7 @@ export const withWorkspace = (
       session = await getSession();
 
       if (!session?.user?.id) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "unauthorized",
           message: "You need to be logged in to access this resource."
         });
@@ -133,7 +133,7 @@ export const withWorkspace = (
           workspaceSlug,
           userId: session.user.id
         });
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "not_found",
           message: "Workspace not found."
         });
@@ -154,20 +154,20 @@ export const withWorkspace = (
         });
 
         if (!pendingInvites) {
-          throw new ManipulatedIOApiError({
+          throw new PatternRevealApiError({
             code: "not_found",
             message: "Workspace not found."
           });
         }
 
         if (pendingInvites.expires < new Date()) {
-          throw new ManipulatedIOApiError({
+          throw new PatternRevealApiError({
             code: "invite_expired",
             message: "Workspace invite expired."
           });
         }
 
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "invite_pending",
           message: "Workspace invite pending."
         });
@@ -175,7 +175,7 @@ export const withWorkspace = (
 
       // plan checks
       if (!requiredPlan.includes(workspace.plan)) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "forbidden",
           message: "Unauthorized: Need higher plan."
         });
@@ -195,7 +195,7 @@ export const withWorkspace = (
         "error",
         error instanceof Error ? error.stack : String(error)
       );
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to process the request."
       });

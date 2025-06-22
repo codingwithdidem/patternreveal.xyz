@@ -49,7 +49,7 @@ const ErrorSchema = z.object({
 export type ErrorResponse = z.infer<typeof ErrorSchema>;
 export type ErrorCodes = z.infer<typeof ErrorCode>;
 
-export class ManipulatedIOApiError extends Error {
+export class PatternRevealApiError extends Error {
   public readonly code: ErrorCodes;
 
   constructor({
@@ -60,7 +60,7 @@ export class ManipulatedIOApiError extends Error {
     message: string;
   }) {
     super(message);
-    this.name = "ManipulatedIOApiError";
+    this.name = "PatternRevealApiError";
     this.code = code;
   }
 }
@@ -92,7 +92,9 @@ export function fromZodError(error: ZodError): ErrorResponse {
   };
 }
 
-export function handleApiError(error: any): ErrorResponse & { status: number } {
+export function handleApiError(
+  error: unknown
+): ErrorResponse & { status: number } {
   // Zod errors
   if (error instanceof ZodError) {
     return {
@@ -101,8 +103,8 @@ export function handleApiError(error: any): ErrorResponse & { status: number } {
     };
   }
 
-  // ManipulatedIOApiError errors
-  if (error instanceof ManipulatedIOApiError) {
+  // PatternRevealApiError errors
+  if (error instanceof PatternRevealApiError) {
     return {
       error: {
         code: error.code,
@@ -113,13 +115,23 @@ export function handleApiError(error: any): ErrorResponse & { status: number } {
   }
 
   // Prisma record not found error
-  if (error.code === "P2025") {
+  if (
+    error &&
+    typeof error === "object" &&
+    "code" in error &&
+    error.code === "P2025"
+  ) {
+    const prismaError = error as {
+      code: string;
+      meta?: { cause?: string };
+      message?: string;
+    };
     return {
       error: {
         code: "not_found",
         message:
-          error?.meta?.cause ||
-          error.message ||
+          prismaError?.meta?.cause ||
+          prismaError?.message ||
           "The requested resource was not found."
       },
       status: 404

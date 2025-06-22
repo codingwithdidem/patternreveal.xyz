@@ -39,7 +39,7 @@ export const authOptions: NextAuthOptions = {
     // }),
     CredentialsProvider({
       id: "credentials",
-      name: "Manipulated.io",
+      name: "patternreveal.xyz",
       type: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
@@ -253,7 +253,7 @@ export const authOptions: NextAuthOptions = {
             }),
             sendEmail({
               email: user.email,
-              subject: "Welcome to Manipulated.io",
+              subject: "Welcome to patternreveal.xyz",
               react: StripeWelcomeEmail(),
               // Send the email 5 minutes from now
               scheduledAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()

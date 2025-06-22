@@ -1,6 +1,6 @@
-export const APP_NAME = "Manipulated.io";
+export const APP_NAME = "patternreveal.xyz";
 export const APP_DESCRIPTION =
-  "Manipulated.io helps you identify and understand manipulative behaviors in relationships, empowering you to protect your emotional well-being. With practical tools and expert insights, it supports you in recognizing toxic dynamics and building stronger personal boundaries.";
+  "PatternReveal.xyz helps you identify and understand manipulative behaviors in relationships, empowering you to protect your emotional well-being. With practical tools and expert insights, it supports you in recognizing toxic dynamics and building stronger personal boundaries.";
 
 export const AUTH_ROUTES = new Set([
   "/login",
@@ -50,19 +50,12 @@ export const PLANS = [
     price: {
       monthly: 10,
       yearly: 5,
+      monthlyId: "pri_01jxt8keeh6cx5wk96bpbyehd5",
+      yearlyId: "pri_01jxt8qpc94nyymrqws8he2c8g",
       ids: [
-        "price_1LodNLAlJJEpqkPVQSrt33Lc", // old monthly
-        "price_1LodNLAlJJEpqkPVRxUyCQgZ", // old yearly
-        "price_1OTcQBAlJJEpqkPViGtGEsbb", // new monthly (test)
-        "price_1OYJeBAlJJEpqkPVLjTsjX0E", // new monthly (prod)
-        "price_1OTcQBAlJJEpqkPVYlCMqdLL", // new yearly (test)
-        "price_1OYJeBAlJJEpqkPVnPGEZeb0", // new yearly (prod)
-
         // 2025 pricing
-        "price_1R8XtyAlJJEpqkPV5WZ4c0jF", //  yearly
-        "price_1R8XtEAlJJEpqkPV4opVvVPq", // monthly
-        "price_1R8XxZAlJJEpqkPVqGi0wOqD", // yearly (test),
-        "price_1R7oeBAlJJEpqkPVh6q5q3h8" // monthly (test),
+        "pri_01jxt8qpc94nyymrqws8he2c8g", // yearly (test),
+        "pri_01jxt8keeh6cx5wk96bpbyehd5" // monthly (test),
       ]
     },
     limits: {

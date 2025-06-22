@@ -53,7 +53,7 @@ export const sendOtpAction = actionClient
         }
       }),
       sendEmail({
-        subject: `Manipulated.io: OTP to verify your account`,
+        subject: `patternreveal.xyz: OTP to verify your account`,
         email,
         react: VerifyEmail({
           email,

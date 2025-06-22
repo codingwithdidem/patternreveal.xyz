@@ -1,13 +1,11 @@
 import AppSidebar from "@/components/AppSidebar";
-import Providers from "@/components/Providers";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { authOptions } from "@/lib/auth/authOptions";
 
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Manipulated.io | An AI-powered journal",
-  description: "A tool for tracking your mood and reflections"
+  title: "patternreveal.xyz | An AI-powered relationships patterns tracker",
+  description: "A tool for tracking your relationships patterns"
 };
 
 export default async function RootLayout({

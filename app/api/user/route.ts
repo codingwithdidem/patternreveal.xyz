@@ -1,4 +1,4 @@
-import { ManipulatedIOApiError } from "@/lib/api/errors";
+import { PatternRevealApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withPermissions } from "@/lib/auth/withPermissions";
 import prisma from "@/lib/prisma";
@@ -18,7 +18,7 @@ export const PATCH = withPermissions(
     );
 
     if (!success) {
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "bad_request",
         message: "Invalid request body format."
       });
@@ -39,7 +39,7 @@ export const PATCH = withPermissions(
       });
 
       if (userWithEmail) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "conflict",
           message: "Email already in use."
         });
@@ -51,7 +51,7 @@ export const PATCH = withPermissions(
       // );
 
       // if (!success) {
-      //   throw new ManipulatedIOApiError({
+      //   throw new PatternRevealApiError({
       //     code: "rate_limit_exceeded",
       //     message:
       //       "You've requested too many email change requests. Please try again later."
@@ -110,7 +110,7 @@ export const PATCH = withPermissions(
       });
     } catch (error) {
       console.log(error);
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to update user."
       });

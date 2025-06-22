@@ -78,7 +78,7 @@ export default function EmailForm() {
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="adalovelace@manipulated.io"
+                    placeholder="adalovelace@patternreveal.xyz"
                     className="max-w-md w-full rounded-2xl"
                     maxLength={32}
                     {...field}

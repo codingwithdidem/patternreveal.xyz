@@ -170,7 +170,7 @@ function SignUp() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <h1 className="text-lg font-bold">Get started with Manipulated.io</h1>
+      <h1 className="text-lg font-bold">Get started with patternreveal.xyz</h1>
       <h3 className="text-sm text-gray-500">
         {`Already have an account?`}
         <Link

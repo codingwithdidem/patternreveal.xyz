@@ -28,7 +28,7 @@ export function VerifyEmail({
             <Section className="mt-8">
               <Img
                 src="https://img.freepik.com/premium-vector/minimal-professional-shine-icon-design-template-white-background_766194-3214.jpg"
-                alt="ManipulatedIO Logo"
+                alt="PatternReveal Logo"
                 className="mx-auto"
                 width={100}
                 height={50}

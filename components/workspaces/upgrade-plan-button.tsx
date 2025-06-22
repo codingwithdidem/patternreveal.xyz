@@ -7,6 +7,12 @@ import { PLANS } from "@/lib/constants";
 import type { z } from "zod";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { usePostHog } from "posthog-js/react";
+import {
+  initializePaddle,
+  type Environments,
+  type Paddle
+} from "@paddle/paddle-js";
+import { useEffect, useState } from "react";
 
 export default function UpgradePlanButton({
   plan,
@@ -21,8 +27,13 @@ export default function UpgradePlanButton({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const posthog = usePostHog();
+  const [paddle, setPaddle] = useState<Paddle | null>(null);
 
-  const { slug: workspaceSlug, plan: workspacePlan } = useWorkspace();
+  const {
+    slug: workspaceSlug,
+    plan: workspacePlan,
+    id: workspaceId
+  } = useWorkspace();
 
   const currentPlan = PLANS.find(
     (p) => p.name.toLowerCase() === workspacePlan?.toLowerCase()
@@ -31,6 +42,33 @@ export default function UpgradePlanButton({
   const isCurrentPlan = currentPlan?.name.toLowerCase() === plan.toLowerCase();
   const isFreePlan = plan.toLowerCase() === "free";
   const queryString = searchParams.toString();
+
+  // Initialize Paddle
+  useEffect(() => {
+    if (
+      process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN &&
+      process.env.NEXT_PUBLIC_PADDLE_ENV
+    ) {
+      initializePaddle({
+        token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
+        environment: process.env.NEXT_PUBLIC_PADDLE_ENV as Environments
+      }).then((paddle) => {
+        if (paddle) {
+          setPaddle(paddle);
+        }
+      });
+    }
+  }, []);
+
+  console.log({
+    currentPlan,
+    isCurrentPlan,
+    isFreePlan,
+    workspacePlan,
+    workspaceSlug,
+    plan,
+    period
+  });
 
   const onUpgrade = async () => {
     try {
@@ -51,21 +89,34 @@ export default function UpgradePlanButton({
       );
 
       if (res.ok) {
-        posthog.capture("checkout_initiated", {
-          currentPlan: currentPlan?.name,
-          selectedPlan: plan,
-          period,
-          workspace: workspaceSlug
-        });
+        const data = await res.json();
 
-        if (currentPlan?.name === "free") {
-          const data = await res.json();
-          const { id: sessionId } = data;
-          const stripe = await getStripe();
-          stripe?.redirectToCheckout({ sessionId });
+        if (data.success && data.action === "checkout" && paddle) {
+          // Open Paddle checkout client-side
+          paddle.Checkout.open({
+            items: [{ priceId: data.priceId, quantity: 1 }],
+            customer: {
+              email: data.customerEmail
+            },
+            settings: {
+              allowLogout: !data.customerEmail,
+              displayMode: "overlay",
+              theme: "light",
+              variant: "one-page"
+            },
+            customData: {
+              clientReferenceId: workspaceId
+            }
+          });
+
+          posthog.capture("checkout_initiated", {
+            currentPlan: currentPlan?.name,
+            selectedPlan: plan,
+            period,
+            workspace: workspaceSlug
+          });
         } else {
-          const { url } = await res.json();
-          router.push(url);
+          throw new Error("Failed to initiate checkout");
         }
       } else {
         throw new Error("Failed to upgrade plan");
@@ -78,7 +129,7 @@ export default function UpgradePlanButton({
   return (
     <Button
       className={className}
-      disabled={isCurrentPlan || !workspaceSlug}
+      disabled={isCurrentPlan || !workspaceSlug || !paddle}
       onClick={onUpgrade}
     >
       {isCurrentPlan

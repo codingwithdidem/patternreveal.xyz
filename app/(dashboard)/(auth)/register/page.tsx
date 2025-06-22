@@ -2,8 +2,8 @@ import RegisterFlow from "@/components/RegisterFlow";
 import { constructMetadata } from "@/utils/functions/construct-metadata";
 
 export const metadata = constructMetadata({
-  title: "Create your Manipulated.io account",
-  canonicalUrl: "https://manipulated.io/register"
+  title: "Create your patternreveal.xyz account",
+  canonicalUrl: "https://patternreveal.xyz/register"
 });
 
 export default function RegisterPage() {

@@ -1,4 +1,4 @@
-import { ManipulatedIOApiError } from "@/lib/api/errors";
+import { PatternRevealApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withPermissions } from "@/lib/auth/withPermissions";
 import prisma from "@/lib/prisma";
@@ -35,7 +35,7 @@ export const POST = withPermissions(
     );
 
     if (!success) {
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "bad_request",
         message: "Invalid request body format."
       });
@@ -56,7 +56,7 @@ export const POST = withPermissions(
         headers
       });
     } catch {
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to create mood."
       });

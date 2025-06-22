@@ -1,4 +1,4 @@
-import { ManipulatedIOApiError } from "@/lib/api/errors";
+import { PatternRevealApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withPermissions } from "@/lib/auth/withPermissions";
 import prisma from "@/lib/prisma";
@@ -52,7 +52,7 @@ export const PATCH = withPermissions(
     );
 
     if (!success) {
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "bad_request",
         message: "Invalid request body format."
       });
@@ -80,7 +80,7 @@ export const PATCH = withPermissions(
       });
     } catch {
       console.log("smth");
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to update reflection."
       });

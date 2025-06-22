@@ -13,8 +13,8 @@ import {
 } from "@react-email/components";
 
 export function ConfirmEmailChange({
-  email = "didem@manipulated.io",
-  newEmail = "didem+1@manipulated.io",
+  email = "didem@patternreveal.xyz",
+  newEmail = "didem+1@patternreveal.xyz",
   confirmUrl = `${process.env.NEXT_PUBLIC_APP_DOMAIN}/confirm-email-change`
 }: {
   email: string;
@@ -31,7 +31,7 @@ export function ConfirmEmailChange({
             <Section className="mt-8">
               <Img
                 src="https://img.freepik.com/premium-vector/minimal-professional-shine-icon-design-template-white-background_766194-3214.jpg"
-                alt="ManipulatedIO Logo"
+                alt="PatternReveal Logo"
                 className="mx-auto"
                 width={100}
                 height={50}

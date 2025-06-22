@@ -5,7 +5,7 @@ import {
   createWorkspaceSchema,
   WorkspaceSchema
 } from "@/lib/zod/schemas/workspace";
-import { ManipulatedIOApiError } from "@/lib/api/errors";
+import { PatternRevealApiError } from "@/lib/api/errors";
 import { Prisma } from "@prisma/client";
 import { FREE_WORKSPACES_LIMIT } from "@/lib/constants/limits";
 import { nanoid } from "@/utils/functions/nanoid";
@@ -53,7 +53,7 @@ export const POST = withPermissions(
           });
 
           if (freeWorkspacesCount >= FREE_WORKSPACES_LIMIT) {
-            throw new ManipulatedIOApiError({
+            throw new PatternRevealApiError({
               code: "exceeded_limit",
               message: "You have reached the limit of free workspaces"
             });
@@ -116,17 +116,17 @@ export const POST = withPermissions(
         error instanceof Prisma.PrismaClientKnownRequestError &&
         error.code === "P2002"
       ) {
-        throw new ManipulatedIOApiError({
+        throw new PatternRevealApiError({
           code: "conflict",
           message: `The slug "${slug}" is already in use.`
         });
       }
 
-      if (error instanceof ManipulatedIOApiError) {
+      if (error instanceof PatternRevealApiError) {
         throw error;
       }
 
-      throw new ManipulatedIOApiError({
+      throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Error creating workspace. Please try again later."
       });

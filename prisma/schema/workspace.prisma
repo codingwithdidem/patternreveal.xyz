@@ -27,7 +27,8 @@ model Workspace {
   inviteCode String  @unique
 
   plan              String    @default("free")
-  stripeId          String?   @unique // Stripe subscription id
+  paddleId          String?   @unique // Paddle subscription id
+  paddleCustomerId  String?   // Paddle customer id
   billingCycleStart Int? // Day of the month the billing cycle starts
   paymentFailedAt   DateTime?
 
@@ -51,7 +52,7 @@ model Workspace {
   sentEmails  SentEmail[]
 
   @@index([slug])
-  @@index([stripeId])
+  @@index([paddleId])
 }
 
 model WorkspaceInvite {
