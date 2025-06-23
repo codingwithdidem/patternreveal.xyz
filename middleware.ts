@@ -32,6 +32,8 @@ export default async function middleware(request: NextRequest) {
 
   const user = await getUserViaToken(request);
 
+  console.log({ user });
+
   if (
     !user &&
     !path.startsWith("/login") &&

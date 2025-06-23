@@ -35,7 +35,7 @@ export const authOptions: NextAuthOptions = {
     //         react: LoginLink({ url, email: identifier })
     //       });
     //     }
-    //   }onboarding@resend.dev
+    //   }info@patternreveal.xyz
     // }),
     CredentialsProvider({
       id: "credentials",
