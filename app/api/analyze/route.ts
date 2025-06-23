@@ -85,13 +85,13 @@ export const POST = withPermissions(
         });
       }
 
-      waitUntil(
-        record_reflection_report({
-          id: reflectionId,
-          userId: session.user.id,
-          report: object as Analysis
-        })
-      );
+      // waitUntil(
+      //   record_reflection_report({
+      //     id: reflectionId,
+      //     userId: session.user.id,
+      //     report: object as Analysis
+      //   })
+      // );
 
       return NextResponse.json(object, {
         headers
