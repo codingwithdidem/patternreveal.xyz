@@ -104,6 +104,7 @@ export default function ReflectionEditorClientPage() {
             <TabsContent value="analysis">
               <Analysis
                 isLoading={isLoadingAnalysis}
+                // @ts-expect-error - analysisReport is not typed
                 analysisReport={analysisReport}
               />
             </TabsContent>

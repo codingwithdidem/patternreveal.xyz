@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 
-export default async function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
   const headersList = await headers();
   const host = headersList.get("host");
 
@@ -9,8 +9,8 @@ export default async function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: "/reports/",
+      disallow: "/reports/"
     },
-    sitemap: `https://${host}/sitemap.xml`,
+    sitemap: `https://${host}/sitemap.xml`
   };
 }
