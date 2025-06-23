@@ -8,13 +8,13 @@
   "scripts": {
     "dev": "concurrently --kill-others \"prisma generate --schema=prisma/schema && next dev --turbopack --port 8888\"",
     "email": "email dev --port 3333",
-    "build": "prisma generate && next build",
+    "build": "prisma generate --schema=prisma/schema && next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev",
-    "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate --schema=prisma/schema",
+    "prisma:migrate": "prisma migrate dev --schema=prisma/schema",
+    "prisma:studio": "prisma studio --schema=prisma/schema",
     "prisma:format": "biome format --write dev"
   },
   "dependencies": {
