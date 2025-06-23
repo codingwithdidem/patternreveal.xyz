@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { usePostHog } from "posthog-js/react";
 import useWorkspace from "@/lib/swr/use-workspace";
 import type { inviteTeammatesSchema } from "@/lib/zod/schemas/invites";
+import { pluralize } from "@/utils/functions/pluralize";
 
 export default function InviteForm({
   onSuccess
@@ -70,14 +71,17 @@ export default function InviteForm({
     } else {
       const { error } = await res.json();
       if (error.message.includes("upgrade")) {
-        toast.custom(
-          () => (
-            <UpgradeRequiredToast
-              title="Upgrade required"
-              message="You've reached the invite limit for your plan. Please upgrade to invite more teammates."
-            />
-          ),
-          { duration: 4000 }
+        // toast.custom(
+        //   () => (
+        //     <UpgradeRequiredToast
+        //       title="Upgrade required"
+        //       message="You've reached the invite limit for your plan. Please upgrade to invite more teammates."
+        //     />
+        //   ),
+        //   { duration: 4000 }
+        // );
+        toast.error(
+          "You've reached the invite limit for your plan. Please upgrade to invite more teammates."
         );
       } else {
         toast.error(error.message);

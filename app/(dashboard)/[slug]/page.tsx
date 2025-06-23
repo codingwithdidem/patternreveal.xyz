@@ -10,9 +10,9 @@ export default function Home() {
   useEffect(() => {
     if (session?.user) {
       identifyUser({
-        userId: session.user["id"],
-        email: session.user.email,
-        name: session.user.name
+        userId: "123",
+        email: session.user.email ?? "",
+        name: session.user.name ?? ""
       });
     }
   }, [session]);

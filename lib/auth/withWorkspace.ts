@@ -29,7 +29,7 @@ export const withWorkspace = (
 ) => {
   return async (
     req: Request,
-    { params = {} }: { params: Record<string, string> | undefined }
+    { params }: { params: Promise<Record<string, string>> }
   ) => {
     const searchParams = getSearchParams(req.url);
     const awaitedParams = await params;

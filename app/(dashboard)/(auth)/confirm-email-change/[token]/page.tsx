@@ -20,14 +20,6 @@ export default async function ConfirmEmailChangePage({
   params,
   searchParams
 }: PageProps) {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <VerifyEmailChange params={params} searchParams={searchParams} />
-    </Suspense>
-  );
-}
-
-export async function VerifyEmailChange({ params, searchParams }: PageProps) {
   const { token } = await params;
   const { cancel } = await searchParams;
 

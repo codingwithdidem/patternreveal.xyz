@@ -11,7 +11,7 @@ import { waitUntil } from "@vercel/functions";
 import { record_reflection_report } from "@/lib/tinybird/record_reflection_report";
 
 export const POST = withPermissions(
-  async ({ req, headers, session, searchParams, permissions }) => {
+  async ({ req, headers, session }) => {
     const { success, data } = await analyzeReflectionSchema.safeParse(
       await parseRequestBody(req)
     );

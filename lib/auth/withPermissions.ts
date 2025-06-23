@@ -28,7 +28,7 @@ export const withPermissions = (
 ) => {
   return async (
     req: Request,
-    { params = {} }: { params: Record<string, string> | undefined }
+    { params }: { params: Promise<Record<string, string>> }
   ) => {
     try {
       const headers = {};
