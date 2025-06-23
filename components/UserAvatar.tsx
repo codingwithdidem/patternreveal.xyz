@@ -22,7 +22,7 @@ const getUserAvatarOrFallbackUrl = (
   console.log(user);
   if (user?.image) return user.image;
 
-  if (!user?.id) return `https://api.dicebear.com/9.x/miniavs/svg`;
+  if (!user?.id) return "https://api.dicebear.com/9.x/miniavs/svg";
 
   const dicebearUrl = `https://api.dicebear.com/9.x/miniavs/svg?seed=${encodeURIComponent(user.id)}`;
 
@@ -47,9 +47,11 @@ export default function UserAvatar({ user, className }: UserAvatarProps) {
       <AvatarImage src={avatarUrl} alt={user?.name || "User"} />
       <AvatarFallback>
         {user?.name
-          .split(" ")
-          .map((name) => name[0])
-          .join("")}
+          ? user.name
+              .split(" ")
+              .map((name) => name[0])
+              .join("")
+          : "U"}
       </AvatarFallback>
     </Avatar>
   );

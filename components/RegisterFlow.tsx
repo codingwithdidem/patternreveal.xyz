@@ -150,11 +150,7 @@ function SignUp() {
       setStep("verify");
     },
     onError: ({ error }) => {
-      toast.error(
-        error.serverError ||
-          error.validationErrors?.email?.[0] ||
-          error.validationErrors?.password?.[0]
-      );
+      toast.error(error.serverError || error.validationErrors?.email?.[0]);
     }
   });
 
@@ -172,7 +168,7 @@ function SignUp() {
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-lg font-bold">Get started with patternreveal.xyz</h1>
       <h3 className="text-sm text-gray-500">
-        {`Already have an account?`}
+        Already have an account?
         <Link
           href="/login"
           className="ml-1 underline-offset-2 underline font-semibold hover:text-blue-500 transition-colors duration-400"

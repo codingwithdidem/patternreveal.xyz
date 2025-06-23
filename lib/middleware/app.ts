@@ -6,7 +6,7 @@ import { getUserViaToken } from "./utils/get-user-via-token";
 export default async function AppMiddleware(req: NextRequest) {
   const { path, fullPath } = parse(req);
 
-  const user = getUserViaToken(req);
+  const user = await getUserViaToken(req);
 
   // If the path is not an auth route and the user is not logged in, redirect to the login page
   if (!AUTH_ROUTES.has(path) && !user) {

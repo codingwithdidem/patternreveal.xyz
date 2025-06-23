@@ -108,9 +108,9 @@ export const authOptions: NextAuthOptions = {
 
         return {
           id: user.id,
-          name: user.name,
+          name: user.name || user.email.split("@")[0],
           email: user.email,
-          image: user.image
+          image: user.image || undefined
         };
       }
     }),
@@ -173,7 +173,9 @@ export const authOptions: NextAuthOptions = {
             where: { email: user.email },
             data: {
               ...(userExists.name ? {} : { name: profile.name }),
-              ...(userAlreadyHasImage ? {} : { image: profile["picture"] })
+              ...(userAlreadyHasImage
+                ? {}
+                : { image: (profile as any).picture })
             }
           });
 

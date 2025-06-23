@@ -38,7 +38,7 @@ export default function PlanFeatures({
           {selectedPlan.featureTitle}
         </motion.div>
       )}
-      {selectedPlan?.features?.map(({ id, text, tooltip }, i) => {
+      {selectedPlan?.features?.map(({ id, text }, i) => {
         const Icon = Check;
 
         return (
@@ -48,16 +48,7 @@ export default function PlanFeatures({
             className="flex items-center space-x-2 text-sm text-neutral-500"
           >
             <Icon className="size-4" />
-
-            {tooltip ? (
-              <Tooltip content={<div>Hello</div>}>
-                <p className="cursor-help text-neutral-600 underline decoration-dotted underline-offset-2">
-                  {text}
-                </p>
-              </Tooltip>
-            ) : (
-              <p className="text-neutral-600">{text}</p>
-            )}
+            <p className="text-neutral-600">{text}</p>
           </motion.div>
         );
       })}

@@ -2,7 +2,7 @@
 import * as React from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button, ButtonProps } from "@/components/ui/button";
+import { Button, type ButtonProps } from "@/components/ui/button";
 import {
   Command,
   CommandEmpty,
@@ -91,7 +91,7 @@ export function Combobox({
                   value={framework.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
-                    setOpen(false);
+                    onOpenChange?.(false);
                   }}
                 >
                   {framework.label}

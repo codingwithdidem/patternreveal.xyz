@@ -64,7 +64,7 @@ export default function LoginForm() {
       if (!response.ok && response.error) {
         console.log("response.error", response);
         if (response.error in errorCodes) {
-          toast.error(errorCodes[response.error]);
+          toast.error(errorCodes[response.error as keyof typeof errorCodes]);
         } else {
           toast.error(response.error);
         }

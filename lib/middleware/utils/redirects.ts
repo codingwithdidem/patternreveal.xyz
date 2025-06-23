@@ -1,6 +1,6 @@
 import { RESERVED_SLUGS } from "@/lib/constants/reserved-slugs";
 
-export const DEFAULT_REDIRECTS = {
+export const DEFAULT_REDIRECTS: Record<string, string> = {
   "/onboarding": "/onboarding/welcome"
 };
 

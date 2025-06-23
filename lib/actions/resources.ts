@@ -2,7 +2,7 @@
 
 import { createResourceSchema } from "@/lib/zod/schemas/resource";
 import prisma from "@/lib/prisma";
-import { generateEmbeddings } from "@/lib/ai/embedding";
+// import { generateEmbeddings } from "@/lib/ai/embedding";
 
 export const createResource = async (input: any) => {
   try {
@@ -14,14 +14,14 @@ export const createResource = async (input: any) => {
       }
     });
 
-    const embeddings = await generateEmbeddings(content);
+    // const embeddings = await generateEmbeddings(content);
 
-    await prisma.embedding.createMany({
-      data: embeddings.map((embedding) => ({
-        resourceId: resource.id,
-        ...embedding
-      }))
-    });
+    // await prisma.embedding.createMany({
+    //   data: embeddings.map((embedding) => ({
+    //     resourceId: resource.id,
+    //     ...embedding
+    //   }))
+    // });
 
     return "Resource successfully created and embedded.";
   } catch (e) {
