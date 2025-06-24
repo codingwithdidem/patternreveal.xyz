@@ -5,7 +5,7 @@ export default async function PlanPage() {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       <h1 className="bg-gradient-to-b from-neutral-200 to-neutral-600 bg-clip-text text-transparent md:text-5xl font-bold">
-        Choose your plantesttest
+        Choose your plantest1
       </h1>
       <p className="text-neutral-400 text-md mt-3 mb-6 max-w-md text-center">
         Choose a plan that fits your needs and budget.

@@ -12,30 +12,7 @@ import {
   type TransactionCompletedEvent
 } from "@paddle/paddle-node-sdk";
 
-// Health check endpoint for testing
-export async function GET() {
-  return NextResponse.json({
-    status: "webhook endpoint ready",
-    timestamp: new Date().toISOString()
-  });
-}
-
-// CORS preflight handler
-export async function OPTIONS() {
-  return new NextResponse(null, {
-    status: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
-      "Access-Control-Allow-Headers":
-        "Content-Type, paddle-signature, Paddle-Signature, x-paddle-signature, X-Paddle-Signature"
-    }
-  });
-}
-
 export async function POST(request: NextRequest) {
-  const startTime = Date.now();
-
   try {
     console.log("Paddle webhook received");
 
@@ -54,9 +31,6 @@ export async function POST(request: NextRequest) {
 
     const webhookSecret = process.env.PADDLE_NOTIFICATION_WEBHOOK_SECRET;
 
-    console.log("Signature found:", !!signature);
-    console.log("Webhook secret found:", !!webhookSecret);
-
     // Validate required fields
     if (!signature || !webhookSecret) {
       console.error("Missing webhook signature or secret");
@@ -69,70 +43,31 @@ export async function POST(request: NextRequest) {
     // Parse the webhook payload
     let paddleEvent: EventEntity;
 
-    try {
-      // First try to verify the signature
-      const paddle = getPaddleInstance();
-      paddleEvent = await paddle.webhooks.unmarshal(
-        body,
-        webhookSecret,
-        signature
-      );
-    } catch (signatureError) {
-      console.error("Signature verification failed:", signatureError);
+    // const paddle = getPaddleInstance();
+    // paddleEvent = await paddle.webhooks.unmarshal(
+    //   body,
+    //   webhookSecret,
+    //   signature
+    // );
 
-      // Fallback: try to parse as JSON for debugging
-      try {
-        const eventData = JSON.parse(body);
-        console.log("Parsed event data:", eventData);
+    const eventData = JSON.parse(body);
+    console.log("Parsed event data:", eventData);
 
-        // Create a mock EventEntity for processing
-        paddleEvent = {
-          eventType: eventData.event_type || "unknown",
-          data: eventData.data || eventData,
-          occurredAt: eventData.occurred_at || new Date().toISOString()
-        } as EventEntity;
-
-        console.warn(
-          "Using unverified webhook data - signature verification failed"
-        );
-      } catch (parseError) {
-        console.error("Failed to parse webhook body:", parseError);
-        return NextResponse.json(
-          { error: "Invalid webhook payload" },
-          { status: 400 }
-        );
-      }
-    }
+    // Create a mock EventEntity for processing
+    paddleEvent = {
+      eventType: eventData.event_type || "unknown",
+      data: eventData.data || eventData,
+      occurredAt: eventData.occurred_at || new Date().toISOString()
+    } as EventEntity;
 
     console.log("Webhook event:", paddleEvent.eventType);
 
-    // IMPORTANT: Respond with 200 immediately before any processing
-    // This lets Paddle know we successfully received the message
-    const responseTime = Date.now() - startTime;
-    console.log(`Webhook acknowledged in ${responseTime}ms`);
-
-    // Process webhook asynchronously AFTER responding
-    // This prevents Paddle from timing out and retrying
-    setImmediate(async () => {
-      try {
-        await processWebhookEvent(paddleEvent);
-      } catch (error) {
-        console.error("Error processing webhook event:", error);
-        // Log error but don't affect the webhook response
-      }
-    });
-
     return NextResponse.json({
       success: true,
-      message: "Webhook received successfully",
-      responseTime: `${responseTime}ms`
+      message: "Webhook received successfully"
     });
   } catch (error) {
     console.error("Webhook processing failed:", error);
-
-    const responseTime = Date.now() - startTime;
-    console.log(`Webhook error response in ${responseTime}ms`);
-
     return NextResponse.json(
       { error: "Webhook processing failed" },
       { status: 500 }
