@@ -106,23 +106,25 @@ export async function POST(request: NextRequest) {
 
     console.log("Webhook event:", paddleEvent.eventType);
 
-    // Process webhook asynchronously to meet 5-second requirement
-    // Queue the event for processing instead of processing immediately
+    // IMPORTANT: Respond with 200 immediately before any processing
+    // This lets Paddle know we successfully received the message
+    const responseTime = Date.now() - startTime;
+    console.log(`Webhook acknowledged in ${responseTime}ms`);
+
+    // Process webhook asynchronously AFTER responding
+    // This prevents Paddle from timing out and retrying
     setImmediate(async () => {
       try {
         await processWebhookEvent(paddleEvent);
       } catch (error) {
         console.error("Error processing webhook event:", error);
+        // Log error but don't affect the webhook response
       }
     });
 
-    // Return 200 immediately to acknowledge receipt
-    const responseTime = Date.now() - startTime;
-    console.log(`Webhook acknowledged in ${responseTime}ms`);
-
     return NextResponse.json({
       success: true,
-      message: "Webhook received and queued for processing",
+      message: "Webhook received successfully",
       responseTime: `${responseTime}ms`
     });
   } catch (error) {
@@ -138,11 +140,41 @@ export async function POST(request: NextRequest) {
   }
 }
 
+// Simple in-memory cache for webhook deduplication
+// In production, you might want to use Redis or database for this
+const processedWebhooks = new Set<string>();
+
 // Async function to process webhook events
 async function processWebhookEvent(paddleEvent: EventEntity) {
   console.log("Processing webhook event:", paddleEvent.eventType);
 
   try {
+    // Check if we've already processed this webhook based on occurred_at
+    // This prevents duplicate processing if webhooks arrive out of order
+    const occurredAt = new Date(paddleEvent.occurredAt);
+    console.log("Event occurred at:", occurredAt.toISOString());
+
+    // Create a unique key for this webhook event
+    const webhookKey = `${paddleEvent.eventType}-${paddleEvent.occurredAt}`;
+
+    // Check if we've already processed this webhook
+    if (processedWebhooks.has(webhookKey)) {
+      console.log("Webhook already processed, skipping:", webhookKey);
+      return;
+    }
+
+    // Add to processed set (with cleanup to prevent memory leaks)
+    processedWebhooks.add(webhookKey);
+
+    // Clean up old entries (keep last 1000 webhooks)
+    if (processedWebhooks.size > 1000) {
+      const entries = Array.from(processedWebhooks);
+      processedWebhooks.clear();
+      for (const entry of entries.slice(-500)) {
+        processedWebhooks.add(entry);
+      }
+    }
+
     switch (paddleEvent.eventType) {
       case EventName.SubscriptionCreated:
         await handleSubscriptionCreated(paddleEvent);
@@ -167,7 +199,7 @@ async function processWebhookEvent(paddleEvent: EventEntity) {
       paddleEvent.eventType,
       error
     );
-    throw error;
+    // Don't throw here - we've already responded to Paddle
   }
 }
 
