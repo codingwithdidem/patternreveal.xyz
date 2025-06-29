@@ -4,12 +4,13 @@ import { withPermissions } from "@/lib/auth/withPermissions";
 import prisma from "@/lib/prisma";
 import { updateUserSchema } from "@/lib/zod/schemas/user";
 import { NextResponse } from "next/server";
-import { randomBytes } from "crypto";
+import { randomBytes } from "node:crypto";
 import { hashToken } from "@/lib/auth/hash-token";
 import { waitUntil } from "@vercel/functions";
 import { sendEmail } from "@/emails/send";
 import { redis } from "@/lib/upstash/redis";
 import ConfirmEmailChange from "@/emails/confirm-email.change";
+import { ratelimit } from "@/lib/upstash/ratelimit";
 
 export const PATCH = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
@@ -24,12 +25,25 @@ export const PATCH = withPermissions(
       });
     }
 
-    const { name, email } = data;
+    const { name, email, defaultWorkspace } = data;
 
-    console.log({
-      name,
-      email
-    });
+    if (defaultWorkspace) {
+      const workspaceUser = await prisma.workspaceUser.findFirst({
+        where: {
+          userId: session.user.id,
+          workspace: {
+            slug: defaultWorkspace
+          }
+        }
+      });
+
+      if (!workspaceUser) {
+        throw new PatternRevealApiError({
+          code: "forbidden",
+          message: `You don't have access to workspace "${defaultWorkspace}".`
+        });
+      }
+    }
 
     if (email && email !== session.user.email) {
       const userWithEmail = await prisma.user.findUnique({
@@ -45,24 +59,22 @@ export const PATCH = withPermissions(
         });
       }
 
-      // TODO: Implement rate limiting
-      // const { success } = await ratelimit(10, "1 d").limit(
-      //   `email-change-request:${session.user.id}`
-      // );
+      // Allow 10 email change requests per day
+      const { success } = await ratelimit(10, "1 d").limit(
+        `email-change-request:${session.user.id}`
+      );
 
-      // if (!success) {
-      //   throw new PatternRevealApiError({
-      //     code: "rate_limit_exceeded",
-      //     message:
-      //       "You've requested too many email change requests. Please try again later."
-      //   });
-      // }
+      if (!success) {
+        throw new PatternRevealApiError({
+          code: "rate_limit_exceeded",
+          message:
+            "You've requested too many email change requests. Please try again later."
+        });
+      }
 
       // Create token
       const token = randomBytes(32).toString("hex");
       const expiresIn = 15 * 60 * 1000; // 15 minutes
-
-      console.log(`confirm-email-change/${token}`);
 
       await prisma.verificationToken.create({
         data: {
@@ -95,19 +107,21 @@ export const PATCH = withPermissions(
         })
       );
     }
+
     try {
       const response = await prisma.user.update({
         where: {
           id: session.user.id
         },
         data: {
-          ...(name && { name })
+          ...(name && { name }),
+          ...(defaultWorkspace && { defaultWorkspace })
         }
       });
 
-      return NextResponse.json(response, {
-        headers
-      });
+      console.log({ response });
+
+      return NextResponse.json(response);
     } catch (error) {
       console.log(error);
       throw new PatternRevealApiError({

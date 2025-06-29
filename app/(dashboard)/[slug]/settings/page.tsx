@@ -1,7 +1,6 @@
-"use client";
-
 import EmailForm from "@/components/settings/EmailForm";
 import NameForm from "@/components/settings/NameForm";
+import UpdateDefaultWorkspaceForm from "@/components/settings/update-default-workspace-form";
 
 export default function SettingsPage() {
   return (
@@ -10,6 +9,7 @@ export default function SettingsPage() {
       <div className="flex flex-col divide-y divide-gray-100">
         <NameForm />
         <EmailForm />
+        <UpdateDefaultWorkspaceForm />
       </div>
     </div>
   );

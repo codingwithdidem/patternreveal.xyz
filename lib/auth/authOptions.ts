@@ -70,7 +70,8 @@ export const authOptions: NextAuthOptions = {
             image: true,
             invalidLoginAttempts: true,
             emailVerified: true,
-            lockedAt: true
+            lockedAt: true,
+            defaultWorkspace: true
           }
         });
 
@@ -110,7 +111,8 @@ export const authOptions: NextAuthOptions = {
           id: user.id,
           name: user.name || user.email.split("@")[0],
           email: user.email,
-          image: user.image || undefined
+          image: user.image || undefined,
+          defaultWorkspace: user.defaultWorkspace || undefined
         };
       }
     }),
@@ -197,6 +199,8 @@ export const authOptions: NextAuthOptions = {
           defaultWorkspace: true
         }
       });
+
+      console.log("refreshedUser", refreshedUser);
       if (user) {
         console.log("user", user);
         token.user = {
@@ -215,7 +219,8 @@ export const authOptions: NextAuthOptions = {
             name: true,
             email: true,
             image: true,
-            createdAt: true
+            createdAt: true,
+            defaultWorkspace: true
           }
         });
         if (refreshedUser) {

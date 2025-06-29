@@ -9,5 +9,9 @@ export const updateUserSchema = z.object({
   email: z
     .preprocess(trim, z.string().email())
     .optional()
-    .describe("The email of the user.")
+    .describe("The email of the user."),
+  defaultWorkspace: z
+    .preprocess(trim, z.string().min(1))
+    .optional()
+    .describe("The default workspace of the user.")
 });

@@ -39,17 +39,9 @@ import { ActivityIcon } from "./ui/activity";
 import { BookTextIcon } from "./ui/book-text";
 import { SettingsGearIcon } from "./ui/settings-gear";
 import type { Session } from "next-auth";
-import { BellIcon } from "./ui/bell";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger
-} from "./ui/collapsible";
-import useReflections from "@/lib/swr/use-reflections";
 import usePopularReflections from "@/lib/swr/use-popular-reflections";
 import { truncate } from "@/utils/functions/truncate";
 import { capitalizeFirstChar } from "@/utils/functions/capitalize-first-char";
-import WorkspaceSwitcher from "./workspaces/workspace-switcher";
 import WorkspaceDropdown from "./workspaces/workspace-dropdown";
 
 export type NavItemCommon = {
