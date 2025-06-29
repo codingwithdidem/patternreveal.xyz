@@ -1,6 +1,7 @@
 import EmailForm from "@/components/settings/EmailForm";
 import NameForm from "@/components/settings/NameForm";
 import UpdateDefaultWorkspaceForm from "@/components/settings/update-default-workspace-form";
+import DeleteAccountForm from "@/components/settings/DeleteAccountForm";
 
 export default function SettingsPage() {
   return (
@@ -10,6 +11,7 @@ export default function SettingsPage() {
         <NameForm />
         <EmailForm />
         <UpdateDefaultWorkspaceForm />
+        <DeleteAccountForm />
       </div>
     </div>
   );

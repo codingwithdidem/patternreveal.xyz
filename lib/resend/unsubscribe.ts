@@ -1,6 +1,6 @@
 import { resend } from "../resend";
 
-export const removeContact = async ({
+export const unsubscribe = async ({
   email
 }: {
   email: string;

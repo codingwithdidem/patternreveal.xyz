@@ -1,6 +1,6 @@
 import { resend } from "../resend";
 
-export const createContact = async ({
+export const subscribe = async ({
   email,
   name
 }: {

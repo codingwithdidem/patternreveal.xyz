@@ -11,6 +11,7 @@ import { sendEmail } from "@/emails/send";
 import { redis } from "@/lib/upstash/redis";
 import ConfirmEmailChange from "@/emails/confirm-email.change";
 import { ratelimit } from "@/lib/upstash/ratelimit";
+import { unsubscribe } from "@/lib/resend/unsubscribe";
 
 export const PATCH = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
@@ -119,11 +120,8 @@ export const PATCH = withPermissions(
         }
       });
 
-      console.log({ response });
-
       return NextResponse.json(response);
     } catch (error) {
-      console.log(error);
       throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to update user."
@@ -136,3 +134,39 @@ export const PATCH = withPermissions(
 );
 
 export const PUT = PATCH;
+
+export const DELETE = withPermissions(
+  async ({ req, headers, session, searchParams, permissions }) => {
+    const userOwnsWorkspaces = await prisma.workspaceUser.findMany({
+      where: {
+        userId: session.user.id,
+        role: "OWNER"
+      }
+    });
+
+    console.log({ userOwnsWorkspaces });
+
+    if (userOwnsWorkspaces.length > 0) {
+      throw new PatternRevealApiError({
+        code: "forbidden",
+        message:
+          "You must transfer ownership of your workspaces or delete them before deleting your account."
+      });
+    }
+    const deletedUser = await prisma.user.delete({
+      where: {
+        id: session.user.id
+      }
+    });
+
+    // Unsubscribe from email list
+    await unsubscribe({
+      email: session.user.email
+    });
+
+    return NextResponse.json(deletedUser);
+  },
+  {
+    requiredPermissions: ["mood.write"]
+  }
+);

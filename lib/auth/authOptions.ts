@@ -18,7 +18,7 @@ import {
 } from "./lock-account";
 import StripeWelcomeEmail from "@/emails/stripe-welcome";
 import { waitUntil } from "@vercel/functions";
-import { createContact } from "../resend/create-contact";
+import { subscribe } from "../resend/subscribe";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -254,7 +254,7 @@ export const authOptions: NextAuthOptions = {
 
         waitUntil(
           Promise.allSettled([
-            createContact({
+            subscribe({
               email: user.email,
               name: user.name ?? ""
             }),
