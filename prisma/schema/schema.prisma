@@ -18,6 +18,7 @@ model User {
   createdAt            DateTime        @default(now())
   image                String?
   invalidLoginAttempts Int             @default(0)
+  subscribed           Boolean         @default(true) // Email subscription status
   lockedAt             DateTime?
   accounts             Account[]
   moods                Mood[]

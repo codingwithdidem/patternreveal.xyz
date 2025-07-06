@@ -11,6 +11,7 @@ import { FREE_WORKSPACES_LIMIT } from "@/lib/constants/limits";
 import { nanoid } from "@/utils/functions/nanoid";
 import { NextResponse } from "next/server";
 import { waitUntil } from "@vercel/functions";
+import { withWorkspace } from "@/lib/auth/withWorkspace";
 
 export const GET = withPermissions(
   async ({ session }) => {
@@ -134,5 +135,69 @@ export const POST = withPermissions(
   },
   {
     requiredPermissions: []
+  }
+);
+
+export const DELETE = withWorkspace(
+  async ({ workspace, headers, session }) => {
+    // Check if the user is the owner of the workspace
+    const isOwner = await prisma.workspaceUser.findFirst({
+      where: {
+        workspaceId: workspace.id,
+        userId: session.user.id,
+        role: "OWNER"
+      }
+    });
+
+    if (!isOwner) {
+      throw new PatternRevealApiError({
+        code: "unauthorized",
+        message: "You are not the owner of this workspace"
+      });
+    }
+
+    await Promise.all([
+      // Delete all the users from the workspace
+      prisma.workspaceUser.deleteMany({
+        where: {
+          workspaceId: workspace.id
+        }
+      }),
+      // Update the user's default workspace to the first workspace
+      prisma.user.updateMany({
+        where: {
+          defaultWorkspace: workspace.slug
+        },
+        data: {
+          defaultWorkspace: null
+        }
+      })
+    ]);
+
+    waitUntil(
+      Promise.all([
+        // Cancel the workspace subscription if it exists
+        workspace.paddleId && cancelSubscription(workspace.paddleId),
+
+        // Queue the workspace for deletion
+        prisma.workspace.delete({
+          where: {
+            id: workspace.id
+          }
+        })
+      ])
+    );
+
+    return NextResponse.json(
+      {
+        ...WorkspaceSchema.parse({
+          ...workspace
+        })
+      },
+      { headers }
+    );
+  },
+  {
+    requiredPermissions: ["mood.read"]
   }
 );

@@ -21,18 +21,9 @@ export const config = {
 };
 
 export default async function middleware(request: NextRequest) {
-  const { domain, path, fullPath, searchParamsString } = parse(request);
-
-  console.log({
-    domain,
-    path,
-    fullPath,
-    searchParamsString
-  });
+  const { path, fullPath, searchParamsString } = parse(request);
 
   const user = await getUserViaToken(request);
-
-  console.log({ user });
 
   if (
     !user &&

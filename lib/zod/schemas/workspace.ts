@@ -12,6 +12,8 @@ export const createWorkspaceSchema = z.object({
     .describe("The unique slug of the workspace")
 });
 
+export const updateWorkspaceSchema = createWorkspaceSchema.partial();
+
 export const WorkspaceSchema = z.object({
   id: z.string().describe("The unique identifier of the workspace"),
   name: z.string().describe("The name of the workspace"),

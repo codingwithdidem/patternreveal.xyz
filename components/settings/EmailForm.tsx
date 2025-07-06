@@ -11,10 +11,11 @@ import {
   FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import { toast } from "sonner";
-import { useDebounceCallback } from "usehooks-ts";
 import React from "react";
+import SubscribeToNewsletter from "../SubscribeToNewsletter";
 
 const emailSchema = z.object({
   email: z
@@ -59,44 +60,31 @@ export default function EmailForm() {
     }
   };
 
-  const debouncedUpdate = useDebounceCallback(updateEmail, 1000);
-
   return (
-    <div className="flex items-center gap-10 w-full py-4">
-      <div className="flex flex-col gap-0.5 mb-4 w-full">
-        <h2 className="font-semibold text-lg">Email</h2>
-        <p className="text-muted-foreground">
-          Your email address is used for account recovery and notifications.
-        </p>
-      </div>
+    <div className="border border-neutral-200 rounded-lg bg-white p-6">
+      <h2 className="font-semibold text-lg mb-1">Email</h2>
+      <p className="text-muted-foreground mb-4">
+        This is your primary email address to login and receive notifications.
+        We will send a verification email to confirm the change.
+      </p>
       <Form {...form}>
-        <form className="w-full">
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    placeholder="adalovelace@patternreveal.xyz"
-                    className="max-w-md w-full rounded-2xl"
-                    maxLength={32}
-                    {...field}
-                    onChange={(e) => {
-                      field.onChange(e);
-                      if (e.target.value) {
-                        debouncedUpdate(e.target.value);
-                      }
-                    }}
-                  />
-                </FormControl>
-                <FormDescription>
-                  We will send a verification email to confirm the change.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
+        <form
+          className="w-full"
+          onSubmit={form.handleSubmit((values) => updateEmail(values.email))}
+        >
+          <Input
+            placeholder="adalovelace@patternreveal.xyz"
+            className="rounded-md mb-0 max-w-md"
+            {...form.register("email")}
           />
+          <FormMessage />
+          <div className="-mx-6 border-t border-neutral-200 my-6" />
+          <div className="flex items-center justify-between">
+            <SubscribeToNewsletter />
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              Save changes
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

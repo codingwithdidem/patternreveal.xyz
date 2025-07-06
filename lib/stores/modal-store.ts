@@ -2,14 +2,17 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 import { AddWorkspaceModal } from "@/components/modals/AddWorkspaceModal";
 import { DeleteAccountModal } from "@/components/modals/DeleteAccountModal";
+import { DeleteWorkspaceModal } from "@/components/modals/DeleteWorkspaceModal";
 import { useMemo } from "react";
 
 interface ModalState {
   showAddWorkspaceModal: boolean;
   showDeleteAccountModal: boolean;
+  showDeleteWorkspaceModal: boolean;
   // Actions
   setShowAddWorkspaceModal: (show: boolean) => void;
   setShowDeleteAccountModal: (show: boolean) => void;
+  setShowDeleteWorkspaceModal: (show: boolean) => void;
   // Utility actions
   closeAllModals: () => void;
   openModal: (
@@ -17,6 +20,7 @@ interface ModalState {
       ModalState,
       | "setShowAddWorkspaceModal"
       | "setShowDeleteAccountModal"
+      | "setShowDeleteWorkspaceModal"
       | "setShowAddEditDomainModal"
       | "setShowLinkBuilder"
       | "setShowAddEditTagModal"
@@ -41,15 +45,19 @@ export const useModalStore = create<ModalState>()(
       // Initial state
       showAddWorkspaceModal: false,
       showDeleteAccountModal: false,
+      showDeleteWorkspaceModal: false,
       // Individual setters
       setShowAddWorkspaceModal: (show) => set({ showAddWorkspaceModal: show }),
       setShowDeleteAccountModal: (show) =>
         set({ showDeleteAccountModal: show }),
+      setShowDeleteWorkspaceModal: (show) =>
+        set({ showDeleteWorkspaceModal: show }),
       // Utility actions
       closeAllModals: () =>
         set({
           showAddWorkspaceModal: false,
-          showDeleteAccountModal: false
+          showDeleteAccountModal: false,
+          showDeleteWorkspaceModal: false
         }),
 
       openModal: (modalName) => {
@@ -91,6 +99,20 @@ export const useDeleteAccountModal = () => {
       show,
       setShow,
       DeleteAccountModal
+    }),
+    [show, setShow]
+  );
+};
+
+export const useDeleteWorkspaceModal = () => {
+  const show = useModalStore((state) => state.showDeleteWorkspaceModal);
+  const setShow = useModalStore((state) => state.setShowDeleteWorkspaceModal);
+
+  return useMemo(
+    () => ({
+      show,
+      setShow,
+      DeleteWorkspaceModal
     }),
     [show, setShow]
   );

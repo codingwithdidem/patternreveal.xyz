@@ -136,15 +136,13 @@ export const PATCH = withPermissions(
 export const PUT = PATCH;
 
 export const DELETE = withPermissions(
-  async ({ req, headers, session, searchParams, permissions }) => {
+  async ({ session }) => {
     const userOwnsWorkspaces = await prisma.workspaceUser.findMany({
       where: {
         userId: session.user.id,
         role: "OWNER"
       }
     });
-
-    console.log({ userOwnsWorkspaces });
 
     if (userOwnsWorkspaces.length > 0) {
       throw new PatternRevealApiError({

@@ -1,18 +1,17 @@
 "use client";
-import { useDeleteAccountModal } from "@/lib/stores/modal-store";
+import { useDeleteWorkspaceModal } from "@/lib/stores/modal-store";
 import { Button } from "@/components/ui/button";
 
-export default function DeleteAccountForm() {
-  const { setShow } = useDeleteAccountModal();
+export default function DeleteWorkspace() {
+  const { setShow } = useDeleteWorkspaceModal();
 
   return (
     <div className="border border-neutral-200 rounded-lg bg-white p-6">
       <h2 className="font-semibold text-lg text-destructive mb-1">
-        Delete Account
+        Delete Workspace
       </h2>
       <p className="text-muted-foreground mb-4">
-        Permanently delete your account and all associated data. This action
-        cannot be undone.
+        Permanently delete your workspace
       </p>
       <div className="-mx-6 border-t border-neutral-200 my-6" />
       <div className="flex items-center justify-between">
@@ -20,7 +19,7 @@ export default function DeleteAccountForm() {
           This action cannot be undone.
         </span>
         <Button variant="destructive" onClick={() => setShow(true)}>
-          Delete Account
+          Delete Workspace
         </Button>
       </div>
     </div>

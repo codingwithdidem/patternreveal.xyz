@@ -5,7 +5,8 @@ import { Suspense } from "react";
 import type { ReactNode } from "react";
 import {
   useAddWorkspaceModal,
-  useDeleteAccountModal
+  useDeleteAccountModal,
+  useDeleteWorkspaceModal
 } from "@/lib/stores/modal-store";
 
 export function ModalProvider({ children }: { children: ReactNode }) {
@@ -21,11 +22,13 @@ function ModalProviderClient({ children }: { children: ReactNode }) {
   // Modal hooks
   const { AddWorkspaceModal } = useAddWorkspaceModal();
   const { DeleteAccountModal } = useDeleteAccountModal();
+  const { DeleteWorkspaceModal } = useDeleteWorkspaceModal();
 
   return (
     <>
       <AddWorkspaceModal />
       <DeleteAccountModal />
+      <DeleteWorkspaceModal />
       {children}
     </>
   );

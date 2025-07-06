@@ -13,7 +13,7 @@
     "lint": "next lint",
     "seed": "tsx prisma/seed.ts",
     "prisma:generate": "prisma generate --schema=prisma/schema",
-    "prisma:migrate": "prisma migrate dev --schema=prisma/schema",
+    "prisma:migrate": "cp .env prisma/.env && prisma migrate dev --schema=prisma/schema",
     "prisma:studio": "prisma studio --schema=prisma/schema",
     "prisma:format": "biome format --write dev"
   },

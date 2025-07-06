@@ -5,9 +5,9 @@ import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -15,6 +15,8 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import React from "react";
 import { Button } from "../ui/button";
+import useWorkspace from "@/lib/swr/use-workspace";
+import { mutate } from "swr";
 
 const nameSchema = z.object({
   name: z
@@ -27,8 +29,9 @@ const nameSchema = z.object({
     })
 });
 
-export default function NameForm() {
-  const { data: session, update } = useSession();
+export default function WorkspaceName() {
+  const { data: session } = useSession();
+  const { id: workspaceId } = useWorkspace();
 
   const form = useForm<z.infer<typeof nameSchema>>({
     resolver: zodResolver(nameSchema),
@@ -39,7 +42,7 @@ export default function NameForm() {
 
   const updateName = async (name: string) => {
     try {
-      const response = await fetch("/api/user", {
+      const response = await fetch(`/api/workspaces/${workspaceId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json"
@@ -48,8 +51,11 @@ export default function NameForm() {
       });
 
       if (response.status === 200) {
-        toast.success("Name updated");
-        await update();
+        await Promise.all([
+          mutate(`/api/workspaces/${workspaceId}`),
+          mutate("/api/workspaces")
+        ]);
+        toast.success("Workspace name updated");
       } else {
         const { error } = await response.json();
         toast.error(error.message);
@@ -62,17 +68,29 @@ export default function NameForm() {
 
   return (
     <div className="border border-neutral-200 rounded-lg bg-white p-6">
-      <h2 className="font-semibold text-lg mb-1">Your Name</h2>
+      <h2 className="font-semibold text-lg mb-1">Workspace Name</h2>
       <p className="text-muted-foreground mb-4">
         This is your visible name within the app.
       </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit((values) => updateName(values.name))}>
-          <Input
-            placeholder="Your name"
-            className="rounded-md mb-0 max-w-md"
-            maxLength={32}
-            {...form.register("name")}
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Name</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    placeholder="Workspace name"
+                    className="rounded-md mb-0 max-w-md"
+                    maxLength={32}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
           />
           <div className="-mx-6 border-t border-neutral-200 my-6" />
           <div className="flex items-center justify-between">

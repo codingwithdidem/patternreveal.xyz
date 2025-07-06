@@ -1,18 +1,15 @@
-import EmailForm from "@/components/settings/EmailForm";
 import NameForm from "@/components/settings/NameForm";
-import UpdateDefaultWorkspaceForm from "@/components/settings/update-default-workspace-form";
+import EmailForm from "@/components/settings/EmailForm";
 import DeleteAccountForm from "@/components/settings/DeleteAccountForm";
+import UpdateDefaultWorkspaceForm from "@/components/settings/update-default-workspace-form";
 
-export default function SettingsPage() {
+export default function AccountSettingsPage() {
   return (
-    <div className="p-4 h-full w-full font-[family-name:var(--font-satoshi)]">
-      <h1 className="text-2xl font-semibold mb-5">Settings</h1>
-      <div className="flex flex-col divide-y divide-gray-100">
-        <NameForm />
-        <EmailForm />
-        <UpdateDefaultWorkspaceForm />
-        <DeleteAccountForm />
-      </div>
+    <div className="flex flex-col gap-6">
+      <NameForm />
+      <EmailForm />
+      <UpdateDefaultWorkspaceForm />
+      <DeleteAccountForm />
     </div>
   );
 }
