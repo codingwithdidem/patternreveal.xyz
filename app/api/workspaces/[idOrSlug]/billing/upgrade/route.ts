@@ -1,7 +1,6 @@
 import { PatternRevealApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
-import { getSubscription, updateSubscription } from "@/lib/paddle";
 import { PLANS } from "@/lib/constants";
 import { NextResponse } from "next/server";
 
