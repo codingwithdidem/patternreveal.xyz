@@ -1,12 +1,14 @@
 import { NavigationMenu } from "@/components/NavigationMenu";
 
-export default function SettingsLayout({
+export default async function SettingsLayout({
   children,
   params
-}: { children: React.ReactNode; params: { slug: string } }) {
+}: { children: React.ReactNode; params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
   const navItems = [
-    { label: "Account", href: `/${params.slug}/settings` },
-    { label: "Workspace", href: `/${params.slug}/settings/workspace` }
+    { label: "Account", href: `/${slug}/settings` },
+    { label: "Workspace", href: `/${slug}/settings/workspace` }
   ];
 
   return (
