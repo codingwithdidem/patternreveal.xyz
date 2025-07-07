@@ -1,12 +1,14 @@
 "use server";
 
-import { prismaEdge } from "@/lib/prisma-edge";
 import type { UserProps } from "@/lib/types";
 
 export async function getDefaultWorkspace(user: UserProps) {
   let defaultWorkspace = user.defaultWorkspace;
 
   if (!defaultWorkspace) {
+    // Dynamic import to avoid including prisma in the main bundle
+    const { prismaEdge } = await import("@/lib/prisma-edge");
+
     const userWithDefaultWorkspace = await prismaEdge.user.findUnique({
       where: {
         id: user.id

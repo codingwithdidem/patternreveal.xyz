@@ -1,8 +1,10 @@
 import type { OnboardingStep } from "@/lib/onboarding/useOnboardingFlow";
 import type { UserProps } from "@/lib/types";
-import { redis } from "@/lib/upstash/redis";
 
 export async function getOnboardingStep(user: UserProps) {
+  // Dynamic import to avoid including redis in the main bundle
+  const { redis } = await import("@/lib/upstash/redis");
+
   return (
     ((await redis.get(`onboarding:step:${user.id}`)) as OnboardingStep) ||
     undefined
