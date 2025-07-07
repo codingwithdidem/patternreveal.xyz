@@ -12,6 +12,7 @@ import { nanoid } from "@/utils/functions/nanoid";
 import { NextResponse } from "next/server";
 import { waitUntil } from "@vercel/functions";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
+import { cancelSubscription } from "@/lib/paddle/cancel-subscription";
 
 export const GET = withPermissions(
   async ({ session }) => {
