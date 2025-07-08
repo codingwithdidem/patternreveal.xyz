@@ -14,7 +14,6 @@ import { getPaddleClient } from "@/lib/paddle/client";
 
 export async function POST(request: NextRequest) {
   try {
-    console.log("Paddle webhook received");
     const body = await request.text();
 
     // Get signature from headers
@@ -28,34 +27,18 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!signature || !webhookSecret) {
-      console.error("Missing webhook signature or secret");
       return NextResponse.json(
         { error: "Missing webhook signature or secret" },
         { status: 400 }
       );
     }
 
-    // Parse the webhook payload
-    let paddleEvent: EventEntity;
-
     const paddle = getPaddleClient();
-    paddleEvent = await paddle.webhooks.unmarshal(
+    const paddleEvent = await paddle.webhooks.unmarshal(
       body,
       webhookSecret,
       signature
     );
-
-    const eventData = JSON.parse(body);
-    console.log("Parsed event data:", eventData);
-
-    // Create a mock EventEntity for processing
-    paddleEvent = {
-      eventType: eventData.event_type || "unknown",
-      data: eventData.data || eventData,
-      occurredAt: eventData.occurred_at || new Date().toISOString()
-    } as EventEntity;
-
-    console.log("Webhook event:", paddleEvent.eventType);
 
     await processWebhookEvent(paddleEvent);
 
@@ -74,20 +57,10 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// // Simple in-memory cache for webhook deduplication
-// // In production, you might want to use Redis or database for this
-// const processedWebhooks = new Set<string>();
-
-// // Async function to process webhook events
 async function processWebhookEvent(paddleEvent: EventEntity) {
   console.log("Processing webhook event:", paddleEvent.eventType);
 
   try {
-    // Check if we've already processed this webhook based on occurred_at
-    // This prevents duplicate processing if webhooks arrive out of order
-    const occurredAt = new Date(paddleEvent.occurredAt);
-    console.log("Event occurred at:", occurredAt.toISOString());
-
     switch (paddleEvent.eventType) {
       case EventName.SubscriptionCreated:
         await handleSubscriptionCreated(paddleEvent);
@@ -104,21 +77,18 @@ async function processWebhookEvent(paddleEvent: EventEntity) {
       default:
         console.log("Unhandled event type:", paddleEvent.eventType);
     }
-
-    console.log("Webhook event processed successfully:", paddleEvent.eventType);
   } catch (error) {
     console.error(
       "Error processing webhook event:",
       paddleEvent.eventType,
       error
     );
-    // Don't throw here - we've already responded to Paddle
   }
 }
 
 async function handleSubscriptionCreated(event: SubscriptionCreatedEvent) {
   console.log("Subscription created:", event);
-  const paddleCustomerId = event.data.customer_id;
+  const paddleCustomerId = event.data.customerId;
   const priceId = event.data.items[0].price?.id;
   const plan = PLANS.find((plan) =>
     [plan.price.monthlyId, plan.price.yearlyId].includes(priceId)
