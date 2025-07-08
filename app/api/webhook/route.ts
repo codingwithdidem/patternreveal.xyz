@@ -12,10 +12,6 @@ import {
 } from "@paddle/paddle-node-sdk";
 import { getPaddleClient } from "@/lib/paddle/client";
 
-export const config = {
-  runtime: "edge"
-};
-
 export async function POST(request: NextRequest) {
   try {
     console.log("Paddle webhook received");
