@@ -118,7 +118,7 @@ async function processWebhookEvent(paddleEvent: EventEntity) {
 
 async function handleSubscriptionCreated(event: SubscriptionCreatedEvent) {
   console.log("Subscription created:", event);
-  const paddleCustomerId = event.data.customerId;
+  const paddleCustomerId = event.data.customer_id;
   const priceId = event.data.items[0].price?.id;
   const plan = PLANS.find((plan) =>
     [plan.price.monthlyId, plan.price.yearlyId].includes(priceId)
