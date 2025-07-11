@@ -40,6 +40,7 @@ model Workspace {
   reflectionsLimit Int @default(20) // Total reflections usage limit of the workspace
   aiUsage          Int @default(0) // Total AI usage of the workspace
   aiLimit          Int @default(10) // Total AI usage limit of the workspace
+  usersLimit       Int @default(1) // Total users limit of the workspace
 
   store Json? // General key-value store for things like persisting toggles, dismissing popups, etc.
 

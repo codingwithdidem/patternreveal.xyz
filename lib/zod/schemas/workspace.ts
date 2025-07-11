@@ -42,6 +42,7 @@ export const WorkspaceSchema = z.object({
     .describe("The reflections limit of the workspace"),
   aiUsage: z.number().describe("The AI usage of the workspace"),
   aiLimit: z.number().describe("The AI limit of the workspace"),
+  usersLimit: z.number().describe("The users limit of the workspace."),
   store: z.record(z.string(), z.any()).describe("The store of the workspace"),
   createdAt: z.date().describe("The date and time the workspace was created"),
   updatedAt: z

@@ -59,7 +59,7 @@ export const POST = withWorkspace(async ({ req, workspace, session }) => {
     });
   }
 
-  if (workspaceUserCount + workspaceInviteCount > workspace.userLimit) {
+  if (workspaceUserCount + workspaceInviteCount > workspace.usersLimit) {
     throw new PatternRevealApiError({
       code: "exceeded_limit",
       message: "You have reached the maximum number of users for this workspace"

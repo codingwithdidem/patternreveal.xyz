@@ -1,27 +1,11 @@
 import { PremiumFeatureBadge } from "@/components/PremiumFeatureBadge";
 import LaterButton from "../../later-button";
 import InviteForm from "./form";
-import { TooltipContent } from "@/components/ui/tooltip";
 
 export default function InvitePage() {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
-      <PremiumFeatureBadge
-        variant="crown"
-        text="Pro Feature"
-        tooltip={
-          <TooltipContent>
-            <div className="flex flex-col items-center justify-center gap-2 max-w-xs">
-              <h2 className="text-xs font-semibold">
-                This feature is only available on the Pro plan. For now, your
-                invitations will be saved and once you upgrade, they will be
-                sent.
-              </h2>
-            </div>
-          </TooltipContent>
-        }
-        tooltipSide="top"
-      />
+      <PremiumFeatureBadge variant="crown" text="Pro Feature" />
       <h1 className="bg-gradient-to-b from-neutral-200 to-neutral-600 bg-clip-text text-transparent md:text-5xl font-bold">
         Invite people to your workspace
       </h1>

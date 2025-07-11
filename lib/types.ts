@@ -21,6 +21,7 @@ export interface WorkspaceWithUsers {
   }[];
   plan: PlanProps;
   paddleId: string;
+  usersLimit: number;
   createdAt: Date;
 }
 

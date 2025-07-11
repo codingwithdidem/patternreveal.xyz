@@ -189,6 +189,7 @@ export default function InviteForm({
             }}
             type="button"
             className="mt-4"
+            disabled={fields.length >= 4}
           >
             <Plus /> Add email
           </Button>

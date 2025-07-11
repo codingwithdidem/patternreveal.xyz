@@ -1,5 +1,14 @@
-import type { Role } from "@/lib/types";
+import type { Role, WorkspaceWithUsers } from "@/lib/types";
 import prisma from "../prisma";
+
+import { randomBytes } from "crypto";
+import { ONE_WEEK_IN_SECONDS } from "@/utils/constants";
+import { PatternRevealApiError } from "./errors";
+import { Prisma } from "@prisma/client";
+import { hashToken } from "../auth/hash-token";
+import { sendEmail } from "@/emails/send";
+import WorkspaceInvite from "@/emails/workspace-invite";
+import type { Session } from "../auth/authOptions";
 
 export async function inviteUser({
   email,
@@ -14,23 +23,26 @@ export async function inviteUser({
 }) {
   // same method of generating a token as next-auth
   const token = randomBytes(32).toString("hex");
-  const expires = new Date(Date.now() + TWO_WEEKS_IN_SECONDS * 1000);
+  const expires = new Date(Date.now() + ONE_WEEK_IN_SECONDS * 1000);
 
   // create a workspace invite record and a verification request token that lasts for a week
   // here we use a try catch to account for the case where the user has already been invited
-  // for which `prisma.projectInvite.create()` will throw a unique constraint error
+  // for which `prisma.workspaceInvite.create()` will throw a unique constraint error
   try {
-    await prisma.projectInvite.create({
+    await prisma.workspaceInvite.create({
       data: {
         email,
         role,
         expires,
-        projectId: workspace.id
+        workspaceId: workspace.id
       }
     });
   } catch (error) {
-    if (error.code === "P2002") {
-      throw new DubApiError({
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
+      throw new PatternRevealApiError({
         code: "conflict",
         message: "User has already been invited to this workspace."
       });

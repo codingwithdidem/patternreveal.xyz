@@ -133,7 +133,8 @@ async function handleSubscriptionCreated(event: SubscriptionCreatedEvent) {
       plan: plan.name.toLowerCase(),
       usageLimit: plan.limits.reflections,
       reflectionsLimit: plan.limits.reflections,
-      aiLimit: plan.limits["ai-analysis"] + plan.limits["ask-ai"]
+      aiLimit: plan.limits["ai-analysis"] + plan.limits["ask-ai"],
+      usersLimit: plan.limits.users
     },
     select: {
       users: {
