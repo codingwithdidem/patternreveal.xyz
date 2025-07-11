@@ -1,7 +1,9 @@
+import { inviteUser } from "@/lib/api/users";
 import prisma from "@/lib/prisma";
 import { redis } from "@/lib/upstash/redis";
-import { Invite } from "@/lib/zod/schemas/invites";
+import type { Invite } from "@/lib/zod/schemas/invites";
 import type { User } from "@prisma/client";
+import type { WorkspaceWithUsers } from "@/lib/types";
 
 export const completeOnboarding = async (
   users: Pick<User, "id" | "name" | "email">[],
@@ -38,7 +40,7 @@ export const completeOnboarding = async (
           inviteUser({
             email,
             role,
-            workspace
+            workspace: workspace as WorkspaceWithUsers
           });
         })
       );
