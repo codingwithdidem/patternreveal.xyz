@@ -26,7 +26,9 @@ export default function InviteForm({
   onSuccess?: () => void;
 }) {
   const posthog = usePostHog();
-  const { id, slug } = useWorkspace();
+  const { id, slug, plan } = useWorkspace();
+
+  const isSaveOnly = plan === "free";
 
   const form = useForm<z.infer<typeof inviteTeammatesSchema>>({
     defaultValues: {
@@ -49,14 +51,31 @@ export default function InviteForm({
       (teammate) => teammate.email !== ""
     );
 
-    const res = await fetch(`/api/workspaces/${id}/invites`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ teammates })
-    });
+    const res = await fetch(
+      `/api/workspaces/${id}/invites${isSaveOnly ? "/saved" : ""}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teammates })
+      }
+    );
 
     if (res.ok) {
       await mutate(`/api/workspaces/${id}/invites`);
+
+      if (isSaveOnly) {
+        toast.custom(
+          () => (
+            <div className="flex flex-col gap-2">
+              <h2 className="text-lg font-semibold">Invitations saved</h2>
+            </div>
+          ),
+          {
+            duration: 4000
+          }
+        );
+        return;
+      }
 
       toast.success(`${pluralize("Invitation", teammates.length)} sent!`);
 

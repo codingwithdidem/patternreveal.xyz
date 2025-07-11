@@ -11,6 +11,8 @@ import {
   type TransactionCompletedEvent
 } from "@paddle/paddle-node-sdk";
 import { getPaddleClient } from "@/lib/paddle/client";
+import { limiter } from "@/lib/cron/limiter";
+import { sendEmail } from "@/emails/send";
 
 export async function POST(request: NextRequest) {
   try {
@@ -148,13 +150,32 @@ async function handleSubscriptionCreated(event: SubscriptionCreatedEvent) {
     }
   });
 
-  // const workspaceUsers = workspace.users.map(({ user }) => {
-  //   return {
-  //     id: user.id,
-  //     name: user.name,
-  //     email: user.email
-  //   };
-  // });
+  const workspaceUsers = workspace.users.map(({ user }) => {
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email
+    };
+  });
+
+  // Complete the onboarding process for the workspace users and send them an upgrade email
+  Promise.allSettled([
+    completeOnboarding(workspaceUsers, workspaceId),
+    workspaceUsers.map((user) => {
+      limiter.schedule(() =>
+        sendEmail({
+          email: user.email as string,
+          replyTo: "info@patternreveal.xyz",
+          subject: `Thank you for upgrading to PatternReveal ${plan.name}!`,
+          react: UpgradeEmail({
+            name: user.name,
+            email: user.email,
+            plan: plan.name
+          })
+        })
+      );
+    })
+  ]);
 }
 
 async function handleSubscriptionUpdated(event: SubscriptionUpdatedEvent) {

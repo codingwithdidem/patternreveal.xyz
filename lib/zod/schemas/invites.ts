@@ -10,3 +10,5 @@ export const inviteTeammatesSchema = z.object({
     )
     .describe("The email addresses of the teamates to invite")
 });
+
+export type Invite = z.infer<typeof inviteTeammatesSchema>["teammates"][number];

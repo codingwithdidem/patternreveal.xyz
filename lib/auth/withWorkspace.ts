@@ -1,4 +1,7 @@
-import { PatternRevealApiError } from "@/lib/api/errors";
+import {
+  PatternRevealApiError,
+  handleAndReturnErrorResponse
+} from "@/lib/api/errors";
 import type { PermissionAction } from "../rbac/permissions";
 import { getSession, type Session } from "./authOptions";
 import prisma from "../prisma";
@@ -195,10 +198,7 @@ export const withWorkspace = (
         "error",
         error instanceof Error ? error.stack : String(error)
       );
-      throw new PatternRevealApiError({
-        code: "internal_server_error",
-        message: "Failed to process the request."
-      });
+      return handleAndReturnErrorResponse(error);
     }
   };
 };

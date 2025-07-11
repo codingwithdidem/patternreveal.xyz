@@ -25,3 +25,7 @@ export interface WorkspaceWithUsers {
 }
 
 export type PlanProps = (typeof plans)[number];
+
+export const roles = ["OWNER", "MEMBER"] as const;
+
+export type Role = (typeof roles)[number];
