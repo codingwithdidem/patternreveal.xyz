@@ -13,6 +13,8 @@ import {
 import { getPaddleClient } from "@/lib/paddle/client";
 import { limiter } from "@/lib/cron/limiter";
 import { sendEmail } from "@/emails/send";
+import { completeOnboarding } from "./complete-onboarding";
+import UpgradeEmail from "@/emails/upgrade-email";
 
 export async function POST(request: NextRequest) {
   try {
