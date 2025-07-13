@@ -1,3 +1,4 @@
+import { getPlanDetails } from "@/lib/constants";
 import {
   Body,
   Container,
@@ -53,14 +54,12 @@ export function UpgradeEmail({
             <Text className="text-sm leading-6 text-black">
               On the {plan} plan, you now have access to:
             </Text>
-            {planDetails.features?.map((feature) => (
-              <Text className="ml-1 text-sm leading-4 text-black">
-                ◆{" "}
-                {feature.tooltip?.href ? (
-                  <Link href={feature.tooltip.href}>{feature.text}</Link>
-                ) : (
-                  feature.text
-                )}
+            {planDetails?.features?.map((feature) => (
+              <Text
+                key={feature.text}
+                className="ml-1 text-sm leading-4 text-black"
+              >
+                ◆ {feature.text}
               </Text>
             ))}
             <Text className="text-sm leading-6 text-black">

@@ -6,7 +6,25 @@ import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-const Dialog = DialogPrimitive.Root;
+// Custom Dialog component with preventDefaultClose support
+const Dialog: React.FC<
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root> & {
+    preventDefaultClose?: boolean;
+  }
+> = ({ preventDefaultClose = false, onOpenChange, ...props }) => {
+  const handleOpenChange = (open: boolean) => {
+    if (!open && preventDefaultClose) {
+      return; // Prevent closing if preventDefaultClose is true
+    }
+    onOpenChange?.(open);
+  };
+
+  return <DialogPrimitive.Root onOpenChange={handleOpenChange} {...props} />;
+};
+Dialog.displayName = "Dialog";
+
+// Keep original DialogRoot export for backwards compatibility
+const DialogRoot = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
@@ -110,6 +128,7 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Dialog,
+  DialogRoot,
   DialogPortal,
   DialogOverlay,
   DialogTrigger,

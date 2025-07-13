@@ -2,11 +2,12 @@ import {
   PatternRevealApiError,
   handleAndReturnErrorResponse
 } from "@/lib/api/errors";
-import type { PermissionAction } from "../rbac/permissions";
+import { getPermissions, type PermissionAction } from "../rbac/permissions";
 import { getSession, type Session } from "./authOptions";
 import prisma from "../prisma";
 import { getSearchParams } from "@/utils/functions/urls";
 import type { PlanProps, WorkspaceWithUsers } from "../types";
+import { throwIfNoAccess } from "../tokens/permissions";
 
 type WithWorkspaceHandler = (args: {
   req: Request;
@@ -48,7 +49,7 @@ export const withWorkspace = (
 
     try {
       let session: Session | undefined;
-      const permissions: PermissionAction[] = [];
+      let permissions: PermissionAction[] = [];
 
       const idOrSlug =
         awaitedParams?.idOrSlug ||
@@ -100,11 +101,6 @@ export const withWorkspace = (
         });
       }
 
-      console.log({
-        workspaceId,
-        workspaceSlug
-      });
-
       workspace = (await prisma.workspace.findFirst({
         where: workspaceId ? { id: workspaceId } : { slug: workspaceSlug },
         include: {
@@ -119,23 +115,8 @@ export const withWorkspace = (
         }
       })) as WorkspaceWithUsers;
 
-      console.log("Workspace query result:", {
-        found: !!workspace,
-        workspaceId: workspace?.id,
-        workspaceSlug: workspace?.slug,
-        userInWorkspace: workspace?.users?.length > 0,
-        query: workspaceId ? { id: workspaceId } : { slug: workspaceSlug }
-      });
-
       // workspace doesn't exist
       if (!workspace || !workspace.users) {
-        console.log("Workspace not found details:", {
-          searchedById: !!workspaceId,
-          searchedBySlug: !!workspaceSlug,
-          workspaceId,
-          workspaceSlug,
-          userId: session.user.id
-        });
         throw new PatternRevealApiError({
           code: "not_found",
           message: "Workspace not found."
@@ -173,6 +154,16 @@ export const withWorkspace = (
         throw new PatternRevealApiError({
           code: "invite_pending",
           message: "Workspace invite pending."
+        });
+      }
+
+      permissions = getPermissions(workspace.users[0].role);
+
+      // Check user has permission to make the action
+      if (!skipPermissionChecks) {
+        throwIfNoAccess({
+          permissions,
+          requiredPermissions
         });
       }
 

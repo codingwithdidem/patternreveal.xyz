@@ -2,6 +2,9 @@ import z from "@/lib/zod/index";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { generateErrorMessage } from "zod-error";
+import { PlanProps } from "../types";
+import { capitalizeFirstChar } from "@/utils/functions/capitalize-first-char";
+import { currencyFormatter } from "@/utils/functions/currency-formatter";
 
 export const ErrorCode = z.enum([
   "bad_request",
@@ -158,3 +161,29 @@ export function handleAndReturnErrorResponse(
 
   return NextResponse.json<ErrorResponse>({ error }, { headers, status });
 }
+
+export const exceededLimitError = ({
+  plan,
+  limit,
+  type
+}: {
+  plan: PlanProps;
+  limit: number;
+  type:
+    | "clicks"
+    | "links"
+    | "AI"
+    | "domains"
+    | "tags"
+    | "users"
+    | "folders"
+    | "payouts";
+}) => {
+  return `You've reached your ${
+    ["links", "AI", "payouts"].includes(type) ? "monthly" : ""
+  } limit of ${
+    type === "payouts"
+      ? currencyFormatter(limit / 100)
+      : `${limit} ${limit === 1 ? type.slice(0, -1) : type}`
+  } on the ${capitalizeFirstChar(plan)} plan. Please upgrade for higher limits.`;
+};

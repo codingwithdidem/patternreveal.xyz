@@ -76,5 +76,9 @@ export const PLANS = [
   }
 ];
 
+export const getPlanDetails = (plan: string) => {
+  return PLANS.find((p) => p.name === plan);
+};
+
 export const FREE_PLAN = PLANS.find((plan) => plan.name === "Free");
 export const PRO_PLAN = PLANS.find((plan) => plan.name === "Pro");

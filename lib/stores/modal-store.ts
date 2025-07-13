@@ -3,16 +3,19 @@ import { devtools } from "zustand/middleware";
 import { AddWorkspaceModal } from "@/components/modals/AddWorkspaceModal";
 import { DeleteAccountModal } from "@/components/modals/DeleteAccountModal";
 import { DeleteWorkspaceModal } from "@/components/modals/DeleteWorkspaceModal";
+import { AcceptInviteModal } from "@/components/modals/AcceptInviteModal";
 import { useMemo } from "react";
 
 interface ModalState {
   showAddWorkspaceModal: boolean;
   showDeleteAccountModal: boolean;
   showDeleteWorkspaceModal: boolean;
+  showAcceptInviteModal: boolean;
   // Actions
   setShowAddWorkspaceModal: (show: boolean) => void;
   setShowDeleteAccountModal: (show: boolean) => void;
   setShowDeleteWorkspaceModal: (show: boolean) => void;
+  setShowAcceptInviteModal: (show: boolean) => void;
   // Utility actions
   closeAllModals: () => void;
   openModal: (
@@ -33,6 +36,7 @@ interface ModalState {
       | "setShowWelcomeModal"
       | "setShowUpgradedModal"
       | "setShowProgramWelcomeModal"
+      | "setShowAcceptInviteModal"
       | "closeAllModals"
       | "openModal"
     >
@@ -46,18 +50,21 @@ export const useModalStore = create<ModalState>()(
       showAddWorkspaceModal: false,
       showDeleteAccountModal: false,
       showDeleteWorkspaceModal: false,
+      showAcceptInviteModal: false,
       // Individual setters
       setShowAddWorkspaceModal: (show) => set({ showAddWorkspaceModal: show }),
       setShowDeleteAccountModal: (show) =>
         set({ showDeleteAccountModal: show }),
       setShowDeleteWorkspaceModal: (show) =>
         set({ showDeleteWorkspaceModal: show }),
+      setShowAcceptInviteModal: (show) => set({ showAcceptInviteModal: show }),
       // Utility actions
       closeAllModals: () =>
         set({
           showAddWorkspaceModal: false,
           showDeleteAccountModal: false,
-          showDeleteWorkspaceModal: false
+          showDeleteWorkspaceModal: false,
+          showAcceptInviteModal: false
         }),
 
       openModal: (modalName) => {
@@ -113,6 +120,20 @@ export const useDeleteWorkspaceModal = () => {
       show,
       setShow,
       DeleteWorkspaceModal
+    }),
+    [show, setShow]
+  );
+};
+
+export const useAcceptInviteModal = () => {
+  const show = useModalStore((state) => state.showAcceptInviteModal);
+  const setShow = useModalStore((state) => state.setShowAcceptInviteModal);
+
+  return useMemo(
+    () => ({
+      show,
+      setShow,
+      AcceptInviteModal
     }),
     [show, setShow]
   );
