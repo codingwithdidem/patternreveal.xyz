@@ -58,7 +58,7 @@ function VerifyEmail() {
       });
 
       if (response?.ok) {
-        router.push("/dashboard/reflections");
+        router.push("/");
       } else {
         setIsRedirecting(false);
         toast.error("Failed to sign in, please try again.");

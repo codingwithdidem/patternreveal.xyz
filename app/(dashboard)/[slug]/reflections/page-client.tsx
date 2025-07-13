@@ -187,6 +187,7 @@ export default function ReflectionsClientPage() {
         </div>
       ) : (
         <AnimatedEmptyState
+          className="h-full"
           title="No reflections found"
           description="Start creating daily reflections to track your progress."
           addButton={

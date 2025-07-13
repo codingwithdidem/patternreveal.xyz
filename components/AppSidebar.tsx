@@ -91,7 +91,7 @@ const NAV_AREAS: SidebarNavAreas<{
     direction: "left",
     content: [
       {
-        name: "Dashboard",
+        name: "",
         items: [
           {
             name: "Reflections",
@@ -99,7 +99,7 @@ const NAV_AREAS: SidebarNavAreas<{
             href: `/${slug}/reflections${pathname === `/${slug}/reflections` ? "" : queryString}`,
             subItems: topReflections?.map((reflection) => ({
               name: reflection.title,
-              href: `/dashboard/reflections/${reflection.id}`
+              href: `/${slug}/reflections/${reflection.id}`
             }))
           },
           {

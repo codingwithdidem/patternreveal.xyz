@@ -55,7 +55,7 @@ export default function LoginForm() {
       const response = await signIn("credentials", {
         redirect: false,
         email,
-        callbackUrl: "/dashboard/reflections",
+        callbackUrl: "/",
         password
       });
 
@@ -71,7 +71,7 @@ export default function LoginForm() {
         return;
       }
 
-      router.push(response.url || "/dashboard");
+      router.push(response.url || "/");
     } else {
       console.log("Invalid form");
     }
@@ -84,7 +84,7 @@ export default function LoginForm() {
         onClick={() =>
           signIn("google", {
             redirect: false,
-            callbackUrl: finalNext || "/dashboard/reflections"
+            callbackUrl: finalNext || "/"
           })
         }
       >

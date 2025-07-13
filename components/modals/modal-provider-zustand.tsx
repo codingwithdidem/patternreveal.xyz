@@ -30,7 +30,7 @@ function ModalProviderClient({ children }: { children: ReactNode }) {
     useAcceptInviteModal();
 
   useEffect(() => {
-    if ((error && error.status === 409) || error.status === 410) {
+    if ((error && error?.status === 409) || error?.status === 410) {
       setShowAcceptInviteModal(true);
     }
   }, [error, setShowAcceptInviteModal]);

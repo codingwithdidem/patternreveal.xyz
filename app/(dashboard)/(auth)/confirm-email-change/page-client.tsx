@@ -1,5 +1,6 @@
 "use client";
 import { EmptyState } from "@/components/EmptyState";
+import useWorkspace from "@/lib/swr/use-workspace";
 import { KeyRound } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -10,6 +11,8 @@ export default function ConfirmEmailChangePageClient() {
   const router = useRouter();
   const { update, status } = useSession();
   const hasUpdatedSession = useRef(false);
+
+  const { slug } = useWorkspace();
 
   useEffect(() => {
     if (status !== "authenticated" || hasUpdatedSession.current) {
@@ -22,12 +25,12 @@ export default function ConfirmEmailChangePageClient() {
       toast.success("Successfully updated your email!");
       // Wait 5 seconds before redirecting to the settings page
       setTimeout(() => {
-        router.replace("/dashboard/settings");
+        router.replace(`/${slug}/settings`);
       }, 5000);
     }
 
     updateSession();
-  }, [status, update]);
+  }, [status, update, slug]);
 
   return (
     <EmptyState

@@ -20,7 +20,7 @@ export default async function AppMiddleware(req: NextRequest) {
 
   if ((user && path === "/login") || path === "/register") {
     // If the user is logged in and tries to access the login or register page, redirect to the dashboard
-    return NextResponse.redirect(new URL("/dashboard", req.url));
+    return NextResponse.redirect(new URL("/", req.url));
   }
 
   return NextResponse.next();
