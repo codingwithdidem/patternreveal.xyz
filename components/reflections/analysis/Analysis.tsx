@@ -178,7 +178,7 @@ const TextEvidenceDisplay = ({
             className="bg-slate-50 p-3 rounded-lg border-l-4 border-blue-500"
           >
             <blockquote className="text-sm italic text-slate-700 mb-2">
-              "{item.quote}"
+              &quot;{item.quote}&quot;
             </blockquote>
             <p className="text-xs text-slate-600">{item.analysis}</p>
           </div>

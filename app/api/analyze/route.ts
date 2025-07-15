@@ -8,7 +8,7 @@ import { openai } from "@ai-sdk/openai";
 import { type Analysis, analysisSchema } from "@/lib/zod/schemas/analysis";
 import prisma from "@/lib/prisma";
 import { waitUntil } from "@vercel/functions";
-import { record_reflection_report } from "@/lib/tinybird/record_reflection_report";
+// import { record_reflection_report } from "@/lib/tinybird/record_reflection_report";
 
 export const POST = withPermissions(
   async ({ req, headers, session }) => {
