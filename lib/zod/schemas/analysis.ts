@@ -1,5 +1,16 @@
 import { z } from "zod";
 
+// Text evidence schema for referencing specific statements
+export const textEvidenceSchema = z.object({
+  quote: z.string().describe("Exact quote from the reflection text"),
+  analysis: z.string().describe("What this quote reveals about the pattern"),
+  startIndex: z
+    .number()
+    .optional()
+    .describe("Character index where quote starts"),
+  endIndex: z.number().optional().describe("Character index where quote ends")
+});
+
 // Core emotional analysis
 export const emotionalPatternSchema = z.object({
   dominantEmotion: z
@@ -36,7 +47,10 @@ export const emotionalPatternSchema = z.object({
     .describe("Did their mood affect yours or vice versa?"),
   selfRegulation: z
     .enum(["excellent", "good", "fair", "poor"])
-    .describe("How well did you manage your emotions")
+    .describe("How well did you manage your emotions"),
+  textEvidence: z
+    .array(textEvidenceSchema)
+    .describe("Specific quotes showing emotional patterns")
 });
 
 // Communication analysis
@@ -71,7 +85,10 @@ export const communicationPatternSchema = z.object({
   escalationTriggers: z
     .array(z.string())
     .describe("What escalated the situation"),
-  resolutionAchieved: z.boolean().describe("Was the issue resolved?")
+  resolutionAchieved: z.boolean().describe("Was the issue resolved?"),
+  textEvidence: z
+    .array(textEvidenceSchema)
+    .describe("Specific quotes showing communication patterns")
 });
 
 // Behavioral patterns
@@ -96,7 +113,12 @@ export const behaviorPatternSchema = z.object({
   concerningPatterns: z
     .array(z.string())
     .describe("Concerning patterns to watch"),
-  growthOpportunities: z.array(z.string()).describe("Areas for personal growth")
+  growthOpportunities: z
+    .array(z.string())
+    .describe("Areas for personal growth"),
+  textEvidence: z
+    .array(textEvidenceSchema)
+    .describe("Specific quotes showing behavioral patterns")
 });
 
 // Relationship dynamics
@@ -238,7 +260,10 @@ export const abuseDetectionSchema = z.object({
           ])
           .describe("Category of abusive behavior detected"),
         behavior: z.string(),
-        reasonings: z.array(z.string())
+        reasonings: z.array(z.string()),
+        textEvidence: z
+          .array(textEvidenceSchema)
+          .describe("Specific quotes that support this finding")
       })
     )
     .describe("The detected abusive behaviors"),
@@ -268,7 +293,10 @@ export const attachmentPatternsSchema = z.object({
     .describe("Did attachment issues surface during this interaction?"),
   attachmentBehaviors: z
     .array(z.string())
-    .describe("Specific attachment-related behaviors observed")
+    .describe("Specific attachment-related behaviors observed"),
+  textEvidence: z
+    .array(textEvidenceSchema)
+    .describe("Specific quotes showing attachment patterns")
 });
 
 // Trauma responses analysis
@@ -390,6 +418,7 @@ export const analysisSchema = z.object({
 });
 
 export type Analysis = z.infer<typeof analysisSchema>;
+export type TextEvidence = z.infer<typeof textEvidenceSchema>;
 export type EmotionalPattern = z.infer<typeof emotionalPatternSchema>;
 export type CommunicationPattern = z.infer<typeof communicationPatternSchema>;
 export type BehaviorPattern = z.infer<typeof behaviorPatternSchema>;

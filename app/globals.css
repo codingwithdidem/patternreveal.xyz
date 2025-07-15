@@ -107,7 +107,7 @@
   color: #adb5bd;
   pointer-events: none;
   height: 0;
-  font-family: "Satoshi";
+  font-family: "Satoshi", sans-serif;
 }
 
 /* Placeholder (on every new line) */
@@ -121,8 +121,78 @@
 
 @theme inline {
   @keyframes gradient {
-  to {
-    background-position: var(--bg-size, 300%) 0;
+    to {
+      background-position: var(--bg-size, 300%) 0;
     }
+  }
+}
+
+/* Evidence highlighting styles */
+.evidence-highlight {
+  background-color: #dbeafe !important;
+  cursor: help !important;
+  padding: 0 2px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+  position: relative !important;
+}
+
+.evidence-highlight:hover {
+  background-color: #bfdbfe !important;
+}
+
+/* Evidence tooltip */
+.evidence-highlight {
+  position: relative !important;
+}
+
+.evidence-highlight:hover::after {
+  content: attr(data-analysis) !important;
+  position: absolute !important;
+  top: calc(100% + 8px) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background: #1f2937 !important;
+  color: white !important;
+  padding: 10px 14px !important;
+  border-radius: 6px !important;
+  font-size: 12px !important;
+  line-height: 1.4 !important;
+  max-width: 320px !important;
+  min-width: 200px !important;
+  width: max-content !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+  display: block !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px
+    rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Tooltip arrow */
+.evidence-highlight:hover::before {
+  content: "" !important;
+  position: absolute !important;
+  top: calc(100% + 2px) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-left: 6px solid transparent !important;
+  border-right: 6px solid transparent !important;
+  border-top: 6px solid #1f2937 !important;
+  z-index: 2147483647 !important;
+  pointer-events: none !important;
+  opacity: 1 !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

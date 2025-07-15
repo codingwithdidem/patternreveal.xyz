@@ -5,7 +5,7 @@ import Toolbar from "@/components/editor/Toolbar";
 import useReflection from "@/lib/swr/use-reflection";
 import { useParams } from "next/navigation";
 import type { Editor } from "@tiptap/react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { mutate } from "swr";
 import ReflectionsMenuBar from "@/components/reflections/ReflectionsMenuBar";
@@ -14,7 +14,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SparklesIcon, WandSparklesIcon } from "lucide-react";
 import { experimental_useObject } from "ai/react";
 import { analysisSchema } from "@/lib/zod/schemas/analysis";
-import type { Analysis as AnalysisType } from "@/lib/zod/schemas/analysis";
+import type {
+  Analysis as AnalysisType,
+  TextEvidence
+} from "@/lib/zod/schemas/analysis";
 import Analysis from "@/components/reflections/analysis/Analysis";
 
 export default function ReflectionEditorClientPage() {
@@ -35,6 +38,57 @@ export default function ReflectionEditorClientPage() {
 
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [charsCount, setCharsCount] = useState(0);
+
+  // Collect all text evidence from the analysis report
+  const allTextEvidence = useMemo(() => {
+    if (!analysisReport) return [];
+
+    const evidence: TextEvidence[] = [];
+
+    // Collect evidence from all sections that have textEvidence
+    if (analysisReport.emotionalPatterns?.textEvidence) {
+      evidence.push(
+        ...analysisReport.emotionalPatterns.textEvidence.filter(
+          (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
+        )
+      );
+    }
+    if (analysisReport.communicationPatterns?.textEvidence) {
+      evidence.push(
+        ...analysisReport.communicationPatterns.textEvidence.filter(
+          (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
+        )
+      );
+    }
+    if (analysisReport.behaviorPatterns?.textEvidence) {
+      evidence.push(
+        ...analysisReport.behaviorPatterns.textEvidence.filter(
+          (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
+        )
+      );
+    }
+    if (analysisReport.attachmentPatterns?.textEvidence) {
+      evidence.push(
+        ...analysisReport.attachmentPatterns.textEvidence.filter(
+          (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
+        )
+      );
+    }
+    if (analysisReport.abuseDetection?.detectedAbusiveBehaviors) {
+      for (const behavior of analysisReport.abuseDetection
+        .detectedAbusiveBehaviors) {
+        if (behavior?.textEvidence) {
+          evidence.push(
+            ...behavior.textEvidence.filter(
+              (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
+            )
+          );
+        }
+      }
+    }
+
+    return evidence;
+  }, [analysisReport]);
 
   const debouncedUpdates = useDebouncedCallback(async (editor: Editor) => {
     const json = editor.getJSON();
@@ -89,6 +143,7 @@ export default function ReflectionEditorClientPage() {
             charsCount={charsCount}
             content={reflection.content}
             onContentUpdate={debouncedUpdates}
+            textEvidence={allTextEvidence}
           />
         </div>
         <div className="col-span-3 bg-gray-50/70 p-2 rounded-lg">

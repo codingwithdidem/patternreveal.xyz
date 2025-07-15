@@ -100,12 +100,20 @@ ANALYSIS INSTRUCTIONS:
 8. Provide specific, actionable insights
 9. Most importantly, assess for any safety concerns or abusive patterns
 
+CRITICAL TEXT EVIDENCE REQUIREMENTS:
+- For patterns you identify, provide specific quotes from the reflection as supporting evidence
+- In textEvidence arrays, include exact quotes and explain what each reveals
+- Use the person's exact words - don't paraphrase or modify their text
+- Focus on the most revealing quotes that support your analysis
+- If you detect concerning behaviors, provide multiple quotes as evidence
+
 IMPORTANT: You MUST populate ALL fields in the response schema. If certain information isn't available from the reflection, make reasonable inferences or use empty arrays where appropriate. Every field is required for proper analysis.
 
 FIELD GUIDANCE:
 - strengthsIdentified: Even in difficult relationships, look for any positive qualities or moments
 - conversationStarters: Suggest topics that could help improve communication
 - positiveHighlights: Find any silver linings or growth opportunities, even in challenging situations
+- textEvidence: Always include relevant quotes with analysis of what they reveal
 - If arrays should be empty based on the content, that's acceptable - but ensure all fields are present
 
 Please provide a thorough analysis covering all aspects of the schema, being specific and helpful while maintaining appropriate professional boundaries.`,

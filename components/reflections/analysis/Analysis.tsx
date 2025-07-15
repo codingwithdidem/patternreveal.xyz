@@ -160,6 +160,34 @@ const ConflictResolutionDescription = ({ style }: { style: string }) => {
   );
 };
 
+const TextEvidenceDisplay = ({
+  evidence
+}: { evidence: Array<{ quote: string; analysis: string }> }) => {
+  if (!evidence?.length) return null;
+
+  return (
+    <div className="space-y-3 mt-4">
+      <h5 className="font-medium text-sm flex items-center gap-2">
+        <MessageCircle className="w-4 h-4" />
+        Supporting Evidence
+      </h5>
+      <div className="space-y-3">
+        {evidence.map((item, index) => (
+          <div
+            key={index}
+            className="bg-slate-50 p-3 rounded-lg border-l-4 border-blue-500"
+          >
+            <blockquote className="text-sm italic text-slate-700 mb-2">
+              "{item.quote}"
+            </blockquote>
+            <p className="text-xs text-slate-600">{item.analysis}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
   if (isLoading) {
     return (
@@ -478,6 +506,10 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
                     </div>
                   </div>
                 )}
+
+                <TextEvidenceDisplay
+                  evidence={analysisReport.emotionalPatterns.textEvidence || []}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -652,6 +684,12 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
                     </div>
                   </div>
                 )}
+
+                <TextEvidenceDisplay
+                  evidence={
+                    analysisReport.communicationPatterns.textEvidence || []
+                  }
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -760,6 +798,10 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
                     </div>
                   </div>
                 )}
+
+                <TextEvidenceDisplay
+                  evidence={analysisReport.behaviorPatterns.textEvidence || []}
+                />
               </CardContent>
             </Card>
           </TabsContent>
@@ -990,6 +1032,12 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
                         </div>
                       </div>
                     )}
+
+                    <TextEvidenceDisplay
+                      evidence={
+                        analysisReport.attachmentPatterns.textEvidence || []
+                      }
+                    />
                   </>
                 ) : (
                   <div className="text-center py-8">
@@ -1666,6 +1714,10 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
                               </div>
                             ))}
                           </div>
+
+                          <TextEvidenceDisplay
+                            evidence={behavior.textEvidence || []}
+                          />
                         </div>
                       )
                     )}
