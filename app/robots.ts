@@ -6,11 +6,21 @@ export default async function robots(): Promise<MetadataRoute.Robots> {
   const host = headersList.get("host");
 
   return {
-    rules: {
-      userAgent: "*",
-      allow: "/",
-      disallow: "/reports/"
-    },
+    rules: [
+      {
+        userAgent: "*",
+        allow: ["/", "/login", "/register"],
+        disallow: [
+          "/*/reports/",
+          "/*/settings/",
+          "/*/reflections/",
+          "/admin/",
+          "/api/",
+          "/onboarding/",
+          "/confirm-email-change/"
+        ]
+      }
+    ],
     sitemap: `https://${host}/sitemap.xml`
   };
 }

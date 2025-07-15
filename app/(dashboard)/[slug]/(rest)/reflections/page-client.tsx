@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FilterSelect } from "@/components/ui/filter/filter-select";
 import useReflections from "@/lib/swr/use-reflections";
 import { ActivityIcon, FlagIcon, TriangleAlert } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 import type { ComponentProps } from "react";
 import useReflectionQueryParams from "@/hooks/nuqs/useReflectionQueryParams";
@@ -29,6 +29,7 @@ const redFlags = [
 
 export default function ReflectionsClientPage() {
   const router = useRouter();
+  const { slug: workspaceSlug } = useParams<{ slug: string }>();
   const { id: workspaceId } = useWorkspace();
   const { reflections, error } = useReflections();
 
@@ -81,7 +82,7 @@ export default function ReflectionsClientPage() {
         toast.success("Reflection created successfully");
         // Redirect to the newly created reflection
         const { id } = await response.json();
-        router.push(`/reports/${id}`);
+        router.push(`/${workspaceSlug}/reports/${id}`);
       } else {
         const { error } = await response.json();
         console.error(error);

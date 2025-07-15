@@ -1,5 +1,13 @@
 import { FlickeringGrid } from "@/components/magicui/flickering-grid";
 import Link from "next/link";
+import { constructMetadata } from "@/utils/functions/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Page Not Found (404) - PatternReveal",
+  description:
+    "The page you're looking for doesn't exist. Return to PatternReveal to continue your relationship analysis journey.",
+  noIndex: true
+});
 
 export default function NotFound() {
   return (

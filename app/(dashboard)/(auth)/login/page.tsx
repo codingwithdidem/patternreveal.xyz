@@ -3,7 +3,9 @@ import LoginForm from "@/components/LoginForm";
 import { constructMetadata } from "@/utils/functions/construct-metadata";
 
 export const metadata = constructMetadata({
-  title: "Sign in to patternreveal.xyz",
+  title: "Sign in to your PatternReveal account",
+  description:
+    "Access your personal relationship analysis dashboard. Continue tracking patterns, analyzing your reflections, and building healthier relationships with AI-powered insights.",
   canonicalUrl: "https://patternreveal.xyz/login"
 });
 

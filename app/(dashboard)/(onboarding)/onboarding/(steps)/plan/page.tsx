@@ -1,5 +1,13 @@
 import LaterButton from "../../later-button";
 import PlanSelector from "../../plan-selector";
+import { constructMetadata } from "@/utils/functions/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Choose Your Plan - PatternReveal Pricing",
+  description:
+    "Select the perfect plan for your relationship analysis needs. Free plan includes 20 reflections and 3 AI analyses per month. Pro plan offers unlimited access and advanced features.",
+  noIndex: true
+});
 
 export default async function PlanPage() {
   return (

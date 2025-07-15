@@ -2,7 +2,9 @@ import RegisterFlow from "@/components/RegisterFlow";
 import { constructMetadata } from "@/utils/functions/construct-metadata";
 
 export const metadata = constructMetadata({
-  title: "Create your patternreveal.xyz account",
+  title: "Start Your Journey to Healthier Relationships",
+  description:
+    "Join thousands who've gained clarity about their relationships. Create your free PatternReveal account to identify manipulative patterns, track emotional dynamics, and build stronger personal boundaries with AI-powered analysis.",
   canonicalUrl: "https://patternreveal.xyz/register"
 });
 

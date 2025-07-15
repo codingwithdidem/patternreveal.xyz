@@ -5,6 +5,14 @@ import { Input } from "@/components/ui/input";
 import type { PutBlobResult } from "@vercel/blob";
 import { upload } from "@vercel/blob/client";
 import { useRef, useState } from "react";
+import { constructMetadata } from "@/utils/functions/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Upload Knowledge Base Documents - Admin",
+  description:
+    "Upload and manage training documents for PatternReveal's AI knowledge base. Add expert resources on relationship patterns and abuse recognition.",
+  noIndex: true
+});
 
 export default function Home() {
   const inputFileRef = useRef<HTMLInputElement>(null);

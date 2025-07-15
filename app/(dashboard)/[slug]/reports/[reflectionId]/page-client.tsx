@@ -3,7 +3,7 @@
 import Tiptap from "@/components/editor/Tiptap";
 import Toolbar from "@/components/editor/Toolbar";
 import useReflection from "@/lib/swr/use-reflection";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import type { Editor } from "@tiptap/react";
 import { useState, useMemo } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -19,9 +19,12 @@ import type {
   TextEvidence
 } from "@/lib/zod/schemas/analysis";
 import Analysis from "@/components/reflections/analysis/Analysis";
+import Logo from "@/components/Logo";
+import Link from "next/link";
 
 export default function ReflectionEditorClientPage() {
-  const params = useParams() as { reflectionId: string };
+  const params = useParams() as { reflectionId: string; slug: string };
+  const router = useRouter();
   const { reflection, isLoading, error } = useReflection(params.reflectionId);
 
   console.log({ reflection });
@@ -134,6 +137,11 @@ export default function ReflectionEditorClientPage() {
 
   return (
     <div className="h-full w-full px-8 py-2">
+      <div className="mb-4">
+        <Link href={`/${params.slug}`} className="inline-block">
+          <Logo className="w-24 h-auto hover:opacity-75 transition-opacity" />
+        </Link>
+      </div>
       <ReflectionsMenuBar reflection={reflection} onAnalyze={onAnalyze} />
       <div className="grid grid-cols-8 pl-2 gap-2">
         <div className="col-span-5 flex flex-col gap-4">

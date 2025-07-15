@@ -3,6 +3,14 @@
 import { identifyUser } from "@/lib/posthog/identify-user";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import { constructMetadata } from "@/utils/functions/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Home - PatternReveal Dashboard",
+  description:
+    "Welcome to your PatternReveal workspace. Start creating reflections, analyzing patterns, and building healthier relationships.",
+  noIndex: true
+});
 
 export default function Home() {
   const { data: session } = useSession();

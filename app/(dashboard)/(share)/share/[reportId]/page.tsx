@@ -10,16 +10,35 @@ export async function generateMetadata({
   params
 }: { params: Promise<{ reportId: string }> }) {
   const { reportId } = await params;
-  const report = await getSharedReport({ reportId });
 
-  if (!report?.linkId) {
-    return;
+  try {
+    const report = await getSharedReport({ reportId });
+
+    if (!report?.linkId) {
+      return constructMetadata({
+        title: "Shared Report Not Found - PatternReveal",
+        description:
+          "The requested shared relationship analysis report could not be found or may have been removed.",
+        noIndex: true
+      });
+    }
+
+    const isPasswordProtected = !!report.password;
+
+    return constructMetadata({
+      title: `Shared Analysis: ${report.reflection.title}`,
+      description: `A shared relationship pattern analysis. ${isPasswordProtected ? "Password-protected " : ""}Insights into relationship dynamics and emotional patterns from PatternReveal.xyz.`,
+      image: "/images/example-report.png",
+      noIndex: !report.index
+    });
+  } catch (error) {
+    return constructMetadata({
+      title: "Shared Relationship Analysis - PatternReveal",
+      description:
+        "A shared relationship pattern analysis report with AI-powered insights and expert guidance.",
+      noIndex: true
+    });
   }
-
-  return constructMetadata({
-    title: `Shared report for ${report.reflection.title}`,
-    noIndex: !report.index
-  });
 }
 
 export default async function ShareReportPage({

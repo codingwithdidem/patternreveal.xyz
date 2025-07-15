@@ -1,5 +1,13 @@
 import TrackSignUp from "@/components/TrackSignUp";
 import NextButton from "../next-button";
+import { constructMetadata } from "@/utils/functions/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Welcome to PatternReveal - Your Journey Begins",
+  description:
+    "Welcome to PatternReveal.xyz! Start your journey toward healthier relationships with AI-powered reflection analysis. Learn to identify patterns, build boundaries, and protect your emotional well-being.",
+  noIndex: true
+});
 
 export default function WelcomePage() {
   return (

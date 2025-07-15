@@ -15,7 +15,15 @@ const erode = localFont({
   variable: "--font-erode"
 });
 
-export const metadata: Metadata = constructMetadata({});
+export const metadata: Metadata = constructMetadata({
+  title: "AI-Powered Relationship Pattern Analysis | PatternReveal.xyz",
+  fullTitle:
+    "PatternReveal.xyz - Identify Manipulative Patterns & Build Healthier Relationships",
+  description:
+    "AI-powered relationship analysis platform that helps you identify manipulative behaviors, emotional abuse patterns, and toxic dynamics. Create daily reflections, get expert insights, and build stronger personal boundaries to protect your well-being.",
+  image: "/images/example-report.png",
+  url: "https://patternreveal.xyz"
+});
 
 export default function RootLayout({
   children

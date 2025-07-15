@@ -10,6 +10,14 @@ import ConfirmEmailChangePageClient from "../page-client";
 import { EmptyState } from "@/components/EmptyState";
 import { KeyRound } from "lucide-react";
 import { getSession } from "@/lib/auth/authOptions";
+import { constructMetadata } from "@/utils/functions/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Confirm Email Change",
+  description:
+    "Verify your new email address to update your PatternReveal account. Secure email verification for your relationship analysis platform.",
+  noIndex: true
+});
 
 type PageProps = {
   params: Promise<{ token: string }>;

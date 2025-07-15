@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/table";
 import type { Prisma, Reflection } from "@prisma/client";
 import { FileIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { format } from "date-fns";
 import ReflectionsActionMenu from "./ReflectionsActionMenu";
 
@@ -25,13 +25,14 @@ export default function ReflectionsTable({
   reflections
 }: ReflectionsTableProps) {
   const router = useRouter();
+  const { slug } = useParams<{ slug: string }>();
 
   const onRowClick = (reflectionId: string) => {
-    router.push(`/reports/${reflectionId}`);
+    router.push(`/${slug}/reports/${reflectionId}`);
   };
 
   const onOpenInNewTabClick = (reflectionId: string) => {
-    window.open(`/reports/${reflectionId}`, "_blank");
+    window.open(`/${slug}/reports/${reflectionId}`, "_blank");
   };
 
   return (

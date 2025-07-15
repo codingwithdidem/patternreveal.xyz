@@ -3,6 +3,14 @@ import NextButton from "../../next-button";
 import CreateReflectionForm from "./form";
 import { notFound } from "next/navigation";
 import LaterButton from "../../later-button";
+import { constructMetadata } from "@/utils/functions/construct-metadata";
+
+export const metadata = constructMetadata({
+  title: "Create Your First Reflection - PatternReveal",
+  description:
+    "Start documenting your relationship experiences with your first reflection. Share an event with your spouse, family, or friends to begin pattern analysis.",
+  noIndex: true
+});
 
 export default async function ReflectionPage() {
   const result = await createInitialReflectionAction({});

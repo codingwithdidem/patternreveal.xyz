@@ -351,7 +351,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
           className
         )}
       >
-        <div className="flex absolute right-8 top-6 z-10 mb-5 gap-2">
+        <div className="flex absolute right-8 top-2 z-10 mb-5 gap-2">
           <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
             {saveStatus}
           </div>
