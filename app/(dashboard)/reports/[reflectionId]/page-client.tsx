@@ -21,6 +21,8 @@ export default function ReflectionEditorClientPage() {
   const params = useParams() as { reflectionId: string };
   const { reflection, isLoading, error } = useReflection(params.reflectionId);
 
+  console.log({ reflection });
+
   const {
     isLoading: isLoadingAnalysis,
     object: analysisReport,
@@ -80,7 +82,7 @@ export default function ReflectionEditorClientPage() {
     <div className="h-full w-full px-8 py-2">
       <ReflectionsMenuBar reflection={reflection} onAnalyze={onAnalyze} />
       <div className="grid grid-cols-8 pl-2 gap-2">
-        <div className="col-span-5">
+        <div className="col-span-5 flex flex-col gap-4">
           <Toolbar />
           <Tiptap
             saveStatus={saveStatus}

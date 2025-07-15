@@ -52,10 +52,6 @@ export default function ReflectionsActionMenu({
             </DropdownMenuItem>
           </DeleteReflectionDialog>
           <DropdownMenuItem>
-            Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
             Keyboard shortcuts
             <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
           </DropdownMenuItem>
