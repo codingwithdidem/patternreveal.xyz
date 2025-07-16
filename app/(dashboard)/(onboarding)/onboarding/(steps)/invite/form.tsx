@@ -17,13 +17,18 @@ import { mutate } from "swr";
 import { toast } from "sonner";
 import { usePostHog } from "posthog-js/react";
 import useWorkspace from "@/lib/swr/use-workspace";
-import type { inviteTeammatesSchema } from "@/lib/zod/schemas/invites";
+import type { Invite, inviteTeammatesSchema } from "@/lib/zod/schemas/invites";
 import { pluralize } from "@/utils/functions/pluralize";
+import { cn } from "@/lib/utils";
 
 export default function InviteForm({
-  onSuccess
+  onSuccess,
+  invites,
+  className
 }: {
   onSuccess?: () => void;
+  invites?: Invite[];
+  className?: string;
 }) {
   const posthog = usePostHog();
   const { id, slug, plan } = useWorkspace();
@@ -32,12 +37,15 @@ export default function InviteForm({
 
   const form = useForm<z.infer<typeof inviteTeammatesSchema>>({
     defaultValues: {
-      teammates: [
-        {
-          email: "",
-          role: "MEMBER"
-        }
-      ]
+      teammates:
+        invites && invites.length > 0
+          ? invites
+          : [
+              {
+                email: "",
+                role: "MEMBER"
+              }
+            ]
     }
   });
 
@@ -113,7 +121,10 @@ export default function InviteForm({
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full flex flex-col gap-4 max-w-md rounded-md"
+        className={cn(
+          "w-full flex flex-col gap-4 max-w-md rounded-md",
+          className
+        )}
       >
         <div className="flex flex-col gap-2">
           {fields.map((field, index) => (
