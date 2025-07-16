@@ -4,7 +4,8 @@ import { withWorkspace } from "@/lib/auth/withWorkspace";
 import prisma from "@/lib/prisma";
 import {
   updateWorkspaceSchema,
-  WorkspaceSchema
+  WorkspaceSchema,
+  WorkspaceSchemaExtended
 } from "@/lib/zod/schemas/workspace";
 import { Prisma } from "@prisma/client";
 import { NextResponse } from "next/server";
@@ -13,7 +14,7 @@ export const GET = withWorkspace(
   async ({ workspace, headers }) => {
     return NextResponse.json(
       {
-        ...WorkspaceSchema.parse({
+        ...WorkspaceSchemaExtended.parse({
           ...workspace
         })
       },

@@ -4,18 +4,26 @@ import { AddWorkspaceModal } from "@/components/modals/AddWorkspaceModal";
 import { DeleteAccountModal } from "@/components/modals/DeleteAccountModal";
 import { DeleteWorkspaceModal } from "@/components/modals/DeleteWorkspaceModal";
 import { AcceptInviteModal } from "@/components/modals/AcceptInviteModal";
-import { useMemo } from "react";
+import { InviteMemberModal } from "@/components/modals/InviteMemberModal";
+import { RemoveTeammateModal } from "@/components/modals/RemoveTeammateModal";
+import { useCallback, useMemo } from "react";
+import type { UserProps } from "../types";
 
 interface ModalState {
   showAddWorkspaceModal: boolean;
   showDeleteAccountModal: boolean;
   showDeleteWorkspaceModal: boolean;
   showAcceptInviteModal: boolean;
+  showInviteMemberModal: boolean;
+  showRemoveTeammateModal: boolean;
   // Actions
   setShowAddWorkspaceModal: (show: boolean) => void;
   setShowDeleteAccountModal: (show: boolean) => void;
   setShowDeleteWorkspaceModal: (show: boolean) => void;
   setShowAcceptInviteModal: (show: boolean) => void;
+  setShowInviteMemberModal: (show: boolean) => void;
+  setShowRemoveTeammateModal: (show: boolean) => void;
+
   // Utility actions
   closeAllModals: () => void;
   openModal: (
@@ -33,6 +41,8 @@ interface ModalState {
       | "setShowImportCsvModal"
       | "setShowImportRewardfulModal"
       | "setShowAcceptInviteModal"
+      | "setShowInviteMemberModal"
+      | "setShowRemoveTeammateModal"
       | "setShowWelcomeModal"
       | "setShowUpgradedModal"
       | "setShowProgramWelcomeModal"
@@ -51,6 +61,8 @@ export const useModalStore = create<ModalState>()(
       showDeleteAccountModal: false,
       showDeleteWorkspaceModal: false,
       showAcceptInviteModal: false,
+      showInviteMemberModal: false,
+      showRemoveTeammateModal: false,
       // Individual setters
       setShowAddWorkspaceModal: (show) => set({ showAddWorkspaceModal: show }),
       setShowDeleteAccountModal: (show) =>
@@ -58,13 +70,21 @@ export const useModalStore = create<ModalState>()(
       setShowDeleteWorkspaceModal: (show) =>
         set({ showDeleteWorkspaceModal: show }),
       setShowAcceptInviteModal: (show) => set({ showAcceptInviteModal: show }),
+      setShowInviteMemberModal: (show) => set({ showInviteMemberModal: show }),
+      setShowRemoveTeammateModal: (show) =>
+        set({
+          showRemoveTeammateModal: show
+        }),
+
       // Utility actions
       closeAllModals: () =>
         set({
           showAddWorkspaceModal: false,
           showDeleteAccountModal: false,
           showDeleteWorkspaceModal: false,
-          showAcceptInviteModal: false
+          showAcceptInviteModal: false,
+          showInviteMemberModal: false,
+          showRemoveTeammateModal: false
         }),
 
       openModal: (modalName) => {
@@ -136,5 +156,43 @@ export const useAcceptInviteModal = () => {
       AcceptInviteModal
     }),
     [show, setShow]
+  );
+};
+
+export const useInviteMemberModal = () => {
+  const show = useModalStore((state) => state.showInviteMemberModal);
+  const setShow = useModalStore((state) => state.setShowInviteMemberModal);
+
+  return useMemo(
+    () => ({
+      show,
+      setShow,
+      InviteMemberModal
+    }),
+    [show, setShow]
+  );
+};
+
+export const useRemoveTeammateModal = ({
+  user,
+  invite
+}: {
+  user: UserProps;
+  invite?: boolean;
+}) => {
+  const show = useModalStore((state) => state.showRemoveTeammateModal);
+  const setShow = useModalStore((state) => state.setShowRemoveTeammateModal);
+
+  const RemoveTeammateModalCallback = useCallback(() => {
+    return <RemoveTeammateModal user={user} invite={invite} />;
+  }, [user, invite]);
+
+  return useMemo(
+    () => ({
+      show,
+      setShow,
+      RemoveTeammateModal: RemoveTeammateModalCallback
+    }),
+    [show, setShow, RemoveTeammateModalCallback]
   );
 };

@@ -12,6 +12,10 @@ export interface UserProps {
   provider: string | null;
 }
 
+export interface UserPropsWithRole extends UserProps {
+  role: "OWNER" | "MEMBER";
+}
+
 export interface WorkspaceWithUsers {
   id: string;
   name: string;

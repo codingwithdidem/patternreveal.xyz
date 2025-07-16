@@ -38,12 +38,6 @@ export const withWorkspace = (
     const searchParams = getSearchParams(req.url);
     const awaitedParams = await params;
 
-    console.log({
-      url: req.url,
-      params: awaitedParams,
-      searchParams
-    });
-
     const headers = {};
     let workspace: WorkspaceWithUsers | undefined;
 
@@ -56,13 +50,6 @@ export const withWorkspace = (
         searchParams.workspaceId ||
         awaitedParams?.slug ||
         searchParams.projectSlug;
-
-      console.log({
-        awaitedParamsIdOrSlug: awaitedParams?.idOrSlug,
-        searchParamsWorkspaceId: searchParams.workspaceId,
-        awaitedParamsSlug: awaitedParams?.slug,
-        searchParamsProjectSlug: searchParams.projectSlug
-      });
 
       if (!idOrSlug) {
         throw new PatternRevealApiError({
@@ -79,18 +66,6 @@ export const withWorkspace = (
       const isWorkspaceId = isUUID;
       const workspaceId = isWorkspaceId ? idOrSlug : undefined;
       const workspaceSlug = !isWorkspaceId ? idOrSlug : undefined;
-
-      console.log("Workspace lookup:", {
-        idOrSlug,
-        isUUID,
-        isWorkspaceId,
-        workspaceId,
-        workspaceSlug,
-        query: {
-          id: workspaceId || undefined,
-          slug: workspaceSlug || undefined
-        }
-      });
 
       session = await getSession();
 

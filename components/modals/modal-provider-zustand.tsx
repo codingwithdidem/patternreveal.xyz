@@ -7,7 +7,8 @@ import {
   useAddWorkspaceModal,
   useDeleteAccountModal,
   useDeleteWorkspaceModal,
-  useAcceptInviteModal
+  useAcceptInviteModal,
+  useInviteMemberModal
 } from "@/lib/stores/modal-store";
 import useWorkspace from "@/lib/swr/use-workspace";
 
@@ -28,6 +29,7 @@ function ModalProviderClient({ children }: { children: ReactNode }) {
   const { DeleteWorkspaceModal } = useDeleteWorkspaceModal();
   const { AcceptInviteModal, setShow: setShowAcceptInviteModal } =
     useAcceptInviteModal();
+  const { InviteMemberModal } = useInviteMemberModal();
 
   useEffect(() => {
     if ((error && error?.status === 409) || error?.status === 410) {
@@ -41,6 +43,7 @@ function ModalProviderClient({ children }: { children: ReactNode }) {
       <DeleteAccountModal />
       <DeleteWorkspaceModal />
       <AcceptInviteModal />
+      <InviteMemberModal />
       {children}
     </>
   );

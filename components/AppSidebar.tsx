@@ -16,11 +16,17 @@ import {
   SidebarMenuSubItem
 } from "@components/ui/sidebar";
 import {
+  BarChartIcon,
   BellRing,
+  Building2Icon,
+  ChartLineIcon,
   ChevronDown,
   ChevronLeft,
+  CogIcon,
+  CreditCard,
+  CreditCardIcon,
   LucideIcon,
-  User2Icon
+  UsersRoundIcon
 } from "lucide-react";
 import Link from "next/link";
 import UserPopover from "@components/UserPopover";
@@ -103,11 +109,6 @@ const NAV_AREAS: SidebarNavAreas<{
             }))
           },
           {
-            name: "Moods",
-            icon: ActivityIcon,
-            href: `/${slug}/moods${pathname === `/${slug}/moods` ? "" : queryString}`
-          },
-          {
             name: "Settings",
             icon: SettingsGearIcon,
             href: `/${slug}/settings${pathname === `/${slug}/settings` ? "" : queryString}`
@@ -124,14 +125,36 @@ const NAV_AREAS: SidebarNavAreas<{
         name: "Account",
         items: [
           {
-            name: "Profile",
-            icon: User2Icon,
-            href: `/${slug}/settings/profile`
+            name: "General",
+            icon: CogIcon,
+            href: `/${slug}/settings`,
+            exact: true
+          }
+        ]
+      },
+      {
+        name: "Workspace",
+        items: [
+          {
+            name: "General",
+            icon: CogIcon,
+            href: `/${slug}/settings/workspace`,
+            exact: true
           },
           {
-            name: "Notifications",
-            icon: BellRing,
-            href: `/${slug}/settings/notifications`
+            name: "Billing",
+            icon: CreditCardIcon,
+            href: `/${slug}/settings/workspace/billing`
+          },
+          {
+            name: "Members",
+            icon: UsersRoundIcon,
+            href: `/${slug}/settings/workspace/members`
+          },
+          {
+            name: "Analytics",
+            icon: ChartLineIcon,
+            href: `/${slug}/settings/workspace/analytics`
           }
         ]
       }
@@ -143,8 +166,6 @@ export default function AppSidebar() {
   const pathname = usePathname();
   const { slug } = useParams<{ slug: string }>();
   const { data: session } = useSession();
-
-  console.log("slug", slug);
 
   const { reflections: topReflections, isLoading: isTopReflectionsLoading } =
     usePopularReflections();
@@ -182,7 +203,7 @@ export default function AppSidebar() {
                 {...{ inert: area !== currentArea ? true : undefined }}
               >
                 {title && backHref ? (
-                  <div className="py group -my-1 -ml-1 flex items-center gap-2 py-2 pr-1 text-sm font-medium text-neutral-900">
+                  <div className="py group -my-1 -ml-1 flex items-center gap-2 py-2 pr-1 text-md font-medium text-neutral-900">
                     <ChevronLeft className="size-4 text-neutral-500 transition-transform duration-100 group-hover:-translate-x-0.5" />
                     {title}
                   </div>

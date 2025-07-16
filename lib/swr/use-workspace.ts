@@ -1,7 +1,7 @@
 import { useParams, useSearchParams } from "next/navigation";
 import useSWR, { type SWRConfiguration } from "swr";
 import { fetcher } from "./fetcher";
-import type { Workspace } from "@prisma/client";
+import type { WorkspaceWithUsers } from "../types";
 
 export default function useWorkspace({
   swrOpts
@@ -18,25 +18,26 @@ export default function useWorkspace({
     data: workspace,
     error,
     mutate
-  } = useSWR<Workspace>(slug && `/api/workspaces/${slug}`, fetcher, {
+  } = useSWR<WorkspaceWithUsers>(slug && `/api/workspaces/${slug}`, fetcher, {
     dedupingInterval: 60000,
     ...swrOpts
   });
 
+  console.log({
+    workspace
+  });
+
   return {
     ...workspace,
-    error
+    role: workspace?.users?.[0]?.role || "MEMBER",
+    isOwner: workspace?.users?.[0]?.role === "OWNER",
     // nextPlan: workspace?.plan ? getNextPlan(workspace.plan) : PRO_PLAN,
-    // role: (workspace?.users && workspace.users[0].role) || "member",
-    // isOwner: workspace?.users && workspace.users[0].role === "owner",
+    mutate,
+    // loading: slug && !workspace && !error ? true : false,
+    error
     // exceededClicks: workspace && workspace.usage >= workspace.usageLimit,
     // exceededLinks: workspace && workspace.linksUsage >= workspace.linksLimit,
     // exceededAI: workspace && workspace.aiUsage >= workspace.aiLimit,
-    // exceededDomains:
-    //   workspace?.domains && workspace.domains.length >= workspace.domainsLimit,
-    // error,
     // defaultFolderId: workspace?.users && workspace.users[0].defaultFolderId,
-    // mutate,
-    // loading: slug && !workspace && !error ? true : false
   };
 }

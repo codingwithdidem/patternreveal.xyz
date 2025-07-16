@@ -44,8 +44,23 @@ export const WorkspaceSchema = z.object({
   aiLimit: z.number().describe("The AI limit of the workspace"),
   usersLimit: z.number().describe("The users limit of the workspace."),
   store: z.record(z.string(), z.any()).describe("The store of the workspace"),
+  users: z
+    .array(
+      z.object({
+        role: z.enum(["OWNER", "MEMBER"])
+      })
+    )
+    .describe("The role of the authenticated user in the workspace."),
   createdAt: z.date().describe("The date and time the workspace was created"),
   updatedAt: z
     .date()
     .describe("The date and time the workspace was last updated")
+});
+
+export const WorkspaceSchemaExtended = WorkspaceSchema.extend({
+  users: z.array(
+    WorkspaceSchema.shape.users.element.extend({
+      workspacePreferences: z.record(z.any()).nullish()
+    })
+  )
 });
