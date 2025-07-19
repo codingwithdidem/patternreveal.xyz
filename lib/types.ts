@@ -20,13 +20,26 @@ export interface WorkspaceWithUsers {
   id: string;
   name: string;
   slug: string;
+  logo?: string | null;
+  inviteCode?: string | null;
+  billingCycleStart: number;
+  plan: PlanProps;
+  totalReflections: number;
+  usage: number;
+  usageLimit: number;
+  reflectionsUsage: number;
+  reflectionsLimit: number;
+  aiUsage: number;
+  aiLimit: number;
+  usersLimit: number;
+  store?: Record<string, any>;
   users: {
     role: "OWNER" | "MEMBER";
   }[];
-  plan: PlanProps;
-  paddleId: string;
-  usersLimit: number;
   createdAt: Date;
+  updatedAt: Date;
+  paddleId?: string;
+  paddleCustomerId?: string;
 }
 
 export type PlanProps = (typeof plans)[number];

@@ -16,7 +16,7 @@ export const GET = withWorkspace(
       {
         ...WorkspaceSchemaExtended.parse({
           ...workspace
-        })
+        }) 
       },
       { headers }
     );

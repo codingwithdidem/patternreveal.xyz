@@ -19,7 +19,6 @@ const getUserAvatarOrFallbackUrl = (
     image?: string | null;
   } | null
 ) => {
-  console.log(user);
   if (user?.image) return user.image;
 
   if (!user?.id) return "https://api.dicebear.com/9.x/miniavs/svg";
@@ -43,14 +42,24 @@ export default function UserAvatar({ user, className }: UserAvatarProps) {
     );
 
   return (
-    <Avatar className="w-8 h-8">
-      <AvatarImage src={avatarUrl} alt={user?.name || "User"} />
+    <Avatar className={cn("w-8 h-8", className)}>
+      <AvatarImage 
+        src={avatarUrl} 
+        alt={user?.name || "User"} 
+        onError={(e) => {
+          // If image fails to load, hide it to show fallback
+          const target = e.target as HTMLImageElement;
+          target.style.display = 'none';
+        }}
+      />
       <AvatarFallback>
         {user?.name
           ? user.name
               .split(" ")
               .map((name) => name[0])
               .join("")
+              .toUpperCase()
+              .slice(0, 2)
           : "U"}
       </AvatarFallback>
     </Avatar>

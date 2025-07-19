@@ -54,7 +54,8 @@ export const WorkspaceSchema = z.object({
   createdAt: z.date().describe("The date and time the workspace was created"),
   updatedAt: z
     .date()
-    .describe("The date and time the workspace was last updated")
+    .describe("The date and time the workspace was last updated"),
+  paddleCustomerId: z.string().nullable().describe("The Paddle customer ID of the workspace"),
 });
 
 export const WorkspaceSchemaExtended = WorkspaceSchema.extend({

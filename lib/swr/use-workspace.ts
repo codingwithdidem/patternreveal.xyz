@@ -23,10 +23,6 @@ export default function useWorkspace({
     ...swrOpts
   });
 
-  console.log({
-    workspace
-  });
-
   return {
     ...workspace,
     role: workspace?.users?.[0]?.role || "MEMBER",
