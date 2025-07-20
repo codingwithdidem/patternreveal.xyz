@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import { useState } from "react";
 import { toast } from "sonner";
+import { currencyFormatter } from "@/utils/functions/currency-formatter";
 
 // Updated interface to match the new API response
 interface Invoice {
@@ -221,7 +222,10 @@ export default function InvoicesPageClient() {
                   <div className="flex items-center gap-4">
                     <div className="text-right">
                       <p className="font-semibold">
-                        {invoice.amount} {invoice.currencyCode}
+                        {currencyFormatter(Number(invoice.amount) / 100, {
+                          maximumFractionDigits: 2
+                        })}
+                        {invoice.currencyCode}
                       </p>
                     </div>
                     <Button
