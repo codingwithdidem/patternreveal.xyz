@@ -223,9 +223,9 @@ export default function InvoicesPageClient() {
                     <div className="text-right">
                       <p className="font-semibold">
                         {currencyFormatter(Number(invoice.amount) / 100, {
-                          maximumFractionDigits: 2
+                          maximumFractionDigits: 2,
+                          currency: invoice.currencyCode
                         })}
-                        {invoice.currencyCode}
                       </p>
                     </div>
                     <Button
