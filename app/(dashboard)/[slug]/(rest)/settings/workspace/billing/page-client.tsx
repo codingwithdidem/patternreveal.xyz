@@ -2,7 +2,7 @@
 
 import PlanUsage from "@/components/billing/plan-usage";
 import useWorkspace from "@/lib/swr/use-workspace";
-import { Loader2, FileText, CreditCard } from "lucide-react";
+import { Loader2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import SubscriptionMenu from "@/components/billing/subscription-menu";
@@ -30,7 +30,7 @@ export default function BillingPageClient() {
     <div className="max-w-7xl mx-auto space-y-6 p-6 font-[family-name:var(--font-satoshi)]">
       {/* Header with Invoices Link */}
       <div className="flex items-center justify-between">
-        <div></div>
+        <div />
         <div className="flex items-center gap-3">
           {workspace.plan.toLowerCase() === "free" && (
             <Button className="flex items-center gap-2">Upgrade</Button>
