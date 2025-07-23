@@ -29,115 +29,110 @@ export const GET = withPermissions(
     return NextResponse.json(workspaces);
   },
   {
-    requiredPermissions: []
+    requiredPermissions: ["workspaces.read"]
   }
 );
 
-export const POST = withPermissions(
-  async ({ req, session }) => {
-    const { name, slug } = await createWorkspaceSchema.parseAsync(
-      await parseRequestBody(req)
+export const POST = withPermissions(async ({ req, session }) => {
+  const { name, slug } = await createWorkspaceSchema.parseAsync(
+    await parseRequestBody(req)
+  );
+
+  try {
+    const workspace = await prisma.$transaction(
+      async (tx) => {
+        const freeWorkspacesCount = await tx.workspace.count({
+          where: {
+            plan: "free",
+            users: {
+              some: {
+                userId: session.user.id,
+                role: "OWNER"
+              }
+            }
+          }
+        });
+
+        if (freeWorkspacesCount >= FREE_WORKSPACES_LIMIT) {
+          throw new PatternRevealApiError({
+            code: "exceeded_limit",
+            message: "You have reached the limit of free workspaces"
+          });
+        }
+
+        const result = await tx.workspace.create({
+          data: {
+            name,
+            slug,
+            users: {
+              create: {
+                userId: session.user.id,
+                role: "OWNER"
+              }
+            },
+            billingCycleStart: new Date().getDate(),
+            inviteCode: nanoid(24),
+            store: {}
+          },
+          include: {
+            users: {
+              where: {
+                userId: session.user.id
+              },
+              select: {
+                role: true
+              }
+            }
+          }
+        });
+        return result;
+      },
+      {
+        isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
+        maxWait: 5000,
+        timeout: 5000
+      }
     );
 
-    try {
-      const workspace = await prisma.$transaction(
-        async (tx) => {
-          const freeWorkspacesCount = await tx.workspace.count({
-            where: {
-              plan: "free",
-              users: {
-                some: {
-                  userId: session.user.id,
-                  role: "OWNER"
-                }
-              }
-            }
-          });
-
-          if (freeWorkspacesCount >= FREE_WORKSPACES_LIMIT) {
-            throw new PatternRevealApiError({
-              code: "exceeded_limit",
-              message: "You have reached the limit of free workspaces"
-            });
+    // if the user has no default workspace, set the new workspace as the default
+    if (
+      session.user.defaultWorkspace === null ||
+      session.user.defaultWorkspace === undefined
+    ) {
+      waitUntil(
+        prisma.user.update({
+          where: {
+            id: session.user.id
+          },
+          data: {
+            defaultWorkspace: workspace.slug
           }
-
-          const result = await tx.workspace.create({
-            data: {
-              name,
-              slug,
-              users: {
-                create: {
-                  userId: session.user.id,
-                  role: "OWNER"
-                }
-              },
-              billingCycleStart: new Date().getDate(),
-              inviteCode: nanoid(24),
-              store: {}
-            },
-            include: {
-              users: {
-                where: {
-                  userId: session.user.id
-                },
-                select: {
-                  role: true
-                }
-              }
-            }
-          });
-          return result;
-        },
-        {
-          isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
-          maxWait: 5000,
-          timeout: 5000
-        }
+        })
       );
+    }
 
-      // if the user has no default workspace, set the new workspace as the default
-      if (
-        session.user.defaultWorkspace === null ||
-        session.user.defaultWorkspace === undefined
-      ) {
-        waitUntil(
-          prisma.user.update({
-            where: {
-              id: session.user.id
-            },
-            data: {
-              defaultWorkspace: workspace.slug
-            }
-          })
-        );
-      }
-
-      return NextResponse.json(WorkspaceSchema.parse(workspace));
-    } catch (error) {
-      if (
-        error instanceof Prisma.PrismaClientKnownRequestError &&
-        error.code === "P2002"
-      ) {
-        throw new PatternRevealApiError({
-          code: "conflict",
-          message: `The slug "${slug}" is already in use.`
-        });
-      }
-
-      if (error instanceof PatternRevealApiError) {
-        throw error;
-      }
-
+    return NextResponse.json(WorkspaceSchema.parse(workspace));
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2002"
+    ) {
       throw new PatternRevealApiError({
-        code: "internal_server_error",
-        message: "Error creating workspace. Please try again later."
+        code: "conflict",
+        message: `The slug "${slug}" is already in use.`
       });
     }
-  },
-  {
-    requiredPermissions: []
+
+    if (error instanceof PatternRevealApiError) {
+      throw error;
+    }
+
+    throw new PatternRevealApiError({
+      code: "internal_server_error",
+      message: "Error creating workspace. Please try again later."
+    });
   }
-);
+});
 
 export const DELETE = withWorkspace(
   async ({ workspace, headers, session }) => {
@@ -199,6 +194,6 @@ export const DELETE = withWorkspace(
     );
   },
   {
-    requiredPermissions: ["mood.read"]
+    requiredPermissions: ["workspaces.write"]
   }
 );

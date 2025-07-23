@@ -4,13 +4,16 @@ import AnimatedEmptyState from "@/components/AnimatedEmptyState";
 import ReflectionsTable from "@/components/reflections/ReflectionsTable";
 import { Button } from "@/components/ui/button";
 import { FilterSelect } from "@/components/ui/filter/filter-select";
+import PaginationControls from "@/components/ui/pagination-controls";
 import useReflections from "@/lib/swr/use-reflections";
+import { usePagination } from "@/hooks/usePagination";
 import { ActivityIcon, FlagIcon, TriangleAlert } from "lucide-react";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
 import type { ComponentProps } from "react";
 import useReflectionQueryParams from "@/hooks/nuqs/useReflectionQueryParams";
 import useWorkspace from "@/lib/swr/use-workspace";
+import { useEffect } from "react";
 
 const redFlags = [
   {
@@ -31,7 +34,25 @@ export default function ReflectionsClientPage() {
   const router = useRouter();
   const { slug: workspaceSlug } = useParams<{ slug: string }>();
   const { id: workspaceId } = useWorkspace();
-  const { reflections, error } = useReflections();
+
+  // Pagination state
+  const [paginationState, paginationActions, paginationInfo] = usePagination({
+    initialPage: 1,
+    initialLimit: 10
+  });
+
+  // Fetch reflections with pagination
+  const { reflections, pagination, error } = useReflections({
+    page: paginationState.page,
+    limit: paginationState.limit
+  });
+
+  // Update pagination total when data changes
+  useEffect(() => {
+    if (pagination?.total !== undefined) {
+      paginationActions.setTotal(pagination.total);
+    }
+  }, [pagination?.total, paginationActions]);
 
   const { filters: activeFilters, setFilters } = useReflectionQueryParams();
 
@@ -184,7 +205,21 @@ export default function ReflectionsClientPage() {
             </div>
             <Button onClick={createReflection}>Create Reflection</Button>
           </div>
+
           <ReflectionsTable reflections={reflections} />
+
+          {/* Pagination Controls */}
+          <div className="w-full absolute bottom-10">
+            <PaginationControls
+              actions={paginationActions}
+              info={paginationInfo}
+              total={paginationState.total}
+              page={paginationState.page}
+              limit={paginationState.limit}
+              showItemsPerPage={true}
+              itemsPerPageOptions={[10, 20, 50, 100]}
+            />
+          </div>
         </div>
       ) : (
         <AnimatedEmptyState

@@ -30,6 +30,6 @@ export const PATCH = withPermissions(
     return NextResponse.json(reportSchema.parse(report), { headers });
   },
   {
-    requiredPermissions: ["reflection.read"]
+    requiredPermissions: ["reflection.write"]
   }
 );

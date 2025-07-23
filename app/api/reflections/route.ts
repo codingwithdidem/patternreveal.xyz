@@ -1,6 +1,5 @@
 import { PatternRevealApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
-import { withPermissions } from "@/lib/auth/withPermissions";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
 import prisma from "@/lib/prisma";
 import {
@@ -13,8 +12,20 @@ import { NextResponse } from "next/server";
  * Get all reflection entries. Requires the `reflection.read` permission.
  */
 export const GET = withWorkspace(
-  async ({ req, headers, workspace }) => {
-    const response = await prisma.reflection.findMany({
+  async ({ headers, workspace, searchParams }) => {
+    const page = Number(searchParams.page || "1");
+    const limit = Number(searchParams.limit || "10");
+    const skip = (page - 1) * limit;
+
+    // Get total count for pagination
+    const total = await prisma.reflection.count({
+      where: {
+        workspaceId: workspace.id
+      }
+    });
+
+    // Get paginated reflections
+    const reflections = await prisma.reflection.findMany({
       where: {
         workspaceId: workspace.id
       },
@@ -23,12 +34,27 @@ export const GET = withWorkspace(
       },
       orderBy: {
         createdAt: "desc" // Sort by createdAt in descending order (newest first)
-      }
+      },
+      skip,
+      take: limit
     });
 
-    return NextResponse.json(response, {
-      headers
-    });
+    return NextResponse.json(
+      {
+        reflections,
+        pagination: {
+          page,
+          limit,
+          total,
+          totalPages: Math.ceil(total / limit),
+          hasNextPage: page * limit < total,
+          hasPrevPage: page > 1
+        }
+      },
+      {
+        headers
+      }
+    );
   },
   {
     requiredPermissions: ["reflection.read"]
@@ -73,9 +99,6 @@ export const POST = withWorkspace(
         message: "Failed to create reflection."
       });
     }
-  },
-  {
-    requiredPermissions: ["reflection.write"]
   }
 );
 
@@ -86,7 +109,7 @@ export const POST = withWorkspace(
  * @returns The deleted reflection.
  */
 export const DELETE = withWorkspace(
-  async ({ req, headers, workspace, searchParams }) => {
+  async ({ headers, workspace, searchParams }) => {
     const { success, data } =
       await deleteReflectionSchema.safeParse(searchParams);
 
@@ -116,8 +139,5 @@ export const DELETE = withWorkspace(
         message: "Failed to delete reflection."
       });
     }
-  },
-  {
-    requiredPermissions: ["reflection.write"]
   }
 );

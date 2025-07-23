@@ -1,6 +1,5 @@
 import { PatternRevealApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
-import { withPermissions } from "@/lib/auth/withPermissions";
 import { NextResponse } from "next/server";
 import { analyzeReflectionSchema } from "@/lib/zod/schemas/reflection";
 import { generateObject } from "ai";
@@ -8,10 +7,11 @@ import { openai } from "@ai-sdk/openai";
 import { type Analysis, analysisSchema } from "@/lib/zod/schemas/analysis";
 import prisma from "@/lib/prisma";
 import { waitUntil } from "@vercel/functions";
+import { withWorkspace } from "@/lib/auth/withWorkspace";
 // import { record_reflection_report } from "@/lib/tinybird/record_reflection_report";
 
-export const POST = withPermissions(
-  async ({ req, headers, session }) => {
+export const POST = withWorkspace(
+  async ({ req, headers, session, workspace }) => {
     const { success, data } = await analyzeReflectionSchema.safeParse(
       await parseRequestBody(req)
     );
@@ -188,7 +188,5 @@ Please provide a thorough analysis covering all aspects of the schema, being spe
       });
     }
   },
-  {
-    requiredPermissions: ["mood.write"]
-  }
+  {}
 );

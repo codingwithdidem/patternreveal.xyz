@@ -16,13 +16,13 @@ export const GET = withWorkspace(
       {
         ...WorkspaceSchemaExtended.parse({
           ...workspace
-        }) 
+        })
       },
       { headers }
     );
   },
   {
-    requiredPermissions: ["mood.read"]
+    requiredPermissions: ["workspaces.read"]
   }
 );
 
@@ -69,7 +69,7 @@ export const PATCH = withWorkspace(
     }
   },
   {
-    requiredPermissions: ["mood.read"]
+    requiredPermissions: ["workspaces.write"]
   }
 );
 

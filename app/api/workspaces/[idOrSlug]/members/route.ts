@@ -21,76 +21,86 @@ const removeUserSchema = z.object({
 });
 
 // GET /api/workspaces/:idOrSlug/members - Get members for a workspace
-export const GET = withWorkspace(async ({ workspace }) => {
-  const members = await prisma.workspaceUser.findMany({
-    where: {
-      workspaceId: workspace.id
-    },
-    select: {
-      id: true,
-      role: true,
-      createdAt: true,
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          image: true,
-          createdAt: true
+export const GET = withWorkspace(
+  async ({ workspace }) => {
+    const members = await prisma.workspaceUser.findMany({
+      where: {
+        workspaceId: workspace.id
+      },
+      select: {
+        id: true,
+        role: true,
+        createdAt: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true,
+            createdAt: true
+          }
         }
-      }
-    },
-    orderBy: [
-      { role: "asc" }, // OWNER first, then MEMBER
-      { createdAt: "asc" }
-    ]
-  });
+      },
+      orderBy: [
+        { role: "asc" }, // OWNER first, then MEMBER
+        { createdAt: "asc" }
+      ]
+    });
 
-  return NextResponse.json(
-    members.map((member) => ({
-      ...member.user,
-      role: member.role
-    }))
-  );
-});
+    return NextResponse.json(
+      members.map((member) => ({
+        ...member.user,
+        role: member.role
+      }))
+    );
+  },
+  {
+    requiredPermissions: ["workspaces.read"]
+  }
+);
 
 // PATCH /api/workspaces/:idOrSlug/members/:userId - Update member role
-export const PATCH = withWorkspace(async ({ req, workspace, searchParams }) => {
-  const { success, data } = await updateRoleSchema.safeParse(
-    await parseRequestBody(req)
-  );
+export const PATCH = withWorkspace(
+  async ({ req, workspace }) => {
+    const { success, data } = await updateRoleSchema.safeParse(
+      await parseRequestBody(req)
+    );
 
-  if (!success) {
-    throw new PatternRevealApiError({
-      code: "bad_request",
-      message: "Invalid request body format."
-    });
-  }
+    if (!success) {
+      throw new PatternRevealApiError({
+        code: "bad_request",
+        message: "Invalid request body format."
+      });
+    }
 
-  const { userId, role } = data;
+    const { userId, role } = data;
 
-  const updatedMember = await prisma.workspaceUser.update({
-    where: {
-      userId_workspaceId: {
-        userId,
-        workspaceId: workspace.id
-      }
-    },
-    data: { role },
-    include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
-          image: true
+    const updatedMember = await prisma.workspaceUser.update({
+      where: {
+        userId_workspaceId: {
+          userId,
+          workspaceId: workspace.id
+        }
+      },
+      data: { role },
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            image: true
+          }
         }
       }
-    }
-  });
+    });
 
-  return NextResponse.json(updatedMember);
-});
+    return NextResponse.json(updatedMember);
+  },
+  {
+    requiredPermissions: ["workspaces.write"]
+  }
+);
 
 // DELETE /api/workspaces/:idOrSlug/members/:userId - Remove member from workspace or leave workspace
 export const DELETE = withWorkspace(
@@ -160,5 +170,8 @@ export const DELETE = withWorkspace(
     });
 
     return NextResponse.json({ success: true });
+  },
+  {
+    skipPermissionChecks: true
   }
 );

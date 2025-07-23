@@ -73,8 +73,6 @@ export const PATCH = withPermissions(
         }
       });
 
-      console.log(response);
-
       return NextResponse.json(response, {
         headers
       });
@@ -85,8 +83,5 @@ export const PATCH = withPermissions(
         message: "Failed to update reflection."
       });
     }
-  },
-  {
-    requiredPermissions: ["reflection.write"]
   }
 );

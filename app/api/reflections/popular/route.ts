@@ -24,8 +24,5 @@ export const GET = withPermissions(
     return NextResponse.json(response, {
       headers
     });
-  },
-  {
-    requiredPermissions: ["reflection.read"]
   }
 );

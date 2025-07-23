@@ -4,29 +4,46 @@ import { fetcher } from "./fetcher";
 import type { Prisma } from "@prisma/client";
 import useWorkspace from "./use-workspace";
 
-export default function useReflections(swrOpts: SWRConfiguration = {}) {
-  const { id: workspaceId } = useWorkspace();
+export interface PaginatedReflectionsResponse {
+  reflections: Prisma.ReflectionGetPayload<{
+    include: {
+      analysisReport: true;
+    };
+  }>[];
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPrevPage: boolean;
+  };
+}
 
-  const {
-    data: reflections,
-    error,
-    isLoading,
-    isValidating
-  } = useSWR<
-    Prisma.ReflectionGetPayload<{
-      include: {
-        analysisReport: true;
-      };
-    }>[]
-  >(`/api/reflections?workspaceId=${workspaceId}`, fetcher, {
-    dedupingInterval: 20000,
-    revalidateOnFocus: false,
-    keepPreviousData: true,
-    ...swrOpts
-  });
+export interface UseReflectionsOptions extends SWRConfiguration {
+  page?: number;
+  limit?: number;
+}
+
+export default function useReflections(options: UseReflectionsOptions = {}) {
+  const { id: workspaceId } = useWorkspace();
+  const { page = 1, limit = 10, ...swrOpts } = options;
+
+  const { data, error, isLoading, isValidating } =
+    useSWR<PaginatedReflectionsResponse>(
+      `/api/reflections?workspaceId=${workspaceId}&page=${page}&limit=${limit}`,
+      fetcher,
+      {
+        dedupingInterval: 20000,
+        revalidateOnFocus: false,
+        keepPreviousData: true,
+        ...swrOpts
+      }
+    );
 
   return {
-    reflections,
+    reflections: data?.reflections || [],
+    pagination: data?.pagination,
     error,
     isLoading,
     isValidating
