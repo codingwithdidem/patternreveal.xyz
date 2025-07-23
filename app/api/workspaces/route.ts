@@ -3,7 +3,7 @@ import { withPermissions } from "@/lib/auth/withPermissions";
 import prisma from "@/lib/prisma";
 import {
   createWorkspaceSchema,
-  WorkspaceSchema
+  WorkspaceSchema,
 } from "@/lib/zod/schemas/workspace";
 import { PatternRevealApiError } from "@/lib/api/errors";
 import { Prisma } from "@prisma/client";
@@ -13,6 +13,8 @@ import { NextResponse } from "next/server";
 import { waitUntil } from "@vercel/functions";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
 import { cancelSubscription } from "@/lib/paddle/cancel-subscription";
+import { subscribe } from "@/lib/resend/subscribe";
+import { queueWorkspaceDeletion } from "@/lib/api/workspaces";
 
 export const GET = withPermissions(
   async ({ session }) => {
@@ -20,16 +22,16 @@ export const GET = withPermissions(
       where: {
         users: {
           some: {
-            userId: session.user.id
-          }
-        }
-      }
+            userId: session.user.id,
+          },
+        },
+      },
     });
 
     return NextResponse.json(workspaces);
   },
   {
-    requiredPermissions: ["workspaces.read"]
+    requiredPermissions: ["workspaces.read"],
   }
 );
 
@@ -47,16 +49,16 @@ export const POST = withPermissions(async ({ req, session }) => {
             users: {
               some: {
                 userId: session.user.id,
-                role: "OWNER"
-              }
-            }
-          }
+                role: "OWNER",
+              },
+            },
+          },
         });
 
         if (freeWorkspacesCount >= FREE_WORKSPACES_LIMIT) {
           throw new PatternRevealApiError({
             code: "exceeded_limit",
-            message: "You have reached the limit of free workspaces"
+            message: `You have reached the limit of ${FREE_WORKSPACES_LIMIT} free workspaces. Please upgrade to a paid plan to create more workspaces.`,
           });
         }
 
@@ -67,49 +69,53 @@ export const POST = withPermissions(async ({ req, session }) => {
             users: {
               create: {
                 userId: session.user.id,
-                role: "OWNER"
-              }
+                role: "OWNER",
+              },
             },
             billingCycleStart: new Date().getDate(),
             inviteCode: nanoid(24),
-            store: {}
+            store: {},
           },
           include: {
             users: {
               where: {
-                userId: session.user.id
+                userId: session.user.id,
               },
               select: {
-                role: true
-              }
-            }
-          }
+                role: true,
+              },
+            },
+          },
         });
         return result;
       },
       {
         isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
         maxWait: 5000,
-        timeout: 5000
+        timeout: 5000,
       }
     );
 
-    // if the user has no default workspace, set the new workspace as the default
-    if (
-      session.user.defaultWorkspace === null ||
-      session.user.defaultWorkspace === undefined
-    ) {
-      waitUntil(
-        prisma.user.update({
-          where: {
-            id: session.user.id
-          },
-          data: {
-            defaultWorkspace: workspace.slug
-          }
-        })
-      );
-    }
+    waitUntil(
+      Promise.allSettled([
+        // if the user has no default workspace, set the new workspace as the default
+        (session.user.defaultWorkspace === null ||
+          session.user.defaultWorkspace === undefined) &&
+          prisma.user.update({
+            where: {
+              id: session.user.id,
+            },
+            data: {
+              defaultWorkspace: workspace.slug,
+            },
+          }),
+        // Subscribe the user to resend audience
+        subscribe({
+          email: session.user.email,
+          name: session.user.name || "User",
+        }),
+      ])
+    );
 
     return NextResponse.json(WorkspaceSchema.parse(workspace));
   } catch (error) {
@@ -119,7 +125,7 @@ export const POST = withPermissions(async ({ req, session }) => {
     ) {
       throw new PatternRevealApiError({
         code: "conflict",
-        message: `The slug "${slug}" is already in use.`
+        message: `The slug "${slug}" is already in use.`,
       });
     }
 
@@ -129,71 +135,54 @@ export const POST = withPermissions(async ({ req, session }) => {
 
     throw new PatternRevealApiError({
       code: "internal_server_error",
-      message: "Error creating workspace. Please try again later."
+      message: "Error creating workspace. Please try again later.",
     });
   }
 });
 
 export const DELETE = withWorkspace(
-  async ({ workspace, headers, session }) => {
-    // Check if the user is the owner of the workspace
-    const isOwner = await prisma.workspaceUser.findFirst({
-      where: {
-        workspaceId: workspace.id,
-        userId: session.user.id,
-        role: "OWNER"
-      }
-    });
-
-    if (!isOwner) {
-      throw new PatternRevealApiError({
-        code: "unauthorized",
-        message: "You are not the owner of this workspace"
-      });
-    }
-
+  async ({ workspace, headers }) => {
     await Promise.all([
       // Delete all the users from the workspace
       prisma.workspaceUser.deleteMany({
         where: {
-          workspaceId: workspace.id
-        }
+          workspaceId: workspace.id,
+        },
       }),
-      // Update the user's default workspace to the first workspace
+      // Remove the workspace from the user's default workspace
       prisma.user.updateMany({
         where: {
-          defaultWorkspace: workspace.slug
+          defaultWorkspace: workspace.slug,
         },
         data: {
-          defaultWorkspace: null
-        }
-      })
+          defaultWorkspace: null,
+        },
+      }),
     ]);
 
     waitUntil(
       Promise.all([
         // Cancel the workspace subscription if it exists
-        workspace.paddleId && cancelSubscription(workspace.paddleId),
+        workspace.paddleCustomerId &&
+          cancelSubscription(workspace.paddleCustomerId),
 
-        // Queue the workspace for deletion
-        prisma.workspace.delete({
-          where: {
-            id: workspace.id
-          }
-        })
+        // Queue the workspace for deletion in the background
+        queueWorkspaceDeletion({
+          workspaceId: workspace.id,
+        }),
       ])
     );
 
     return NextResponse.json(
       {
         ...WorkspaceSchema.parse({
-          ...workspace
-        })
+          ...workspace,
+        }),
       },
       { headers }
     );
   },
   {
-    requiredPermissions: ["workspaces.write"]
+    requiredPermissions: ["workspaces.write"],
   }
 );

@@ -1,1 +1,1 @@
-export const FREE_WORKSPACES_LIMIT = 2;
+export const FREE_WORKSPACES_LIMIT = 1;

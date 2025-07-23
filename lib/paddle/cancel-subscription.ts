@@ -3,18 +3,22 @@ import { getPaddleClient } from "./client";
 export async function cancelSubscription(customerId: string) {
   try {
     const paddle = getPaddleClient();
-    const subscriptions = await paddle.subscriptions.list({
-      customerId: [customerId]
+    const subscriptionsCollection = await paddle.subscriptions.list({
+      customerId: [customerId],
     });
 
-    console.log(subscriptions);
+    const subscription = await subscriptionsCollection.next();
+    const activePaddleSubscriptionId = subscription[0]?.id;
 
-    const response = await paddle.subscriptions.cancel(customerId, {
-      effectiveFrom: "next_billing_period"
+    if (!activePaddleSubscriptionId) {
+      return;
+    }
+
+    return await paddle.subscriptions.cancel(activePaddleSubscriptionId, {
+      effectiveFrom: "next_billing_period",
     });
-    return response;
   } catch (error) {
     console.error("Error canceling subscription:", error);
-    throw error;
+    return;
   }
 }
