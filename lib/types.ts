@@ -38,7 +38,6 @@ export interface WorkspaceWithUsers {
   }[];
   createdAt: Date;
   updatedAt: Date;
-  paddleId?: string;
   paddleCustomerId?: string;
 }
 

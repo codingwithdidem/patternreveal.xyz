@@ -7,7 +7,7 @@ export const POST = withWorkspace(async ({ workspace }) => {
   if (!workspace.paddleCustomerId) {
     throw new PatternRevealApiError({
       code: "not_found",
-      message: "No subscription found for this workspace."
+      message: "No subscription found for this workspace.",
     });
   }
 
@@ -16,7 +16,7 @@ export const POST = withWorkspace(async ({ workspace }) => {
 
     const subscription = await paddle.subscriptions.list({
       customerId: [workspace.paddleCustomerId],
-      status: ["active"]
+      status: ["active"],
     });
 
     const subscriptions = await subscription.next();
@@ -26,17 +26,17 @@ export const POST = withWorkspace(async ({ workspace }) => {
     );
 
     console.log({
-      customerPortalSession
+      customerPortalSession,
     });
 
     return NextResponse.json({
-      url: customerPortalSession.urls.subscriptions[0].cancelSubscription
+      url: customerPortalSession.urls.subscriptions[0].cancelSubscription,
     });
   } catch (error) {
     console.error("Error cancelling subscription:", error);
     throw new PatternRevealApiError({
       code: "internal_server_error",
-      message: "Failed to cancel subscription. Please try again."
+      message: "Failed to cancel subscription. Please try again.",
     });
   }
 });

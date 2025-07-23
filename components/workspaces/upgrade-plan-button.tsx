@@ -85,7 +85,6 @@ export default function UpgradePlanButton({
             baseUrl: `${process.env.NEXT_PUBLIC_APP_URL}${pathname}${
               queryString.length > 0 ? `?${queryString}` : ""
             }`,
-            slug: searchParams.get("slug"),
           }),
         }
       );
@@ -93,7 +92,20 @@ export default function UpgradePlanButton({
       if (res.ok) {
         const data = await res.json();
 
-        if (data.success && data.action === "checkout" && paddle) {
+        if (data.action === "customer_portal" && data.url) {
+          // Open Paddle customer portal client-side
+          window.open(data.url, "_blank");
+
+          posthog.capture("checkout_initiated", {
+            currentPlan: currentPlan?.name,
+            selectedPlan: plan,
+            period,
+            workspace: workspaceSlug,
+            action: "customer_portal",
+          });
+        }
+
+        if (data.action === "checkout" && paddle) {
           // Open Paddle checkout client-side
           paddle.Checkout.open({
             items: [{ priceId: data.priceId, quantity: 1 }],
@@ -116,9 +128,8 @@ export default function UpgradePlanButton({
             selectedPlan: plan,
             period,
             workspace: workspaceSlug,
+            action: "checkout",
           });
-        } else {
-          throw new Error("Failed to initiate checkout");
         }
       } else {
         throw new Error("Failed to upgrade plan");
