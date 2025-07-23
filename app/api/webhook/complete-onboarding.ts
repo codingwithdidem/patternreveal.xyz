@@ -11,15 +11,15 @@ export const completeOnboarding = async (
 ) => {
   const workspace = await prisma.workspace.findUnique({
     where: {
-      id: workspaceId
+      id: workspaceId,
     },
     include: {
       users: {
         include: {
-          user: true
-        }
-      }
-    }
+          user: true,
+        },
+      },
+    },
   });
 
   if (!workspace) {
@@ -40,10 +40,10 @@ export const completeOnboarding = async (
           inviteUser({
             email,
             role,
-            workspace: workspace as WorkspaceWithUsers
+            workspace: workspace as WorkspaceWithUsers,
           });
         })
       );
-    }
+    },
   ]);
 };

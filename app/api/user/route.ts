@@ -21,7 +21,7 @@ export const PATCH = withPermissions(async ({ req, session }) => {
   if (!success) {
     throw new PatternRevealApiError({
       code: "bad_request",
-      message: "Invalid request body format."
+      message: "Invalid request body format.",
     });
   }
 
@@ -32,15 +32,15 @@ export const PATCH = withPermissions(async ({ req, session }) => {
       where: {
         userId: session.user.id,
         workspace: {
-          slug: defaultWorkspace
-        }
-      }
+          slug: defaultWorkspace,
+        },
+      },
     });
 
     if (!workspaceUser) {
       throw new PatternRevealApiError({
         code: "forbidden",
-        message: `You don't have access to workspace "${defaultWorkspace}".`
+        message: `You don't have access to workspace "${defaultWorkspace}".`,
       });
     }
   }
@@ -48,14 +48,14 @@ export const PATCH = withPermissions(async ({ req, session }) => {
   if (email && email !== session.user.email) {
     const userWithEmail = await prisma.user.findUnique({
       where: {
-        email
-      }
+        email,
+      },
     });
 
     if (userWithEmail) {
       throw new PatternRevealApiError({
         code: "conflict",
-        message: "Email already in use."
+        message: "Email already in use.",
       });
     }
 
@@ -68,7 +68,7 @@ export const PATCH = withPermissions(async ({ req, session }) => {
       throw new PatternRevealApiError({
         code: "rate_limit_exceeded",
         message:
-          "You've requested too many email change requests. Please try again later."
+          "You've requested too many email change requests. Please try again later.",
       });
     }
 
@@ -80,18 +80,18 @@ export const PATCH = withPermissions(async ({ req, session }) => {
       data: {
         identifier: session.user.id,
         token: await hashToken(token, { secret: true }),
-        expires: new Date(Date.now() + expiresIn)
-      }
+        expires: new Date(Date.now() + expiresIn),
+      },
     });
 
     await redis.set(
       `email-change-request:user:${session.user.id}`,
       {
         email: session.user.email,
-        newEmail: email
+        newEmail: email,
       },
       {
-        px: expiresIn
+        px: expiresIn,
       }
     );
 
@@ -102,8 +102,8 @@ export const PATCH = withPermissions(async ({ req, session }) => {
         react: ConfirmEmailChange({
           email: session.user.email,
           newEmail: email,
-          confirmUrl: `${process.env.NEXT_PUBLIC_APP_DOMAIN}/confirm-email-change/${token}`
-        })
+          confirmUrl: `${process.env.NEXT_PUBLIC_APP_DOMAIN}/confirm-email-change/${token}`,
+        }),
       })
     );
   }
@@ -111,19 +111,19 @@ export const PATCH = withPermissions(async ({ req, session }) => {
   try {
     const response = await prisma.user.update({
       where: {
-        id: session.user.id
+        id: session.user.id,
       },
       data: {
         ...(name && { name }),
-        ...(defaultWorkspace && { defaultWorkspace })
-      }
+        ...(defaultWorkspace && { defaultWorkspace }),
+      },
     });
 
     return NextResponse.json(response);
   } catch (error) {
     throw new PatternRevealApiError({
       code: "internal_server_error",
-      message: "Failed to update user."
+      message: "Failed to update user.",
     });
   }
 });
@@ -134,26 +134,26 @@ export const DELETE = withPermissions(async ({ session }) => {
   const userOwnsWorkspaces = await prisma.workspaceUser.findMany({
     where: {
       userId: session.user.id,
-      role: "OWNER"
-    }
+      role: "OWNER",
+    },
   });
 
   if (userOwnsWorkspaces.length > 0) {
     throw new PatternRevealApiError({
       code: "forbidden",
       message:
-        "You must transfer ownership of your workspaces or delete them before deleting your account."
+        "You must transfer ownership of your workspaces or delete them before deleting your account.",
     });
   }
   const deletedUser = await prisma.user.delete({
     where: {
-      id: session.user.id
-    }
+      id: session.user.id,
+    },
   });
 
   // Unsubscribe from email list
   await unsubscribe({
-    email: session.user.email
+    email: session.user.email,
   });
 
   return NextResponse.json(deletedUser);

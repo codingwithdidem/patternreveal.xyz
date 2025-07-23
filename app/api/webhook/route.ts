@@ -1,26 +1,14 @@
 import { NextResponse, type NextRequest } from "next/server";
-import prisma from "@/lib/prisma";
-import { PLANS } from "@/lib/constants";
-import { PatternRevealApiError } from "@/lib/api/errors";
-import {
-  type EventEntity,
-  EventName,
-  type SubscriptionCanceledEvent,
-  type SubscriptionCreatedEvent,
-  type SubscriptionUpdatedEvent,
-  type TransactionCompletedEvent
-} from "@paddle/paddle-node-sdk";
+import { type EventEntity, EventName } from "@paddle/paddle-node-sdk";
 import { getPaddleClient } from "@/lib/paddle/client";
-import { limiter } from "@/lib/cron/limiter";
-import { sendEmail } from "@/emails/send";
-import { completeOnboarding } from "./complete-onboarding";
-import UpgradeEmail from "@/emails/upgrade-email";
+import { handleSubscriptionCancelled } from "./subscription-cancelled";
+import { handleSubscriptionUpdated } from "./subscription-updated";
+import { handleSubscriptionCreated } from "./subscription-created";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.text();
 
-    // Get signature from headers
     const signature =
       request.headers.get("paddle-signature") ||
       request.headers.get("Paddle-Signature") ||
@@ -29,7 +17,6 @@ export async function POST(request: NextRequest) {
 
     const webhookSecret = process.env.PADDLE_NOTIFICATION_WEBHOOK_SECRET;
 
-    // Validate required fields
     if (!signature || !webhookSecret) {
       return NextResponse.json(
         { error: "Missing webhook signature or secret" },
@@ -50,7 +37,7 @@ export async function POST(request: NextRequest) {
       success: true,
       message: "Webhook received successfully",
       code: 200,
-      statusCode: 200
+      statusCode: 200,
     });
   } catch (error) {
     console.error("Webhook processing failed:", error);
@@ -62,8 +49,6 @@ export async function POST(request: NextRequest) {
 }
 
 async function processWebhookEvent(paddleEvent: EventEntity) {
-  console.log("Processing webhook event:", paddleEvent.eventType);
-
   try {
     switch (paddleEvent.eventType) {
       case EventName.SubscriptionCreated:
@@ -75,9 +60,6 @@ async function processWebhookEvent(paddleEvent: EventEntity) {
       case EventName.SubscriptionCanceled:
         await handleSubscriptionCancelled(paddleEvent);
         break;
-      case EventName.TransactionCompleted:
-        await handleTransactionCompleted(paddleEvent);
-        break;
       default:
         console.log("Unhandled event type:", paddleEvent.eventType);
     }
@@ -88,107 +70,4 @@ async function processWebhookEvent(paddleEvent: EventEntity) {
       error
     );
   }
-}
-
-async function handleSubscriptionCreated(event: SubscriptionCreatedEvent) {
-  console.log("Subscription created:", event);
-  const paddleCustomerId = event.data.customerId;
-  const priceId = event.data.items[0].price?.id;
-  const plan = PLANS.find((plan) =>
-    [plan.price.monthlyId, plan.price.yearlyId].includes(priceId)
-  );
-
-  if (!paddleCustomerId) {
-    throw new PatternRevealApiError({
-      message: "Paddle customer ID not found",
-      code: "not_found"
-    });
-  }
-
-  if (!plan) {
-    throw new PatternRevealApiError({
-      message: "Plan not found",
-      code: "not_found"
-    });
-  }
-
-  const workspaceId = (event.data.customData as { clientReferenceId?: string })
-    ?.clientReferenceId;
-
-  if (!workspaceId) {
-    throw new PatternRevealApiError({
-      message: "Workspace ID not found",
-      code: "not_found"
-    });
-  }
-
-  // Update the workspace with the paddle customer ID, plan, and plan limits
-  const workspace = await prisma.workspace.update({
-    where: {
-      id: workspaceId
-    },
-    data: {
-      paddleCustomerId,
-      billingCycleStart: new Date(
-        event.data.currentBillingPeriod?.startsAt || new Date()
-      ).getDate(),
-      plan: plan.name.toLowerCase(),
-      usageLimit: plan.limits.reflections,
-      reflectionsLimit: plan.limits.reflections,
-      aiLimit: plan.limits["ai-analysis"] + plan.limits["ask-ai"],
-      usersLimit: plan.limits.users
-    },
-    select: {
-      users: {
-        select: {
-          user: {
-            select: {
-              id: true,
-              name: true,
-              email: true
-            }
-          }
-        }
-      }
-    }
-  });
-
-  const workspaceUsers = workspace.users.map(({ user }) => {
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email
-    };
-  });
-
-  // Complete the onboarding process for the workspace users and send them an upgrade email
-  Promise.allSettled([
-    completeOnboarding(workspaceUsers, workspaceId),
-    workspaceUsers.map((user) => {
-      limiter.schedule(() =>
-        sendEmail({
-          email: user.email as string,
-          replyTo: "info@patternreveal.xyz",
-          subject: `Thank you for upgrading to PatternReveal ${plan.name}!`,
-          react: UpgradeEmail({
-            name: user.name,
-            email: user.email,
-            plan: plan.name
-          })
-        })
-      );
-    })
-  ]);
-}
-
-async function handleSubscriptionUpdated(event: SubscriptionUpdatedEvent) {
-  console.log("Subscription updated:", event);
-}
-
-async function handleSubscriptionCancelled(event: SubscriptionCanceledEvent) {
-  console.log("Subscription cancelled:", event);
-}
-
-async function handleTransactionCompleted(event: TransactionCompletedEvent) {
-  console.log("Transaction completed:", event);
 }

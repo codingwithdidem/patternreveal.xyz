@@ -15,7 +15,7 @@ export const GET = withWorkspace(
     return NextResponse.json(invites);
   },
   {
-    requiredPermissions: ["workspaces.read"]
+    requiredPermissions: ["workspaces.read"],
   }
 );
 
@@ -29,17 +29,17 @@ export const POST = withWorkspace(
     if (teammates.length > 4) {
       throw new PatternRevealApiError({
         message: "You can only save up to 4 invites at a time",
-        code: "bad_request"
+        code: "bad_request",
       });
     }
 
     await redis.set(`invites:${workspace.id}`, teammates, {
-      ex: 60 * 60 * 24 * 7 // 7 days
+      ex: 60 * 60 * 24 * 7, // 7 days
     });
 
     return NextResponse.json({ message: "Invite(s) saved" });
   },
   {
-    requiredPermissions: ["workspaces.write"]
+    requiredPermissions: ["workspaces.write"],
   }
 );

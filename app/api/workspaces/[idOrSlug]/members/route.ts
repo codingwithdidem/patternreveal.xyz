@@ -11,13 +11,13 @@ const updateRoleSchema = z.object({
   userId: z.string().min(1),
   role: z.enum(roles, {
     errorMap: () => ({
-      message: `Role must be either "owner" or "member".`
-    })
-  })
+      message: `Role must be either "owner" or "member".`,
+    }),
+  }),
 });
 
 const removeUserSchema = z.object({
-  userId: z.string().min(1)
+  userId: z.string().min(1),
 });
 
 // GET /api/workspaces/:idOrSlug/members - Get members for a workspace
@@ -25,7 +25,7 @@ export const GET = withWorkspace(
   async ({ workspace }) => {
     const members = await prisma.workspaceUser.findMany({
       where: {
-        workspaceId: workspace.id
+        workspaceId: workspace.id,
       },
       select: {
         id: true,
@@ -37,25 +37,25 @@ export const GET = withWorkspace(
             name: true,
             email: true,
             image: true,
-            createdAt: true
-          }
-        }
+            createdAt: true,
+          },
+        },
       },
       orderBy: [
         { role: "asc" }, // OWNER first, then MEMBER
-        { createdAt: "asc" }
-      ]
+        { createdAt: "asc" },
+      ],
     });
 
     return NextResponse.json(
       members.map((member) => ({
         ...member.user,
-        role: member.role
+        role: member.role,
       }))
     );
   },
   {
-    requiredPermissions: ["workspaces.read"]
+    requiredPermissions: ["workspaces.read"],
   }
 );
 
@@ -69,7 +69,7 @@ export const PATCH = withWorkspace(
     if (!success) {
       throw new PatternRevealApiError({
         code: "bad_request",
-        message: "Invalid request body format."
+        message: "Invalid request body format.",
       });
     }
 
@@ -79,8 +79,8 @@ export const PATCH = withWorkspace(
       where: {
         userId_workspaceId: {
           userId,
-          workspaceId: workspace.id
-        }
+          workspaceId: workspace.id,
+        },
       },
       data: { role },
       include: {
@@ -89,16 +89,16 @@ export const PATCH = withWorkspace(
             id: true,
             name: true,
             email: true,
-            image: true
-          }
-        }
-      }
+            image: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json(updatedMember);
   },
   {
-    requiredPermissions: ["workspaces.write"]
+    requiredPermissions: ["workspaces.write"],
   }
 );
 
@@ -110,7 +110,7 @@ export const DELETE = withWorkspace(
     if (!success) {
       throw new PatternRevealApiError({
         code: "bad_request",
-        message: "Invalid request body format."
+        message: "Invalid request body format.",
       });
     }
 
@@ -119,7 +119,7 @@ export const DELETE = withWorkspace(
     if (userId !== session.user.id) {
       throwIfNoAccess({
         permissions,
-        requiredPermissions: ["workspaces.write"]
+        requiredPermissions: ["workspaces.write"],
       });
     }
 
@@ -128,22 +128,22 @@ export const DELETE = withWorkspace(
         where: {
           userId_workspaceId: {
             userId,
-            workspaceId: workspace.id
-          }
-        }
+            workspaceId: workspace.id,
+          },
+        },
       }),
       prisma.workspaceUser.count({
         where: {
           workspaceId: workspace.id,
-          role: "OWNER"
-        }
-      })
+          role: "OWNER",
+        },
+      }),
     ]);
 
     if (!workspaceUser) {
       throw new PatternRevealApiError({
         code: "not_found",
-        message: "Workspace user not found."
+        message: "Workspace user not found.",
       });
     }
 
@@ -156,7 +156,7 @@ export const DELETE = withWorkspace(
       throw new PatternRevealApiError({
         code: "bad_request",
         message:
-          "Cannot delete the last owner of the workspace. Please transfer ownership to another member first."
+          "Cannot delete the last owner of the workspace. Please transfer ownership to another member first.",
       });
     }
 
@@ -164,14 +164,14 @@ export const DELETE = withWorkspace(
       where: {
         userId_workspaceId: {
           userId,
-          workspaceId: workspace.id
-        }
-      }
+          workspaceId: workspace.id,
+        },
+      },
     });
 
     return NextResponse.json({ success: true });
   },
   {
-    skipPermissionChecks: true
+    skipPermissionChecks: true,
   }
 );

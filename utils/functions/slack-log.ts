@@ -3,6 +3,7 @@ const logTypeToEnv = {
   cron: process.env.PATTERN_REVEAL_SLACK_HOOK_CRON,
   errors: process.env.PATTERN_REVEAL_SLACK_HOOK_ERRORS,
   reflections: process.env.PATTERN_REVEAL_SLACK_HOOK_REFLECTIONS,
+  workspaces: process.env.PATTERN_REVEAL_SLACK_HOOK_WORKSPACES,
 };
 
 export const log = async ({
@@ -11,7 +12,7 @@ export const log = async ({
   mention = false,
 }: {
   message: string;
-  type: "alerts" | "cron" | "errors" | "reflections";
+  type: "alerts" | "cron" | "errors" | "reflections" | "workspaces";
   mention?: boolean;
 }) => {
   /* Log a message to the console */
@@ -39,6 +40,6 @@ export const log = async ({
       }),
     });
   } catch (e) {
-    console.log(`Failed to log to Dub Slack. Error: ${e}`);
+    console.log(`Failed to log to PatternReveal Slack. Error: ${e}`);
   }
 };

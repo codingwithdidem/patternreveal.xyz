@@ -12,8 +12,8 @@ export const POST = withPermissions(async ({ session, params }) => {
     where: {
       email: session.user.email,
       workspace: {
-        slug
-      }
+        slug,
+      },
     },
     select: {
       expires: true,
@@ -26,12 +26,12 @@ export const POST = withPermissions(async ({ session, params }) => {
           usersLimit: true,
           _count: {
             select: {
-              users: true
-            }
-          }
-        }
-      }
-    }
+              users: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   if (!invite) {
@@ -49,10 +49,10 @@ export const POST = withPermissions(async ({ session, params }) => {
       exceededLimitError({
         plan: workspace.plan as PlanProps,
         limit: workspace.usersLimit,
-        type: "users"
+        type: "users",
       }),
       {
-        status: 403
+        status: 403,
       }
     );
   }
@@ -62,26 +62,26 @@ export const POST = withPermissions(async ({ session, params }) => {
       data: {
         userId: session.user.id,
         role: invite.role,
-        workspaceId: workspace.id
-      }
+        workspaceId: workspace.id,
+      },
     }),
     prisma.workspaceInvite.delete({
       where: {
         email_workspaceId: {
           email: session.user.email,
-          workspaceId: workspace.id
-        }
-      }
+          workspaceId: workspace.id,
+        },
+      },
     }),
     session.user["defaultWorkspace"] === null &&
       prisma.user.update({
         where: {
-          id: session.user.id
+          id: session.user.id,
         },
         data: {
-          defaultWorkspace: workspace.slug
-        }
-      })
+          defaultWorkspace: workspace.slug,
+        },
+      }),
   ]);
   return NextResponse.json(response);
 });

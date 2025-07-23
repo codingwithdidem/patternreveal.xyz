@@ -18,7 +18,7 @@ export const ErrorCode = z.enum([
   "exceeded_limit",
   "invite_expired",
   "invite_pending",
-  "unprocessable_entity"
+  "unprocessable_entity",
 ]);
 
 const errorCodeToHttpStatus: Record<z.infer<typeof ErrorCode>, number> = {
@@ -33,20 +33,20 @@ const errorCodeToHttpStatus: Record<z.infer<typeof ErrorCode>, number> = {
   exceeded_limit: 400,
   invite_expired: 400,
   invite_pending: 400,
-  unprocessable_entity: 422
+  unprocessable_entity: 422,
 };
 
 const ErrorSchema = z.object({
   error: z.object({
     code: ErrorCode.openapi({
       description: "A short code indicating the type of error.",
-      example: "not_found"
+      example: "not_found",
     }),
     message: z.string().openapi({
       description: "A human-readable message describing the error.",
-      example: "The requested resource was not found."
-    })
-  })
+      example: "The requested resource was not found.",
+    }),
+  }),
 });
 
 export type ErrorResponse = z.infer<typeof ErrorSchema>;
@@ -55,13 +55,7 @@ export type ErrorCodes = z.infer<typeof ErrorCode>;
 export class PatternRevealApiError extends Error {
   public readonly code: ErrorCodes;
 
-  constructor({
-    code,
-    message
-  }: {
-    code: ErrorCodes;
-    message: string;
-  }) {
+  constructor({ code, message }: { code: ErrorCodes; message: string }) {
     super(message);
     this.name = "PatternRevealApiError";
     this.code = code;
@@ -75,23 +69,23 @@ export function fromZodError(error: ZodError): ErrorResponse {
       message: generateErrorMessage(error.issues, {
         maxErrors: 1,
         delimiter: {
-          component: ": "
+          component: ": ",
         },
         path: {
           enabled: true,
           type: "objectNotation",
-          label: ""
+          label: "",
         },
         code: {
           enabled: true,
-          label: ""
+          label: "",
         },
         message: {
           enabled: true,
-          label: ""
-        }
-      })
-    }
+          label: "",
+        },
+      }),
+    },
   };
 }
 
@@ -102,7 +96,7 @@ export function handleApiError(
   if (error instanceof ZodError) {
     return {
       ...fromZodError(error),
-      status: errorCodeToHttpStatus.unprocessable_entity
+      status: errorCodeToHttpStatus.unprocessable_entity,
     };
   }
 
@@ -111,9 +105,9 @@ export function handleApiError(
     return {
       error: {
         code: error.code,
-        message: error.message
+        message: error.message,
       },
-      status: errorCodeToHttpStatus[error.code]
+      status: errorCodeToHttpStatus[error.code],
     };
   }
 
@@ -135,9 +129,9 @@ export function handleApiError(
         message:
           prismaError?.meta?.cause ||
           prismaError?.message ||
-          "The requested resource was not found."
+          "The requested resource was not found.",
       },
-      status: 404
+      status: 404,
     };
   }
 
@@ -147,9 +141,9 @@ export function handleApiError(
     error: {
       code: "internal_server_error",
       message:
-        "An internal server error occurred. Please contact our support if the problem persists."
+        "An internal server error occurred. Please contact our support if the problem persists.",
     },
-    status: 500
+    status: 500,
   };
 }
 
@@ -165,7 +159,7 @@ export function handleAndReturnErrorResponse(
 export const exceededLimitError = ({
   plan,
   limit,
-  type
+  type,
 }: {
   plan: PlanProps;
   limit: number;
@@ -185,5 +179,7 @@ export const exceededLimitError = ({
     type === "payouts"
       ? currencyFormatter(limit / 100)
       : `${limit} ${limit === 1 ? type.slice(0, -1) : type}`
-  } on the ${capitalizeFirstChar(plan)} plan. Please upgrade for higher limits.`;
+  } on the ${capitalizeFirstChar(
+    plan
+  )} plan. Please upgrade for higher limits.`;
 };

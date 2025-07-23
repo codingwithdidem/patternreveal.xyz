@@ -1,4 +1,4 @@
-import { PatternRevealApiError } from "@/lib/api/errors";
+import { exceededLimitError, PatternRevealApiError } from "@/lib/api/errors";
 import { inviteUser } from "@/lib/api/users";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
@@ -13,19 +13,19 @@ export const GET = withWorkspace(
   async ({ workspace }) => {
     const invites = await prisma.workspaceInvite.findMany({
       where: {
-        workspaceId: workspace.id
+        workspaceId: workspace.id,
       },
       select: {
         email: true,
         role: true,
-        createdAt: true
-      }
+        createdAt: true,
+      },
     });
 
     return NextResponse.json(invites);
   },
   {
-    requiredPermissions: ["workspaces.read"]
+    requiredPermissions: ["workspaces.read"],
   }
 );
 
@@ -39,7 +39,7 @@ export const POST = withWorkspace(
     if (teammates.length >= 10) {
       throw new PatternRevealApiError({
         message: "You can only invite up to 10 teammates at a time",
-        code: "bad_request"
+        code: "bad_request",
       });
     }
 
@@ -49,27 +49,30 @@ export const POST = withWorkspace(
           where: {
             workspaceId: workspace.id,
             user: {
-              email: { in: teammates.map((teammate) => teammate.email) }
-            }
-          }
+              email: { in: teammates.map((teammate) => teammate.email) },
+            },
+          },
         }),
         prisma.workspaceUser.count({ where: { workspaceId: workspace.id } }),
-        prisma.workspaceInvite.count({ where: { workspaceId: workspace.id } })
+        prisma.workspaceInvite.count({ where: { workspaceId: workspace.id } }),
       ]);
 
     if (alreadyMemberOfWorkspace) {
       throw new PatternRevealApiError({
         message:
           "One or more of the emails you provided are already members of this workspace",
-        code: "bad_request"
+        code: "bad_request",
       });
     }
 
     if (workspaceUserCount + workspaceInviteCount > workspace.usersLimit) {
       throw new PatternRevealApiError({
         code: "exceeded_limit",
-        message:
-          "You have reached the maximum number of users for this workspace"
+        message: exceededLimitError({
+          plan: workspace.plan,
+          limit: workspace.usersLimit,
+          type: "users",
+        }),
       });
     }
 
@@ -83,7 +86,7 @@ export const POST = withWorkspace(
           email,
           role,
           workspace,
-          session
+          session,
         })
       )
     );
@@ -94,16 +97,16 @@ export const POST = withWorkspace(
         message:
           teammates.length > 1
             ? "Some invitations could not be sent."
-            : "Invitation could not be sent."
+            : "Invitation could not be sent.",
       });
     }
 
     return NextResponse.json({
-      message: "Invite(s) sent"
+      message: "Invite(s) sent",
     });
   },
   {
-    requiredPermissions: ["workspaces.write"]
+    requiredPermissions: ["workspaces.write"],
   }
 );
 
@@ -116,14 +119,14 @@ export const DELETE = withWorkspace(
       where: {
         email_workspaceId: {
           email,
-          workspaceId: workspace.id
-        }
-      }
+          workspaceId: workspace.id,
+        },
+      },
     });
 
     return NextResponse.json(response);
   },
   {
-    requiredPermissions: ["workspaces.write"]
+    requiredPermissions: ["workspaces.write"],
   }
 );
