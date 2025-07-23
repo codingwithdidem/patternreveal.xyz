@@ -10,14 +10,14 @@ import { usePostHog } from "posthog-js/react";
 import {
   initializePaddle,
   type Environments,
-  type Paddle
+  type Paddle,
 } from "@paddle/paddle-js";
 import { useEffect, useState } from "react";
 
 export default function UpgradePlanButton({
   plan,
   period,
-  className
+  className,
 }: {
   plan: string;
   period: z.infer<typeof periodSchema>;
@@ -32,7 +32,7 @@ export default function UpgradePlanButton({
   const {
     slug: workspaceSlug,
     plan: workspacePlan,
-    id: workspaceId
+    id: workspaceId,
   } = useWorkspace();
 
   const currentPlan = PLANS.find(
@@ -51,7 +51,7 @@ export default function UpgradePlanButton({
     ) {
       initializePaddle({
         token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
-        environment: process.env.NEXT_PUBLIC_PADDLE_ENV as Environments
+        environment: process.env.NEXT_PUBLIC_PADDLE_ENV as Environments,
       }).then((paddle) => {
         if (paddle) {
           setPaddle(paddle);
@@ -67,7 +67,7 @@ export default function UpgradePlanButton({
     workspacePlan,
     workspaceSlug,
     plan,
-    period
+    period,
   });
 
   const onUpgrade = async () => {
@@ -77,14 +77,16 @@ export default function UpgradePlanButton({
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             plan,
             period,
-            baseUrl: `${process.env.NEXT_PUBLIC_APP_URL}${pathname}${queryString.length > 0 ? `?${queryString}` : ""}`,
-            slug: searchParams.get("slug")
-          })
+            baseUrl: `${process.env.NEXT_PUBLIC_APP_URL}${pathname}${
+              queryString.length > 0 ? `?${queryString}` : ""
+            }`,
+            slug: searchParams.get("slug"),
+          }),
         }
       );
 
@@ -96,24 +98,24 @@ export default function UpgradePlanButton({
           paddle.Checkout.open({
             items: [{ priceId: data.priceId, quantity: 1 }],
             customer: {
-              email: data.customerEmail
+              email: data.customerEmail,
             },
             settings: {
               allowLogout: !data.customerEmail,
               displayMode: "overlay",
               theme: "light",
-              variant: "one-page"
+              variant: "one-page",
             },
             customData: {
-              clientReferenceId: workspaceId
-            }
+              clientReferenceId: workspaceId,
+            },
           });
 
           posthog.capture("checkout_initiated", {
             currentPlan: currentPlan?.name,
             selectedPlan: plan,
             period,
-            workspace: workspaceSlug
+            workspace: workspaceSlug,
           });
         } else {
           throw new Error("Failed to initiate checkout");
@@ -135,8 +137,8 @@ export default function UpgradePlanButton({
       {isCurrentPlan
         ? "You're on this plan"
         : isFreePlan
-          ? "Get Started"
-          : "Upgrade to Pro"}
+        ? "Get Started"
+        : "Upgrade to Pro"}
     </Button>
   );
 }
