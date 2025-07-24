@@ -1,0 +1,205 @@
+lockVersion: 2.0.0
+id: dd06d4f0-4e84-4b42-abea-168ef5a343c6
+management:
+  docChecksum: 419142dffe6d9345991d9fac64e3de5d
+  docVersion: 0.0.1
+  speakeasyVersion: 1.589.0
+  generationVersion: 2.664.0
+  releaseVersion: 0.0.1
+  configChecksum: 13672c98b4b579bb4eda2a8fcf567d11
+features:
+  typescript:
+    additionalDependencies: 0.1.0
+    constsAndDefaults: 0.1.12
+    core: 3.21.15
+    defaultEnabledRetries: 0.1.0
+    devContainers: 2.90.0
+    enumUnions: 0.1.0
+    envVarSecurityUsage: 0.1.2
+    errors: 2.86.0
+    examples: 2.82.1
+    flattening: 2.82.1
+    globalSecurity: 2.82.13
+    globalSecurityCallbacks: 0.1.0
+    globalSecurityFlattening: 0.1.0
+    globalServerURLs: 2.82.5
+    methodArguments: 0.1.2
+    nameOverrides: 2.81.2
+    nullables: 0.1.1
+    responseFormat: 0.2.3
+    retries: 2.83.0
+    sdkHooks: 0.3.0
+generatedFiles:
+  - .devcontainer/README.md
+  - .devcontainer/devcontainer.json
+  - .devcontainer/setup.sh
+  - .gitattributes
+  - .npmignore
+  - FUNCTIONS.md
+  - RUNTIMES.md
+  - USAGE.md
+  - docs/lib/utils/retryconfig.md
+  - docs/models/badrequestcode.md
+  - docs/models/badrequesterror.md
+  - docs/models/conflictcode.md
+  - docs/models/conflicterror.md
+  - docs/models/errors/badrequesterror.md
+  - docs/models/errors/conflicterror.md
+  - docs/models/errors/forbiddenerror.md
+  - docs/models/errors/internalservererror.md
+  - docs/models/errors/inviteexpirederror.md
+  - docs/models/errors/notfounderror.md
+  - docs/models/errors/ratelimitexceedederror.md
+  - docs/models/errors/unauthorizederror.md
+  - docs/models/errors/unprocessableentityerror.md
+  - docs/models/forbiddencode.md
+  - docs/models/forbiddenerror.md
+  - docs/models/internalservererrorcode.md
+  - docs/models/internalservererrorerror.md
+  - docs/models/inviteexpiredcode.md
+  - docs/models/inviteexpirederror.md
+  - docs/models/notfoundcode.md
+  - docs/models/notfounderror.md
+  - docs/models/operations/getworkspacerequest.md
+  - docs/models/operations/updateworkspacerequest.md
+  - docs/models/operations/updateworkspacerequestbody.md
+  - docs/models/plan.md
+  - docs/models/ratelimitexceededcode.md
+  - docs/models/ratelimitexceedederror.md
+  - docs/models/role.md
+  - docs/models/security.md
+  - docs/models/unauthorizedcode.md
+  - docs/models/unauthorizederror.md
+  - docs/models/unprocessableentitycode.md
+  - docs/models/unprocessableentityerror.md
+  - docs/models/user.md
+  - docs/models/workspaceschema.md
+  - docs/sdks/patternreveal/README.md
+  - docs/sdks/workspaces/README.md
+  - eslint.config.mjs
+  - examples/.env.template
+  - examples/README.md
+  - examples/package.json
+  - examples/workspacesGet.example.ts
+  - jsr.json
+  - package.json
+  - src/core.ts
+  - src/funcs/workspacesGet.ts
+  - src/funcs/workspacesUpdate.ts
+  - src/hooks/hooks.ts
+  - src/hooks/index.ts
+  - src/hooks/types.ts
+  - src/index.ts
+  - src/lib/base64.ts
+  - src/lib/config.ts
+  - src/lib/dlv.ts
+  - src/lib/encodings.ts
+  - src/lib/env.ts
+  - src/lib/files.ts
+  - src/lib/http.ts
+  - src/lib/is-plain-object.ts
+  - src/lib/logger.ts
+  - src/lib/matchers.ts
+  - src/lib/primitives.ts
+  - src/lib/retries.ts
+  - src/lib/schemas.ts
+  - src/lib/sdks.ts
+  - src/lib/security.ts
+  - src/lib/url.ts
+  - src/models/badrequesterror.ts
+  - src/models/conflicterror.ts
+  - src/models/errors/badrequesterror.ts
+  - src/models/errors/conflicterror.ts
+  - src/models/errors/forbiddenerror.ts
+  - src/models/errors/httpclienterrors.ts
+  - src/models/errors/index.ts
+  - src/models/errors/internalservererror.ts
+  - src/models/errors/inviteexpirederror.ts
+  - src/models/errors/notfounderror.ts
+  - src/models/errors/patternrevealdefaulterror.ts
+  - src/models/errors/patternrevealerror.ts
+  - src/models/errors/ratelimitexceedederror.ts
+  - src/models/errors/responsevalidationerror.ts
+  - src/models/errors/sdkvalidationerror.ts
+  - src/models/errors/unauthorizederror.ts
+  - src/models/errors/unprocessableentityerror.ts
+  - src/models/forbiddenerror.ts
+  - src/models/index.ts
+  - src/models/internalservererror.ts
+  - src/models/inviteexpirederror.ts
+  - src/models/notfounderror.ts
+  - src/models/operations/getworkspace.ts
+  - src/models/operations/index.ts
+  - src/models/operations/updateworkspace.ts
+  - src/models/ratelimitexceedederror.ts
+  - src/models/security.ts
+  - src/models/unauthorizederror.ts
+  - src/models/unprocessableentityerror.ts
+  - src/models/workspaceschema.ts
+  - src/sdk/index.ts
+  - src/sdk/sdk.ts
+  - src/sdk/workspaces.ts
+  - src/types/async.ts
+  - src/types/blobs.ts
+  - src/types/constdatetime.ts
+  - src/types/enums.ts
+  - src/types/fp.ts
+  - src/types/index.ts
+  - src/types/operations.ts
+  - src/types/rfcdate.ts
+  - src/types/streams.ts
+  - tsconfig.json
+examples:
+  getWorkspace:
+    speakeasy-default-get-workspace:
+      parameters:
+        path:
+          idOrSlug: "<value>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "<value>", "slug": "<value>", "logo": null, "inviteCode": "<value>", "billingCycleStart": 8266.32, "plan": "free", "totalReflections": 2392.88, "usage": 402.3, "usageLimit": 7273.44, "reflectionsUsage": 9583.5, "reflectionsLimit": 4075.75, "aiUsage": 312.85, "aiLimit": 9444.18, "usersLimit": 3440.64, "store": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "users": [{"role": "MEMBER"}], "createdAt": "1717005599746", "updatedAt": "1735645524604", "paddleCustomerId": "<id>"}
+        "400":
+          application/json: {"error": {"code": "bad_request", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#bad-request"}}
+        "401":
+          application/json: {"error": {"code": "unauthorized", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#unauthorized"}}
+        "403":
+          application/json: {"error": {"code": "forbidden", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#forbidden"}}
+        "404":
+          application/json: {"error": {"code": "not_found", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#not-found"}}
+        "409":
+          application/json: {"error": {"code": "conflict", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#conflict"}}
+        "410":
+          application/json: {"error": {"code": "invite_expired", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#invite-expired"}}
+        "422":
+          application/json: {"error": {"code": "unprocessable_entity", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#unprocessable-entity"}}
+        "429":
+          application/json: {"error": {"code": "rate_limit_exceeded", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#rate-limit_exceeded"}}
+        "500":
+          application/json: {"error": {"code": "internal_server_error", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#internal-server_error"}}
+  updateWorkspace:
+    speakeasy-default-update-workspace:
+      parameters:
+        path:
+          idOrSlug: "<value>"
+      responses:
+        "200":
+          application/json: {"id": "<id>", "name": "<value>", "slug": "<value>", "logo": null, "inviteCode": "<value>", "billingCycleStart": 6751.25, "plan": "free", "totalReflections": 2028.85, "usage": 7509.63, "usageLimit": 6390.88, "reflectionsUsage": 5728.58, "reflectionsLimit": 2864.53, "aiUsage": 3966.86, "aiLimit": 5981.08, "usersLimit": 2040.39, "store": {"key": "<value>", "key1": "<value>", "key2": "<value>"}, "users": [{"role": "OWNER"}], "createdAt": "1728903661150", "updatedAt": "1735688610701", "paddleCustomerId": "<id>"}
+        "400":
+          application/json: {"error": {"code": "bad_request", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#bad-request"}}
+        "401":
+          application/json: {"error": {"code": "unauthorized", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#unauthorized"}}
+        "403":
+          application/json: {"error": {"code": "forbidden", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#forbidden"}}
+        "404":
+          application/json: {"error": {"code": "not_found", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#not-found"}}
+        "409":
+          application/json: {"error": {"code": "conflict", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#conflict"}}
+        "410":
+          application/json: {"error": {"code": "invite_expired", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#invite-expired"}}
+        "422":
+          application/json: {"error": {"code": "unprocessable_entity", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#unprocessable-entity"}}
+        "429":
+          application/json: {"error": {"code": "rate_limit_exceeded", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#rate-limit_exceeded"}}
+        "500":
+          application/json: {"error": {"code": "internal_server_error", "message": "The requested resource was not found.", "doc_url": "https://docs.patternreveal.xyz/errors#internal-server_error"}}
+examplesVersion: 1.0.2
