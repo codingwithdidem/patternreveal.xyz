@@ -4,7 +4,7 @@ import { errorSchemaFactory } from "../api/errors";
 export const openApiErrorResponses: ZodOpenApiComponentsObject["responses"] = {
   "400": errorSchemaFactory(
     "bad_request",
-    "The server cannott or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing)."
+    "The server cannot or will not process the request due to something that is perceived to be a client error (e.g., malformed request syntax, invalid request message framing, or deceptive request routing)."
   ),
 
   "401": errorSchemaFactory(
