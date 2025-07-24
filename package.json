@@ -15,7 +15,9 @@
     "prisma:generate": "prisma generate --schema=prisma/schema",
     "prisma:migrate": "cp .env prisma/.env && prisma migrate dev --schema=prisma/schema",
     "prisma:studio": "prisma studio --schema=prisma/schema",
-    "prisma:format": "biome format --write dev"
+    "prisma:format": "biome format --write dev",
+    "speakeasy:lint": "speakeasy lint openapi --schema openapi.yaml",
+    "speakeasy:suggest": "speakeasy suggest openapi.yaml"
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.1.9",
@@ -114,6 +116,7 @@
     "use-debounce": "^10.0.4",
     "usehooks-ts": "^3.1.1",
     "ws": "^8.18.2",
+    "yaml": "^2.8.0",
     "zod": "^3.24.1",
     "zod-error": "^1.5.0",
     "zod-openapi": "^4.2.2",

@@ -2,9 +2,10 @@ import z from "@/lib/zod/index";
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { generateErrorMessage } from "zod-error";
-import { PlanProps } from "../types";
+import type { PlanProps } from "../types";
 import { capitalizeFirstChar } from "@/utils/functions/capitalize-first-char";
 import { currencyFormatter } from "@/utils/functions/currency-formatter";
+import type { ZodOpenApiResponseObject } from "zod-openapi";
 
 export const ErrorCode = z.enum([
   "bad_request",
@@ -48,6 +49,21 @@ const ErrorSchema = z.object({
     }),
   }),
 });
+
+const speakeasyErrorOverrides: Record<z.infer<typeof ErrorCode>, string> = {
+  bad_request: "BadRequest",
+  unauthorized: "Unauthorized",
+  forbidden: "Forbidden",
+  exceeded_limit: "ExceededLimit",
+  not_found: "NotFound",
+  conflict: "Conflict",
+  invite_pending: "InvitePending",
+  invite_expired: "InviteExpired",
+  unprocessable_entity: "UnprocessableEntity",
+  rate_limit_exceeded: "RateLimitExceeded",
+  internal_server_error: "InternalServerError",
+  service_unavailable: "ServiceUnavailable",
+};
 
 export type ErrorResponse = z.infer<typeof ErrorSchema>;
 export type ErrorCodes = z.infer<typeof ErrorCode>;
@@ -182,4 +198,53 @@ export const exceededLimitError = ({
   } on the ${capitalizeFirstChar(
     plan
   )} plan. Please upgrade for higher limits.`;
+};
+
+export const errorSchemaFactory = (
+  code: z.infer<typeof ErrorCode>,
+  description: string
+): ZodOpenApiResponseObject => {
+  return {
+    description,
+    content: {
+      "application/json": {
+        schema: {
+          "x-speakeasy-name-override": speakeasyErrorOverrides[code],
+          type: "object",
+          properties: {
+            error: {
+              type: "object",
+              properties: {
+                code: {
+                  type: "string",
+                  enum: [code],
+                  description:
+                    "A short code indicating the error code returned.",
+                  example: code,
+                },
+                message: {
+                  "x-speakeasy-error-message": true,
+                  type: "string",
+                  description:
+                    "A human readable explanation of what went wrong.",
+                  example: "The requested resource was not found.",
+                },
+                doc_url: {
+                  type: "string",
+                  description:
+                    "A link to our documentation with more details about this error code",
+                  example: `https://docs.patternreveal.xyz/errors#${code.replace(
+                    "_",
+                    "-"
+                  )}`,
+                },
+              },
+              required: ["code", "message"],
+            },
+          },
+          required: ["error"],
+        },
+      },
+    },
+  };
 };
