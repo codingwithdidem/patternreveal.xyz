@@ -18,16 +18,16 @@ import { useEffect } from "react";
 const redFlags = [
   {
     id: 1,
-    title: "Putdowns"
+    title: "Putdowns",
   },
   {
     id: 2,
-    title: "Gaslighting"
+    title: "Gaslighting",
   },
   {
     id: 3,
-    title: "Name-calling"
-  }
+    title: "Name-calling",
+  },
 ];
 
 export default function ReflectionsClientPage() {
@@ -38,16 +38,23 @@ export default function ReflectionsClientPage() {
   // Pagination state
   const [paginationState, paginationActions, paginationInfo] = usePagination({
     initialPage: 1,
-    initialLimit: 10
+    initialLimit: 10,
   });
 
   // Fetch reflections with pagination
   const { reflections, pagination, error } = useReflections({
     page: paginationState.page,
-    limit: paginationState.limit
+    pageSize: paginationState.limit,
+    sortBy: "createdAt",
+    sortOrder: "desc",
+    search: "",
+    searchMode: "fuzzy",
+    includeAIReport: true,
+    includeUser: true,
+    includeDashboard: true,
   });
 
-  // Update pagination total when data changes
+  // Update pagination total when data changesü
   useEffect(() => {
     if (pagination?.total !== undefined) {
       paginationActions.setTotal(pagination.total);
@@ -62,7 +69,7 @@ export default function ReflectionsClientPage() {
     .flatMap(([key, values]) =>
       values.map((value) => ({
         key,
-        value
+        value,
       }))
     );
 
@@ -79,23 +86,23 @@ export default function ReflectionsClientPage() {
               content: [
                 {
                   type: "paragraph",
-                  content: [{ type: "text", text: "Start writing..." }]
-                }
-              ]
+                  content: [{ type: "text", text: "Start writing..." }],
+                },
+              ],
             }),
             content: JSON.stringify({
               type: "doc",
               content: [
                 {
                   type: "paragraph",
-                  content: [{ type: "text", text: "Start writing..." }]
-                }
-              ]
+                  content: [{ type: "text", text: "Start writing..." }],
+                },
+              ],
             }),
             headers: {
-              "Content-Type": "application/json"
-            }
-          })
+              "Content-Type": "application/json",
+            },
+          }),
         }
       );
 
@@ -131,14 +138,14 @@ export default function ReflectionsClientPage() {
         {
           label: "Analyzed",
           value: "analyzed",
-          icon: <FlagIcon className="size-4" />
+          icon: <FlagIcon className="size-4" />,
         },
         {
           label: "Not Analyzed",
           value: "not-analyzed",
-          icon: <FlagIcon className="size-4" />
-        }
-      ]
+          icon: <FlagIcon className="size-4" />,
+        },
+      ],
     },
     {
       key: "content",
@@ -150,15 +157,15 @@ export default function ReflectionsClientPage() {
         {
           label: "Abusive",
           value: "abusive",
-          icon: <FlagIcon className="size-4" />
+          icon: <FlagIcon className="size-4" />,
         },
         {
           label: "Not Abusive",
           value: "not-abusive",
-          icon: <FlagIcon className="size-4" />
-        }
-      ]
-    }
+          icon: <FlagIcon className="size-4" />,
+        },
+      ],
+    },
   ];
 
   return (
@@ -181,7 +188,7 @@ export default function ReflectionsClientPage() {
                     if (!currentValues.includes(String(value))) {
                       return {
                         ...prev,
-                        [key]: [...currentValues, String(value)]
+                        [key]: [...currentValues, String(value)],
                       };
                     }
                     return prev;
@@ -197,7 +204,7 @@ export default function ReflectionsClientPage() {
 
                     return {
                       ...prev,
-                      [key]: currentValues.filter((v) => v !== String(value))
+                      [key]: currentValues.filter((v) => v !== String(value)),
                     };
                   });
                 }}

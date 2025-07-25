@@ -2,9 +2,11 @@ import { PatternRevealApiError } from "@/lib/api/errors";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
 import prisma from "@/lib/prisma";
+import { throwIfReflectionsUsageExceeded } from "@/lib/reflections/usage-checks";
 import {
   createReflectionSchema,
-  deleteReflectionSchema
+  deleteReflectionSchema,
+  getReflectionsQuerySchemaExtended,
 } from "@/lib/zod/schemas/reflection";
 import { NextResponse } from "next/server";
 
@@ -13,30 +15,69 @@ import { NextResponse } from "next/server";
  */
 export const GET = withWorkspace(
   async ({ headers, workspace, searchParams }) => {
-    const page = Number(searchParams.page || "1");
-    const limit = Number(searchParams.limit || "10");
-    const skip = (page - 1) * limit;
+    const params = getReflectionsQuerySchemaExtended.parse(searchParams);
+
+    const {
+      page,
+      pageSize,
+      sortBy,
+      sortOrder,
+      search,
+      searchMode,
+      userId,
+      includeAIReport,
+      includeUser,
+      includeDashboard,
+    } = params;
 
     // Get total count for pagination
     const total = await prisma.reflection.count({
       where: {
-        workspaceId: workspace.id
-      }
+        workspaceId: workspace.id,
+      },
     });
 
-    // Get paginated reflections
     const reflections = await prisma.reflection.findMany({
       where: {
-        workspaceId: workspace.id
+        workspaceId: workspace.id,
+        ...(userId && {
+          userId,
+        }),
+        ...(search && [
+          {
+            ...(searchMode === "fuzzy" && {
+              OR: [
+                {
+                  title: { contains: search },
+                },
+                {
+                  content: { contains: search },
+                },
+              ],
+            }),
+            ...(searchMode === "exact" && {
+              OR: [
+                {
+                  title: { equals: search },
+                },
+                {
+                  content: { equals: search },
+                },
+              ],
+            }),
+          },
+        ]),
       },
       include: {
-        analysisReport: true
+        analysisReport: includeAIReport,
+        user: includeUser,
+        report: includeDashboard,
       },
       orderBy: {
-        createdAt: "desc" // Sort by createdAt in descending order (newest first)
+        [sortBy]: sortOrder, // Currently only supports createdAt
       },
-      skip,
-      take: limit
+      skip: (page - 1) * pageSize,
+      take: pageSize,
     });
 
     return NextResponse.json(
@@ -44,20 +85,20 @@ export const GET = withWorkspace(
         reflections,
         pagination: {
           page,
-          limit,
+          pageSize,
           total,
-          totalPages: Math.ceil(total / limit),
-          hasNextPage: page * limit < total,
-          hasPrevPage: page > 1
-        }
+          totalPages: Math.ceil(total / pageSize),
+          hasNextPage: page * pageSize < total,
+          hasPrevPage: page > 1,
+        },
       },
       {
-        headers
+        headers,
       }
     );
   },
   {
-    requiredPermissions: ["reflection.read"]
+    requiredPermissions: ["reflection.read"],
   }
 );
 
@@ -66,6 +107,10 @@ export const GET = withWorkspace(
  */
 export const POST = withWorkspace(
   async ({ req, headers, workspace, session }) => {
+    if (workspace) {
+      throwIfReflectionsUsageExceeded(workspace);
+    }
+
     const { success, data } = await createReflectionSchema.safeParse(
       await parseRequestBody(req)
     );
@@ -73,7 +118,7 @@ export const POST = withWorkspace(
     if (!success) {
       throw new PatternRevealApiError({
         code: "bad_request",
-        message: "Invalid request body format."
+        message: "Invalid request body format.",
       });
     }
 
@@ -86,17 +131,17 @@ export const POST = withWorkspace(
           initialContent,
           content,
           workspaceId: workspace.id,
-          userId: session.user.id
-        }
+          userId: session.user.id,
+        },
       });
 
       return NextResponse.json(response, {
-        headers
+        headers,
       });
     } catch (err) {
       throw new PatternRevealApiError({
         code: "internal_server_error",
-        message: "Failed to create reflection."
+        message: "Failed to create reflection.",
       });
     }
   }
@@ -110,13 +155,14 @@ export const POST = withWorkspace(
  */
 export const DELETE = withWorkspace(
   async ({ headers, workspace, searchParams }) => {
-    const { success, data } =
-      await deleteReflectionSchema.safeParse(searchParams);
+    const { success, data } = await deleteReflectionSchema.safeParse(
+      searchParams
+    );
 
     if (!success) {
       throw new PatternRevealApiError({
         code: "bad_request",
-        message: "Invalid request body format."
+        message: "Invalid request body format.",
       });
     }
 
@@ -126,17 +172,17 @@ export const DELETE = withWorkspace(
       const response = await prisma.reflection.delete({
         where: {
           id: reflectionId,
-          workspaceId: workspace.id
-        }
+          workspaceId: workspace.id,
+        },
       });
 
       return NextResponse.json(response, {
-        headers
+        headers,
       });
     } catch {
       throw new PatternRevealApiError({
         code: "internal_server_error",
-        message: "Failed to delete reflection."
+        message: "Failed to delete reflection.",
       });
     }
   }

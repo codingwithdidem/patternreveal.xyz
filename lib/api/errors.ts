@@ -179,20 +179,12 @@ export const exceededLimitError = ({
 }: {
   plan: PlanProps;
   limit: number;
-  type:
-    | "clicks"
-    | "links"
-    | "AI"
-    | "domains"
-    | "tags"
-    | "users"
-    | "folders"
-    | "payouts";
+  type: "reflections" | "AI" | "tags" | "users";
 }) => {
   return `You've reached your ${
-    ["links", "AI", "payouts"].includes(type) ? "monthly" : ""
+    ["AI", "tags", "users"].includes(type) ? "monthly" : ""
   } limit of ${
-    type === "payouts"
+    type === "AI"
       ? currencyFormatter(limit / 100)
       : `${limit} ${limit === 1 ? type.slice(0, -1) : type}`
   } on the ${capitalizeFirstChar(

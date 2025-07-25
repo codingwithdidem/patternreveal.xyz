@@ -11,18 +11,18 @@ export const GET = withPermissions(
 
     const response = await prisma.reflection.findMany({
       where: {
-        userId: session.user.id
+        userId: session.user.id,
       },
       orderBy: {
-        createdAt: "desc" // Sort by createdAt in descending order (newest first)
+        createdAt: "desc", // Sort by createdAt in descending order (newest first)
       },
-      take: Number(limit) || 10
+      take: Number(limit) || 10,
     });
 
     console.log("response", response);
 
     return NextResponse.json(response, {
-      headers
+      headers,
     });
   }
 );

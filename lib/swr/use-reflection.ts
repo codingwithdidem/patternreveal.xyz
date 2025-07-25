@@ -11,7 +11,7 @@ export default function useReflection(
     data: reflection,
     error,
     isLoading,
-    isValidating
+    isValidating,
   } = useSWR<
     Prisma.ReflectionGetPayload<{
       include: {
@@ -22,13 +22,13 @@ export default function useReflection(
     dedupingInterval: 20000,
     revalidateOnFocus: false,
     keepPreviousData: true,
-    ...swrOpts
+    ...swrOpts,
   });
 
   return {
     reflection,
     error,
     isLoading,
-    isValidating
+    isValidating,
   };
 }

@@ -1,6 +1,6 @@
 import {
   PatternRevealApiError,
-  handleAndReturnErrorResponse
+  handleAndReturnErrorResponse,
 } from "@/lib/api/errors";
 import { getPermissions, type PermissionAction } from "../rbac/permissions";
 import { getSession, type Session } from "./authOptions";
@@ -24,7 +24,7 @@ export const withWorkspace = (
   {
     requiredPlan = ["free", "pro"], // if the action needs a specific plan
     requiredPermissions = [],
-    skipPermissionChecks // if the action doesn't need to check for required permission(s)
+    skipPermissionChecks, // if the action doesn't need to check for required permission(s)
   }: {
     requiredPlan?: Array<PlanProps>;
     requiredPermissions?: PermissionAction[];
@@ -54,7 +54,7 @@ export const withWorkspace = (
       if (!idOrSlug) {
         throw new PatternRevealApiError({
           code: "bad_request",
-          message: "Workspace ID or slug is required."
+          message: "Workspace ID or slug is required.",
         });
       }
 
@@ -72,7 +72,7 @@ export const withWorkspace = (
       if (!session?.user?.id) {
         throw new PatternRevealApiError({
           code: "unauthorized",
-          message: "You need to be logged in to access this resource."
+          message: "You need to be logged in to access this resource.",
         });
       }
 
@@ -81,20 +81,20 @@ export const withWorkspace = (
         include: {
           users: {
             where: {
-              userId: session.user.id
+              userId: session.user.id,
             },
             select: {
-              role: true
-            }
-          }
-        }
+              role: true,
+            },
+          },
+        },
       })) as WorkspaceWithUsers;
 
       // workspace doesn't exist
       if (!workspace || !workspace.users) {
         throw new PatternRevealApiError({
           code: "not_found",
-          message: "Workspace not found."
+          message: "Workspace not found.",
         });
       }
 
@@ -104,31 +104,31 @@ export const withWorkspace = (
           where: {
             email_workspaceId: {
               email: session.user.email,
-              workspaceId: workspace.id
-            }
+              workspaceId: workspace.id,
+            },
           },
           select: {
-            expires: true
-          }
+            expires: true,
+          },
         });
 
         if (!pendingInvites) {
           throw new PatternRevealApiError({
             code: "not_found",
-            message: "Workspace not found."
+            message: "Workspace not found.",
           });
         }
 
         if (pendingInvites.expires < new Date()) {
           throw new PatternRevealApiError({
             code: "invite_expired",
-            message: "Workspace invite expired."
+            message: "Workspace invite expired.",
           });
         }
 
         throw new PatternRevealApiError({
           code: "invite_pending",
-          message: "Workspace invite pending."
+          message: "Workspace invite pending.",
         });
       }
 
@@ -138,7 +138,7 @@ export const withWorkspace = (
       if (!skipPermissionChecks) {
         throwIfNoAccess({
           permissions,
-          requiredPermissions
+          requiredPermissions,
         });
       }
 
@@ -146,7 +146,7 @@ export const withWorkspace = (
       if (!requiredPlan.includes(workspace.plan)) {
         throw new PatternRevealApiError({
           code: "forbidden",
-          message: "Unauthorized: Need higher plan."
+          message: "Unauthorized: Need higher plan.",
         });
       }
 
@@ -157,7 +157,7 @@ export const withWorkspace = (
         headers,
         session,
         workspace,
-        permissions
+        permissions,
       });
     } catch (error: unknown) {
       console.log(

@@ -14,7 +14,7 @@ import { ratelimit } from "../upstash/ratelimit";
 import {
   exceededLoginAttemptsThreshold,
   incrementLoginAttempts,
-  isAccountLocked
+  isAccountLocked,
 } from "./lock-account";
 import StripeWelcomeEmail from "@/emails/stripe-welcome";
 import { waitUntil } from "@vercel/functions";
@@ -43,7 +43,7 @@ export const authOptions: NextAuthOptions = {
       type: "credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -71,8 +71,8 @@ export const authOptions: NextAuthOptions = {
             invalidLoginAttempts: true,
             emailVerified: true,
             lockedAt: true,
-            defaultWorkspace: true
-          }
+            defaultWorkspace: true,
+          },
         });
 
         if (!user || !user.password) {
@@ -104,7 +104,7 @@ export const authOptions: NextAuthOptions = {
         // Reset the login attempts
         await prisma.user.update({
           where: { id: user.id },
-          data: { invalidLoginAttempts: 0 }
+          data: { invalidLoginAttempts: 0 },
         });
 
         return {
@@ -112,9 +112,9 @@ export const authOptions: NextAuthOptions = {
           name: user.name || user.email.split("@")[0],
           email: user.email,
           image: user.image || undefined,
-          defaultWorkspace: user.defaultWorkspace || undefined
+          defaultWorkspace: user.defaultWorkspace || undefined,
         };
-      }
+      },
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -125,19 +125,19 @@ export const authOptions: NextAuthOptions = {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
-          image: profile.picture
+          image: profile.picture,
         };
       },
-      style: { logo: "/google.svg", bg: "#fff", text: "#000" }
-    })
+      style: { logo: "/google.svg", bg: "#fff", text: "#000" },
+    }),
   ],
   adapter: PrismaAdapter(prisma),
   session: {
-    strategy: "jwt"
+    strategy: "jwt",
   },
   pages: {
     signIn: "/login",
-    error: "/login"
+    error: "/login",
   },
   callbacks: {
     signIn: async ({ user, account, profile }) => {
@@ -147,7 +147,7 @@ export const authOptions: NextAuthOptions = {
 
       const dbUser = await prisma.user.findUnique({
         where: { email: user.email },
-        select: { lockedAt: true }
+        select: { lockedAt: true },
       });
 
       if (dbUser?.lockedAt) {
@@ -161,8 +161,8 @@ export const authOptions: NextAuthOptions = {
             id: true,
             name: true,
             email: true,
-            image: true
-          }
+            image: true,
+          },
         });
 
         if (!userExists || !profile) return true;
@@ -177,8 +177,8 @@ export const authOptions: NextAuthOptions = {
               ...(userExists.name ? {} : { name: profile.name }),
               ...(userAlreadyHasImage
                 ? {}
-                : { image: (profile as any).picture })
-            }
+                : { image: (profile as any).picture }),
+            },
           });
 
           return true;
@@ -196,17 +196,16 @@ export const authOptions: NextAuthOptions = {
           email: true,
           image: true,
           createdAt: true,
-          defaultWorkspace: true
-        }
+          defaultWorkspace: true,
+        },
       });
 
-      console.log("refreshedUser", refreshedUser);
       if (user) {
         console.log("user", user);
         token.user = {
           ...user,
           defaultWorkspace: refreshedUser?.defaultWorkspace,
-          createdAt: refreshedUser?.createdAt.toISOString()
+          createdAt: refreshedUser?.createdAt.toISOString(),
         };
       }
 
@@ -220,8 +219,8 @@ export const authOptions: NextAuthOptions = {
             email: true,
             image: true,
             createdAt: true,
-            defaultWorkspace: true
-          }
+            defaultWorkspace: true,
+          },
         });
         if (refreshedUser) {
           token.user = refreshedUser;
@@ -236,17 +235,17 @@ export const authOptions: NextAuthOptions = {
       session.user = {
         id: token.sub,
         // @ts-ignore
-        ...(token || session).user
+        ...(token || session).user,
       };
 
       return session;
-    }
+    },
   },
   events: {
     async signIn(message) {
       if (message.isNewUser) {
         const user = await prisma.user.findUnique({
-          where: { id: message.user.id }
+          where: { id: message.user.id },
         });
 
         if (!user) return;
@@ -256,20 +255,20 @@ export const authOptions: NextAuthOptions = {
           Promise.allSettled([
             subscribe({
               email: user.email,
-              name: user.name ?? ""
+              name: user.name ?? "",
             }),
             sendEmail({
               email: user.email,
               subject: "Welcome to patternreveal.xyz",
               react: StripeWelcomeEmail(),
               // Send the email 5 minutes from now
-              scheduledAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
-            })
+              scheduledAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+            }),
           ])
         );
       }
-    }
-  }
+    },
+  },
 };
 
 export interface Session {
