@@ -35,6 +35,8 @@ export const withWorkspace = (
     req: Request,
     { params }: { params: Promise<Record<string, string>> }
   ) => {
+    console.log(params);
+
     const searchParams = getSearchParams(req.url);
     const awaitedParams = await params;
 
@@ -45,11 +47,15 @@ export const withWorkspace = (
       let session: Session | undefined;
       let permissions: PermissionAction[] = [];
 
+      console.log("awaitedParams", awaitedParams);
+
       const idOrSlug =
         awaitedParams?.idOrSlug ||
         searchParams.workspaceId ||
         awaitedParams?.slug ||
         searchParams.projectSlug;
+
+      console.log("idOrSlug", idOrSlug);
 
       if (!idOrSlug) {
         throw new PatternRevealApiError({

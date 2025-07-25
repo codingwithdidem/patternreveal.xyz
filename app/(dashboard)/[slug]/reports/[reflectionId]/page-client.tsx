@@ -16,7 +16,7 @@ import { experimental_useObject } from "ai/react";
 import { analysisSchema } from "@/lib/zod/schemas/analysis";
 import type {
   Analysis as AnalysisType,
-  TextEvidence
+  TextEvidence,
 } from "@/lib/zod/schemas/analysis";
 import Analysis from "@/components/reflections/analysis/Analysis";
 import Logo from "@/components/Logo";
@@ -24,19 +24,16 @@ import Link from "next/link";
 
 export default function ReflectionEditorClientPage() {
   const params = useParams() as { reflectionId: string; slug: string };
-  const router = useRouter();
   const { reflection, isLoading, error } = useReflection(params.reflectionId);
-
-  console.log({ reflection });
 
   const {
     isLoading: isLoadingAnalysis,
     object: analysisReport,
-    submit
+    submit,
   } = experimental_useObject<AnalysisType>({
-    api: "/api/analyze",
+    api: `/api/analyze?workspaceId=${reflection?.workspaceId}`,
     schema: analysisSchema,
-    initialValue: reflection?.analysisReport?.report as AnalysisType
+    initialValue: reflection?.analysisReport?.report as AnalysisType,
   });
 
   const [saveStatus, setSaveStatus] = useState("Saved");
@@ -102,11 +99,11 @@ export default function ReflectionEditorClientPage() {
       await fetch(`/api/reflections/${params.reflectionId}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          content: json
-        })
+          content: json,
+        }),
       });
 
       setSaveStatus("Saved");
@@ -123,7 +120,7 @@ export default function ReflectionEditorClientPage() {
 
     await submit({
       reflectionId: reflection.id,
-      story
+      story,
     });
   };
 

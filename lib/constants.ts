@@ -7,7 +7,7 @@ export const AUTH_ROUTES = new Set([
   "/register",
   "/forgot-password",
   "/reset-password",
-  "/verify-email"
+  "/verify-email",
 ]);
 
 export const PUBLIC_ROUTES = new Set(["/"]);
@@ -27,22 +27,23 @@ export const PLANS = [
     name: "Free",
     price: {
       monthly: 0,
-      yearly: 0
+      yearly: 0,
     },
     limits: {
-      "ask-ai": 2,
-      "ai-analysis": 3,
-      reflections: 20,
+      "ask-ai": 0, // Pro-only feature
+      "ai-analysis": 1, // Reduced from 3 to 1
+      reflections: 10, // Reduced from 20 to 10
       users: 1,
-      retention: "30-day"
+      retention: "30-day",
     },
     featureTitle: "A free plan to get you started",
     features: [
-      { id: "ask-ai", text: "2 AI questions per month" },
-      { id: "ai-analysis", text: "3 AI analysis per month" },
-      { id: "reflections", text: "20 reflections per month" },
-      { id: "users", text: "1 user" }
-    ]
+      { id: "ai-analysis", text: "1 AI analysis per month" },
+      { id: "reflections", text: "10 reflections per month" },
+      { id: "users", text: "1 user" },
+      { id: "basic-editor", text: "Basic reflection editor" },
+      { id: "30-day-retention", text: "30-day data retention" },
+    ],
   },
   {
     name: "Pro",
@@ -55,25 +56,29 @@ export const PLANS = [
       ids: [
         // 2025 pricing
         "pri_01jxt8qpc94nyymrqws8he2c8g", // yearly (test),
-        "pri_01jxt8keeh6cx5wk96bpbyehd5" // monthly (test),
-      ]
+        "pri_01jxt8keeh6cx5wk96bpbyehd5", // monthly (test),
+      ],
     },
     limits: {
       reflections: 1_000,
-      "ask-ai": 2,
-      "ai-analysis": 3,
+      "ask-ai": 50, // Increased from 2 to 50
+      "ai-analysis": 25, // Increased from 3 to 25
       users: 5,
-      retention: "1-year"
+      retention: "1-year",
     },
     featureTitle: "Everything in Free, plus:",
     features: [
       { id: "reflections", text: "1K reflections per month" },
-      { id: "ask-ai", text: "2 AI questions per month" },
-      { id: "ai-analysis", text: "3 AI analysis per month" },
+      { id: "ask-ai", text: "50 AI questions per month" },
+      { id: "ai-analysis", text: "25 AI analysis per month" },
       { id: "users", text: "5 users" },
-      { id: "retention", text: "1-year analytics retention" }
-    ] as PlanFeature[]
-  }
+      { id: "retention", text: "1-year analytics retention" },
+      { id: "mood-tracker", text: "Mood tracking & patterns" },
+      { id: "advanced-analytics", text: "Advanced relationship insights" },
+      { id: "export-reports", text: "Export & share reports" },
+      { id: "priority-support", text: "Priority support" },
+    ] as PlanFeature[],
+  },
 ];
 
 export const getPlanDetails = (plan: string) => {

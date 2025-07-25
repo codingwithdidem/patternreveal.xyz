@@ -8,7 +8,7 @@ export const textEvidenceSchema = z.object({
     .number()
     .optional()
     .describe("Character index where quote starts"),
-  endIndex: z.number().optional().describe("Character index where quote ends")
+  endIndex: z.number().optional().describe("Character index where quote ends"),
 });
 
 // Core emotional analysis
@@ -26,7 +26,15 @@ export const emotionalPatternSchema = z.object({
       "frustration",
       "contentment",
       "guilt",
-      "shame"
+      "shame",
+      "hurt",
+      "disappointment",
+      "confusion",
+      "excitement",
+      "relief",
+      "jealousy",
+      "loneliness",
+      "gratitude",
     ])
     .describe("The primary emotion experienced during this interaction"),
   emotionalIntensity: z
@@ -50,7 +58,7 @@ export const emotionalPatternSchema = z.object({
     .describe("How well did you manage your emotions"),
   textEvidence: z
     .array(textEvidenceSchema)
-    .describe("Specific quotes showing emotional patterns")
+    .describe("Specific quotes showing emotional patterns"),
 });
 
 // Communication analysis
@@ -62,7 +70,7 @@ export const communicationPatternSchema = z.object({
       "aggressive",
       "passive-aggressive",
       "avoidant",
-      "dismissive"
+      "dismissive",
     ])
     .describe("Primary communication approach used during this interaction"),
   conflictResolutionStyle: z
@@ -71,7 +79,7 @@ export const communicationPatternSchema = z.object({
       "competitive",
       "accommodating",
       "avoiding",
-      "compromising"
+      "compromising",
     ])
     .describe("How conflicts and disagreements were handled"),
   listeningEffectiveness: z
@@ -88,7 +96,7 @@ export const communicationPatternSchema = z.object({
   resolutionAchieved: z.boolean().describe("Was the issue resolved?"),
   textEvidence: z
     .array(textEvidenceSchema)
-    .describe("Specific quotes showing communication patterns")
+    .describe("Specific quotes showing communication patterns"),
 });
 
 // Behavioral patterns
@@ -99,7 +107,7 @@ export const behaviorPatternSchema = z.object({
       z.object({
         trigger: z.string(),
         response: z.string(),
-        outcome: z.string()
+        outcome: z.string(),
       })
     )
     .describe("Identified behavioral cycles"),
@@ -118,7 +126,7 @@ export const behaviorPatternSchema = z.object({
     .describe("Areas for personal growth"),
   textEvidence: z
     .array(textEvidenceSchema)
-    .describe("Specific quotes showing behavioral patterns")
+    .describe("Specific quotes showing behavioral patterns"),
 });
 
 // Relationship dynamics
@@ -132,7 +140,7 @@ export const relationshipDynamicsSchema = z.object({
       .describe("Who had more control or influence during the interaction"),
     decisionMaking: z
       .enum(["collaborative", "dominated_by_you", "dominated_by_them"])
-      .describe("How decisions were made during this interaction")
+      .describe("How decisions were made during this interaction"),
   }),
   supportPatterns: z.object({
     emotionalSupport: z
@@ -141,7 +149,7 @@ export const relationshipDynamicsSchema = z.object({
     practicalSupport: z
       .enum(["you_supported", "they_supported", "mutual", "none"])
       .describe("Who provided practical help, advice, or tangible assistance"),
-    validationExchanged: z.boolean()
+    validationExchanged: z.boolean(),
   }),
   intimacyLevel: z
     .enum(["very_close", "close", "moderate", "distant", "very_distant"])
@@ -151,7 +159,7 @@ export const relationshipDynamicsSchema = z.object({
     .describe("Current level of trust between both parties"),
   effortBalance: z
     .enum(["balanced", "you_more", "them_more", "both_low"])
-    .describe("Who is putting in more effort to maintain the relationship")
+    .describe("Who is putting in more effort to maintain the relationship"),
 });
 
 // Context factors
@@ -165,7 +173,7 @@ export const contextFactorsSchema = z.object({
       "support_session",
       "planning",
       "reminiscing",
-      "problem_solving"
+      "problem_solving",
     ])
     .describe("The nature or type of this interaction"),
   duration: z
@@ -183,7 +191,7 @@ export const contextFactorsSchema = z.object({
       .describe("Your energy level during this interaction"),
     theirs: z
       .enum(["high", "medium", "low", "unknown"])
-      .describe("Their apparent energy level during this interaction")
+      .describe("Their apparent energy level during this interaction"),
   }),
   timeContext: z.object({
     timeOfDay: z
@@ -197,11 +205,12 @@ export const contextFactorsSchema = z.object({
         "thursday",
         "friday",
         "saturday",
-        "sunday"
+        "sunday",
+        "unknown",
       ])
       .describe("What day of the week this interaction occurred"),
-    specialCircumstances: z.array(z.string()).optional()
-  })
+    specialCircumstances: z.array(z.string()).optional(),
+  }),
 });
 
 // Progress tracking
@@ -213,7 +222,7 @@ export const progressTrackingSchema = z.object({
   relationshipGoals: z.array(z.string()),
   milestonesAchieved: z.array(z.string()),
   areasNeedingAttention: z.array(z.string()),
-  strengthsIdentified: z.array(z.string()).optional().default([])
+  strengthsIdentified: z.array(z.string()).optional().default([]),
 });
 
 // Actionable insights
@@ -231,7 +240,7 @@ export const actionableInsightsSchema = z.object({
     .describe("Boundary adjustments to consider"),
   selfCareRecommendations: z
     .array(z.string())
-    .describe("Self-care actions recommended")
+    .describe("Self-care actions recommended"),
 });
 
 // Keep existing abuse detection (important for safety)
@@ -256,14 +265,14 @@ export const abuseDetectionSchema = z.object({
             "financial",
             "mental",
             "digital",
-            "social"
+            "social",
           ])
           .describe("Category of abusive behavior detected"),
         behavior: z.string(),
         reasonings: z.array(z.string()),
         textEvidence: z
           .array(textEvidenceSchema)
-          .describe("Specific quotes that support this finding")
+          .describe("Specific quotes that support this finding"),
       })
     )
     .describe("The detected abusive behaviors"),
@@ -274,10 +283,10 @@ export const abuseDetectionSchema = z.object({
     .array(
       z.object({
         title: z.string(),
-        link: z.string()
+        link: z.string(),
       })
     )
-    .describe("The suggested resources")
+    .describe("The suggested resources"),
 });
 
 // Attachment patterns analysis
@@ -296,7 +305,7 @@ export const attachmentPatternsSchema = z.object({
     .describe("Specific attachment-related behaviors observed"),
   textEvidence: z
     .array(textEvidenceSchema)
-    .describe("Specific quotes showing attachment patterns")
+    .describe("Specific quotes showing attachment patterns"),
 });
 
 // Trauma responses analysis
@@ -312,7 +321,7 @@ export const traumaResponsesSchema = z.object({
     .describe("Were trauma responses activated during this interaction?"),
   copingStrategiesUsed: z
     .array(z.string())
-    .describe("Healthy coping strategies that were employed")
+    .describe("Healthy coping strategies that were employed"),
 });
 
 // Love languages and connection patterns
@@ -324,7 +333,7 @@ export const connectionPatternsSchema = z.object({
         "quality_time",
         "physical_touch",
         "acts_of_service",
-        "gifts"
+        "gifts",
       ])
     )
     .describe("Love languages that were expressed or attempted"),
@@ -346,8 +355,8 @@ export const connectionPatternsSchema = z.object({
       .describe("Level of intellectual connection and stimulation"),
     spiritual: z
       .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of spiritual or values-based connection")
-  })
+      .describe("Level of spiritual or values-based connection"),
+  }),
 });
 
 // Cognitive patterns analysis
@@ -360,7 +369,7 @@ export const cognitivePatternsSchema = z.object({
         "mind_reading",
         "personalization",
         "overgeneralization",
-        "filtering"
+        "filtering",
       ])
     )
     .describe("Cognitive distortions or thinking traps identified"),
@@ -374,7 +383,7 @@ export const cognitivePatternsSchema = z.object({
     .boolean()
     .describe(
       "Was decision-making overly influenced by emotions rather than facts?"
-    )
+    ),
 });
 
 // Enhanced comprehensive analysis schema
@@ -413,8 +422,8 @@ export const analysisSchema = z.object({
     warningFlags: z.array(z.string()).describe("Any warning flags to monitor"),
     positiveHighlights: z
       .array(z.string())
-      .describe("Positive aspects to celebrate")
-  })
+      .describe("Positive aspects to celebrate"),
+  }),
 });
 
 export type Analysis = z.infer<typeof analysisSchema>;

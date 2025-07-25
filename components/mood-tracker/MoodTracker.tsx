@@ -11,52 +11,53 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Badge } from "../ui/badge";
 import { MOODS } from "@/lib/constants/mood";
 import { toast } from "sonner";
+import PremiumFeatureBadge from "@/components/PremiumFeatureBadge";
 
 const moods = [
   {
     id: 1,
     name: "Happy",
     icon: "😊",
-    color: "bg-yellow-100 text-yellow-900"
+    color: "bg-yellow-100 text-yellow-900",
   },
   {
     id: 2,
     name: "Sad",
     icon: "😢",
-    color: "bg-blue-100 text-blue-900"
+    color: "bg-blue-100 text-blue-900",
   },
   {
     id: 3,
     name: "Angry",
     icon: "😡",
-    color: "bg-red-100 text-red-900"
+    color: "bg-red-100 text-red-900",
   },
   {
     id: 4,
     name: "Excited",
     icon: "😁",
-    color: "bg-green-100 text-green-900"
+    color: "bg-green-100 text-green-900",
   },
   {
     id: 5,
     name: "Confused",
     icon: "😕",
-    color: "bg-purple-100 text-purple-900"
-  }
+    color: "bg-purple-100 text-purple-900",
+  },
 ];
 
 const moodTrackerSchema = z.object({
   mood: z.enum(MOODS, {
-    message: "You need to select a mood."
+    message: "You need to select a mood.",
   }),
-  note: z.string().optional()
+  note: z.string().optional(),
 });
 
 export default function MoodTracker() {
@@ -65,8 +66,8 @@ export default function MoodTracker() {
   const form = useForm<z.infer<typeof moodTrackerSchema>>({
     resolver: zodResolver(moodTrackerSchema),
     defaultValues: {
-      note: ""
-    }
+      note: "",
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof moodTrackerSchema>) => {
@@ -79,9 +80,9 @@ export default function MoodTracker() {
         const response = await fetch("/api/moods", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ mood, note })
+          body: JSON.stringify({ mood, note }),
         });
 
         if (!response.ok) {
@@ -104,6 +105,7 @@ export default function MoodTracker() {
       <div className="flex items-center gap-2">
         <h3 className="text-sm font-mono text-neutral-700">Mood Tracker</h3>
         <Badge variant={"outline"}>New</Badge>
+        <PremiumFeatureBadge feature="mood-tracker" />
       </div>
       <div className="mt-2">
         <p className="text-sm text-neutral-900">
@@ -150,16 +152,19 @@ export default function MoodTracker() {
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="note"
             render={({ field }) => (
               <FormItem>
+                <FormLabel className="text-sm text-neutral-700">
+                  Additional notes (optional)
+                </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Is there anything specific you'd like to reflect on?"
-                    className="w-full border-gray-500"
-                    rows={3}
+                    placeholder="How are you feeling? Any specific thoughts or events that influenced your mood?"
+                    className="resize-none"
                     {...field}
                   />
                 </FormControl>
@@ -167,8 +172,12 @@ export default function MoodTracker() {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={form.formState.isSubmitting}>
-            Reflect
+
+          <Button
+            type="submit"
+            className="w-full bg-fuchsia-500 hover:bg-fuchsia-600 text-white"
+          >
+            Track Mood
           </Button>
         </form>
       </Form>

@@ -7,6 +7,7 @@ import { useScrollToBottom } from "@/hooks/useScrollToBottom";
 import PreviewMessage from "@/components/reflections/ask-ai/PreviewMessage";
 import SuggestedPromptsList from "@/components/reflections/ask-ai/SuggestedPromptsList";
 import ThinkingMessage from "@/components/reflections/ask-ai/ThinkingMessage";
+import PremiumFeatureBadge from "@/components/PremiumFeatureBadge";
 
 export default function AskAI() {
   const { editor } = useEditorStore();
@@ -21,18 +22,23 @@ export default function AskAI() {
           id: "reflection",
           role: "assistant",
           content:
-            "The following is the user's reflection that needs to be analyzed:"
+            "The following is the user's reflection that needs to be analyzed:",
         },
         {
           id: "reflection-content",
           role: "user",
-          content: editor?.getText() || ""
-        }
-      ]
+          content: editor?.getText() || "",
+        },
+      ],
     });
 
   return (
     <div className="flex flex-col w-full p-2">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-sm font-medium">Ask AI</h3>
+        <PremiumFeatureBadge feature="ask-ai" />
+      </div>
+
       <div
         className="space-y-4 max-h-[70dvh] overflow-y-auto"
         ref={messagesContainerRef}

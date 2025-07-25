@@ -4,6 +4,9 @@ import { withPermissions } from "@/lib/auth/withPermissions";
 import prisma from "@/lib/prisma";
 import { createMoodSchema } from "@/lib/zod/schemas/mood";
 import { NextResponse } from "next/server";
+import { withWorkspace } from "@/lib/auth/withWorkspace";
+import { throwIfProFeatureNotAvailable } from "@/lib/reflections/usage-checks";
+import { z } from "zod";
 
 /**
  * Get all mood entries. Requires the `mood.read` permission.
@@ -12,57 +15,42 @@ export const GET = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
     const response = await prisma.mood.findMany({
       where: {
-        userId: session.user.id
-      }
+        userId: session.user.id,
+      },
     });
 
     return NextResponse.json(response, {
-      headers
+      headers,
     });
   },
   {
-    requiredPermissions: ["mood.read"]
+    requiredPermissions: ["mood.read"],
   }
 );
+
+const moodSchema = z.object({
+  mood: z.string(),
+  note: z.string().optional(),
+});
 
 /**
  * Create a new mood entry. Requires the `mood.write` permission.
  */
-export const POST = withPermissions(
-  async ({ req, headers, session, searchParams, permissions }) => {
-    const { success, data } = await createMoodSchema.safeParse(
-      await parseRequestBody(req)
-    );
+export const POST = withWorkspace(async ({ req, session, workspace }) => {
+  // Check if mood tracker is available for this plan
+  throwIfProFeatureNotAvailable(workspace, "mood-tracker");
 
-    if (!success) {
-      throw new PatternRevealApiError({
-        code: "bad_request",
-        message: "Invalid request body format."
-      });
-    }
+  const { mood, note } = await moodSchema.parseAsync(
+    await parseRequestBody(req)
+  );
 
-    const { mood, note } = data;
+  const moodEntry = await prisma.mood.create({
+    data: {
+      mood,
+      note,
+      userId: session.user.id,
+    },
+  });
 
-    try {
-      const response = await prisma.mood.create({
-        data: {
-          mood,
-          note,
-          userId: session.user.id
-        }
-      });
-
-      return NextResponse.json(response, {
-        headers
-      });
-    } catch {
-      throw new PatternRevealApiError({
-        code: "internal_server_error",
-        message: "Failed to create mood."
-      });
-    }
-  },
-  {
-    requiredPermissions: ["mood.write"]
-  }
-);
+  return NextResponse.json(moodEntry);
+}, {});

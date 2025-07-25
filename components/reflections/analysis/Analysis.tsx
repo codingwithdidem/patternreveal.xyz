@@ -4,7 +4,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,11 +27,18 @@ import {
   Calendar,
   MapPin,
   Zap,
-  Activity
+  Activity,
+  Sparkles,
+  BarChart3,
+  Eye,
+  Target as TargetIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Progress } from "@/components/ui/progress";
+import AnimatedEmptyState from "@/components/AnimatedEmptyState";
+import { Button } from "@/components/ui/button";
+import PremiumFeatureBadge from "@/components/PremiumFeatureBadge";
 
 interface AnalysisProps {
   isLoading: boolean;
@@ -49,7 +56,7 @@ const EmotionIcon = ({ emotion }: { emotion: string }) => {
     frustration: "😤",
     contentment: "😌",
     guilt: "😔",
-    shame: "😳"
+    shame: "😳",
   };
 
   return <span className="text-2xl">{icons[emotion] || "😐"}</span>;
@@ -93,21 +100,21 @@ const TrendIndicator = ({ trend }: { trend: string }) => {
     improving: {
       icon: TrendingUp,
       color: "text-green-600",
-      bg: "bg-green-100"
+      bg: "bg-green-100",
     },
     stable: { icon: Activity, color: "text-blue-600", bg: "bg-blue-100" },
     declining: { icon: TrendingDown, color: "text-red-600", bg: "bg-red-100" },
     uncertain: {
       icon: AlertTriangle,
       color: "text-yellow-600",
-      bg: "bg-yellow-100"
-    }
+      bg: "bg-yellow-100",
+    },
   };
 
   const {
     icon: Icon,
     color,
-    bg
+    bg,
   } = config[trend as keyof typeof config] || config.uncertain;
 
   return (
@@ -130,7 +137,7 @@ const CommunicationStyleDescription = ({ style }: { style: string }) => {
       "Indirect expression of negative feelings, often through sarcasm or subtle hostility",
     avoidant:
       "Withdrawing from difficult conversations, avoiding confrontation entirely",
-    dismissive: "Minimizing or invalidating others' concerns and feelings"
+    dismissive: "Minimizing or invalidating others' concerns and feelings",
   };
 
   return (
@@ -150,7 +157,7 @@ const ConflictResolutionDescription = ({ style }: { style: string }) => {
       "Giving in to others' demands while neglecting your own needs",
     avoiding: "Sidestepping conflict entirely, leaving issues unresolved",
     compromising:
-      "Finding middle-ground solutions where both parties give up something"
+      "Finding middle-ground solutions where both parties give up something",
   };
 
   return (
@@ -161,8 +168,10 @@ const ConflictResolutionDescription = ({ style }: { style: string }) => {
 };
 
 const TextEvidenceDisplay = ({
-  evidence
-}: { evidence: Array<{ quote: string; analysis: string }> }) => {
+  evidence,
+}: {
+  evidence: Array<{ quote: string; analysis: string }>;
+}) => {
   if (!evidence?.length) return null;
 
   return (
@@ -202,12 +211,61 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
 
   if (!analysisReport) {
     return (
-      <div className="flex items-center justify-center p-12">
-        <div className="text-center">
-          <Brain className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-          <p className="text-muted-foreground">No analysis available</p>
-        </div>
-      </div>
+      <AnimatedEmptyState
+        title="No Analysis Available"
+        description="Get AI-powered insights into your relationship patterns, emotional dynamics, and behavioral cycles. Discover hidden patterns and receive personalized guidance."
+        className="min-h-[600px] w-full"
+        cardContent={(index) => {
+          const cards = [
+            {
+              icon: <Brain className="w-5 h-5 text-blue-600" />,
+              title: "Emotional Patterns",
+              description: "Identify triggers and emotional responses",
+            },
+            {
+              icon: <MessageCircle className="w-6 h-6 text-green-600" />,
+              title: "Communication Analysis",
+              description: "Understand communication dynamics",
+            },
+            {
+              icon: <Activity className="w-6 h-6 text-purple-600" />,
+              title: "Behavioral Cycles",
+              description: "Recognize recurring patterns",
+            },
+            {
+              icon: <Heart className="w-6 h-6 text-pink-600" />,
+              title: "Relationship Health",
+              description: "Assess overall relationship quality",
+            },
+            {
+              icon: <Shield className="w-6 h-6 text-orange-600" />,
+              title: "Safety Assessment",
+              description: "Identify concerning behaviors",
+            },
+            {
+              icon: <TargetIcon className="w-6 h-6 text-indigo-600" />,
+              title: "Actionable Insights",
+              description: "Get personalized recommendations",
+            },
+          ];
+
+          const card = cards[index % cards.length];
+
+          return (
+            <div className="flex items-start gap-3 w-full">
+              <div className="flex-shrink-0 mt-0.5">{card.icon}</div>
+              <div className="flex-1 min-w-0">
+                <h4 className="text-sm font-medium text-gray-900 leading-tight">
+                  {card.title}
+                </h4>
+                <p className="text-xs text-gray-500 leading-tight mt-1">
+                  {card.description}
+                </p>
+              </div>
+            </div>
+          );
+        }}
+      />
     );
   }
 
@@ -221,6 +279,7 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
               <CardTitle className="flex items-center gap-2">
                 <Brain className="w-5 h-5" />
                 Analysis Overview
+                <PremiumFeatureBadge feature="ai-analysis" />
               </CardTitle>
               <CardDescription>
                 Comprehensive relationship pattern insights
