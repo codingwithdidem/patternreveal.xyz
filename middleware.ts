@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/server";
+import type { NextFetchEvent, NextRequest } from "next/server";
 import { parse } from "./lib/middleware/parse";
 import { getUserViaToken } from "./lib/middleware/utils/get-user-via-token";
 import { getDefaultWorkspace } from "./lib/middleware/utils/get-default-workspace";
 import { getOnboardingStep } from "./lib/middleware/utils/get-onboarding-step";
 import { redirect } from "./lib/middleware/utils/redirects";
 import WorkspacesMiddleware from "./lib/middleware/workspaces";
+import AxiomMiddleware from "./lib/middleware/axiom";
 
 export const config = {
   matcher: [
@@ -16,12 +17,17 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    "/((?!api|_next/static|_next/image|public|favicon.ico|sitemap.xml|robots.txt).*)"
-  ]
+    "/((?!api|_next/static|_next/image|public|favicon.ico|sitemap.xml|robots.txt).*)",
+  ],
 };
 
-export default async function middleware(request: NextRequest) {
+export default async function middleware(
+  request: NextRequest,
+  ev: NextFetchEvent
+) {
   const { path, fullPath, searchParamsString } = parse(request);
+
+  AxiomMiddleware(request, ev);
 
   const user = await getUserViaToken(request);
 

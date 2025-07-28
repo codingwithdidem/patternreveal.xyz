@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { AxiomWebVitals } from "next-axiom";
 
 import "./globals.css";
 import { constructMetadata } from "@/utils/functions/construct-metadata";
 
 const satoshi = localFont({
   src: "./fonts/Satoshi.ttf",
-  variable: "--font-satoshi"
+  variable: "--font-satoshi",
 });
 const erode = localFont({
   src: "./fonts/Erode.ttf",
-  variable: "--font-erode"
+  variable: "--font-erode",
 });
 
 export const metadata: Metadata = constructMetadata({
@@ -22,11 +23,11 @@ export const metadata: Metadata = constructMetadata({
   description:
     "AI-powered relationship analysis platform that helps you identify manipulative behaviors, emotional abuse patterns, and toxic dynamics. Create daily reflections, get expert insights, and build stronger personal boundaries to protect your well-being.",
   image: "/images/example-report.png",
-  url: "https://patternreveal.xyz"
+  url: "https://patternreveal.xyz",
 });
 
 export default function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
@@ -35,6 +36,7 @@ export default function RootLayout({
       <body className={`${satoshi.variable} ${erode.variable} antialiased`}>
         <Toaster />
         <NuqsAdapter>{children}</NuqsAdapter>
+        <AxiomWebVitals />
       </body>
     </html>
   );

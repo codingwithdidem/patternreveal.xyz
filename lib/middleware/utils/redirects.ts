@@ -1,7 +1,7 @@
 import { RESERVED_SLUGS } from "@/lib/constants/reserved-slugs";
 
 export const DEFAULT_REDIRECTS: Record<string, string> = {
-  "/onboarding": "/onboarding/welcome"
+  "/onboarding": "/onboarding/welcome",
 };
 
 export const redirect = (path: string) => {

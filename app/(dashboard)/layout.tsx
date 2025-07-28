@@ -1,11 +1,9 @@
 import Providers from "@/components/Providers";
 import { authOptions } from "@/lib/auth/authOptions";
-
-import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 
 export default async function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
