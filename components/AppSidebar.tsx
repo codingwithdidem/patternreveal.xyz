@@ -16,14 +16,10 @@ import {
   SidebarMenuSubItem,
 } from "@components/ui/sidebar";
 import {
-  BarChartIcon,
-  BellRing,
-  Building2Icon,
   ChartLineIcon,
-  ChevronDown,
+  ChartSplineIcon,
   ChevronLeft,
   CogIcon,
-  CreditCard,
   CreditCardIcon,
   LucideIcon,
   UsersRoundIcon,
@@ -107,20 +103,21 @@ const NAV_AREAS: SidebarNavAreas<{
             }`,
             subItems: topReflections?.map((reflection) => ({
               name: reflection.title,
-              href: `/${slug}/reflections/${reflection.id}`,
+              href: `/${slug}/reports/${reflection.id}`,
             })),
           },
-          {
-            name: "Analytics",
-            icon: ChartLineIcon,
-            href: `/${slug}/analytics`,
-          },
+
           {
             name: "Settings",
             icon: SettingsGearIcon,
             href: `/${slug}/settings${
               pathname === `/${slug}/settings` ? "" : queryString
             }`,
+          },
+          {
+            name: "Analytics",
+            icon: ActivityIcon,
+            href: `/${slug}/analytics`,
           },
         ],
       },
@@ -277,7 +274,7 @@ export default function AppSidebar() {
                                 <SidebarMenuSub>
                                   {subItems.map(({ name, href }) => (
                                     <SidebarMenuSubItem key={href}>
-                                      <SidebarMenuSubButton>
+                                      <SidebarMenuSubButton href={href}>
                                         {capitalizeFirstChar(
                                           truncate(name, 24) ?? ""
                                         )}
