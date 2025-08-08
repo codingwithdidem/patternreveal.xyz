@@ -13,7 +13,7 @@ import {
   SidebarMenuItem,
   SidebarMenuSub,
   SidebarMenuSubButton,
-  SidebarMenuSubItem
+  SidebarMenuSubItem,
 } from "@components/ui/sidebar";
 import {
   BarChartIcon,
@@ -26,7 +26,7 @@ import {
   CreditCard,
   CreditCardIcon,
   LucideIcon,
-  UsersRoundIcon
+  UsersRoundIcon,
 } from "lucide-react";
 import Link from "next/link";
 import UserPopover from "@components/UserPopover";
@@ -38,7 +38,7 @@ import {
   ComponentType,
   ForwardRefExoticComponent,
   SVGProps,
-  useMemo
+  useMemo,
 } from "react";
 import { cn } from "@/lib/utils";
 import { ActivityIcon } from "./ui/activity";
@@ -102,20 +102,29 @@ const NAV_AREAS: SidebarNavAreas<{
           {
             name: "Reflections",
             icon: BookTextIcon,
-            href: `/${slug}/reflections${pathname === `/${slug}/reflections` ? "" : queryString}`,
+            href: `/${slug}/reflections${
+              pathname === `/${slug}/reflections` ? "" : queryString
+            }`,
             subItems: topReflections?.map((reflection) => ({
               name: reflection.title,
-              href: `/${slug}/reflections/${reflection.id}`
-            }))
+              href: `/${slug}/reflections/${reflection.id}`,
+            })),
+          },
+          {
+            name: "Analytics",
+            icon: ChartLineIcon,
+            href: `/${slug}/analytics`,
           },
           {
             name: "Settings",
             icon: SettingsGearIcon,
-            href: `/${slug}/settings${pathname === `/${slug}/settings` ? "" : queryString}`
-          }
-        ]
-      }
-    ]
+            href: `/${slug}/settings${
+              pathname === `/${slug}/settings` ? "" : queryString
+            }`,
+          },
+        ],
+      },
+    ],
   }),
   settings: ({ slug, session }) => ({
     title: "Settings",
@@ -128,9 +137,9 @@ const NAV_AREAS: SidebarNavAreas<{
             name: "General",
             icon: CogIcon,
             href: `/${slug}/settings`,
-            exact: true
-          }
-        ]
+            exact: true,
+          },
+        ],
       },
       {
         name: "Workspace",
@@ -139,27 +148,22 @@ const NAV_AREAS: SidebarNavAreas<{
             name: "General",
             icon: CogIcon,
             href: `/${slug}/settings/workspace`,
-            exact: true
+            exact: true,
           },
           {
             name: "Billing",
             icon: CreditCardIcon,
-            href: `/${slug}/settings/workspace/billing`
+            href: `/${slug}/settings/workspace/billing`,
           },
           {
             name: "Members",
             icon: UsersRoundIcon,
-            href: `/${slug}/settings/workspace/members`
+            href: `/${slug}/settings/workspace/members`,
           },
-          {
-            name: "Analytics",
-            icon: ChartLineIcon,
-            href: `/${slug}/settings/workspace/analytics`
-          }
-        ]
-      }
-    ]
-  })
+        ],
+      },
+    ],
+  }),
 };
 
 export default function AppSidebar() {
@@ -168,7 +172,10 @@ export default function AppSidebar() {
   const { data: session } = useSession();
 
   const { reflections: topReflections, isLoading: isTopReflectionsLoading } =
-    usePopularReflections();
+    usePopularReflections({
+      workspaceIdOrSlug: slug,
+      limit: 10,
+    });
 
   const currentArea = useMemo(() => {
     return pathname.startsWith(`/${slug}/settings`) ? "settings" : "dashboard";
@@ -185,7 +192,7 @@ export default function AppSidebar() {
               session,
               showNews: false,
               queryString: "",
-              topReflections
+              topReflections,
             });
             const { title, backHref } = areaProps;
 
@@ -225,7 +232,7 @@ export default function AppSidebar() {
               session,
               queryString: "",
               showNews: false,
-              topReflections
+              topReflections,
             });
           return (
             <div

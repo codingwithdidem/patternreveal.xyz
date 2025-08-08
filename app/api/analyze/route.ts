@@ -12,7 +12,7 @@ import {
   ANALYSIS_SYSTEM_PROMPT,
   createAnalysisPrompt,
 } from "@/lib/ai/prompts/analyze";
-// import { record_reflection_report } from "@/lib/tinybird/record_reflection_report";
+import { record_pattern_analytics } from "@/lib/tinybird/record_pattern_analytics";
 
 export const POST = withWorkspace(
   async ({ req, headers, session, workspace }) => {
@@ -31,7 +31,7 @@ export const POST = withWorkspace(
 
     try {
       // Check AI usage limits before proceeding
-      throwIfAIUsageExceeded(workspace, "ai-analysis");
+      // throwIfAIUsageExceeded(workspace, "ai-analysis");
 
       // Get additional context about the reflection for better analysis
       const reflection = await prisma.reflection.findUnique({
@@ -53,6 +53,8 @@ export const POST = withWorkspace(
         });
       }
 
+      const startTime = Date.now();
+
       const { object, usage } = await generateObject({
         model: openai("gpt-4-turbo"),
         system: ANALYSIS_SYSTEM_PROMPT,
@@ -65,6 +67,8 @@ export const POST = withWorkspace(
         schema: analysisSchema,
         temperature: 0.3, // Lower temperature for more consistent analysis
       });
+
+      const analysisDurationMs = Date.now() - startTime;
 
       if (!object) {
         throw new PatternRevealApiError({
@@ -119,16 +123,22 @@ export const POST = withWorkspace(
         });
       }
 
-      // Record analytics (commented out but structure ready)
-      // waitUntil(
-      //   record_reflection_report({
-      //     id: reflectionId,
-      //     userId: session.user.id,
-      //     report: object as Analysis,
-      //     healthScore: object.overallAssessment.healthScore,
-      //     riskLevel: object.abuseDetection.isAtImmediateRisk ? 'high' : 'low'
-      //   })
-      // );
+      // Record pattern analytics for insights
+      if (session?.user?.id) {
+        // Record analytics asynchronously without blocking the response
+        record_pattern_analytics({
+          userId: session.user.id,
+          workspaceId: workspace.id,
+          reflectionId: reflectionId,
+          analysis: object as Analysis,
+          analysisDurationMs,
+          aiModelUsed: "gpt-4-turbo",
+          userPlan: workspace.plan,
+          reflectionCreatedAt: reflection.createdAt.toISOString(),
+        }).catch((error) => {
+          console.error("Failed to record pattern analytics:", error);
+        });
+      }
 
       return NextResponse.json(object, {
         headers,

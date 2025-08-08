@@ -1,0 +1,88 @@
+DESCRIPTION >
+    Workspace summary analytics with high-level insights and trends
+
+NODE workspace_summary_node
+SQL >
+    %
+    SELECT 
+        workspace_id,
+        
+        -- Overall workspace metrics
+        count() as total_reflections,
+        count(DISTINCT user_id) as total_users,
+        avg(health_score) as overall_health_score,
+        avg(emotional_intensity) as overall_emotional_intensity,
+        
+        -- Time-based metrics
+        min(reflection_created_at) as workspace_start_date,
+        max(reflection_created_at) as latest_reflection_date,
+        dateDiff('day', min(reflection_created_at), max(reflection_created_at)) as workspace_age_days,
+        
+        -- Success metrics
+        avg(CASE WHEN resolution_achieved = true THEN 1 ELSE 0 END) * 100 as overall_resolution_rate,
+        avg(CASE WHEN boundaries_maintained = true THEN 1 ELSE 0 END) * 100 as overall_boundaries_rate,
+        
+        -- Most common patterns across workspace
+        topK(5)(dominant_emotion) as workspace_common_emotions,
+        topK(5)(interaction_type) as workspace_common_interactions,
+        topK(5)(communication_style) as workspace_communication_styles,
+        topK(5)(environment) as workspace_environments,
+        topK(5)(time_of_day) as workspace_preferred_times,
+        topK(5)(day_of_week) as workspace_preferred_days,
+        
+        -- Health score distribution
+        countIf(health_score >= 8) as excellent_health_count,
+        countIf(health_score >= 6 and health_score < 8) as good_health_count,
+        countIf(health_score >= 4 and health_score < 6) as moderate_health_count,
+        countIf(health_score < 4) as poor_health_count,
+        
+        -- Energy level distribution
+        countIf(energy_level_yours = 'High') as high_energy_count,
+        countIf(energy_level_yours = 'Medium') as medium_energy_count,
+        countIf(energy_level_yours = 'Low') as low_energy_count,
+        
+        -- Confidence level distribution
+        countIf(confidence_level = 'High') as high_confidence_count,
+        countIf(confidence_level = 'Medium') as medium_confidence_count,
+        countIf(confidence_level = 'Low') as low_confidence_count,
+        
+        -- Trust and intimacy levels
+        topK(5)(trust_level) as workspace_trust_levels,
+        topK(5)(intimacy_level) as workspace_intimacy_levels,
+        
+        -- Recent activity (last 7 days)
+        countIf(reflection_created_at >= now() - interval 7 day) as recent_reflections,
+        count(DISTINCT CASE WHEN reflection_created_at >= now() - interval 7 day THEN user_id ELSE NULL END) as recent_active_users,
+        
+        -- Monthly trends (last 3 months)
+        countIf(reflection_created_at >= now() - interval 30 day) as reflections_last_30_days,
+        countIf(reflection_created_at >= now() - interval 60 day) as reflections_last_60_days,
+        countIf(reflection_created_at >= now() - interval 90 day) as reflections_last_90_days,
+        
+        -- User engagement metrics
+        avg(total_reflections_per_user) as avg_reflections_per_user,
+        max(total_reflections_per_user) as max_reflections_by_user,
+        min(total_reflections_per_user) as min_reflections_by_user
+        
+    FROM (
+        SELECT 
+            *,
+            count() OVER (PARTITION BY user_id) as total_reflections_per_user
+        FROM patterns
+        WHERE 
+            workspace_id = {{ String(workspace_id) }}
+            {% if defined(days_filter) %}
+            {% if days_filter == '30' %}
+            AND reflection_created_at >= now() - interval 30 day
+            {% elif days_filter == '60' %}
+            AND reflection_created_at >= now() - interval 60 day
+            {% elif days_filter == '90' %}
+            AND reflection_created_at >= now() - interval 90 day
+            {% end %}
+            {% else %}
+            AND reflection_created_at >= now() - interval 30 day
+            {% end %}
+    )
+    GROUP BY workspace_id
+
+TYPE endpoint 

@@ -1,0 +1,63 @@
+DESCRIPTION >
+    Behavioral patterns analysis that maps raw reflection data to specific behavioral pattern counts
+
+NODE behavioral_patterns_analysis
+SQL >
+    %
+    SELECT 
+        user_id,
+        
+        -- Boundary patterns - based on boundaries_maintained and conflict_resolution_style
+        countIf(boundaries_maintained = false) as boundary_violations_count,
+        countIf(boundaries_maintained = true) as boundary_success_count,
+        countIf(conflict_resolution_style = 'avoidant' OR conflict_resolution_style = 'avoidance') as avoided_conflict_count,
+        countIf(conflict_resolution_style = 'collaborative' OR conflict_resolution_style = 'assertive') as engaged_conflict_count,
+        
+        -- Communication patterns - based on communication_style and listening_effectiveness
+        countIf(communication_style IN ('empathetic', 'supportive', 'enthusiastic') 
+                AND listening_effectiveness IN ('active', 'deep', 'excellent')) as deep_conversations_count,
+        countIf(communication_style IN ('passive', 'withdrawn', 'questioning') 
+                OR listening_effectiveness IN ('selective', 'poor', 'analytical')) as surface_conversations_count,
+        countIf(power_dynamics_initiator = 'me' OR power_dynamics_initiator = 'shared') as initiated_conversations_count,
+        countIf(communication_style IN ('passive', 'withdrawn') OR conflict_resolution_style = 'avoidant') as avoided_conversations_count,
+        
+        -- Emotional patterns - based on emotional_contagion and self_regulation
+        countIf(emotional_contagion = true) as emotional_contagion_count,
+        countIf(emotional_contagion = false AND self_regulation != '') as emotional_regulation_count,
+        countIf(emotional_intensity >= 6 AND emotional_recovery_time NOT IN ('immediate', '30 minutes')) as suppressed_emotions_count,
+        countIf(emotional_intensity >= 6 AND communication_style IN ('enthusiastic', 'empathetic', 'assertive')) as expressed_emotions_count,
+        
+        -- Power dynamics - based on power_dynamics_controller and decision_making_style
+        countIf(power_dynamics_controller = 'them' AND decision_making_style IN ('imposed', 'delegated', 'deferral')) as gave_up_control_count,
+        countIf(power_dynamics_controller IN ('me', 'shared') AND decision_making_style IN ('consensus', 'consultative')) as maintained_control_count,
+        countIf(effort_balance = 'slightly_unbalanced' AND decision_making_style = 'consultative') as compromised_count,
+        countIf(boundaries_maintained = true AND power_dynamics_controller != 'them') as stood_firm_count,
+        
+        -- Trust patterns - based on trust_level and decision_making_style
+        countIf(trust_level IN ('high', 'very_high') AND decision_making_style != 'imposed') as trusted_instincts_count,
+        countIf(trust_level IN ('low', 'moderate') OR decision_making_style = 'deferral') as ignored_instincts_count,
+        countIf(trust_level >= 'medium' AND resolution_achieved = true) as gave_benefit_of_doubt_count,
+        countIf(trust_level = 'low' AND conflict_resolution_style = 'avoidant') as questioned_behavior_count,
+        
+        -- Time patterns - based on decision_making_style and emotional_recovery_time
+        countIf(decision_making_style = 'deferral' OR emotional_recovery_time = 'immediate') as rushed_decisions_count,
+        countIf(decision_making_style IN ('consensus', 'consultative') AND emotional_recovery_time NOT IN ('immediate', '30 minutes')) as took_time_count,
+        countIf(interaction_type = 'difficult_conversation' AND resolution_achieved = false) as procrastinated_count,
+        countIf(decision_making_style != 'deferral' AND emotional_recovery_time = 'immediate') as acted_immediately_count,
+        
+        -- Total interactions for percentage calculations
+        count() as total_interactions
+        
+    FROM patterns 
+    WHERE workspace_id = {{ String(workspace_id) }}
+    {% if defined(user_id) %}
+    AND user_id = {{ String(user_id) }}
+    {% end %}
+    {% if defined(days_filter) %}
+    AND reflection_created_at >= now() - interval {{ Int32(days_filter) }} day
+    {% else %}
+    AND reflection_created_at >= now() - interval 30 day
+    {% end %}
+    GROUP BY user_id
+
+TYPE endpoint

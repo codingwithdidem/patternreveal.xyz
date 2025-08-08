@@ -1,0 +1,138 @@
+DESCRIPTION >
+    Advanced relationship health insights with boundary analysis, trust dynamics, and communication effectiveness patterns
+
+NODE relationship_health_analysis
+SQL >
+    %
+    SELECT 
+        user_id,
+        
+        -- Boundary Effectiveness Analysis
+        round(avg(CASE WHEN boundaries_maintained = true THEN 1 ELSE 0 END) * 100, 1) as overall_boundary_success_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND environment = 'work' THEN 1 ELSE 0 END) * 100, 1) as work_boundary_success_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND environment = 'home' THEN 1 ELSE 0 END) * 100, 1) as home_boundary_success_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND environment = 'public' THEN 1 ELSE 0 END) * 100, 1) as public_boundary_success_rate,
+        
+        -- Communication Style Boundary Effectiveness
+        round(avg(CASE WHEN boundaries_maintained = true AND communication_style = 'assertive' THEN 1 ELSE 0 END) * 100, 1) as assertive_boundary_success_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND communication_style = 'empathetic' THEN 1 ELSE 0 END) * 100, 1) as empathetic_boundary_success_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND communication_style = 'passive' THEN 1 ELSE 0 END) * 100, 1) as passive_boundary_success_rate,
+        
+        -- Resolution Success Analysis
+        round(avg(CASE WHEN resolution_achieved = true THEN 1 ELSE 0 END) * 100, 1) as overall_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'collaborative' THEN 1 ELSE 0 END) * 100, 1) as collaborative_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'compromising' THEN 1 ELSE 0 END) * 100, 1) as compromising_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'avoidant' THEN 1 ELSE 0 END) * 100, 1) as avoidant_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'accommodating' THEN 1 ELSE 0 END) * 100, 1) as accommodating_resolution_rate,
+        
+        -- Trust Pattern Analysis
+        topK(3)(trust_level) as most_common_trust_levels,
+        avg(CASE 
+            WHEN trust_level = 'very_high' THEN 4
+            WHEN trust_level = 'high' THEN 3
+            WHEN trust_level = 'medium' THEN 2
+            WHEN trust_level = 'low' THEN 1
+            ELSE 2 END) as avg_trust_score,
+        round(avg(CASE WHEN trust_level IN ('very_high', 'high') AND environment = 'work' THEN 1 ELSE 0 END) * 100, 1) as work_high_trust_rate,
+        round(avg(CASE WHEN trust_level IN ('very_high', 'high') AND environment = 'home' THEN 1 ELSE 0 END) * 100, 1) as home_high_trust_rate,
+        round(avg(CASE WHEN trust_level IN ('very_high', 'high') AND environment = 'public' THEN 1 ELSE 0 END) * 100, 1) as public_high_trust_rate,
+        
+        -- Intimacy Pattern Analysis
+        topK(3)(intimacy_level) as most_common_intimacy_levels,
+        avg(CASE 
+            WHEN intimacy_level = 'intimate' THEN 4
+            WHEN intimacy_level = 'high' THEN 3
+            WHEN intimacy_level = 'personal' THEN 2
+            WHEN intimacy_level = 'professional' THEN 1
+            WHEN intimacy_level = 'superficial' THEN 0
+            ELSE 2 END) as avg_intimacy_score,
+        
+        -- Power Dynamics Analysis
+        topK(3)(power_dynamics_initiator) as most_common_initiators,
+        topK(3)(power_dynamics_controller) as most_common_controllers,
+        round(avg(CASE WHEN power_dynamics_controller = 'shared' THEN 1 ELSE 0 END) * 100, 1) as shared_power_rate,
+        round(avg(CASE WHEN power_dynamics_controller = 'me' THEN 1 ELSE 0 END) * 100, 1) as my_control_rate,
+        round(avg(CASE WHEN power_dynamics_controller = 'them' THEN 1 ELSE 0 END) * 100, 1) as their_control_rate,
+        
+        -- Decision Making Effectiveness
+        topK(3)(decision_making_style) as most_common_decision_styles,
+        round(avg(CASE WHEN resolution_achieved = true AND decision_making_style = 'consensus' THEN 1 ELSE 0 END) * 100, 1) as consensus_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND decision_making_style = 'consultative' THEN 1 ELSE 0 END) * 100, 1) as consultative_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND decision_making_style = 'delegated' THEN 1 ELSE 0 END) * 100, 1) as delegated_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND decision_making_style = 'imposed' THEN 1 ELSE 0 END) * 100, 1) as imposed_resolution_rate,
+        
+        -- Listening Effectiveness Impact
+        topK(3)(listening_effectiveness) as most_common_listening_styles,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'deep' THEN 1 ELSE 0 END) * 100, 1) as deep_listening_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'active' THEN 1 ELSE 0 END) * 100, 1) as active_listening_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'empathetic' THEN 1 ELSE 0 END) * 100, 1) as empathetic_listening_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as poor_listening_resolution_rate,
+        
+        -- Effort Balance Analysis
+        topK(3)(effort_balance) as most_common_effort_balances,
+        round(avg(CASE WHEN resolution_achieved = true AND effort_balance = 'balanced' THEN 1 ELSE 0 END) * 100, 1) as balanced_effort_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND effort_balance = 'unbalanced' THEN 1 ELSE 0 END) * 100, 1) as unbalanced_effort_resolution_rate,
+        
+        -- Health Score Correlation Analysis
+        round(avg(CASE WHEN resolution_achieved = true AND health_score >= 7 THEN 1 ELSE 0 END) * 100, 1) as high_health_resolution_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND health_score >= 7 THEN 1 ELSE 0 END) * 100, 1) as high_health_boundary_rate,
+        
+        -- Confidence Level Analysis
+        topK(3)(confidence_level) as most_common_confidence_levels,
+        round(avg(CASE WHEN resolution_achieved = true AND confidence_level = 'high' THEN 1 ELSE 0 END) * 100, 1) as high_confidence_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND confidence_level = 'medium' THEN 1 ELSE 0 END) * 100, 1) as medium_confidence_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND confidence_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as low_confidence_resolution_rate,
+        
+        -- Advanced Pattern Recognition
+        round(avg(CASE WHEN boundaries_maintained = false AND power_dynamics_controller = 'them' THEN 1 ELSE 0 END) * 100, 1) as boundary_violation_power_imbalance_rate,
+        round(avg(CASE WHEN resolution_achieved = false AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as poor_listening_failure_rate,
+        round(avg(CASE WHEN trust_level = 'low' AND intimacy_level = 'superficial' THEN 1 ELSE 0 END) * 100, 1) as low_trust_superficial_intimacy_rate,
+        round(avg(CASE WHEN effort_balance = 'unbalanced' AND resolution_achieved = false THEN 1 ELSE 0 END) * 100, 1) as unbalanced_effort_failure_rate,
+        
+        -- Relationship Health Growth Metrics
+        CASE 
+            WHEN avg(CASE WHEN reflection_created_at >= now() - interval 15 day THEN boundaries_maintained ELSE NULL END) > 
+                 avg(CASE WHEN reflection_created_at < now() - interval 15 day THEN boundaries_maintained ELSE NULL END) THEN 'improving'
+            WHEN avg(CASE WHEN reflection_created_at >= now() - interval 15 day THEN boundaries_maintained ELSE NULL END) < 
+                 avg(CASE WHEN reflection_created_at < now() - interval 15 day THEN boundaries_maintained ELSE NULL END) THEN 'declining'
+            ELSE 'stable'
+        END as boundary_trend,
+        
+        CASE 
+            WHEN avg(CASE WHEN reflection_created_at >= now() - interval 15 day THEN resolution_achieved ELSE NULL END) > 
+                 avg(CASE WHEN reflection_created_at < now() - interval 15 day THEN resolution_achieved ELSE NULL END) THEN 'improving'
+            WHEN avg(CASE WHEN reflection_created_at >= now() - interval 15 day THEN resolution_achieved ELSE NULL END) < 
+                 avg(CASE WHEN reflection_created_at < now() - interval 15 day THEN resolution_achieved ELSE NULL END) THEN 'declining'
+            ELSE 'stable'
+        END as resolution_trend,
+        
+        -- Actionable Insights
+        CASE 
+            WHEN overall_boundary_success_rate < 60 THEN 'boundary_work_needed'
+            WHEN overall_resolution_rate < 50 THEN 'resolution_skills_needed'
+            WHEN avg_trust_score < 2 THEN 'trust_building_needed'
+            WHEN shared_power_rate < 40 THEN 'power_balance_improvement'
+            ELSE 'healthy_relationship_patterns'
+        END as primary_improvement_area,
+        
+        -- Relationship Health Score
+        round(
+            (overall_boundary_success_rate * 0.3) +
+            (overall_resolution_rate * 0.3) +
+            (avg_trust_score * 25) +
+            (shared_power_rate * 0.2), 1
+        ) as relationship_health_score
+        
+    FROM patterns 
+    WHERE workspace_id = {{ String(workspace_id) }}
+    {% if defined(user_id) %}
+    AND user_id = {{ String(user_id) }}
+    {% end %}
+    {% if defined(days_filter) %}
+    AND reflection_created_at >= now() - interval {{ Int32(days_filter) }} day
+    {% else %}
+    AND reflection_created_at >= now() - interval 30 day
+    {% end %}
+    GROUP BY user_id
+
+TYPE endpoint 

@@ -68,16 +68,6 @@ export const GET = withWorkspace(
           },
         ]),
       },
-      include: {
-        analysisReport: includeAIReport,
-        user: includeUser,
-        report: includeDashboard,
-      },
-      orderBy: {
-        [sortBy]: sortOrder, // Currently only supports createdAt
-      },
-      skip: (page - 1) * pageSize,
-      take: pageSize,
     });
 
     return NextResponse.json(

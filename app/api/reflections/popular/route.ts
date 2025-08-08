@@ -7,11 +7,18 @@ import { NextResponse } from "next/server";
  */
 export const GET = withPermissions(
   async ({ req, headers, session, searchParams, permissions }) => {
-    const { limit } = searchParams;
+    const { limit, workspaceIdOrSlug } = searchParams;
+
+    const workspace = await prisma.workspace.findUnique({
+      where: {
+        slug: workspaceIdOrSlug,
+      },
+    });
 
     const response = await prisma.reflection.findMany({
       where: {
         userId: session.user.id,
+        workspaceId: workspace?.id,
       },
       orderBy: {
         createdAt: "desc", // Sort by createdAt in descending order (newest first)

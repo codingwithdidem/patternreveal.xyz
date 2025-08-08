@@ -40,6 +40,7 @@ export const withWorkspace = (
     ) => {
       const searchParams = getSearchParams(req.url);
       const awaitedParams = await params;
+      const awaitedSearchParams = await searchParams;
 
       const headers = {};
       let workspace: WorkspaceWithUsers | undefined;
@@ -48,15 +49,11 @@ export const withWorkspace = (
         let session: Session | undefined;
         let permissions: PermissionAction[] = [];
 
-        console.log("awaitedParams", awaitedParams);
-
         const idOrSlug =
           awaitedParams?.idOrSlug ||
-          searchParams.workspaceId ||
+          awaitedSearchParams.workspaceId ||
           awaitedParams?.slug ||
-          searchParams.projectSlug;
-
-        console.log("idOrSlug", idOrSlug);
+          awaitedSearchParams.projectSlug;
 
         if (!idOrSlug) {
           throw new PatternRevealApiError({

@@ -1,0 +1,132 @@
+DESCRIPTION >
+    Advanced predictive insights with success pattern analysis, red flag detection, and optimal timing recommendations
+
+NODE predictive_analysis
+SQL >
+    %
+    SELECT 
+        user_id,
+        
+        -- Success Predictors Analysis
+        round(avg(CASE WHEN resolution_achieved = true AND decision_making_style = 'consensus' THEN 1 ELSE 0 END) * 100, 1) as consensus_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND decision_making_style = 'imposed' THEN 1 ELSE 0 END) * 100, 1) as imposed_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND decision_making_style = 'delegated' THEN 1 ELSE 0 END) * 100, 1) as delegated_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND decision_making_style = 'consultative' THEN 1 ELSE 0 END) * 100, 1) as consultative_success_rate,
+        
+        -- Red Flag Pattern Detection
+        round(avg(CASE WHEN emotional_intensity >= 7 AND energy_level_yours != energy_level_theirs THEN 1 ELSE 0 END) * 100, 1) as red_flag_high_intensity_mismatched_energy_rate,
+        round(avg(CASE WHEN emotional_intensity >= 7 AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as red_flag_high_intensity_poor_listening_rate,
+        round(avg(CASE WHEN confidence_level = 'low' AND conflict_resolution_style = 'avoidant' THEN 1 ELSE 0 END) * 100, 1) as red_flag_low_confidence_avoidant_rate,
+        round(avg(CASE WHEN boundaries_maintained = false AND power_dynamics_controller = 'them' THEN 1 ELSE 0 END) * 100, 1) as red_flag_no_boundaries_their_control_rate,
+        
+        -- Optimal Timing Analysis
+        round(avg(CASE WHEN resolution_achieved = true AND day_of_week = 'monday' THEN 1 ELSE 0 END) * 100, 1) as monday_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND day_of_week = 'tuesday' THEN 1 ELSE 0 END) * 100, 1) as tuesday_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND day_of_week = 'wednesday' THEN 1 ELSE 0 END) * 100, 1) as wednesday_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND day_of_week = 'thursday' THEN 1 ELSE 0 END) * 100, 1) as thursday_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND day_of_week = 'friday' THEN 1 ELSE 0 END) * 100, 1) as friday_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND day_of_week = 'saturday' THEN 1 ELSE 0 END) * 100, 1) as saturday_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND day_of_week = 'sunday' THEN 1 ELSE 0 END) * 100, 1) as sunday_success_rate,
+        
+        round(avg(CASE WHEN resolution_achieved = true AND time_of_day = 'morning' THEN 1 ELSE 0 END) * 100, 1) as morning_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND time_of_day = 'afternoon' THEN 1 ELSE 0 END) * 100, 1) as afternoon_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND time_of_day = 'evening' THEN 1 ELSE 0 END) * 100, 1) as evening_success_rate,
+        
+        -- Energy Combination Analysis
+        round(avg(CASE WHEN resolution_achieved = true AND energy_level_yours = 'high' AND energy_level_theirs = 'high' THEN 1 ELSE 0 END) * 100, 1) as high_high_energy_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND energy_level_yours = 'medium' AND energy_level_theirs = 'medium' THEN 1 ELSE 0 END) * 100, 1) as medium_medium_energy_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND energy_level_yours = 'low' AND energy_level_theirs = 'low' THEN 1 ELSE 0 END) * 100, 1) as low_low_energy_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND energy_level_yours = 'high' AND energy_level_theirs = 'low' THEN 1 ELSE 0 END) * 100, 1) as high_low_energy_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND energy_level_yours = 'low' AND energy_level_theirs = 'high' THEN 1 ELSE 0 END) * 100, 1) as low_high_energy_success_rate,
+        
+        -- Environment Success Patterns
+        round(avg(CASE WHEN resolution_achieved = true AND environment = 'work' THEN 1 ELSE 0 END) * 100, 1) as work_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND environment = 'home' THEN 1 ELSE 0 END) * 100, 1) as home_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND environment = 'public' THEN 1 ELSE 0 END) * 100, 1) as public_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND environment = 'virtual' THEN 1 ELSE 0 END) * 100, 1) as virtual_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND environment = 'restaurant' THEN 1 ELSE 0 END) * 100, 1) as restaurant_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND environment = 'outdoors' THEN 1 ELSE 0 END) * 100, 1) as outdoors_success_rate,
+        
+        -- Communication Style Success Patterns
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'assertive' THEN 1 ELSE 0 END) * 100, 1) as assertive_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'empathetic' THEN 1 ELSE 0 END) * 100, 1) as empathetic_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'passive' THEN 1 ELSE 0 END) * 100, 1) as passive_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'enthusiastic' THEN 1 ELSE 0 END) * 100, 1) as enthusiastic_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'supportive' THEN 1 ELSE 0 END) * 100, 1) as supportive_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'questioning' THEN 1 ELSE 0 END) * 100, 1) as questioning_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'withdrawn' THEN 1 ELSE 0 END) * 100, 1) as withdrawn_success_rate,
+        
+        -- Duration Impact Analysis
+        round(avg(CASE WHEN resolution_achieved = true AND duration = '30 minutes' THEN 1 ELSE 0 END) * 100, 1) as short_duration_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND duration = '1 hour' THEN 1 ELSE 0 END) * 100, 1) as medium_duration_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND duration IN ('2 hours', '3 hours') THEN 1 ELSE 0 END) * 100, 1) as long_duration_success_rate,
+        
+        -- Health Score Threshold Analysis
+        round(avg(CASE WHEN resolution_achieved = true AND health_score >= 8 THEN 1 ELSE 0 END) * 100, 1) as excellent_health_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND health_score BETWEEN 6 AND 7 THEN 1 ELSE 0 END) * 100, 1) as good_health_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND health_score BETWEEN 4 AND 5 THEN 1 ELSE 0 END) * 100, 1) as moderate_health_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND health_score <= 3 THEN 1 ELSE 0 END) * 100, 1) as poor_health_success_rate,
+        
+        -- Trust Level Impact Analysis
+        round(avg(CASE WHEN resolution_achieved = true AND trust_level = 'very_high' THEN 1 ELSE 0 END) * 100, 1) as very_high_trust_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND trust_level = 'high' THEN 1 ELSE 0 END) * 100, 1) as high_trust_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND trust_level = 'medium' THEN 1 ELSE 0 END) * 100, 1) as medium_trust_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND trust_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as low_trust_success_rate,
+        
+        -- Advanced Predictive Patterns
+        round(avg(CASE WHEN resolution_achieved = true AND emotional_intensity <= 5 AND listening_effectiveness IN ('deep', 'active') THEN 1 ELSE 0 END) * 100, 1) as low_intensity_good_listening_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND boundaries_maintained = true AND power_dynamics_controller = 'shared' THEN 1 ELSE 0 END) * 100, 1) as balanced_power_boundaries_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND effort_balance = 'balanced' AND conflict_resolution_style = 'collaborative' THEN 1 ELSE 0 END) * 100, 1) as balanced_effort_collaborative_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND confidence_level = 'high' AND communication_style = 'assertive' THEN 1 ELSE 0 END) * 100, 1) as high_confidence_assertive_success_rate,
+        
+        -- Risk Pattern Analysis
+        round(avg(CASE WHEN resolution_achieved = false AND emotional_intensity >= 7 AND energy_level_yours = 'low' THEN 1 ELSE 0 END) * 100, 1) as high_risk_low_energy_high_intensity_rate,
+        round(avg(CASE WHEN resolution_achieved = false AND boundaries_maintained = false AND power_dynamics_controller = 'them' THEN 1 ELSE 0 END) * 100, 1) as high_risk_no_boundaries_their_control_rate,
+        round(avg(CASE WHEN resolution_achieved = false AND listening_effectiveness = 'poor' AND communication_style = 'passive' THEN 1 ELSE 0 END) * 100, 1) as high_risk_poor_listening_passive_rate,
+        
+        -- Optimal Condition Combinations
+        round(avg(CASE WHEN resolution_achieved = true AND emotional_intensity <= 5 AND energy_level_yours = 'medium' AND energy_level_theirs = 'medium' THEN 1 ELSE 0 END) * 100, 1) as optimal_balanced_conditions_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND time_of_day = 'morning' AND day_of_week IN ('tuesday', 'wednesday', 'thursday') THEN 1 ELSE 0 END) * 100, 1) as optimal_timing_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND environment = 'home' AND duration = '1 hour' THEN 1 ELSE 0 END) * 100, 1) as optimal_home_duration_success_rate,
+        
+        -- Predictive Insights
+        CASE 
+            WHEN consensus_success_rate > 80 THEN 'consensus_decision_making'
+            WHEN assertive_success_rate > 75 THEN 'assertive_communication'
+            WHEN morning_success_rate > 70 THEN 'morning_interactions'
+            WHEN home_success_rate > 75 THEN 'home_environment'
+            WHEN medium_medium_energy_success_rate > 80 THEN 'balanced_energy'
+            ELSE 'mixed_approach'
+        END as recommended_approach,
+        
+        CASE 
+            WHEN red_flag_high_intensity_mismatched_energy_rate > 30 THEN 'avoid_high_intensity_mismatched_energy'
+            WHEN red_flag_low_confidence_avoidant_rate > 25 THEN 'build_confidence_avoid_avoidance'
+            WHEN red_flag_no_boundaries_their_control_rate > 20 THEN 'strengthen_boundaries_balance_power'
+            ELSE 'low_risk_patterns'
+        END as primary_risk_mitigation,
+        
+        -- Success Probability Score
+        round(
+            (consensus_success_rate * 0.2) +
+            (assertive_success_rate * 0.15) +
+            (morning_success_rate * 0.1) +
+            (home_success_rate * 0.15) +
+            (medium_medium_energy_success_rate * 0.1) +
+            (excellent_health_success_rate * 0.1) +
+            (very_high_trust_success_rate * 0.1), 1
+        ) as predicted_success_probability
+        
+    FROM patterns 
+    WHERE workspace_id = {{ String(workspace_id) }}
+    {% if defined(user_id) %}
+    AND user_id = {{ String(user_id) }}
+    {% end %}
+    {% if defined(days_filter) %}
+    AND reflection_created_at >= now() - interval {{ Int32(days_filter) }} day
+    {% else %}
+    AND reflection_created_at >= now() - interval 30 day
+    {% end %}
+    GROUP BY user_id
+
+TYPE endpoint 
