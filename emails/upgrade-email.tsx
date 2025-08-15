@@ -1,4 +1,5 @@
 import { getPlanDetails } from "@/lib/constants";
+import { getAssetUrl } from "@/lib/assets";
 import {
   Body,
   Container,
@@ -10,13 +11,13 @@ import {
   Preview,
   Section,
   Tailwind,
-  Text
+  Text,
 } from "@react-email/components";
 
 export function UpgradeEmail({
   name = "Brendon Urie",
   email = "panic@thedis.co",
-  plan = "Business"
+  plan = "Business",
 }: {
   name: string | null;
   email: string;
@@ -35,21 +36,19 @@ export function UpgradeEmail({
             </Heading>
             <Section className="my-8">
               <Img
-                src="https://assets.dub.co/misc/thank-you-thumbnail.jpg"
-                alt="Thank you"
-                className="max-w-[500px]"
+                src={getAssetUrl("patternreveal-logo.svg")}
+                alt="PatternReveal Logo"
+                className="max-w-[300px] mx-auto"
               />
             </Section>
             <Text className="text-sm leading-6 text-black">
               Hey{name && ` ${name}`}!
             </Text>
             <Text className="text-sm leading-6 text-black">
-              My name is Steven, and I'm the founder of Dub.
-            </Text>
-            <Text className="text-sm leading-6 text-black">
               I wanted to personally reach out to thank you for upgrading to{" "}
-              <strong>Dub {plan}</strong>! Your support means the world to us
-              and helps us continue to build and improve Dub.
+              <strong>PatternReveal {plan}</strong>! Your support means the
+              world to us and helps us continue to build and improve
+              PatternReveal.
             </Text>
             <Text className="text-sm leading-6 text-black">
               On the {plan} plan, you now have access to:

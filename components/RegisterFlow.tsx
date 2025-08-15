@@ -7,7 +7,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { GoogleIcon } from "@components/icons";
@@ -42,8 +42,8 @@ function VerifyEmail() {
   const form = useForm<z.infer<typeof verifyEmailSchema>>({
     resolver: zodResolver(verifyEmailSchema),
     defaultValues: {
-      code: ""
-    }
+      code: "",
+    },
   });
 
   const { executeAsync, isPending } = useAction(verifyEmailAction, {
@@ -54,7 +54,7 @@ function VerifyEmail() {
       const response = await signIn("credentials", {
         email,
         password,
-        redirect: false
+        redirect: false,
       });
 
       if (response?.ok) {
@@ -66,7 +66,7 @@ function VerifyEmail() {
     },
     onError: ({ error }) => {
       toast.error(error.serverError || error.validationErrors?.code?.[0]);
-    }
+    },
   });
 
   function onSubmit(data: z.infer<typeof verifyEmailSchema>) {
@@ -74,7 +74,7 @@ function VerifyEmail() {
       code: data.code,
       email,
       password,
-      name
+      name,
     });
   }
 
@@ -140,18 +140,18 @@ function SignUp() {
       name: "",
       email: "",
       password: "",
-      confirmPassword: ""
-    }
+      confirmPassword: "",
+    },
   });
 
   const { executeAsync, isPending } = useAction(sendOtpAction, {
     onSuccess: () => {
-      toast.success("Verification code sent to your email.");
+      toast.success("We've sent a verification code to your email.");
       setStep("verify");
     },
     onError: ({ error }) => {
       toast.error(error.serverError || error.validationErrors?.email?.[0]);
-    }
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
@@ -160,7 +160,7 @@ function SignUp() {
     setPassword(values.password);
 
     await executeAsync({
-      email: values.email
+      email: values.email,
     });
   };
 
@@ -181,7 +181,7 @@ function SignUp() {
           variant={"outline"}
           onClick={() =>
             signIn("google", {
-              ...(next && next.length > 0 ? { callbackUrl: next } : {})
+              ...(next && next.length > 0 ? { callbackUrl: next } : {}),
             })
           }
         >

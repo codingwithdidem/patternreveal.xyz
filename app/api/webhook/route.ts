@@ -4,6 +4,7 @@ import { getPaddleClient } from "@/lib/paddle/client";
 import { handleSubscriptionCancelled } from "./subscription-cancelled";
 import { handleSubscriptionUpdated } from "./subscription-updated";
 import { handleSubscriptionCreated } from "./subscription-created";
+import { handleTransactionPaymentFailed } from "./payment-failed";
 
 export async function POST(request: NextRequest) {
   try {
@@ -59,6 +60,9 @@ async function processWebhookEvent(paddleEvent: EventEntity) {
         break;
       case EventName.SubscriptionCanceled:
         await handleSubscriptionCancelled(paddleEvent);
+        break;
+      case EventName.TransactionPaymentFailed:
+        await handleTransactionPaymentFailed(paddleEvent);
         break;
       default:
         console.log("Unhandled event type:", paddleEvent.eventType);

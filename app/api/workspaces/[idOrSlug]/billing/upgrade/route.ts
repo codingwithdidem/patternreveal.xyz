@@ -6,14 +6,7 @@ import { getPaddleClient } from "@/lib/paddle/client";
 import { NextResponse } from "next/server";
 
 export const POST = withWorkspace(async ({ req, workspace, session }) => {
-  const { plan, period, baseUrl } = await parseRequestBody(req);
-
-  if (!baseUrl.startsWith(process.env.NEXT_PUBLIC_APP_DOMAIN)) {
-    throw new PatternRevealApiError({
-      code: "unprocessable_entity",
-      message: "Invalid base URL.",
-    });
-  }
+  const { plan, period } = await parseRequestBody(req);
 
   if (!plan || !period) {
     throw new PatternRevealApiError({

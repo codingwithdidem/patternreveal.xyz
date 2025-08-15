@@ -195,7 +195,7 @@ export const contextFactorsSchema = z.object({
   }),
   timeContext: z.object({
     timeOfDay: z
-      .enum(["morning", "afternoon", "evening", "night"])
+      .enum(["morning", "afternoon", "evening", "night", "unknown"])
       .describe("What time of day this interaction occurred"),
     dayOfWeek: z
       .enum([

@@ -19,9 +19,10 @@ import ReflectionAnalysis, {
 import BehavioralPatterns, {
   type BehavioralPatternsData,
 } from "@/components/analytics/BehavioralPatterns";
+import AnalyticsUpgradeOverlay from "@/components/analytics/AnalyticsUpgradeOverlay";
 
 export default function AnalyticsPageClient() {
-  const { id: workspaceId } = useWorkspace();
+  const { id: workspaceId, plan } = useWorkspace();
   const { filters } = useAnalyticsQueryParams();
   const { days: daysFilter, user: selectedUserId } = filters;
 
@@ -32,59 +33,69 @@ export default function AnalyticsPageClient() {
     selectedUserId: selectedUserId === "all" ? undefined : selectedUserId,
   };
 
+  const requiresUpgrade = plan === "free";
+
   return (
     <div className="space-y-6">
       <Filters />
-      <Tabs defaultValue="emotional_intelligence" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
-          <TabsTrigger value="emotional_intelligence">
-            <Brain className="h-4 w-4 mr-2" /> Emotional Intelligence
-          </TabsTrigger>
-          <TabsTrigger value="relationship_health">
-            <Heart className="h-4 w-4 mr-2" /> Relationship Health
-          </TabsTrigger>
-          <TabsTrigger value="predictive">
-            <Target className="h-4 w-4 mr-2" /> Predictive Insights
-          </TabsTrigger>
-          <TabsTrigger value="behavioral-patterns">
-            <Activity className="h-4 w-4 mr-2" />
-            Behavioral Patterns
-          </TabsTrigger>
-          <TabsTrigger value="reflection-analysis">
-            <BookOpen className="h-4 w-4 mr-2" /> Reflection Analysis
-          </TabsTrigger>
-        </TabsList>
+      <div className="relative">
+        <Tabs defaultValue="emotional_intelligence" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-5">
+            <TabsTrigger value="emotional_intelligence">
+              <Brain className="h-4 w-4 mr-2" /> Emotional Intelligence
+            </TabsTrigger>
+            <TabsTrigger value="relationship_health">
+              <Heart className="h-4 w-4 mr-2" /> Relationship Health
+            </TabsTrigger>
+            <TabsTrigger value="predictive">
+              <Target className="h-4 w-4 mr-2" /> Predictive Insights
+            </TabsTrigger>
+            <TabsTrigger value="behavioral-patterns">
+              <Activity className="h-4 w-4 mr-2" />
+              Behavioral Patterns
+            </TabsTrigger>
+            <TabsTrigger value="reflection-analysis">
+              <BookOpen className="h-4 w-4 mr-2" /> Reflection Analysis
+            </TabsTrigger>
+          </TabsList>
 
-        <TabsContent value="emotional_intelligence" className="space-y-4">
-          <Suspense fallback={<div>Loading emotional intelligence...</div>}>
-            <EmotionalIntelligenceTab {...analyticsProps} />
-          </Suspense>
-        </TabsContent>
+          <TabsContent value="emotional_intelligence" className="space-y-4">
+            <Suspense fallback={<div>Loading emotional intelligence...</div>}>
+              <EmotionalIntelligenceTab {...analyticsProps} />
+            </Suspense>
+          </TabsContent>
 
-        <TabsContent value="relationship_health" className="space-y-4">
-          <Suspense fallback={<div>Loading relationship health...</div>}>
-            <RelationshipHealthTab {...analyticsProps} />
-          </Suspense>
-        </TabsContent>
+          <TabsContent value="relationship_health" className="space-y-4">
+            <Suspense fallback={<div>Loading relationship health...</div>}>
+              <RelationshipHealthTab {...analyticsProps} />
+            </Suspense>
+          </TabsContent>
 
-        <TabsContent value="predictive" className="space-y-4">
-          <Suspense fallback={<div>Loading predictive insights...</div>}>
-            <PredictiveInsightsTab {...analyticsProps} />
-          </Suspense>
-        </TabsContent>
+          <TabsContent value="predictive" className="space-y-4">
+            <Suspense fallback={<div>Loading predictive insights...</div>}>
+              <PredictiveInsightsTab {...analyticsProps} />
+            </Suspense>
+          </TabsContent>
 
-        <TabsContent value="behavioral-patterns" className="space-y-4">
-          <Suspense fallback={<div>Loading behavioral patterns...</div>}>
-            <BehavioralPatterns {...analyticsProps} />
-          </Suspense>
-        </TabsContent>
+          <TabsContent value="behavioral-patterns" className="space-y-4">
+            <Suspense fallback={<div>Loading behavioral patterns...</div>}>
+              <BehavioralPatterns {...analyticsProps} />
+            </Suspense>
+          </TabsContent>
 
-        <TabsContent value="reflection-analysis" className="space-y-4">
-          <Suspense fallback={<div>Loading reflection analysis...</div>}>
-            <ReflectionAnalysis {...analyticsProps} />
-          </Suspense>
-        </TabsContent>
-      </Tabs>
+          <TabsContent value="reflection-analysis" className="space-y-4">
+            <Suspense fallback={<div>Loading reflection analysis...</div>}>
+              <ReflectionAnalysis {...analyticsProps} />
+            </Suspense>
+          </TabsContent>
+        </Tabs>
+
+        {requiresUpgrade === false && (
+          <div className="absolute inset-0 flex touch-pan-y items-center justify-center bg-gradient-to-t from-[#fff_70%] to-[#fff6] z-10">
+            <AnalyticsUpgradeOverlay />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

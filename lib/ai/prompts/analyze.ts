@@ -75,7 +75,7 @@ FIELD GUIDANCE:
 CRITICAL ENUM VALUES - USE ONLY THESE EXACT VALUES:
 - dominantEmotion: Use only: "joy", "sadness", "anger", "fear", "surprise", "disgust", "love", "anxiety", "frustration", "contentment", "guilt", "shame", "hurt", "disappointment", "confusion", "excitement", "relief", "jealousy", "loneliness", "gratitude"
 - dayOfWeek: Use only: "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "unknown"
-- timeOfDay: Use only: "morning", "afternoon", "evening", "night"
+- timeOfDay: Use only: "morning", "afternoon", "evening", "night", "unknown"
 - communicationStyle: Use only: "assertive", "passive", "aggressive", "passive-aggressive", "avoidant", "dismissive"
 - conflictResolutionStyle: Use only: "collaborative", "competitive", "accommodating", "avoiding", "compromising"
 - listeningEffectiveness: Use only: "excellent", "good", "fair", "poor"

@@ -8,9 +8,14 @@ import PreviewMessage from "@/components/reflections/ask-ai/PreviewMessage";
 import SuggestedPromptsList from "@/components/reflections/ask-ai/SuggestedPromptsList";
 import ThinkingMessage from "@/components/reflections/ask-ai/ThinkingMessage";
 import PremiumFeatureBadge from "@/components/PremiumFeatureBadge";
+import UpgradeToProButton from "@/components/UpgradeToProButton";
+import { Tooltip } from "@/components/ui/tooltip";
+import useWorkspace from "@/lib/swr/use-workspace";
+import { useMemo } from "react";
 
 export default function AskAI() {
   const { editor } = useEditorStore();
+  const { plan, exceededAI } = useWorkspace();
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
 
@@ -32,6 +37,34 @@ export default function AskAI() {
       ],
     });
 
+  const tooltipContent = useMemo(() => {
+    if (plan === "free") {
+      return (
+        <div className="flex flex-col items-center space-y-2 text-center max-w-xs px-4 py-3">
+          <p className="text-sm text-muted-foreground">
+            Your plan does not include this feature. To use this feature, you
+            need to upgrade to Pro.
+          </p>
+          <UpgradeToProButton size="sm" className="w-full">
+            Upgrade to Pro
+          </UpgradeToProButton>
+        </div>
+      );
+    }
+
+    if (plan === "pro" && exceededAI) {
+      return (
+        <div className="flex flex-col items-center space-y-2 text-center max-w-xs px-4 py-3">
+          <p className="text-sm text-muted-foreground">
+            You have reached your monthly AI usage limit.
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  }, [plan, exceededAI]);
+
   return (
     <div className="flex flex-col w-full p-2">
       <div className="flex items-center justify-between mb-4">
@@ -43,40 +76,47 @@ export default function AskAI() {
         className="space-y-4 max-h-[70dvh] overflow-y-auto"
         ref={messagesContainerRef}
       >
-        {messages
-          // .filter((m) => !["reflection", "reflection-content"].includes(m.id))
-          .map((m) => (
-            <PreviewMessage key={m.id} message={m} />
-          ))}
+        <>
+          {messages
+            // .filter((m) => !["reflection", "reflection-content"].includes(m.id))
+            .map((m) => (
+              <PreviewMessage key={m.id} message={m} />
+            ))}
 
-        {isLoading &&
-          messages.length > 0 &&
-          messages[messages.length - 1].role === "user" && <ThinkingMessage />}
+          {isLoading &&
+            messages.length > 0 &&
+            messages[messages.length - 1].role === "user" && (
+              <ThinkingMessage />
+            )}
 
-        <div
-          ref={messagesEndRef}
-          className="shrink-0 min-w-[24px] min-h-[24px]"
-        />
+          <div
+            ref={messagesEndRef}
+            className="shrink-0 min-w-[24px] min-h-[24px]"
+          />
+        </>
       </div>
 
       <form onSubmit={handleSubmit}>
-        <div className="relative">
-          <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
-            <div className="flex h-5 space-x-2 items-center">
-              <SuggestedPromptsList />
-              <Separator orientation="vertical" />
+        <Tooltip content={tooltipContent}>
+          <div className="relative">
+            <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+              <div className="flex h-5 space-x-2 items-center">
+                <SuggestedPromptsList />
+                <Separator orientation="vertical" />
+              </div>
             </div>
-          </div>
-          <Input
-            className="rounded-full bg-white h-12 px-4 pl-14"
-            value={input}
-            placeholder="Ask anything..."
-            onChange={handleInputChange}
-            disabled={isLoading}
-          />
 
-          <SendIcon className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer size-5 text-slate-600" />
-        </div>
+            <Input
+              className="rounded-full bg-white h-12 px-4 pl-14"
+              value={input}
+              placeholder="Ask anything..."
+              onChange={handleInputChange}
+              disabled={isLoading || plan === "free" || exceededAI}
+            />
+
+            <SendIcon className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer size-5 text-slate-600" />
+          </div>
+        </Tooltip>
       </form>
     </div>
   );

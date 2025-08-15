@@ -3,7 +3,7 @@
 import Tiptap from "@/components/editor/Tiptap";
 import Toolbar from "@/components/editor/Toolbar";
 import useReflection from "@/lib/swr/use-reflection";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import type { Editor } from "@tiptap/react";
 import { useState, useMemo } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -12,6 +12,7 @@ import ReflectionsMenuBar from "@/components/reflections/ReflectionsMenuBar";
 import AskAI from "@/components/reflections/ask-ai/AskAI";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SparklesIcon, WandSparklesIcon } from "lucide-react";
+
 import { experimental_useObject } from "ai/react";
 import { analysisSchema } from "@/lib/zod/schemas/analysis";
 import type {
@@ -158,6 +159,7 @@ export default function ReflectionEditorClientPage() {
                 <WandSparklesIcon className="w-4 h-4 mr-2" />
                 Analysis
               </TabsTrigger>
+
               <TabsTrigger value="ask-ai">
                 <SparklesIcon className="w-4 h-4 mr-2" />
                 Ask AI
@@ -170,6 +172,7 @@ export default function ReflectionEditorClientPage() {
                 analysisReport={analysisReport}
               />
             </TabsContent>
+
             <TabsContent value="ask-ai">
               <AskAI />
             </TabsContent>

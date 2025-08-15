@@ -5,7 +5,7 @@ export const metadata = constructMetadata({
   title: "Create Your Workspace - PatternReveal Setup",
   description:
     "Set up your collaborative workspace for relationship reflection analysis. Invite family, friends, or partners to join your journey toward healthier relationships.",
-  noIndex: true
+  noIndex: true,
 });
 
 export default function WorkspacePage() {

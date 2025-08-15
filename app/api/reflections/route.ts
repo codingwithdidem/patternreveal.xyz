@@ -1,13 +1,18 @@
 import { PatternRevealApiError } from "@/lib/api/errors";
+import {
+  throwIfReflectionsUsageExceeded,
+  updateReflectionsUsage,
+} from "@/lib/api/reflections";
 import { parseRequestBody } from "@/lib/api/utils";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
 import prisma from "@/lib/prisma";
-import { throwIfReflectionsUsageExceeded } from "@/lib/reflections/usage-checks";
+
 import {
   createReflectionSchema,
   deleteReflectionSchema,
   getReflectionsQuerySchemaExtended,
 } from "@/lib/zod/schemas/reflection";
+import { waitUntil } from "@vercel/functions";
 import { NextResponse } from "next/server";
 
 /**
@@ -97,6 +102,10 @@ export const GET = withWorkspace(
  */
 export const POST = withWorkspace(
   async ({ req, headers, workspace, session }) => {
+    console.log({
+      workspace,
+      session,
+    });
     if (workspace) {
       throwIfReflectionsUsageExceeded(workspace);
     }
@@ -124,6 +133,13 @@ export const POST = withWorkspace(
           userId: session.user.id,
         },
       });
+
+      waitUntil(
+        updateReflectionsUsage({
+          workspaceId: workspace.id,
+          increment: 1,
+        })
+      );
 
       return NextResponse.json(response, {
         headers,
@@ -165,6 +181,20 @@ export const DELETE = withWorkspace(
           workspaceId: workspace.id,
         },
       });
+
+      // Update the workspace total reflections count
+      waitUntil(
+        prisma.workspace.update({
+          where: {
+            id: workspace.id,
+          },
+          data: {
+            totalReflections: {
+              decrement: 1,
+            },
+          },
+        })
+      );
 
       return NextResponse.json(response, {
         headers,

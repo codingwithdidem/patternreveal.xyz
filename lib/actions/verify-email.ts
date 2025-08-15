@@ -12,13 +12,13 @@ const verifyEmailSchema = z.object({
   code: z.string().length(6),
   email: z.string().email(),
   password: z.string().min(8),
-  name: z.string().min(1)
+  name: z.string().min(1),
 });
 
 export const verifyEmailAction = actionClient
   .schema(verifyEmailSchema, {
     handleValidationErrorsShape: async (ve) =>
-      flattenValidationErrors(ve).fieldErrors
+      flattenValidationErrors(ve).fieldErrors,
   })
   .action(async ({ parsedInput: { name, email, password, code } }) => {
     const rateLimitKey = `signup:attempts:${email}`;
@@ -35,11 +35,12 @@ export const verifyEmailAction = actionClient
     const verificationToken = await prisma.emailVerificationToken.findUnique({
       where: {
         identifier: email,
-        token: code
-      }
+        token: code,
+      },
     });
 
     if (!verificationToken) {
+      await ratelimit(5, "1 d").limit(rateLimitKey);
       throw new Error("Invalid verification code");
     }
 
@@ -51,8 +52,8 @@ export const verifyEmailAction = actionClient
         prisma.emailVerificationToken.delete({
           where: {
             identifier: email,
-            token: code
-          }
+            token: code,
+          },
         })
       );
 
@@ -62,12 +63,12 @@ export const verifyEmailAction = actionClient
     await prisma.emailVerificationToken.delete({
       where: {
         identifier: email,
-        token: code
-      }
+        token: code,
+      },
     });
 
     const isExistingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
 
     if (isExistingUser) {
@@ -79,7 +80,7 @@ export const verifyEmailAction = actionClient
         name,
         email,
         password: await hashPassword(password),
-        emailVerified: new Date()
-      }
+        emailVerified: new Date(),
+      },
     });
   });

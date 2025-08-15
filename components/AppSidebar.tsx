@@ -16,26 +16,18 @@ import {
   SidebarMenuSubItem,
 } from "@components/ui/sidebar";
 import {
-  ChartLineIcon,
-  ChartSplineIcon,
   ChevronLeft,
   CogIcon,
   CreditCardIcon,
-  LucideIcon,
   UsersRoundIcon,
 } from "lucide-react";
 import Link from "next/link";
 import UserPopover from "@components/UserPopover";
 import Logo from "@components/Logo";
-import MoodTracker from "@components/mood-tracker/MoodTracker";
 import { useParams, usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import {
-  ComponentType,
-  ForwardRefExoticComponent,
-  SVGProps,
-  useMemo,
-} from "react";
+import type { ComponentType } from "react";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { ActivityIcon } from "./ui/activity";
 import { BookTextIcon } from "./ui/book-text";
@@ -45,6 +37,9 @@ import usePopularReflections from "@/lib/swr/use-popular-reflections";
 import { truncate } from "@/utils/functions/truncate";
 import { capitalizeFirstChar } from "@/utils/functions/capitalize-first-char";
 import WorkspaceDropdown from "./workspaces/workspace-dropdown";
+import WorkspaceUsage from "./workspaces/workspace-usage";
+import { motion } from "motion/react";
+import { AnimatePresence } from "framer-motion";
 
 export type NavItemCommon = {
   name: string;
@@ -55,20 +50,16 @@ export type NavItemCommon = {
 export type NavSubItemType = NavItemCommon;
 
 export type NavItemType = NavItemCommon & {
-  icon:
-    | LucideIcon
-    | ComponentType<SVGProps<SVGSVGElement>>
-    | ForwardRefExoticComponent<any>;
+  icon: ComponentType<{ className?: string }>;
   items?: NavSubItemType[];
   subItems?: NavSubItemType[];
 };
 
-type SidebarNavAreas<T extends Record<any, any>> = Record<
+type SidebarNavAreas<T extends Record<string, unknown>> = Record<
   string,
   (args: T) => {
     title?: string;
     backHref?: string;
-    showNews?: boolean;
     showWorkspaceDropdown?: boolean;
     direction?: "left" | "right";
     content: {
@@ -82,13 +73,10 @@ const NAV_AREAS: SidebarNavAreas<{
   slug: string;
   pathname: string;
   queryString: string;
-  showNews?: boolean;
-  showWorkspaceDropdown?: boolean;
   session?: Session | null;
   topReflections?: Array<{ id: string; title: string }>;
 }> = {
-  dashboard: ({ slug, pathname, queryString, showNews, topReflections }) => ({
-    showNews,
+  dashboard: ({ slug, pathname, queryString, topReflections }) => ({
     showWorkspaceDropdown: true,
     direction: "left",
     content: [
@@ -123,7 +111,7 @@ const NAV_AREAS: SidebarNavAreas<{
       },
     ],
   }),
-  settings: ({ slug, session }) => ({
+  settings: ({ slug }) => ({
     title: "Settings",
     backHref: `/${slug}`,
     content: [
@@ -168,11 +156,10 @@ export default function AppSidebar() {
   const { slug } = useParams<{ slug: string }>();
   const { data: session } = useSession();
 
-  const { reflections: topReflections, isLoading: isTopReflectionsLoading } =
-    usePopularReflections({
-      workspaceIdOrSlug: slug,
-      limit: 10,
-    });
+  const { reflections: topReflections } = usePopularReflections({
+    workspaceIdOrSlug: slug,
+    limit: 10,
+  });
 
   const currentArea = useMemo(() => {
     return pathname.startsWith(`/${slug}/settings`) ? "settings" : "dashboard";
@@ -187,7 +174,6 @@ export default function AppSidebar() {
               slug,
               pathname,
               session,
-              showNews: false,
               queryString: "",
               topReflections,
             });
@@ -222,80 +208,94 @@ export default function AppSidebar() {
       </SidebarHeader>
       <SidebarContent className="px-1">
         {Object.entries(NAV_AREAS).map(([area, areaConfig]) => {
-          const { content, showNews, showWorkspaceDropdown, direction } =
-            areaConfig({
-              slug,
-              pathname,
-              session,
-              queryString: "",
-              showNews: false,
-              topReflections,
-            });
+          const { content, showWorkspaceDropdown, direction } = areaConfig({
+            slug,
+            pathname,
+            session,
+            queryString: "",
+            topReflections,
+          });
           return (
-            <div
-              key={area}
-              className={cn(
-                "left-0 top-0 transition-[opacity,transform] duration-300",
-                area === currentArea
-                  ? "opacity-1 relative"
-                  : `opacity-0 pointer-events-none absolute ${
-                      direction === "left"
-                        ? "-translate-x-full"
-                        : "translate-x-full"
-                    }`
-              )}
-              {...{ inert: area !== currentArea ? true : undefined }}
-            >
-              <div className="mx-2 mt-2">
-                {showWorkspaceDropdown && <WorkspaceDropdown />}
-              </div>
-              {content.map(({ name, items }) => (
-                <SidebarGroup key={name}>
-                  <SidebarGroupContent>
-                    {name && <SidebarGroupLabel>{name}</SidebarGroupLabel>}
-                    <SidebarMenu>
-                      {items.map(
-                        ({ name, href, icon: Icon, exact, subItems }) => {
-                          const isActive = useMemo(() => {
+            <>
+              <div
+                key={area}
+                className={cn(
+                  "left-0 top-0 transition-[opacity,transform] duration-300",
+                  area === currentArea
+                    ? "opacity-1 relative"
+                    : `opacity-0 pointer-events-none absolute ${
+                        direction === "left"
+                          ? "-translate-x-full"
+                          : "translate-x-full"
+                      }`
+                )}
+                {...{ inert: area !== currentArea ? true : undefined }}
+              >
+                <div className="mx-2 mt-2">
+                  {showWorkspaceDropdown && <WorkspaceDropdown />}
+                </div>
+                {content.map(({ name, items }) => (
+                  <SidebarGroup key={name}>
+                    <SidebarGroupContent>
+                      {name && <SidebarGroupLabel>{name}</SidebarGroupLabel>}
+                      <SidebarMenu>
+                        {items.map(
+                          ({ name, href, icon: Icon, exact, subItems }) => {
                             const hrefWithoutQuery = href.split("?")[0];
-                            return exact
+                            const isActive = exact
                               ? pathname === hrefWithoutQuery
                               : pathname.startsWith(hrefWithoutQuery);
-                          }, [pathname, href, exact]);
-                          return (
-                            <SidebarMenuItem key={name}>
-                              <SidebarMenuButton asChild isActive={isActive}>
-                                <Link href={href}>
-                                  <Icon className="w-8 h-8" />
-                                  <span>{name}</span>
-                                </Link>
-                              </SidebarMenuButton>
-                              {subItems && (
-                                <SidebarMenuSub>
-                                  {subItems.map(({ name, href }) => (
-                                    <SidebarMenuSubItem key={href}>
-                                      <SidebarMenuSubButton href={href}>
-                                        {capitalizeFirstChar(
-                                          truncate(name, 24) ?? ""
-                                        )}
-                                      </SidebarMenuSubButton>
-                                    </SidebarMenuSubItem>
-                                  ))}
-                                </SidebarMenuSub>
-                              )}
-                            </SidebarMenuItem>
-                          );
-                        }
-                      )}
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </SidebarGroup>
-              ))}
-            </div>
+                            return (
+                              <SidebarMenuItem key={name}>
+                                <SidebarMenuButton asChild isActive={isActive}>
+                                  <Link href={href}>
+                                    <Icon className="w-8 h-8" />
+                                    <span>{name}</span>
+                                  </Link>
+                                </SidebarMenuButton>
+                                {subItems && (
+                                  <SidebarMenuSub>
+                                    {subItems.map(({ name, href }) => (
+                                      <SidebarMenuSubItem key={href}>
+                                        <SidebarMenuSubButton href={href}>
+                                          {capitalizeFirstChar(
+                                            truncate(name, 24) ?? ""
+                                          )}
+                                        </SidebarMenuSubButton>
+                                      </SidebarMenuSubItem>
+                                    ))}
+                                  </SidebarMenuSub>
+                                )}
+                              </SidebarMenuItem>
+                            );
+                          }
+                        )}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </SidebarGroup>
+                ))}
+              </div>
+            </>
           );
         })}
       </SidebarContent>
-      <SidebarFooter />
+      <SidebarFooter>
+        <AnimatePresence>
+          {currentArea === "dashboard" && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{
+                duration: 0.1,
+                ease: "easeInOut",
+              }}
+            >
+              <WorkspaceUsage />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </SidebarFooter>
     </Sidebar>
   );
 }

@@ -70,7 +70,6 @@ export async function handleSubscriptionUpdated(
       },
       data: {
         plan: newPlanName,
-        usageLimit: plan.limits.reflections,
         reflectionsLimit: plan.limits.reflections,
         aiLimit: plan.limits["ask-ai"] + plan.limits["ai-analysis"],
         paymentFailedAt: null,

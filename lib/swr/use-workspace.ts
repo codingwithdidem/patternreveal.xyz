@@ -2,9 +2,10 @@ import { useParams, useSearchParams } from "next/navigation";
 import useSWR, { type SWRConfiguration } from "swr";
 import { fetcher } from "./fetcher";
 import type { WorkspaceWithUsers } from "../types";
+import { getNextPlan, PRO_PLAN } from "../constants";
 
 export default function useWorkspace({
-  swrOpts
+  swrOpts,
 }: {
   swrOpts?: SWRConfiguration;
 } = {}) {
@@ -17,23 +18,22 @@ export default function useWorkspace({
   const {
     data: workspace,
     error,
-    mutate
+    mutate,
   } = useSWR<WorkspaceWithUsers>(slug && `/api/workspaces/${slug}`, fetcher, {
     dedupingInterval: 60000,
-    ...swrOpts
+    ...swrOpts,
   });
 
   return {
     ...workspace,
     role: workspace?.users?.[0]?.role || "MEMBER",
     isOwner: workspace?.users?.[0]?.role === "OWNER",
-    // nextPlan: workspace?.plan ? getNextPlan(workspace.plan) : PRO_PLAN,
+    nextPlan: workspace?.plan ? getNextPlan(workspace.plan) : PRO_PLAN,
     mutate,
-    // loading: slug && !workspace && !error ? true : false,
-    error
-    // exceededClicks: workspace && workspace.usage >= workspace.usageLimit,
-    // exceededLinks: workspace && workspace.linksUsage >= workspace.linksLimit,
-    // exceededAI: workspace && workspace.aiUsage >= workspace.aiLimit,
-    // defaultFolderId: workspace?.users && workspace.users[0].defaultFolderId,
+    loading: !!(slug && !workspace && !error),
+    error,
+    exceededReflections:
+      workspace && workspace.reflectionsUsage >= workspace.reflectionsLimit,
+    exceededAI: workspace && workspace.aiUsage >= workspace.aiLimit,
   };
 }

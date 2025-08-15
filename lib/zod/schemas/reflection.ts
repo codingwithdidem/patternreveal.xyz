@@ -11,7 +11,7 @@ const sortBy = z
   );
 
 export const createReflectionSchema = z.object({
-  title: z.string().max(32).describe("The title of the reflection."),
+  title: z.string().max(100).describe("The title of the reflection."),
   initialContent: z
     .string()
     .optional()
@@ -24,7 +24,11 @@ export const deleteReflectionSchema = z.object({
 });
 
 export const updateReflectionSchema = z.object({
-  title: z.string().max(32).optional().describe("The title of the reflection."),
+  title: z
+    .string()
+    .max(100)
+    .optional()
+    .describe("The title of the reflection."),
   content: z.any().describe("The content of the reflection."),
 });
 

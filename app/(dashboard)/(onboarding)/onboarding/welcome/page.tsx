@@ -6,7 +6,7 @@ export const metadata = constructMetadata({
   title: "Welcome to PatternReveal - Your Journey Begins",
   description:
     "Welcome to PatternReveal.xyz! Start your journey toward healthier relationships with AI-powered reflection analysis. Learn to identify patterns, build boundaries, and protect your emotional well-being.",
-  noIndex: true
+  noIndex: true,
 });
 
 export default function WelcomePage() {
@@ -17,8 +17,9 @@ export default function WelcomePage() {
         Welcome to patternreveal.xyz
       </h1>
       <p className="text-neutral-500 mt-2 text-lg">
-        patternreveal.xyz is a platform that helps you create and analyze your
-        daily relationship reflections.
+        Transform your relationships through AI-powered reflection analysis.
+        Discover hidden patterns, identify unhealthy dynamics, and build the
+        emotional boundaries you need to thrive.
       </p>
       <div className="mt-4">
         <NextButton step="workspace" text="Get Started" />

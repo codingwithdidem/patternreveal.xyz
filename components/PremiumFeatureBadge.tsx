@@ -26,7 +26,10 @@ export default function PremiumFeatureBadge({
 
   return (
     <div className={`flex items-center gap-2 ${className}`}>
-      <Badge variant="secondary" className="flex items-center gap-1">
+      <Badge
+        variant="secondary"
+        className="flex items-center gap-1 select-none"
+      >
         <Sparkles className="w-3 h-3" />
         Pro
       </Badge>

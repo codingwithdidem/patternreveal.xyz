@@ -82,9 +82,6 @@ export default function UpgradePlanButton({
           body: JSON.stringify({
             plan,
             period,
-            baseUrl: `${process.env.NEXT_PUBLIC_APP_URL}${pathname}${
-              queryString.length > 0 ? `?${queryString}` : ""
-            }`,
           }),
         }
       );

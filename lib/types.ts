@@ -23,10 +23,9 @@ export interface WorkspaceWithUsers {
   logo?: string | null;
   inviteCode?: string | null;
   billingCycleStart: number;
+  paymentFailedAt: Date | null;
   plan: PlanProps;
   totalReflections: number;
-  usage: number;
-  usageLimit: number;
   reflectionsUsage: number;
   reflectionsLimit: number;
   aiUsage: number;

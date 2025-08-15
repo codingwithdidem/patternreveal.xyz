@@ -8,40 +8,43 @@ import { actionClient } from "./safe-action";
 import { z } from "zod";
 import VerifyEmail from "@/emails/verify-email";
 import { flattenValidationErrors } from "next-safe-action";
+import { throwIfAuthenticated } from "./auth/throw-if-authenticated";
+import { ratelimit } from "../upstash/ratelimit";
+import { getIP } from "../api/utils";
 
 const schema = z.object({
-  email: z.string().email()
+  email: z.string().email(),
 });
 
 export const sendOtpAction = actionClient
   .schema(schema, {
     handleValidationErrorsShape: async (errors) => {
       return flattenValidationErrors(errors).fieldErrors;
-    }
+    },
   })
+  .use(throwIfAuthenticated)
   .action(async ({ parsedInput: { email } }) => {
-    // const { success } = await ratelimit(2, "1 m").limit(`send-otp:${getIP()}`);
+    const ipAddress = await getIP();
+    const { success } = await ratelimit(2, "1 m").limit(
+      `send-otp:${ipAddress}`
+    ); // 2 requests per minute
 
-    // if (!success) {
-    //   throw new Error("Too many requests. Please try again later.");
-    // }
+    if (!success) {
+      throw new Error("Too many requests. Please try again later.");
+    }
 
     const isExistingUser = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
 
     if (isExistingUser) {
-      throw new Error("User already exists, please login.");
+      throw new Error("User already exists, please login instead.");
     }
-
-    console.log("email", email);
 
     const otpCode = generateOTP();
 
-    console.log(otpCode);
-
     await prisma.emailVerificationToken.deleteMany({
-      where: { identifier: email }
+      where: { identifier: email },
     });
 
     await Promise.all([
@@ -49,16 +52,17 @@ export const sendOtpAction = actionClient
         data: {
           identifier: email,
           token: otpCode,
-          expires: new Date(Date.now() + EMAIL_OTP_EXPIRY_IN * 1000) // 2 minutes
-        }
+          expires: new Date(Date.now() + EMAIL_OTP_EXPIRY_IN * 1000), // 10 minutes
+        },
       }),
       sendEmail({
-        subject: `patternreveal.xyz: OTP to verify your account`,
+        subject: `${process.env.NEXT_PUBLIC_APP_NAME}: OTP to verify your account`,
         email,
         react: VerifyEmail({
           email,
-          code: otpCode
-        })
-      })
+          code: otpCode,
+          expires: new Date(Date.now() + EMAIL_OTP_EXPIRY_IN * 1000), // 10 minutes
+        }),
+      }),
     ]);
   });

@@ -52,7 +52,6 @@ export async function handleSubscriptionCancelled(
         aiLimit:
           (FREE_PLAN?.limits["ask-ai"] ?? 0) +
           (FREE_PLAN?.limits["ai-analysis"] ?? 0),
-        usageLimit: FREE_PLAN?.limits.reflections,
         paymentFailedAt: null,
       },
     }),

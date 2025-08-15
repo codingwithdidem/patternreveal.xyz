@@ -33,7 +33,7 @@ const Tiptap = ({
   saveStatus,
   charsCount,
   className,
-  textEvidence = []
+  textEvidence = [],
 }: TiptapProps) => {
   const { setEditor } = useEditorStore();
 
@@ -42,32 +42,32 @@ const Tiptap = ({
     extensions: [
       StarterKit.configure({
         heading: {
-          levels: [1, 2, 3, 4, 5, 6]
+          levels: [1, 2, 3, 4, 5, 6],
         },
         bulletList: {
           HTMLAttributes: {
-            class: cx("list-disc list-outside leading-3 -mt-2")
-          }
+            class: cx("list-disc list-outside leading-3 -mt-2"),
+          },
         },
         orderedList: {
           HTMLAttributes: {
-            class: cx("list-decimal list-outside leading-3 -mt-2")
-          }
-        }
+            class: cx("list-decimal list-outside leading-3 -mt-2"),
+          },
+        },
       }),
       TaskList.configure({
         HTMLAttributes: {
-          class: cx("not-prose pl-2")
-        }
+          class: cx("not-prose pl-2"),
+        },
       }),
       TaskItem.configure({
         nested: true,
         HTMLAttributes: {
-          class: cx("flex gap-2 items-start my-2")
-        }
+          class: cx("flex gap-2 items-start my-2"),
+        },
       }),
       TextAlign.configure({
-        types: ["heading", "paragraph"]
+        types: ["heading", "paragraph"],
       }),
       CharacterCount,
       Placeholder.configure({
@@ -90,7 +90,7 @@ It's like I'm walking on eggshells every moment we're together, trying not to do
 
 By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€”just someone who's there to serve his needs and absorb his anger.
         `,
-        includeChildren: true
+        includeChildren: true,
       }),
       FontFamily,
       TextStyle,
@@ -101,8 +101,8 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
           return {
             multicolor: true,
             HTMLAttributes: {
-              class: "evidence-highlight"
-            }
+              class: "evidence-highlight",
+            },
           };
         },
         addAttributes() {
@@ -116,12 +116,12 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
                   return {};
                 }
                 return {
-                  "data-analysis": attributes.dataAnalysis
+                  "data-analysis": attributes.dataAnalysis,
                 };
-              }
-            }
+              },
+            },
           };
-        }
+        },
       }),
       Link.configure({
         openOnClick: false,
@@ -160,7 +160,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
             // disallowed domains
             const disallowedDomains = [
               "example-phishing.com",
-              "malicious-site.net"
+              "malicious-site.net",
             ];
             const domain = parsedUrl.hostname;
 
@@ -177,9 +177,9 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
         HTMLAttributes: {
           class: cx(
             "text-muted-foreground underline underline-offset-[3px] hover:text-primary transition-colors cursor-pointer"
-          )
-        }
-      })
+          ),
+        },
+      }),
     ],
     content: content
       ? JSON.parse(content)
@@ -187,17 +187,17 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
           type: "doc",
           content: [
             {
-              type: "paragraph"
-            }
-          ]
+              type: "paragraph",
+            },
+          ],
         },
     autofocus: true,
     editorProps: {
       attributes: {
         style: "padding-left: 56px; padding-right: 56px;",
         class:
-          "prose prose-pink prose-sm sm:prose-base focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] overflow-y-auto scrollbar-hide min-w-[816px] pt-10 pr-14 pb-10 cursor-text selection:bg-gray-950 selection:text-white bg-[url('https://s.ytimg.com/yt/imgbin/www-refreshbg-vflC3wnbM.png')]"
-      }
+          "prose prose-pink prose-sm sm:prose-base focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] overflow-y-auto scrollbar-hide min-w-[816px] pt-10 pr-14 pb-10 cursor-text selection:bg-gray-950 selection:text-white bg-[url('https://s.ytimg.com/yt/imgbin/www-refreshbg-vflC3wnbM.png')]",
+      },
     },
     onCreate: ({ editor }) => {
       setEditor(editor);
@@ -223,7 +223,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
     },
     onContentError: ({ editor }) => {
       setEditor(editor);
-    }
+    },
   });
 
   // Highlight text evidence when editor is ready and evidence changes
@@ -246,10 +246,10 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
         // Create a highlight with blue background
         editor.commands.setTextSelection({
           from: startIndex + 1,
-          to: endIndex + 1
+          to: endIndex + 1,
         });
         editor.commands.setHighlight({
-          color: "#dbeafe" // Light blue background
+          color: "#dbeafe", // Light blue background
         });
       }
     }
@@ -313,7 +313,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
                     pos + node.nodeSize,
                     mark.type.create({
                       ...mark.attrs,
-                      dataAnalysis: analysisText
+                      dataAnalysis: analysisText,
                     })
                   );
                   editor.view.dispatch(tr);
@@ -351,18 +351,9 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
           className
         )}
       >
-        <div className="flex absolute right-8 top-2 z-10 mb-5 gap-2">
+        <div className="flex absolute right-12 top-2 z-10 mb-5 gap-2">
           <div className="rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground">
             {saveStatus}
-          </div>
-          <div
-            className={
-              charsCount
-                ? "rounded-lg bg-accent px-2 py-1 text-sm text-muted-foreground"
-                : "hidden"
-            }
-          >
-            {charsCount} Words
           </div>
         </div>
         <EditorContent editor={editor} />

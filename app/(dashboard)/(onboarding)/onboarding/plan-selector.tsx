@@ -7,9 +7,9 @@ import {
   Tabs,
   TabsList,
   TabsTrigger,
-  TabsContent
+  TabsContent,
 } from "@/components/ui/animated-tabs";
-import { PLANS, PRO_PLAN } from "@/lib/constants";
+import { PRO_PLAN } from "@/lib/constants";
 import { FREE_PLAN } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import NumberFlow from "@number-flow/react";
@@ -18,7 +18,7 @@ import PlanFeatures from "@/components/workspaces/plan-features";
 import {
   initializePaddle,
   type Environments,
-  type Paddle
+  type Paddle,
 } from "@paddle/paddle-js";
 
 const plans = [FREE_PLAN, PRO_PLAN];
@@ -36,7 +36,7 @@ export default function PlanSelector() {
     ) {
       initializePaddle({
         token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN,
-        environment: process.env.NEXT_PUBLIC_PADDLE_ENV as Environments
+        environment: process.env.NEXT_PUBLIC_PADDLE_ENV as Environments,
       }).then((paddle) => {
         if (paddle) {
           setPaddle(paddle);
@@ -49,15 +49,15 @@ export default function PlanSelector() {
     if (paddle) {
       const priceIds = [PRO_PLAN].map((plan) => [
         plan?.price.monthlyId,
-        plan?.price.yearlyId
+        plan?.price.yearlyId,
       ]);
 
       paddle
         .PricePreview({
           items: priceIds.flat().map((priceId) => ({
             priceId: priceId ?? "",
-            quantity: 1
-          }))
+            quantity: 1,
+          })),
         })
         .then((prices) => {
           const lineItems = prices.data.details.lineItems;
@@ -105,7 +105,7 @@ export default function PlanSelector() {
               <TabsContent
                 value={period}
                 key={plan?.name}
-                className="flex flex-col rounded-lg border border-neutral-100 bg-black p-6 pb-8"
+                className="flex flex-col rounded-lg border border-neutral-100 bg-white p-6 pb-8"
               >
                 <div className="flex items-center gap-2">
                   <h2 className="text-xl font-semibold text-neutral-800">
@@ -122,7 +122,7 @@ export default function PlanSelector() {
                     format={{
                       style: "currency",
                       currency,
-                      maximumFractionDigits: 0
+                      maximumFractionDigits: 0,
                     }}
                   />
                   <span className="ml-1 font-medium">

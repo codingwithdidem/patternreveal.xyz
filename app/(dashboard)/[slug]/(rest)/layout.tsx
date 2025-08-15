@@ -8,11 +8,11 @@ export const metadata: Metadata = constructMetadata({
   title: "Dashboard - PatternReveal Workspace",
   description:
     "Your personal relationship analysis dashboard. Track patterns, analyze reflections, and gain insights into your relationships with AI-powered tools.",
-  noIndex: true
+  noIndex: true,
 });
 
 export default async function RootLayout({
-  children
+  children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {

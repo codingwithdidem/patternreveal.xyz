@@ -9,7 +9,7 @@ export const createWorkspaceSchema = z.object({
   slug: z
     .string()
     .min(1, "Slug is required")
-    .describe("The unique slug of the workspace")
+    .describe("The unique slug of the workspace"),
 });
 
 export const updateWorkspaceSchema = createWorkspaceSchema.partial();
@@ -28,6 +28,10 @@ export const WorkspaceSchema = z.object({
     .nullable()
     .describe("The invite code of the workspace"),
   billingCycleStart: z.number().describe("The start date of the billing cycle"),
+  paymentFailedAt: z
+    .date()
+    .nullable()
+    .describe("The date and time when the payment failed for the workspace."),
   plan: planSchema,
   totalReflections: z
     .number()
@@ -47,7 +51,7 @@ export const WorkspaceSchema = z.object({
   users: z
     .array(
       z.object({
-        role: z.enum(["OWNER", "MEMBER"])
+        role: z.enum(["OWNER", "MEMBER"]),
       })
     )
     .describe("The role of the authenticated user in the workspace."),
@@ -55,13 +59,16 @@ export const WorkspaceSchema = z.object({
   updatedAt: z
     .date()
     .describe("The date and time the workspace was last updated"),
-  paddleCustomerId: z.string().nullable().describe("The Paddle customer ID of the workspace"),
+  paddleCustomerId: z
+    .string()
+    .nullable()
+    .describe("The Paddle customer ID of the workspace"),
 });
 
 export const WorkspaceSchemaExtended = WorkspaceSchema.extend({
   users: z.array(
     WorkspaceSchema.shape.users.element.extend({
-      workspacePreferences: z.record(z.any()).nullish()
+      workspacePreferences: z.record(z.any()).nullish(),
     })
-  )
+  ),
 });

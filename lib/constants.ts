@@ -31,26 +31,25 @@ export const PLANS = [
     },
     limits: {
       "ask-ai": 0, // Pro-only feature
-      "ai-analysis": 1, // Reduced from 3 to 1
-      reflections: 10, // Reduced from 20 to 10
-      users: 1,
-      retention: "30-day",
+      "ai-analysis": 2, // On Free, only 2 AI analysis per month
+      reflections: 10, // On Free, only 10 reflections per month
+      users: 1, // On Free, only 1 user in the workspace
+      retention: "30-day", // On Free, only 30-day data retention which means that previous analyses might not be accessible, they will be deleted after 30 days
     },
     featureTitle: "A free plan to get you started",
     features: [
-      { id: "ai-analysis", text: "1 AI analysis per month" },
+      { id: "ai-analysis", text: "2 AI analysis per month" },
       { id: "reflections", text: "10 reflections per month" },
       { id: "users", text: "1 user" },
-      { id: "basic-editor", text: "Basic reflection editor" },
       { id: "30-day-retention", text: "30-day data retention" },
     ],
   },
   {
     name: "Pro",
-    link: "https://dub.co/help/article/pro-plan",
+    link: "",
     price: {
-      monthly: 10,
-      yearly: 5,
+      monthly: 10, // $10 per month
+      yearly: 5, // $5 per month
       monthlyId: "pri_01jxt8keeh6cx5wk96bpbyehd5",
       yearlyId: "pri_01jxt8qpc94nyymrqws8he2c8g",
       ids: [
@@ -60,22 +59,23 @@ export const PLANS = [
       ],
     },
     limits: {
-      reflections: 1_000,
-      "ask-ai": 50, // Increased from 2 to 50
-      "ai-analysis": 25, // Increased from 3 to 25
-      users: 5,
-      retention: "1-year",
+      reflections: 1_000, // 1K reflections per month
+      "ask-ai": 100, // 100 AI questions per month
+      "ai-analysis": 100, // 100 AI analysis per month
+      users: 5, // 5 users
+      retention: "1-year", // 1-year analytics retention
     },
     featureTitle: "Everything in Free, plus:",
     features: [
       { id: "reflections", text: "1K reflections per month" },
-      { id: "ask-ai", text: "50 AI questions per month" },
-      { id: "ai-analysis", text: "25 AI analysis per month" },
+      { id: "ask-ai", text: "100 AI questions per month" },
+      { id: "ai-analysis", text: "100 AI analysis per month" },
       { id: "users", text: "5 users" },
       { id: "retention", text: "1-year analytics retention" },
-      { id: "mood-tracker", text: "Mood tracking & patterns" },
-      { id: "advanced-analytics", text: "Advanced relationship insights" },
-      { id: "export-reports", text: "Export & share reports" },
+      {
+        id: "advanced-analytics",
+        text: "Access to advanced relationship insights",
+      },
       { id: "priority-support", text: "Priority support" },
     ] as PlanFeature[],
   },
@@ -87,3 +87,15 @@ export const getPlanDetails = (plan: string) => {
 
 export const FREE_PLAN = PLANS.find((plan) => plan.name === "Free");
 export const PRO_PLAN = PLANS.find((plan) => plan.name === "Pro");
+
+export const getNextPlan = (plan?: string | null) => {
+  if (!plan) return PRO_PLAN;
+  const currentPlan = plan.toLowerCase().split(" ")[0]; // to account for old Business plans (e.g. "Business Plus")
+  return PLANS[
+    Math.min(
+      // returns the next plan, or the last plan if the current plan is the last plan
+      PLANS.findIndex((p) => p.name.toLowerCase() === currentPlan) + 1,
+      PLANS.length - 1
+    )
+  ];
+};

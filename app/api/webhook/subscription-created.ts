@@ -52,7 +52,6 @@ export async function handleSubscriptionCreated(
         event.data.currentBillingPeriod?.startsAt || new Date()
       ).getDate(),
       plan: plan.name.toLowerCase(),
-      usageLimit: plan.limits.reflections,
       reflectionsLimit: plan.limits.reflections,
       aiLimit: plan.limits["ai-analysis"] + plan.limits["ask-ai"],
       usersLimit: plan.limits.users,

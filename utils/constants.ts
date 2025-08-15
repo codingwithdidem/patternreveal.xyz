@@ -5,3 +5,6 @@ export const ONE_WEEK_IN_SECONDS = 60 * 60 * 24 * 7;
 export const getPlanFromPriceId = (priceId: string) => {
   return PLANS.find((plan) => plan.price.ids?.includes(priceId)) || null;
 };
+
+export const PATTERNREVEAL_WORDMARK =
+  "https://assets.patternreveal.xyz/patternreveal-logo.svg";

@@ -113,6 +113,7 @@ export default function ReflectionsClientPage() {
         router.push(`/${workspaceSlug}/reports/${id}`);
       } else {
         const { error } = await response.json();
+        toast.error(error.message);
         console.error(error);
       }
     } catch (error) {

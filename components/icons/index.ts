@@ -1,2 +1,5 @@
-export { default as LogoIcon } from "./logo.svg";
-export { default as GoogleIcon } from "./google-logo.svg";
+import LogoSvg from "./logo.svg";
+import GoogleSvg from "./google-logo.svg";
+
+export { LogoSvg as LogoIcon };
+export { GoogleSvg as GoogleIcon };

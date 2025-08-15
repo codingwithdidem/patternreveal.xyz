@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useAddWorkspaceModal } from "@/lib/stores/modal-store";
 
 export default function WorkspaceDropdown({
-  matchTriggerWidth = true
+  matchTriggerWidth = true,
 }: {
   matchTriggerWidth?: boolean;
 }) {
@@ -29,7 +29,7 @@ export default function WorkspaceDropdown({
   const selectedWorkspace = useMemo(() => {
     if (!workspaces) return null;
 
-    const currentWorkspace = workspaces.find(
+    const currentWorkspace = workspaces?.find(
       (workspace) => workspace.slug === workspaceSlug
     );
 
@@ -89,7 +89,7 @@ export default function WorkspaceDropdown({
       </PopoverTrigger>
       <PopoverContent
         className={cn("w-full p-0", {
-          "sm:w-[var(--radix-popover-trigger-width)]": matchTriggerWidth
+          "sm:w-[var(--radix-popover-trigger-width)]": matchTriggerWidth,
         })}
         align="start"
       >
@@ -106,7 +106,7 @@ export default function WorkspaceDropdown({
 function WorkspaceList({
   workspaces,
   selectedWorkspace,
-  onClose
+  onClose,
 }: {
   workspaces: Workspace[];
   selectedWorkspace: Workspace | null;
@@ -218,9 +218,9 @@ const getPlanColor = (plan: string) =>
   plan === "enterprise"
     ? "text-purple-700"
     : plan === "advanced"
-      ? "text-amber-800"
-      : plan.startsWith("business")
-        ? "text-blue-900"
-        : plan === "pro"
-          ? "text-cyan-900"
-          : "text-neutral-500";
+    ? "text-amber-800"
+    : plan.startsWith("business")
+    ? "text-blue-900"
+    : plan === "pro"
+    ? "text-cyan-900"
+    : "text-neutral-500";

@@ -7,15 +7,16 @@ import { openai } from "@ai-sdk/openai";
 import { type Analysis, analysisSchema } from "@/lib/zod/schemas/analysis";
 import prisma from "@/lib/prisma";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
-import { throwIfAIUsageExceeded } from "@/lib/reflections/usage-checks";
 import {
   ANALYSIS_SYSTEM_PROMPT,
   createAnalysisPrompt,
 } from "@/lib/ai/prompts/analyze";
 import { record_pattern_analytics } from "@/lib/tinybird/record_pattern_analytics";
+import { throwIfAIUsageExceeded } from "@/lib/api/reflections";
 
 export const POST = withWorkspace(
   async ({ req, headers, session, workspace }) => {
+    console.log("AI ANALYSIS", workspace);
     const { success, data } = await analyzeReflectionSchema.safeParse(
       await parseRequestBody(req)
     );
@@ -31,7 +32,7 @@ export const POST = withWorkspace(
 
     try {
       // Check AI usage limits before proceeding
-      // throwIfAIUsageExceeded(workspace, "ai-analysis");
+      throwIfAIUsageExceeded(workspace);
 
       // Get additional context about the reflection for better analysis
       const reflection = await prisma.reflection.findUnique({

@@ -2,12 +2,11 @@ import { PLANS } from "@/lib/constants";
 import { STAGGER_CHILD_VARIANTS } from "@/lib/constants/framer-motion";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Tooltip } from "../ui/tooltip";
 import { Check } from "lucide-react";
 
 export default function PlanFeatures({
   plan,
-  className
+  className,
 }: {
   plan: string;
   className?: string;
@@ -21,9 +20,9 @@ export default function PlanFeatures({
       variants={{
         show: {
           transition: {
-            staggerChildren: 0.08
-          }
-        }
+            staggerChildren: 0.08,
+          },
+        },
       }}
       initial="hidden"
       animate="show"

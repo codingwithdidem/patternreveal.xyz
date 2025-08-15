@@ -10,9 +10,9 @@ export default function TrackSignUp() {
   useEffect(() => {
     if (session?.user?.email && session?.user?.name) {
       identifyUser({
-        userId: "123",
+        userId: session.user.id,
         email: session.user.email ?? "",
-        name: session.user.name ?? ""
+        name: session.user.name ?? "",
       });
       posthog.capture("user_signed_up");
     }
