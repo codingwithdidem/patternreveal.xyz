@@ -3,12 +3,12 @@ import { openai } from "@ai-sdk/openai";
 import { streamText, tool } from "ai";
 import { z } from "zod";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
-import {
-  throwIfProFeatureNotAvailable,
-  throwIfAIUsageExceeded,
-} from "@/lib/reflections/usage-checks";
 import prisma from "@/lib/prisma";
 import { CHAT_SYSTEM_PROMPT } from "@/lib/ai/prompts/chat";
+import {
+  throwIfAIUsageExceeded,
+  throwIfProFeatureNotAvailable,
+} from "@/lib/api/reflections";
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -19,7 +19,7 @@ export const POST = withWorkspace(
     throwIfProFeatureNotAvailable(workspace, "ask-ai");
 
     // Check AI usage limits
-    throwIfAIUsageExceeded(workspace, "ask-ai");
+    throwIfAIUsageExceeded(workspace);
 
     const { messages } = await req.json();
 

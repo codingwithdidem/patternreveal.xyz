@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { createMoodSchema } from "@/lib/zod/schemas/mood";
 import { NextResponse } from "next/server";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
-import { throwIfProFeatureNotAvailable } from "@/lib/reflections/usage-checks";
+import { throwIfProFeatureNotAvailable } from "@/lib/api/reflections";
 import { z } from "zod";
 
 /**
