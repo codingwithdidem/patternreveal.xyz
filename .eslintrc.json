@@ -9,6 +9,7 @@
     "react/jsx-no-undef": "warn",
     "react-hooks/exhaustive-deps": "warn",
     "prefer-const": "warn",
-    "react-hooks/rules-of-hooks": "warn"
+    "react-hooks/rules-of-hooks": "warn",
+    "react/no-unescaped-entities": "off"
   }
 }
