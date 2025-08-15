@@ -1,5 +1,5 @@
 import { getPlanDetails } from "@/lib/constants";
-import { getAssetUrl } from "@/lib/assets";
+import { PATTERNREVEAL_WORDMARK } from "@/utils/constants";
 import {
   Body,
   Container,
@@ -36,7 +36,7 @@ export function UpgradeEmail({
             </Heading>
             <Section className="my-8">
               <Img
-                src={getAssetUrl("patternreveal-logo.svg")}
+                src={PATTERNREVEAL_WORDMARK}
                 alt="PatternReveal Logo"
                 className="max-w-[300px] mx-auto"
               />

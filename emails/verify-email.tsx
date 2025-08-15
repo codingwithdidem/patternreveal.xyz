@@ -1,5 +1,4 @@
 import { EMAIL_OTP_EXPIRY_IN } from "@/lib/auth/constants";
-import { getAssetUrl } from "@/lib/assets";
 import {
   Body,
   Container,
