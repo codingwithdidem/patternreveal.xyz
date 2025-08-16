@@ -36,8 +36,6 @@ export const WorkspaceSchema = z.object({
   totalReflections: z
     .number()
     .describe("The total number of reflections in the workspace"),
-  usage: z.number().describe("The usage of the workspace"),
-  usageLimit: z.number().describe("The usage limit of the workspace"),
   reflectionsUsage: z
     .number()
     .describe("The reflections usage of the workspace"),
