@@ -27,9 +27,10 @@ export async function handleSubscriptionCancelled(
     });
   }
 
-  const workspace = await prisma.workspace.findUnique({
+  const workspace = await prisma.workspace.findFirst({
     where: {
       paddleCustomerId,
+      id: workspaceId,
     },
   });
 
@@ -43,7 +44,7 @@ export async function handleSubscriptionCancelled(
   await Promise.allSettled([
     prisma.workspace.update({
       where: {
-        paddleCustomerId,
+        id: workspaceId,
       },
       data: {
         plan: "free",

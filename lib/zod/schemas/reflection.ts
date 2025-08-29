@@ -87,6 +87,20 @@ const ReflectionQuerySchema = z.object({
     .string()
     .optional()
     .describe("The user ID to filter the reflections by."),
+  status: z
+    .string()
+    .optional()
+    .describe("The ai report status to filter the reflections by."),
+  creators: z
+    .union([z.string(), z.array(z.string())])
+    .transform((v) => {
+      if (Array.isArray(v)) {
+        return v.filter(Boolean); // Remove empty strings
+      }
+      return v ? v.split(",").filter(Boolean) : []; // Split by comma and remove empty strings
+    })
+    .optional()
+    .describe("The user IDs to filter the reflections by."),
 });
 
 export const getReflectionsQuerySchemaBase = ReflectionQuerySchema.merge(

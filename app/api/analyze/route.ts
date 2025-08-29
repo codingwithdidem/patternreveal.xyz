@@ -16,7 +16,6 @@ import { throwIfAIUsageExceeded } from "@/lib/api/reflections";
 
 export const POST = withWorkspace(
   async ({ req, headers, session, workspace }) => {
-    console.log("AI ANALYSIS", workspace);
     const { success, data } = await analyzeReflectionSchema.safeParse(
       await parseRequestBody(req)
     );
@@ -105,16 +104,6 @@ export const POST = withWorkspace(
             },
           },
         },
-      });
-
-      console.log({
-        reflectionId,
-        analysisGenerated: true,
-        healthScore: object.overallAssessment.healthScore,
-        confidenceLevel: object.overallAssessment.confidenceLevel,
-        isAbusive: object.abuseDetection.isAbusive,
-        isAtRisk: object.abuseDetection.isAtImmediateRisk,
-        usage,
       });
 
       if (!session?.user?.id) {

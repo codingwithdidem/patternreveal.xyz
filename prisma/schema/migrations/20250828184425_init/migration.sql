@@ -54,6 +54,7 @@ CREATE TABLE "User" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "image" TEXT,
     "invalidLoginAttempts" INTEGER NOT NULL DEFAULT 0,
+    "subscribed" BOOLEAN NOT NULL DEFAULT true,
     "lockedAt" TIMESTAMP(3),
     "defaultWorkspace" TEXT,
 
@@ -151,17 +152,16 @@ CREATE TABLE "Workspace" (
     "logo" TEXT,
     "inviteCode" TEXT NOT NULL,
     "plan" TEXT NOT NULL DEFAULT 'free',
-    "paddleId" TEXT,
     "paddleCustomerId" TEXT,
+    "paddleSubscriptionId" TEXT,
     "billingCycleStart" INTEGER,
     "paymentFailedAt" TIMESTAMP(3),
     "totalReflections" INTEGER NOT NULL DEFAULT 0,
-    "usage" INTEGER NOT NULL DEFAULT 0,
-    "usageLimit" INTEGER NOT NULL DEFAULT 1000,
     "reflectionsUsage" INTEGER NOT NULL DEFAULT 0,
-    "reflectionsLimit" INTEGER NOT NULL DEFAULT 20,
+    "reflectionsLimit" INTEGER NOT NULL DEFAULT 10,
     "aiUsage" INTEGER NOT NULL DEFAULT 0,
-    "aiLimit" INTEGER NOT NULL DEFAULT 10,
+    "aiLimit" INTEGER NOT NULL DEFAULT 2,
+    "usersLimit" INTEGER NOT NULL DEFAULT 1,
     "store" JSONB,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -231,13 +231,13 @@ CREATE UNIQUE INDEX "Workspace_slug_key" ON "Workspace"("slug");
 CREATE UNIQUE INDEX "Workspace_inviteCode_key" ON "Workspace"("inviteCode");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Workspace_paddleId_key" ON "Workspace"("paddleId");
+CREATE UNIQUE INDEX "Workspace_paddleSubscriptionId_key" ON "Workspace"("paddleSubscriptionId");
 
 -- CreateIndex
 CREATE INDEX "Workspace_slug_idx" ON "Workspace"("slug");
 
 -- CreateIndex
-CREATE INDEX "Workspace_paddleId_idx" ON "Workspace"("paddleId");
+CREATE INDEX "Workspace_paddleCustomerId_idx" ON "Workspace"("paddleCustomerId");
 
 -- CreateIndex
 CREATE INDEX "WorkspaceInvite_workspaceId_idx" ON "WorkspaceInvite"("workspaceId");

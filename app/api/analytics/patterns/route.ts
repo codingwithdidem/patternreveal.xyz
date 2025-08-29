@@ -96,6 +96,13 @@ export const GET = withWorkspace(
     try {
       const query = analyticsQuerySchema.parse(searchParams);
 
+      console.log("query", {
+        workspaceId: workspace.id,
+        user_id: query.user_id,
+        days_filter: query.days_filter,
+        granularity: query.granularity,
+      });
+
       const params = {
         workspace_id: workspace.id,
         ...(query.user_id && { user_id: query.user_id }),

@@ -73,6 +73,20 @@ export interface PredictiveData {
   high_trust_success_rate: number;
   medium_trust_success_rate: number;
   low_trust_success_rate: number;
+  // Missing properties from pipe
+  low_intensity_good_listening_success_rate: number;
+  balanced_power_boundaries_success_rate: number;
+  balanced_effort_collaborative_success_rate: number;
+  high_confidence_assertive_success_rate: number;
+  high_risk_low_energy_high_intensity_rate: number;
+  high_risk_no_boundaries_their_control_rate: number;
+  high_risk_poor_listening_passive_rate: number;
+  optimal_balanced_conditions_success_rate: number;
+  optimal_timing_success_rate: number;
+  optimal_home_duration_success_rate: number;
+  recommended_approach: string;
+  primary_risk_mitigation: string;
+  predicted_success_probability: number;
 }
 
 interface Props {

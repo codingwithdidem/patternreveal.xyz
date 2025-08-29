@@ -41,6 +41,8 @@ export async function handleSubscriptionCreated(
     });
   }
 
+  console.log({ paddleCustomerId, priceId, plan });
+
   // Update the workspace with the paddle customer ID, plan, and plan limits
   const workspace = await prisma.workspace.update({
     where: {

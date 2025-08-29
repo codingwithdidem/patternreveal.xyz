@@ -14,7 +14,7 @@ export function useUsers(options: UseUsersOptions = {}) {
   const {
     data: members = [],
     isLoading: membersLoading,
-    error: membersError
+    error: membersError,
   } = useSWR<UserPropsWithRole[]>(
     !invitesOnly ? `/api/workspaces/${slug}/members` : null,
     fetcher
@@ -23,10 +23,8 @@ export function useUsers(options: UseUsersOptions = {}) {
   const {
     data: invites = [],
     isLoading: invitesLoading,
-    error: invitesError
+    error: invitesError,
   } = useSWR<UserPropsWithRole[]>(`/api/workspaces/${slug}/invites`, fetcher);
-
-  console.log(members);
 
   const isLoading = invitesOnly
     ? invitesLoading
@@ -48,7 +46,7 @@ export function useUsers(options: UseUsersOptions = {}) {
       totalMembers: invitesOnly ? 0 : totalMembers,
       pendingInvites,
       owners: invitesOnly ? 0 : owners,
-      regularMembers: invitesOnly ? 0 : regularMembers
-    }
+      regularMembers: invitesOnly ? 0 : regularMembers,
+    },
   };
 }

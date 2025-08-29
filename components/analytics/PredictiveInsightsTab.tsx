@@ -11,19 +11,14 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
   Brain,
-  TrendingUp,
-  TrendingDown,
-  Minus,
   AlertTriangle,
   CheckCircle,
   Target,
   Zap,
-  Clock,
   Calendar,
   Activity,
   BarChart3,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 import useSWR from "swr";
 import { fetcher } from "@/lib/swr/fetcher";
 import type { PredictiveData } from "./PredictiveInsights";
@@ -93,13 +88,6 @@ export default function PredictiveInsightsTab({
     if (rate >= 40)
       return { level: "Fair", color: "bg-yellow-100 text-yellow-800" };
     return { level: "Poor", color: "bg-red-100 text-red-800" };
-  };
-
-  const getRiskLevel = (rate: number) => {
-    if (rate >= 70) return { level: "High", color: "bg-red-100 text-red-800" };
-    if (rate >= 40)
-      return { level: "Medium", color: "bg-yellow-100 text-yellow-800" };
-    return { level: "Low", color: "bg-green-100 text-green-800" };
   };
 
   return (

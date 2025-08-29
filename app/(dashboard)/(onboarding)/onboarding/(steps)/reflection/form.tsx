@@ -12,9 +12,8 @@ type CreateReflectionFormProps = {
 };
 
 export default function CreateReflectionForm({
-  reflectionId
+  reflectionId,
 }: CreateReflectionFormProps) {
-  console.log("reflectionId", reflectionId);
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [charsCount, setCharsCount] = useState(0);
 
@@ -27,11 +26,11 @@ export default function CreateReflectionForm({
       await fetch(`/api/reflections/${reflectionId}`, {
         method: "PATCH",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          content: json
-        })
+          content: json,
+        }),
       });
 
       setSaveStatus("Saved");

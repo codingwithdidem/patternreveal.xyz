@@ -33,6 +33,8 @@ export const GET = withWorkspace(
       includeAIReport,
       includeUser,
       includeDashboard,
+      status,
+      creators,
     } = params;
 
     // Get total count for pagination
@@ -72,6 +74,36 @@ export const GET = withWorkspace(
             }),
           },
         ]),
+        ...(creators &&
+          creators.length > 0 && {
+            userId: { in: creators },
+          }),
+        ...(status !== undefined && {
+          ...(status === "has-ai-report" && {
+            analysisReport: {
+              isNot: null,
+            },
+          }),
+          ...(status === "no-ai-report" && {
+            analysisReport: null,
+          }),
+        }),
+      },
+      orderBy: {
+        [sortBy]: sortOrder,
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      include: {
+        ...(includeAIReport && {
+          analysisReport: true,
+        }),
+        ...(includeUser && {
+          user: true,
+        }),
+        ...(includeDashboard && {
+          Workspace: true,
+        }),
       },
     });
 
@@ -144,7 +176,7 @@ export const POST = withWorkspace(
       return NextResponse.json(response, {
         headers,
       });
-    } catch (err) {
+    } catch {
       throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to create reflection.",

@@ -27,7 +27,5 @@ export const getIP = async () => {
     return forwardedFor.split(",")[0] ?? FALLBACK_IP_ADDRESS;
   }
 
-  console.log(headerslist);
-
   return headerslist.get("x-real-ip") ?? FALLBACK_IP_ADDRESS;
 };

@@ -88,6 +88,7 @@ export default function UpgradePlanButton({
 
       if (res.ok) {
         const data = await res.json();
+        console.log({ data });
 
         if (data.action === "customer_portal" && data.url) {
           // Open Paddle customer portal client-side

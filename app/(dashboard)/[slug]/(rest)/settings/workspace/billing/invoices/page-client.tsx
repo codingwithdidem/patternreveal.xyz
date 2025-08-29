@@ -6,14 +6,14 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import {
   ArrowLeft,
   Download,
   FileText,
   ReceiptIcon,
-  Loader2
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import useWorkspace from "@/lib/swr/use-workspace";
@@ -62,8 +62,6 @@ export default function InvoicesPageClient() {
         `/api/workspaces/${workspace.id}/billing/invoices/${transactionId}/pdf`
       );
       const data = await response.json();
-
-      console.log(data);
 
       if (data.url) {
         // Open customer portal in new tab for PDF download
@@ -224,7 +222,7 @@ export default function InvoicesPageClient() {
                       <p className="font-semibold">
                         {currencyFormatter(Number(invoice.amount) / 100, {
                           maximumFractionDigits: 2,
-                          currency: invoice.currencyCode
+                          currency: invoice.currencyCode,
                         })}
                       </p>
                     </div>

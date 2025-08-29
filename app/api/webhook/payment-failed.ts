@@ -26,9 +26,10 @@ export async function handleTransactionPaymentFailed(
     });
   }
 
-  const workspace = await prisma.workspace.findUnique({
+  const workspace = await prisma.workspace.findFirst({
     where: {
       paddleCustomerId,
+      id: workspaceId,
     },
   });
 
@@ -42,7 +43,7 @@ export async function handleTransactionPaymentFailed(
   await Promise.allSettled([
     prisma.workspace.update({
       where: {
-        paddleCustomerId,
+        id: workspaceId,
       },
       data: {
         paymentFailedAt: new Date(),

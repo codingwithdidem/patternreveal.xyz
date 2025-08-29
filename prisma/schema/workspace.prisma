@@ -27,7 +27,8 @@ model Workspace {
   inviteCode String  @unique
 
   plan              String    @default("free")
-  paddleCustomerId  String?   @unique   // Paddle customer id
+  paddleCustomerId  String?   // Paddle customer id (can be shared across workspaces)
+  paddleSubscriptionId String? @unique // Paddle subscription id (unique per workspace)
   billingCycleStart Int? // Day of the month the billing cycle starts
   paymentFailedAt   DateTime?
 
