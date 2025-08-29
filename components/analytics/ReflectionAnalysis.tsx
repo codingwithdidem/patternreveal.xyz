@@ -93,16 +93,22 @@ export default function ReflectionAnalysis({
 
   // Transform trends data to reflection analysis format
   const data: ReflectionTrendsData[] =
-    result?.data?.map((trend: any) => ({
-      date: trend.date,
-      reflections_count: trend.total_reflections,
-      avg_mood_score: trend.avg_health_score, // Using health score as mood proxy
-      dominant_emotion: "Mixed", // Default since we don't have emotion data in trends
-      avg_energy_level: 7, // Default since we don't have energy data in trends
-      avg_confidence_level: 7, // Default since we don't have confidence data in trends
-      resolution_rate: 75, // Default since we don't have resolution data in trends
-      boundary_success_rate: 80, // Default since we don't have boundary data in trends
-    })) || [];
+    result?.data?.map(
+      (trend: {
+        date: string;
+        total_reflections: number;
+        avg_health_score: number;
+      }) => ({
+        date: trend.date,
+        reflections_count: trend.total_reflections,
+        avg_mood_score: trend.avg_health_score, // Using health score as mood proxy
+        dominant_emotion: "Mixed", // Default since we don't have emotion data in trends
+        avg_energy_level: 7, // Default since we don't have energy data in trends
+        avg_confidence_level: 7, // Default since we don't have confidence data in trends
+        resolution_rate: 75, // Default since we don't have resolution data in trends
+        boundary_success_rate: 80, // Default since we don't have boundary data in trends
+      })
+    ) || [];
   if (isLoading) {
     return (
       <div className="space-y-4">

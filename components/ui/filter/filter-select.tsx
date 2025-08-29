@@ -10,13 +10,14 @@ import {
   useEffect,
   useImperativeHandle,
   useRef,
-  useState
+  useState,
 } from "react";
 import type {
   ComponentType,
   PropsWithChildren,
   ReactNode,
-  SVGProps
+  RefObject,
+  SVGProps,
 } from "react";
 import { cn } from "@/lib/utils";
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut";
@@ -47,7 +48,7 @@ function FilterSelect({
   children,
   className,
   onSelect,
-  onRemove
+  onRemove,
 }: {
   filters: Filter[];
   activeFilters?: {
@@ -61,10 +62,13 @@ function FilterSelect({
 }) {
   // Track main list container/dimensions to maintain size for loading spinner
   const listContainer = useRef<HTMLDivElement>(null);
-  const listDimensions = useRef<{
-    width: number;
-    height: number;
-  }>();
+  const listDimensions = useRef<
+    | {
+        width: number;
+        height: number;
+      }
+    | undefined
+  >(undefined);
 
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -78,7 +82,7 @@ function FilterSelect({
       setIsOpen(true);
     },
     {
-      enabled: !isOpen
+      enabled: !isOpen,
     }
   );
   const reset = useCallback(() => {
@@ -111,9 +115,11 @@ function FilterSelect({
       if (selectedFilter) {
         const isSelected = isOptionSelected(value);
 
-        isSelected
-          ? onRemove(selectedFilter.key, value)
-          : onSelect(selectedFilter.key, value);
+        if (isSelected) {
+          onRemove(selectedFilter.key, value);
+        } else {
+          onSelect(selectedFilter.key, value);
+        }
 
         if (!selectedFilter.multiple) setIsOpen(false);
       }
@@ -126,7 +132,7 @@ function FilterSelect({
     if (listContainer.current) {
       listDimensions.current = {
         width: listContainer.current.clientWidth,
-        height: listContainer.current.clientHeight
+        height: listContainer.current.clientHeight,
       };
     }
 
@@ -271,7 +277,9 @@ const FilterScroll = forwardRef(
     const ref = useRef<HTMLDivElement>(null);
     useImperativeHandle(forwardedRef, () => ref.current);
 
-    const { scrollProgress, updateScrollProgress } = useScrollProgress(ref);
+    const { scrollProgress, updateScrollProgress } = useScrollProgress(
+      ref as RefObject<HTMLElement>
+    );
 
     return (
       <>
@@ -285,8 +293,8 @@ const FilterScroll = forwardRef(
         {/* Bottom scroll fade */}
         <div
           className="pointer-events-none absolute bottom-0 left-0 hidden h-16 w-full bg-gradient-to-t from-white sm:block"
-          style={{ opacity: 1 - Math.pow(scrollProgress, 2) }}
-        ></div>
+          style={{ opacity: 1 - scrollProgress ** 2 }}
+        />
       </>
     );
   }
@@ -314,16 +322,16 @@ const CommandItem = ({
   filter,
   option,
   right,
-  onSelect
+  onSelect,
 }: {
   filter: Filter;
   option?: FilterOption;
   right?: ReactNode;
   onSelect: () => void;
 }) => {
-  const Icon = option ? (option.icon ?? filter.icon) : filter.icon;
+  const Icon = option ? option.icon ?? filter.icon : filter.icon;
 
-  const label = option ? (option.label ?? filter.label) : filter.label;
+  const label = option ? option.label ?? filter.label : filter.label;
 
   return (
     <Command.Item
@@ -346,7 +354,7 @@ const CommandItem = ({
   );
 };
 
-const isReactNode = (element: any): element is ReactNode =>
+const isReactNode = (element: unknown): element is ReactNode =>
   isValidElement(element);
 
 export { FilterSelect };

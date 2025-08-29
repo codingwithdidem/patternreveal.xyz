@@ -21,11 +21,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import {
-  TrendingUp,
-  TrendingDown,
   AlertTriangle,
   CheckCircle,
   Clock,
@@ -36,7 +32,6 @@ import {
   Calendar,
   Lightbulb,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 ChartJS.register(
   CategoryScale,

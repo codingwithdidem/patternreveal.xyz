@@ -13,9 +13,6 @@ import {
   AlertTriangle,
   CheckCircle,
   XCircle,
-  TrendingUp,
-  TrendingDown,
-  Minus,
   Target,
   Shield,
   Heart,
@@ -88,11 +85,7 @@ export default function BehavioralPatterns({
   selectedUserId,
 }: BehavioralPatternsProps) {
   // Fetch behavioral patterns data (using emotional intelligence data for now)
-  const {
-    data: result,
-    error,
-    isLoading,
-  } = useSWR(
+  const { data: result, isLoading } = useSWR(
     workspaceId
       ? `/api/analytics/patterns?type=behavioral_patterns&days_filter=${daysFilter}&workspaceId=${workspaceId}${
           selectedUserId ? `&user_id=${selectedUserId}` : ""
@@ -138,10 +131,6 @@ export default function BehavioralPatterns({
     100;
   const boundarySuccessRate =
     (patternData.boundary_success_count / patternData.total_interactions) * 100;
-  const avoidedConflictRate =
-    (patternData.avoided_conflict_count / patternData.total_interactions) * 100;
-  const engagedConflictRate =
-    (patternData.engaged_conflict_count / patternData.total_interactions) * 100;
 
   const deepConversationRate =
     (patternData.deep_conversations_count / patternData.total_interactions) *
@@ -171,9 +160,6 @@ export default function BehavioralPatterns({
 
   const ignoredInstinctsRate =
     (patternData.ignored_instincts_count / patternData.total_interactions) *
-    100;
-  const trustedInstinctsRate =
-    (patternData.trusted_instincts_count / patternData.total_interactions) *
     100;
 
   const rushedDecisionsRate =

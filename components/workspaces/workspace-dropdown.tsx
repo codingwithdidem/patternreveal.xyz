@@ -4,7 +4,7 @@ import useWorkspaces from "@/lib/swr/use-workspaces";
 import { Check, ChevronsUpDown, Plus } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useParams, usePathname } from "next/navigation";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, type RefObject } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import type { Workspace } from "@prisma/client";
@@ -116,7 +116,9 @@ function WorkspaceList({
   const { setShow } = useAddWorkspaceModal();
 
   const scrollRef = useRef<HTMLDivElement>(null);
-  const { scrollProgress, updateScrollProgress } = useScrollProgress(scrollRef);
+  const { scrollProgress, updateScrollProgress } = useScrollProgress(
+    scrollRef as RefObject<HTMLElement>
+  );
 
   return (
     <div className="relative w-full">

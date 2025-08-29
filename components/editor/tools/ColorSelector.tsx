@@ -2,7 +2,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Tooltip } from "@/components/ui/tooltip";
 import { useEditorStore } from "@/lib/store/useEditorStore";
@@ -12,79 +12,79 @@ import { Check } from "lucide-react";
 const TEXT_COLORS = [
   {
     label: "Default",
-    color: "#000000"
+    color: "#000000",
   },
   {
     label: "Purple",
-    color: "#9333EA"
+    color: "#9333EA",
   },
   {
     label: "Red",
-    color: "#E00000"
+    color: "#E00000",
   },
   {
     label: "Yellow",
-    color: "#EAB308"
+    color: "#EAB308",
   },
   {
     label: "Blue",
-    color: "#2563EB"
+    color: "#2563EB",
   },
   {
     label: "Green",
-    color: "#008A00"
+    color: "#008A00",
   },
   {
     label: "Orange",
-    color: "#FFA500"
+    color: "#FFA500",
   },
   {
     label: "Pink",
-    color: "#BA4081"
+    color: "#BA4081",
   },
   {
     label: "Gray",
-    color: "#A8A29E"
-  }
+    color: "#A8A29E",
+  },
 ] as const;
 
 const HIGHLIGHT_COLORS = [
   {
     label: "Default",
-    color: "#000000"
+    color: "#000000",
   },
   {
     label: "Purple",
-    color: "#9333EA"
+    color: "#9333EA",
   },
   {
     label: "Red",
-    color: "#E00000"
+    color: "#E00000",
   },
   {
     label: "Yellow",
-    color: "#EAB308"
+    color: "#EAB308",
   },
   {
     label: "Blue",
-    color: "#2563EB"
+    color: "#2563EB",
   },
   {
     label: "Green",
-    color: "#008A00"
+    color: "#008A00",
   },
   {
     label: "Orange",
-    color: "#FFA500"
+    color: "#FFA500",
   },
   {
     label: "Pink",
-    color: "#BA4081"
+    color: "#BA4081",
   },
   {
     label: "Gray",
-    color: "#A8A29E"
-  }
+    color: "#A8A29E",
+  },
 ] as const;
 
 export default function ColorSelector() {
@@ -112,7 +112,7 @@ export default function ColorSelector() {
               className="rounded-sm px-2"
               style={{
                 color: activeColorItem?.color,
-                backgroundColor: activeHighlightItem?.color
+                backgroundColor: activeHighlightItem?.color,
               }}
             >
               A
@@ -130,12 +130,13 @@ export default function ColorSelector() {
               key={label}
               onSelect={() => {
                 editor?.commands.unsetColor();
-                label !== "Default" &&
+                if (label !== "Default") {
                   editor
                     ?.chain()
                     .focus()
                     .setColor(color || "")
                     .run();
+                }
               }}
               className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-accent"
             >
@@ -160,8 +161,9 @@ export default function ColorSelector() {
               key={label}
               onSelect={() => {
                 editor?.commands.unsetHighlight();
-                label !== "Default" &&
+                if (label !== "Default") {
                   editor?.chain().focus().setHighlight({ color }).run();
+                }
               }}
               className="flex cursor-pointer items-center justify-between px-2 py-1 text-sm hover:bg-accent"
             >

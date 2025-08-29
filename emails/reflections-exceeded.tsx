@@ -33,7 +33,7 @@ export default function ReflectionsExceeded({
   workspace: Partial<WorkspaceWithUsers>;
   type: "firstUsageLimitEmail" | "secondUsageLimitEmail";
 }) {
-  const { slug, name, usage, usageLimit, plan } = workspace;
+  const { slug, name, reflectionsUsage, reflectionsLimit, plan } = workspace;
   const nextPlan = getNextPlan(plan as string);
 
   return (
@@ -42,7 +42,7 @@ export default function ReflectionsExceeded({
       <Preview>
         Your PatternReveal workspace, {name || ""} has exceeded the{" "}
         {capitalizeFirstChar(plan || "") || ""} Plan limit of{" "}
-        {nFormatter(usageLimit)} reflections/month.
+        {nFormatter(reflectionsLimit)} reflections/month.
       </Preview>
       <Tailwind>
         <Body className="mx-auto my-auto bg-white font-sans">
@@ -68,9 +68,11 @@ export default function ReflectionsExceeded({
               has exceeded the
               <strong> {capitalizeFirstChar(plan || "")} Plan </strong>
               limit of{" "}
-              <strong>{nFormatter(usageLimit)} reflections/month</strong>. You
-              have used{" "}
-              <strong>{nFormatter(usage, { digits: 2 })} reflections</strong>{" "}
+              <strong>{nFormatter(reflectionsLimit)} reflections/month</strong>.
+              You have used{" "}
+              <strong>
+                {nFormatter(reflectionsUsage, { digits: 2 })} reflections
+              </strong>{" "}
               across all your reflections in your current billing cycle.
             </Text>
             <Text className="text-sm leading-6 text-black">
