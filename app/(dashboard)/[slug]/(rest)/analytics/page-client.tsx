@@ -9,16 +9,8 @@ import useWorkspace from "@/lib/swr/use-workspace";
 import EmotionalIntelligenceTab from "@/components/analytics/EmotionalIntelligenceTab";
 import RelationshipHealthTab from "@/components/analytics/RelationshipHealthTab";
 import PredictiveInsightsTab from "@/components/analytics/PredictiveInsightsTab";
-import type { EmotionalIntelligenceData } from "@/components/analytics/EmotionalIntelligenceInsights";
-import type { RelationshipHealthData } from "@/components/analytics/RelationshipHealthInsights";
-import type { PredictiveData } from "@/components/analytics/PredictiveInsights";
-import AnalyticsCharts from "@/components/analytics/AnalyticsCharts";
-import ReflectionAnalysis, {
-  type ReflectionTrendsData,
-} from "@/components/analytics/ReflectionAnalysis";
-import BehavioralPatterns, {
-  type BehavioralPatternsData,
-} from "@/components/analytics/BehavioralPatterns";
+import ReflectionAnalysis from "@/components/analytics/ReflectionAnalysis";
+import BehavioralPatterns from "@/components/analytics/BehavioralPatterns";
 import AnalyticsUpgradeOverlay from "@/components/analytics/AnalyticsUpgradeOverlay";
 
 export default function AnalyticsPageClient() {

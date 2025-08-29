@@ -94,33 +94,17 @@ export const record_pattern_analytics = async (payload: {
       reflectionId
     );
 
-    // Check if we're in development mode
-    const isDevelopment =
-      process.env.NODE_ENV === "development" ||
-      process.env.NODE_ENV === undefined;
+    const token = process.env.TINYBIRD_API_KEY;
+    const baseUrl = process.env.TINYBIRD_API_URL;
 
-    // Validate required environment variables (only for production)
-    if (!isDevelopment) {
-      if (!process.env.TINYBIRD_API_KEY) {
-        console.error("TINYBIRD_API_KEY is not set");
-        return null;
-      }
-
-      if (!process.env.TINYBIRD_API_URL) {
-        console.error("TINYBIRD_API_URL is not set");
-        return null;
-      }
+    if (!token || !baseUrl) {
+      throw new Error("TINYBIRD_API_KEY or TINYBIRD_API_URL is not set");
     }
 
     console.log("Tinybird configuration:", {
-      isDevelopment,
-      hasApiKey: isDevelopment ? true : !!process.env.TINYBIRD_API_KEY,
-      apiKeyLength: isDevelopment
-        ? "local"
-        : process.env.TINYBIRD_API_KEY?.length,
-      apiUrl: isDevelopment
-        ? "http://localhost:7181"
-        : process.env.TINYBIRD_API_URL,
+      hasApiKey: !!token,
+      apiKeyLength: token?.length,
+      apiUrl: baseUrl,
       datasource: "patterns",
     });
 
