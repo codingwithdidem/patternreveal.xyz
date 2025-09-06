@@ -7,7 +7,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { GoogleIcon } from "@components/icons";
@@ -30,7 +30,7 @@ export const errorCodes = {
   OAuthSignin:
     "There was an issue signing you in. Please ensure your provider settings are correct.",
   OAuthCallback:
-    "We faced a problem while processing the response from the OAuth provider. Please try again."
+    "We faced a problem while processing the response from the OAuth provider. Please try again.",
 };
 
 export default function LoginForm() {
@@ -42,8 +42,8 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
-      password: ""
-    }
+      password: "",
+    },
   });
 
   const onSubmit = async (values: z.infer<typeof loginSchema>) => {
@@ -55,8 +55,8 @@ export default function LoginForm() {
       const response = await signIn("credentials", {
         redirect: false,
         email,
-        callbackUrl: "/",
-        password
+        callbackUrl: finalNext || "/app",
+        password,
       });
 
       if (!response) return;
@@ -71,7 +71,7 @@ export default function LoginForm() {
         return;
       }
 
-      router.push(response.url || "/");
+      router.push(response.url || "/app");
     } else {
       console.log("Invalid form");
     }
@@ -84,7 +84,7 @@ export default function LoginForm() {
         onClick={() =>
           signIn("google", {
             redirect: false,
-            callbackUrl: finalNext || "/"
+            callbackUrl: finalNext || "/app",
           })
         }
       >

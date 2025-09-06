@@ -6,7 +6,7 @@ export const metadata = constructMetadata({
   title: "Sign in to your PatternReveal account",
   description:
     "Access your personal relationship analysis dashboard. Continue tracking patterns, analyzing your reflections, and building healthier relationships with AI-powered insights.",
-  canonicalUrl: "https://patternreveal.xyz/login"
+  canonicalUrl: "https://patternreveal.xyz/login",
 });
 
 export default function LoginPage() {
@@ -18,7 +18,7 @@ export default function LoginPage() {
           <h3 className="text-sm text-gray-500">
             {`Don't have an account yet?`}
             <Link
-              href="/register"
+              href="/app/register"
               className="ml-1 underline-offset-2 underline font-semibold hover:text-blue-500 transition-colors duration-400"
             >
               Sign up

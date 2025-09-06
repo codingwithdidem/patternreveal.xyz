@@ -170,7 +170,7 @@ function SignUp() {
       <h3 className="text-sm text-gray-500">
         Already have an account?
         <Link
-          href="/login"
+          href="/app/login"
           className="ml-1 underline-offset-2 underline font-semibold hover:text-blue-500 transition-colors duration-400"
         >
           Sign in

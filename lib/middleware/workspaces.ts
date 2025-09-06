@@ -17,12 +17,14 @@ export default async function WorkspacesMiddleware(
   const defaultWorkspace = await getDefaultWorkspace(user);
 
   if (!defaultWorkspace) {
-    return NextResponse.redirect(new URL("/onboarding/workspace", request.url));
+    return NextResponse.redirect(
+      new URL("/app/onboarding/workspace", request.url)
+    );
   }
 
   return NextResponse.redirect(
     new URL(
-      `/${defaultWorkspace}/reflections${searchParamsString}`,
+      `/app/${defaultWorkspace}/reflections${searchParamsString}`,
       request.url
     )
   );

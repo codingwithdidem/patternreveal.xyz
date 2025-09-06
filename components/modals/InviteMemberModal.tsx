@@ -5,10 +5,10 @@ import {
   DialogContent,
   DialogDescription,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { useInviteMemberModal } from "@/lib/stores/modal-store";
-import InviteForm from "@/app/(dashboard)/(onboarding)/onboarding/(steps)/invite/form";
+import InviteForm from "@/app/app/(dashboard)/(onboarding)/onboarding/(steps)/invite/form";
 import useWorkspace from "@/lib/swr/use-workspace";
 import useSWR from "swr";
 import type { Invite } from "@/lib/zod/schemas/invites";

@@ -71,6 +71,7 @@ SQL >
         FROM patterns
         WHERE 
             workspace_id = {{ String(workspace_id) }}
+            AND (deleted IS NULL OR deleted = false)
             {% if defined(days_filter) %}
             {% if days_filter == '30' %}
             AND reflection_created_at >= now() - interval 30 day

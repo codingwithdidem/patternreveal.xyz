@@ -31,15 +31,19 @@ export function useUsers(options: UseUsersOptions = {}) {
     : membersLoading || invitesLoading;
   const error = invitesOnly ? invitesError : membersError || invitesError;
 
+  // Ensure we always have safe arrays to work with
+  const safeMembers = Array.isArray(members) ? members : [];
+  const safeInvites = Array.isArray(invites) ? invites : [];
+
   // Calculate stats
-  const totalMembers = members.length;
-  const pendingInvites = invites.length;
-  const owners = members.filter((m) => m.role === "OWNER").length;
-  const regularMembers = members.filter((m) => m.role === "MEMBER").length;
+  const totalMembers = safeMembers.length;
+  const pendingInvites = safeInvites.length;
+  const owners = safeMembers.filter((m) => m.role === "OWNER").length;
+  const regularMembers = safeMembers.filter((m) => m.role === "MEMBER").length;
 
   return {
-    members: invitesOnly ? [] : members,
-    invites,
+    members: invitesOnly ? [] : safeMembers,
+    invites: safeInvites,
     isLoading,
     error,
     stats: {

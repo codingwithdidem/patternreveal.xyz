@@ -1,11 +1,13 @@
-import BackgroundPattern from "@/components/BackgroundPattern";
 import Logo from "@/components/Logo";
 import Image from "next/image";
 import exampleReflectionReport from "@/public/images/example-report.png";
+import BackgroundPattern from "@/components/BackgroundPattern";
 
 export default async function Layout({
-  children
-}: { children: React.ReactNode }) {
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex h-screen">
       <BackgroundPattern />

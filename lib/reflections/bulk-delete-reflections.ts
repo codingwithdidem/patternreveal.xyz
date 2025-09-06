@@ -1,20 +1,32 @@
-// import { recordLinkTB, transformLinkTB } from "@/lib/tinybird";
 import type { Reflection } from "@prisma/client";
 import prisma from "../prisma";
+import { deletePatternAnalytics } from "../tinybird/delete_pattern_analytics";
 
 export async function bulkDeleteReflections(reflections: Reflection[]) {
   if (reflections.length === 0) {
     return;
   }
 
+  const reflectionIds = reflections.map((reflection) => reflection.id);
+
   return await Promise.all([
-    // Record the links deletion in Tinybird
-    // recordLinkTB(
-    //   links.map((link) => ({
-    //     ...transformLinkTB(link),
-    //     deleted: true,
-    //   }))
-    // ),
+    // Delete analysis reports for these reflections
+    prisma.analysisReport.deleteMany({
+      where: {
+        reflectionId: {
+          in: reflectionIds,
+        },
+      },
+    }),
+
+    // Delete shared reports for these reflections
+    prisma.report.deleteMany({
+      where: {
+        reflectionId: {
+          in: reflectionIds,
+        },
+      },
+    }),
 
     // Update totalReflections for the workspace
     prisma.workspace.update({
@@ -25,5 +37,18 @@ export async function bulkDeleteReflections(reflections: Reflection[]) {
         totalReflections: { decrement: reflections.length },
       },
     }),
+
+    // Soft delete TinyBird records for all reflections
+    // Don't await these to avoid blocking the main deletion
+    Promise.allSettled(
+      reflectionIds.map((reflectionId) =>
+        deletePatternAnalytics(reflectionId).catch((error) => {
+          console.error(
+            `Failed to soft delete TinyBird record for reflection ${reflectionId}:`,
+            error
+          );
+        })
+      )
+    ),
   ]);
 }

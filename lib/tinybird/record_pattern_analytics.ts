@@ -55,6 +55,10 @@ export const patternAnalyticsSchema = z.object({
   reflection_created_at: z.string(),
   analysis_created_at: z.string(),
   timestamp: z.string(),
+
+  // Soft deletion fields (optional for backward compatibility)
+  deleted: z.boolean().optional(),
+  deleted_at: z.string().optional(),
 });
 
 export type PatternAnalyticsData = z.infer<typeof patternAnalyticsSchema>;

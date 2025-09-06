@@ -119,6 +119,7 @@ SQL >
         
     FROM patterns 
     WHERE workspace_id = {{ String(workspace_id) }}
+    AND (deleted IS NULL OR deleted = false)
     {% if defined(user_id) %}
     AND user_id = {{ String(user_id) }}
     {% end %}

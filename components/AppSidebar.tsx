@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -94,18 +95,17 @@ const NAV_AREAS: SidebarNavAreas<{
               href: `/${slug}/reports/${reflection.id}`,
             })),
           },
-
+          {
+            name: "Analytics",
+            icon: ActivityIcon,
+            href: `/${slug}/analytics`,
+          },
           {
             name: "Settings",
             icon: SettingsGearIcon,
             href: `/${slug}/settings${
               pathname === `/${slug}/settings` ? "" : queryString
             }`,
-          },
-          {
-            name: "Analytics",
-            icon: ActivityIcon,
-            href: `/${slug}/analytics`,
           },
         ],
       },
@@ -216,9 +216,8 @@ export default function AppSidebar() {
             topReflections,
           });
           return (
-            <>
+            <React.Fragment key={area}>
               <div
-                key={area}
                 className={cn(
                   "left-0 top-0 transition-[opacity,transform] duration-300",
                   area === currentArea
@@ -275,7 +274,7 @@ export default function AppSidebar() {
                   </SidebarGroup>
                 ))}
               </div>
-            </>
+            </React.Fragment>
           );
         })}
       </SidebarContent>

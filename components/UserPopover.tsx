@@ -3,7 +3,7 @@
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger
+  PopoverTrigger,
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { truncate } from "@/utils/functions/truncate";
@@ -69,7 +69,7 @@ export default function UserPopover() {
               label="Log Out"
               onClick={() => {
                 signOut({
-                  callbackUrl: "/login"
+                  callbackUrl: "/app/login",
                 });
               }}
             />

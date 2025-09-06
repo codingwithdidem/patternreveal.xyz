@@ -12,7 +12,7 @@ export const ONBOARDING_STEPS = [
   "reflection",
   "invite",
   "plan",
-  "complete"
+  "complete",
 ] as const;
 
 export type OnboardingStep = (typeof ONBOARDING_STEPS)[number];
@@ -34,40 +34,40 @@ export const useOnboardingFlow = () => {
       },
       onError: (error) => {
         console.error("Failed to update onboarding step", error);
-      }
+      },
     }
   );
 
   const moveToStep = useCallback(
     async (step: OnboardingStep, providedSlug?: string) => {
       execute({
-        onboardingStep: step
+        onboardingStep: step,
       });
 
       console.log({
         step,
-        providedSlug
+        providedSlug,
       });
 
       const queryParams =
         step === "workspace" ? "" : `?workspace=${providedSlug || slug}`;
-      router.push(`/onboarding/${step}${queryParams}`);
+      router.push(`/app/onboarding/${step}${queryParams}`);
     },
     [execute, router, slug]
   );
 
   const finishOnboarding = useCallback(async () => {
     await executeAsync({
-      onboardingStep: "complete"
+      onboardingStep: "complete",
     });
 
-    router.push(slug ? `/${slug}` : "/");
-  }, [executeAsync]);
+    router.push(slug ? `/app/${slug}` : "/");
+  }, [executeAsync, router, slug]);
 
   return {
     moveToStep,
     finishOnboarding,
     isLoading: isPending,
-    isSuccessful: hasSucceeded
+    isSuccessful: hasSucceeded,
   };
 };

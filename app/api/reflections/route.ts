@@ -6,6 +6,7 @@ import {
 import { parseRequestBody } from "@/lib/api/utils";
 import { withWorkspace } from "@/lib/auth/withWorkspace";
 import prisma from "@/lib/prisma";
+import { deleteReflection } from "@/lib/reflections/delete-reflection";
 
 import {
   createReflectionSchema,
@@ -187,6 +188,11 @@ export const POST = withWorkspace(
 
 /**
  * Delete a reflection entry. Requires the `reflection.write` permission.
+ * Deletes the reflection and all associated data including:
+ * - Analysis report
+ * - Shared report
+ * - TinyBird pattern analytics record (soft delete)
+ * - Updates workspace reflection count
  *
  * @param reflectionId The ID of the reflection to delete.
  * @returns The deleted reflection.
@@ -207,31 +213,13 @@ export const DELETE = withWorkspace(
     const { reflectionId } = data;
 
     try {
-      const response = await prisma.reflection.delete({
-        where: {
-          id: reflectionId,
-          workspaceId: workspace.id,
-        },
-      });
-
-      // Update the workspace total reflections count
-      waitUntil(
-        prisma.workspace.update({
-          where: {
-            id: workspace.id,
-          },
-          data: {
-            totalReflections: {
-              decrement: 1,
-            },
-          },
-        })
-      );
+      const response = await deleteReflection(reflectionId, workspace.id);
 
       return NextResponse.json(response, {
         headers,
       });
-    } catch {
+    } catch (error) {
+      console.error("Failed to delete reflection:", error);
       throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to delete reflection.",

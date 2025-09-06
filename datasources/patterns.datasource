@@ -34,7 +34,9 @@ SCHEMA >
     `user_experience_level` String `json:$.user_experience_level`,
     `reflection_created_at` DateTime `json:$.reflection_created_at`,
     `analysis_created_at` DateTime `json:$.analysis_created_at`,
-    `timestamp` DateTime `json:$.timestamp`
+    `timestamp` DateTime `json:$.timestamp`,
+    `deleted` Bool `json:$.deleted`,
+    `deleted_at` DateTime `json:$.deleted_at`
 
 ENGINE "MergeTree"
 ENGINE_SORTING_KEY "timestamp, user_id, workspace_id"

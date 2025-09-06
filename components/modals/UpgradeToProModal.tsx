@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { useUpgradeToProModal } from "@/lib/stores/modal-store";
-import PlanSelector from "@/app/(dashboard)/(onboarding)/onboarding/plan-selector";
+import PlanSelector from "@/app/app/(dashboard)/(onboarding)/onboarding/plan-selector";
 
 export function UpgradeToProModal() {
   const { show, setShow } = useUpgradeToProModal();

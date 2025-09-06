@@ -31,19 +31,29 @@ export default async function middleware(
 
   const user = await getUserViaToken(request);
 
-  if (
-    !user &&
-    !path.startsWith("/login") &&
-    !path.startsWith("/register") &&
-    !path.startsWith("/forgot-password") &&
-    !path.startsWith("/reset-password")
-  ) {
-    return NextResponse.redirect(
-      new URL(
-        `/login${path === "/" ? "" : `?next=${encodeURIComponent(fullPath)}`}`,
-        request.url
-      )
-    );
+  // Allow access to the landing page without authentication
+  if (path === "/") {
+    return NextResponse.next();
+  }
+
+  // Check if the path is under /app (protected routes)
+  if (path.startsWith("/app")) {
+    if (
+      !user &&
+      !path.startsWith("/app/login") &&
+      !path.startsWith("/app/register") &&
+      !path.startsWith("/app/forgot-password") &&
+      !path.startsWith("/app/reset-password")
+    ) {
+      return NextResponse.redirect(
+        new URL(
+          `/app/login${
+            path === "/app" ? "" : `?next=${encodeURIComponent(fullPath)}`
+          }`,
+          request.url
+        )
+      );
+    }
   }
 
   if (user) {
@@ -65,12 +75,12 @@ export default async function middleware(
 
     if (
       isUserCreatedInLast24Hours &&
-      !path.startsWith("/onboarding") &&
+      !path.startsWith("/app/onboarding") &&
       !defaultWorkspace &&
       onboardingStep !== "complete"
     ) {
       if (!onboardingStep) {
-        return NextResponse.redirect(new URL("/onboarding", request.url));
+        return NextResponse.redirect(new URL("/app/onboarding", request.url));
       }
 
       if (defaultWorkspace) {
@@ -78,16 +88,24 @@ export default async function middleware(
           onboardingStep === "workspace" ? "reflection" : onboardingStep;
         return NextResponse.redirect(
           new URL(
-            `/onboarding/${onboardingStep}?workspace=${defaultWorkspace}`,
+            `/app/onboarding/${onboardingStep}?workspace=${defaultWorkspace}`,
             request.url
           )
         );
       }
 
-      return NextResponse.redirect(new URL("/onboarding", request.url));
+      return NextResponse.redirect(new URL("/app/onboarding", request.url));
     }
 
-    if (["/", "/login", "/register", "/refletions", "/settings"].includes(path))
+    if (
+      [
+        "/app",
+        "/app/login",
+        "/app/register",
+        "/app/refletions",
+        "/app/settings",
+      ].includes(path)
+    )
       return WorkspacesMiddleware(request, user);
 
     if (redirect(path)) {

@@ -10,7 +10,7 @@ import { LockIcon } from "lucide-react";
 import { useFormStatus } from "react-dom";
 
 const initialState: PasswordFormState = {
-  error: null
+  error: null,
 };
 
 export function PasswordForm() {
