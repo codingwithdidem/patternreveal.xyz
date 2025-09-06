@@ -5,7 +5,7 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from "@/components/ui/table";
 import type { Prisma, Reflection } from "@prisma/client";
 import { FileIcon } from "lucide-react";
@@ -22,17 +22,17 @@ type ReflectionsTableProps = {
 };
 
 export default function ReflectionsTable({
-  reflections
+  reflections,
 }: ReflectionsTableProps) {
   const router = useRouter();
   const { slug } = useParams<{ slug: string }>();
 
   const onRowClick = (reflectionId: string) => {
-    router.push(`/${slug}/reports/${reflectionId}`);
+    router.push(`/app/${slug}/reports/${reflectionId}`);
   };
 
   const onOpenInNewTabClick = (reflectionId: string) => {
-    window.open(`/${slug}/reports/${reflectionId}`, "_blank");
+    window.open(`/app/${slug}/reports/${reflectionId}`, "_blank");
   };
 
   return (

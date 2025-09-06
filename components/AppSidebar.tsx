@@ -92,7 +92,7 @@ const NAV_AREAS: SidebarNavAreas<{
             }`,
             subItems: topReflections?.map((reflection) => ({
               name: reflection.title,
-              href: `/${slug}/reports/${reflection.id}`,
+              href: `/app/${slug}/reports/${reflection.id}`,
             })),
           },
           {

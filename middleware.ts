@@ -36,6 +36,14 @@ export default async function middleware(
     return NextResponse.next();
   }
 
+  // Handle direct workspace URLs without /app prefix (for unauthenticated users)
+  // e.g., /mom/reflections -> /app/mom/reflections (which will then redirect to login)
+  const workspacePattern =
+    /^\/([^\/]+)\/(reflections|analytics|settings|reports)(?:\/.*)?$/;
+  if (workspacePattern.test(path)) {
+    return NextResponse.redirect(new URL(`/app${fullPath}`, request.url));
+  }
+
   // Check if the path is under /app (protected routes)
   if (path.startsWith("/app")) {
     if (

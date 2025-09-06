@@ -212,6 +212,11 @@ export const DELETE = withWorkspace(
 
     const { reflectionId } = data;
 
+    console.log({
+      reflectionId,
+      workspaceId: workspace.id,
+    });
+
     try {
       const response = await deleteReflection(reflectionId, workspace.id);
 
@@ -225,5 +230,8 @@ export const DELETE = withWorkspace(
         message: "Failed to delete reflection.",
       });
     }
+  },
+  {
+    requiredPermissions: ["reflection.write"],
   }
 );

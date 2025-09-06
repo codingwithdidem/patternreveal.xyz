@@ -15,6 +15,7 @@ import useReflectionQueryParams from "@/hooks/nuqs/useReflectionQueryParams";
 import useWorkspace from "@/lib/swr/use-workspace";
 import { useEffect } from "react";
 import { useUsers } from "@/lib/swr/use-users";
+import { mutatePrefix } from "@/lib/swr/mutate";
 
 const redFlags = [
   {
@@ -127,9 +128,17 @@ export default function ReflectionsClientPage() {
 
       if (response.status === 200) {
         toast.success("Reflection created successfully");
+
+        // Invalidate reflection-related cache to show the new reflection
+        mutatePrefix([
+          `/api/reflections?workspaceId=${workspaceId}`,
+          "/api/reflections/popular",
+          "/api/workspaces/",
+        ]);
+
         // Redirect to the newly created reflection
         const { id } = await response.json();
-        router.push(`/${workspaceSlug}/reports/${id}`);
+        router.push(`/app/${workspaceSlug}/reports/${id}`);
       } else {
         const { error } = await response.json();
         toast.error(error.message);
