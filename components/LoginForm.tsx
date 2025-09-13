@@ -1,5 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -135,6 +136,16 @@ export default function LoginForm() {
             )}
           />
           <Button type="submit">Login</Button>
+          <p className="text-xs text-gray-500 text-center mt-4">
+            By logging in, you agree to our{" "}
+            <Link href="/terms" className="underline hover:text-blue-500">
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link href="/privacy" className="underline hover:text-blue-500">
+              Privacy Policy
+            </Link>
+          </p>
         </form>
       </Form>
     </div>

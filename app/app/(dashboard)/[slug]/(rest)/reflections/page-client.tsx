@@ -101,21 +101,12 @@ export default function ReflectionsClientPage() {
           method: "POST",
           body: JSON.stringify({
             title: "Untitled Reflection",
-            initialContent: JSON.stringify({
-              type: "doc",
-              content: [
-                {
-                  type: "paragraph",
-                  content: [{ type: "text", text: "Start writing..." }],
-                },
-              ],
-            }),
             content: JSON.stringify({
               type: "doc",
               content: [
                 {
                   type: "paragraph",
-                  content: [{ type: "text", text: "Start writing..." }],
+                  content: [{ type: "text", text: "" }],
                 },
               ],
             }),

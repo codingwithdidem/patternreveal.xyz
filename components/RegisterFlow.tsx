@@ -1,5 +1,6 @@
 "use client";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -17,7 +18,6 @@ import { registerSchema, verifyEmailSchema } from "@/lib/zod/schemas/auth";
 import { useAction } from "next-safe-action/hooks";
 import { sendOtpAction } from "@/lib/actions/send-otp";
 import { toast } from "sonner";
-import Link from "next/link";
 import { useRegisterFlow } from "@/lib/store/useRegisterFlow";
 import { truncate } from "@/utils/functions/truncate";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "./ui/input-otp";
@@ -263,6 +263,16 @@ function SignUp() {
             >
               Sign Up
             </Button>
+            <p className="text-xs text-gray-500 text-center mt-4">
+              By signing up, you agree to our{" "}
+              <Link href="/terms" className="underline hover:text-blue-500">
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="underline hover:text-blue-500">
+                Privacy Policy
+              </Link>
+            </p>
           </form>
         </Form>
       </div>
