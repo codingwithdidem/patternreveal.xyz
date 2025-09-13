@@ -33,7 +33,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${satoshi.variable} ${erode.variable} antialiased`}>
+      <body
+        className={`${satoshi.variable} ${erode.variable} antialiased h-screen`}
+      >
         <Toaster />
         <NuqsAdapter>{children}</NuqsAdapter>
         <AxiomWebVitals />
