@@ -1,18 +1,19 @@
 import Link from "next/link";
-import { BackgroundBeams } from "@/components/BackgroundBeams";
 import { Button } from "@/components/ui/button";
 import { PricingSection } from "@/components/PricingSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { constructMetadata } from "@/utils/functions/construct-metadata";
+import BackgroundPattern from "@/components/BackgroundPattern";
+import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
+import { Highlighter } from "@/components/magicui/highlighter";
+import { cn } from "@/lib/utils";
 import {
   ArrowRight,
   Shield,
   Heart,
   Brain,
-  Sparkles,
   CheckCircle,
   Lock,
-  Play,
 } from "lucide-react";
 
 export const metadata = constructMetadata({
@@ -25,68 +26,114 @@ export const metadata = constructMetadata({
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-purple-50 relative antialiased">
-      <BackgroundBeams />
+    <div className="min-h-screen bg-white relative antialiased">
+      <BackgroundPattern />
+      <div className="absolute inset-0 -z-5">
+        <InteractiveGridPattern
+          width={40}
+          height={40}
+          squares={[20, 25]}
+          className="opacity-30"
+          squaresClassName="stroke-gray-500/40 hover:fill-gray-400/60"
+        />
+      </div>
 
       {/* Hero Section */}
       <section className="relative z-10 pt-32 pb-20 px-6">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="mb-16">
-            <div className="inline-flex items-center gap-2 bg-purple-50 px-4 py-2 rounded-full text-sm text-purple-700 mb-8 relative">
-              <div className="absolute inset-0 rounded-full border-2 border-purple-300 animate-pulse" />
-              <Sparkles className="h-4 w-4 relative z-10" />
-              <span className="relative z-10">
-                AI-Powered Relationship Analysis
-              </span>
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left side - Text content */}
+            <div className="text-left">
+              <h1 className="text-6xl md:text-7xl font-bold mb-8 leading-tight text-black">
+                Discover the{" "}
+                <Highlighter color="#DDA0DD" action="highlight">
+                  patterns
+                </Highlighter>{" "}
+                in your relationships.
+              </h1>
+              <p className="text-xl md:text-2xl mb-12 leading-relaxed text-gray-600">
+                Identify toxic patterns, build healthy boundaries, and create
+                meaningful connections with our AI-powered platform.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 mb-16">
+                <Link href="/app/register">
+                  <Button size="lg">Start for free</Button>
+                </Link>
+                <Link href="/app/login">
+                  <Button size="lg" variant="outline">
+                    See it in action
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Trust badges */}
+              <div className="flex flex-wrap gap-8 text-sm text-gray-500">
+                <div className="flex items-center gap-2">
+                  <CheckCircle className="h-4 w-4 text-green-500" />
+                  <span>AI-powered insights</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-blue-500" />
+                  <span>Privacy first</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Lock className="h-4 w-4 text-purple-500" />
+                  <span>Secure & compliant</span>
+                </div>
+              </div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
-              <span className="bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-                Transform your relationships
-              </span>
-              <br />
-              <span className="text-black">with AI insights</span>
-            </h1>
-            <p className="text-xl md:text-2xl mb-12 max-w-4xl mx-auto leading-relaxed text-black">
-              Identify toxic patterns, build healthy boundaries, and create
-              meaningful connections. Let AI guide you to healthier
-              relationships.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-              <Link href="/app/register">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:opacity-90 text-lg px-8 py-3 transition-all duration-300 shadow-lg hover:shadow-xl"
-                >
-                  Start your journey
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link href="/app/login">
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-purple-300 text-purple-600 hover:bg-purple-50 text-lg px-8 py-3 transition-all duration-300"
-                >
-                  <Play className="mr-2 h-5 w-5" />
-                  See how it works
-                </Button>
-              </Link>
-            </div>
+            {/* Right side - Dashboard mockup */}
+            <div className="relative">
+              <div className="relative w-full h-[500px] md:h-[600px] bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+                {/* Dashboard mockup content */}
+                <div className="p-6 h-full flex flex-col">
+                  {/* Header */}
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 bg-black rounded-lg" />
+                      <span className="font-semibold text-gray-800">
+                        PatternReveal
+                      </span>
+                    </div>
+                    <div className="w-8 h-8 bg-gray-300 rounded-full" />
+                  </div>
 
-            {/* Trust badges */}
-            <div className="flex flex-wrap justify-center gap-8 text-sm text-black">
-              <div className="flex items-center gap-2 bg-purple-50 px-4 py-2 rounded-full">
-                <CheckCircle className="h-4 w-4 text-purple-500" />
-                <span>AI-powered insights</span>
-              </div>
-              <div className="flex items-center gap-2 bg-blue-50 px-4 py-2 rounded-full">
-                <Shield className="h-4 w-4 text-blue-500" />
-                <span>Privacy first</span>
-              </div>
-              <div className="flex items-center gap-2 bg-pink-50 px-4 py-2 rounded-full">
-                <Lock className="h-4 w-4 text-pink-500" />
-                <span>Secure & compliant</span>
+                  {/* Sidebar */}
+                  <div className="flex gap-6 flex-1">
+                    <div className="w-48 space-y-3">
+                      <div className="h-8 bg-gray-200 rounded" />
+                      <div className="space-y-2">
+                        <div className="h-6 bg-gray-200 rounded" />
+                        <div className="h-6 bg-gray-200 rounded" />
+                        <div className="h-6 bg-gray-200 rounded" />
+                        <div className="h-6 bg-gray-200 rounded" />
+                      </div>
+                    </div>
+
+                    {/* Main content */}
+                    <div className="flex-1 space-y-4">
+                      <div className="h-32 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4">
+                        <div className="text-2xl font-bold text-gray-800 mb-2">
+                          Total Insights
+                        </div>
+                        <div className="text-3xl font-bold text-purple-600">
+                          1,247
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          +12.5% vs last month
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="h-24 bg-gray-200 rounded-lg" />
+                        <div className="h-24 bg-gray-200 rounded-lg" />
+                      </div>
+
+                      <div className="h-32 bg-gray-200 rounded-lg" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

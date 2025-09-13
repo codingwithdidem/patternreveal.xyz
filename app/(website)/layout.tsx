@@ -18,17 +18,10 @@ export default function WebsiteLayout({
           </Link>
           <div className="flex gap-4">
             <Link href="/app/login">
-              <Button
-                variant="ghost"
-                className="text-black hover:text-purple-600 hover:bg-purple-50 transition-all duration-300"
-              >
-                Sign In
-              </Button>
+              <Button variant="ghost">Log in</Button>
             </Link>
             <Link href="/app/register">
-              <Button className="bg-gradient-to-r from-indigo-500 to-purple-600 text-white hover:opacity-90 transition-all duration-300 shadow-lg hover:shadow-xl">
-                Get Started
-              </Button>
+              <Button>Sign up</Button>
             </Link>
           </div>
         </div>
