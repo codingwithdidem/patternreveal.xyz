@@ -33,7 +33,7 @@
     "@number-flow/react": "^0.5.9",
     "@paddle/paddle-js": "^1.4.1",
     "@paddle/paddle-node-sdk": "^2.8.0",
-    "@prisma/adapter-neon": "^6.5.0",
+    "@prisma/adapter-neon": "^6.16.1",
     "@prisma/client": "^6.16.1",
     "@radix-ui/react-alert-dialog": "^1.1.5",
     "@radix-ui/react-avatar": "^1.1.1",

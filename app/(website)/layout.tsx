@@ -83,22 +83,6 @@ export default function WebsiteLayout({
                     Pricing
                   </Link>
                 </li>
-                <li>
-                  <Link
-                    href="/api"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    API
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/docs"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Documentation
-                  </Link>
-                </li>
               </ul>
             </div>
 
@@ -165,14 +149,6 @@ export default function WebsiteLayout({
                     className="hover:text-purple-600 transition-colors"
                   >
                     Terms
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/security"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Security
                   </Link>
                 </li>
               </ul>
