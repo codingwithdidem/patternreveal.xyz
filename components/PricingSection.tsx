@@ -40,7 +40,7 @@ const plans = [
 
 export function PricingSection() {
   return (
-    <section className="relative z-10 py-20 px-6">
+    <section id="pricing" className="relative z-10 py-20 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
@@ -113,12 +113,12 @@ export function PricingSection() {
 
         <div className="text-center mt-12">
           <p className="text-black mb-4">
-            All plans include a 14-day free trial. No credit card required.
+            Start with our free plan. Upgrade anytime when you're ready.
           </p>
           <p className="text-sm text-black">
             Need a custom plan?{" "}
             <Link
-              href="/contact"
+              href="mailto:info@patternreveal.xyz"
               className="text-purple-600 hover:text-purple-700"
             >
               Contact us

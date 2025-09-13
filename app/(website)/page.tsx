@@ -141,7 +141,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features Section */}
-      <section className="relative z-10 py-20 px-6 bg-white">
+      <section id="features" className="relative z-10 py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
@@ -197,61 +197,76 @@ export default function LandingPage() {
       </section>
 
       {/* How it works Section */}
-      <section className="relative z-10 py-20 px-6 bg-gradient-to-r from-purple-50 to-blue-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-              How it works
+      <section id="help" className="py-10 bg-white sm:py-16 lg:py-24">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto text-center">
+            <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
+              How does it work?
             </h2>
-            <h3 className="text-2xl font-semibold text-black mb-8">
-              3 simple steps to healthier relationships
-            </h3>
+            <p className="max-w-lg mx-auto mt-4 text-base leading-relaxed text-gray-600">
+              Get started in just 3 simple steps and begin your journey to
+              healthier relationships
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-                  1
-                </span>
-              </div>
-              <h3 className="text-xl font-semibold text-black mb-4">
-                Sign up & reflect
-              </h3>
-              <p className="text-black leading-relaxed">
-                Create your account and start your daily reflections in our
-                intuitive dashboard.
-              </p>
+          <div className="relative mt-12 lg:mt-20">
+            {/* Curved dotted line for desktop */}
+            <div className="absolute inset-x-0 hidden xl:px-44 top-2 md:block md:px-20 lg:px-28">
+              <svg
+                className="w-full"
+                viewBox="0 0 800 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M50 20 Q200 5 350 20 T650 20 T750 20"
+                  stroke="#E5E7EB"
+                  strokeWidth="2"
+                  strokeDasharray="5,5"
+                  fill="none"
+                />
+              </svg>
             </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-                  2
-                </span>
+            <div className="relative grid grid-cols-1 text-center gap-y-12 md:grid-cols-3 gap-x-12">
+              <div>
+                <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
+                  <span className="text-xl font-semibold text-gray-700">1</span>
+                </div>
+                <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
+                  Sign up & reflect
+                </h3>
+                <p className="mt-4 text-base text-gray-600">
+                  Create your account and start your daily reflections in our
+                  intuitive dashboard.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-black mb-4">
-                AI analyzes patterns
-              </h3>
-              <p className="text-black leading-relaxed">
-                Our AI analyzes your reflections to identify patterns and
-                provide insights.
-              </p>
-            </div>
 
-            <div className="text-center">
-              <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-600 bg-clip-text text-transparent">
-                  3
-                </span>
+              <div>
+                <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
+                  <span className="text-xl font-semibold text-gray-700">2</span>
+                </div>
+                <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
+                  AI analyzes patterns
+                </h3>
+                <p className="mt-4 text-base text-gray-600">
+                  Our AI analyzes your reflections to identify patterns and
+                  provide insights.
+                </p>
               </div>
-              <h3 className="text-xl font-semibold text-black mb-4">
-                Transform & grow
-              </h3>
-              <p className="text-black leading-relaxed">
-                Receive insights and watch as your relationships transform with
-                healthier patterns.
-              </p>
+
+              <div>
+                <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
+                  <span className="text-xl font-semibold text-gray-700">3</span>
+                </div>
+                <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
+                  Transform & grow
+                </h3>
+                <p className="mt-4 text-base text-gray-600">
+                  Receive insights and watch as your relationships transform
+                  with healthier patterns.
+                </p>
+              </div>
             </div>
           </div>
         </div>

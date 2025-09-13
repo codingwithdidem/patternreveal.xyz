@@ -33,8 +33,8 @@ export default function WebsiteLayout({
       {/* Footer */}
       <footer className="py-12 px-6 border-t border-purple-100 bg-gradient-to-r from-purple-50 to-blue-50">
         <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
-            <div>
+          <div className="flex flex-col md:flex-row gap-8 mb-8">
+            <div className="md:w-1/2">
               <Logo className="text-black mb-4" />
               <p className="text-black mb-4">
                 AI-powered relationship analysis platform that helps you
@@ -57,98 +57,62 @@ export default function WebsiteLayout({
               </div>
             </div>
 
-            <div>
-              <h3 className="font-semibold text-black mb-4">Product</h3>
-              <ul className="space-y-2 text-black">
-                <li>
-                  <Link
-                    href="/features"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Features
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/pricing"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Pricing
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            <div className="md:w-1/2 flex justify-end gap-12">
+              <div>
+                <h3 className="font-semibold text-black mb-4">Product</h3>
+                <ul className="space-y-2 text-black">
+                  <li>
+                    <Link
+                      href="#features"
+                      className="hover:text-purple-600 transition-colors"
+                    >
+                      Features
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="#pricing"
+                      className="hover:text-purple-600 transition-colors"
+                    >
+                      Pricing
+                    </Link>
+                  </li>
+                </ul>
+              </div>
 
-            <div>
-              <h3 className="font-semibold text-black mb-4">Company</h3>
-              <ul className="space-y-2 text-black">
-                <li>
-                  <Link
-                    href="/about"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    About
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/blog"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Blog
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/careers"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Careers
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Contact
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h3 className="font-semibold text-black mb-4">Support</h3>
-              <ul className="space-y-2 text-black">
-                <li>
-                  <Link
-                    href="/help"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Help Center
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/privacy"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Privacy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/terms"
-                    className="hover:text-purple-600 transition-colors"
-                  >
-                    Terms
-                  </Link>
-                </li>
-              </ul>
+              <div>
+                <h3 className="font-semibold text-black mb-4">Support</h3>
+                <ul className="space-y-2 text-black">
+                  <li>
+                    <Link
+                      href="/help"
+                      className="hover:text-purple-600 transition-colors"
+                    >
+                      Help Center
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/privacy"
+                      className="hover:text-purple-600 transition-colors"
+                    >
+                      Privacy
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/terms"
+                      className="hover:text-purple-600 transition-colors"
+                    >
+                      Terms
+                    </Link>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-purple-100">
+          <div className="pt-8 border-t border-purple-100">
             <p className="text-black text-sm">
               © {new Date().getFullYear()} PatternReveal.
             </p>
