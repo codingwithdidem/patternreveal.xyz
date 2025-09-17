@@ -196,7 +196,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
       attributes: {
         style: "padding-left: 56px; padding-right: 56px;",
         class:
-          "prose prose-pink prose-sm sm:prose-base focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] overflow-y-auto scrollbar-hide min-w-[816px] pt-10 pr-14 pb-10 cursor-text selection:bg-gray-950 selection:text-white bg-[url('https://s.ytimg.com/yt/imgbin/www-refreshbg-vflC3wnbM.png')]",
+          "prose prose-pink prose-sm sm:prose-base focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] overflow-y-auto scrollbar-hide min-w-[816px] pt-10 pr-14 pb-10 cursor-text selection:bg-gray-950 selection:text-white bg-[#faf8f7]",
       },
     },
     onCreate: ({ editor }) => {
