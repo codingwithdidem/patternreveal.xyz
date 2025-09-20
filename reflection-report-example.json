@@ -1,0 +1,328 @@
+{
+  "emotionalPatterns": {
+    "dominantEmotion": "anxiety",
+    "emotionalIntensity": 8,
+    "emotionalTriggers": [
+      "being accused of being controlling",
+      "partner walking away during conflict",
+      "feeling unheard and dismissed",
+      "partner talking negatively about me to others"
+    ],
+    "emotionalRecoveryTime": "several_days",
+    "emotionalContagion": false,
+    "selfRegulation": "struggling",
+    "emotionalStability": "unstable",
+    "stressResponse": "hypervigilance",
+    "emotionalExhaustion": true,
+    "specificEmotions": [
+      {
+        "emotion": "anxiety",
+        "intensity": 8,
+        "duration": "ongoing",
+        "triggers": ["conflict", "criticism", "abandonment fears"]
+      },
+      {
+        "emotion": "hurt",
+        "intensity": 7,
+        "duration": "persistent",
+        "triggers": ["dismissal", "betrayal", "lack of validation"]
+      },
+      {
+        "emotion": "confusion",
+        "intensity": 6,
+        "duration": "ongoing",
+        "triggers": ["mixed signals", "unclear communication"]
+      }
+    ],
+    "emotionalPatterns": [
+      {
+        "pattern": "walking_on_eggshells",
+        "frequency": "frequent",
+        "impact": "severe",
+        "description": "Constantly trying to avoid triggering partner's reactions"
+      },
+      {
+        "pattern": "self_doubt",
+        "frequency": "constant",
+        "impact": "severe",
+        "description": "Questioning own perceptions and reality"
+      }
+    ],
+    "emotionalQuotes": [
+      "I felt my chest tighten and my heart start racing",
+      "I couldn't shake the feeling that something was wrong",
+      "I keep replaying the conversation in my head, wondering what I did wrong"
+    ]
+  },
+  "communicationPatterns": {
+    "detectedPatterns": [
+      {
+        "pattern": "defensive_communication",
+        "frequency": "frequent",
+        "severity": "moderate",
+        "description": "Partner becomes defensive when approached with concerns"
+      },
+      {
+        "pattern": "avoidant_communication",
+        "frequency": "frequent",
+        "severity": "high",
+        "description": "Partner walks away or avoids difficult conversations"
+      },
+      {
+        "pattern": "gaslighting",
+        "frequency": "occasional",
+        "severity": "high",
+        "description": "Partner dismisses or invalidates user's reality"
+      }
+    ],
+    "communicationEffectiveness": "poor",
+    "conflictResolutionStyle": "avoidant",
+    "listeningSkills": "poor",
+    "assertivenessLevel": "low",
+    "boundarySetting": "weak",
+    "communicationQuotes": [
+      "You're always so controlling about money",
+      "You never listen to me",
+      "Your apologies are always empty"
+    ],
+    "communicationBarriers": [
+      "defensiveness",
+      "interruptions",
+      "personal_attacks",
+      "avoidance"
+    ]
+  },
+  "behaviorPatterns": {
+    "detectedPatterns": [
+      {
+        "pattern": "people_pleasing",
+        "frequency": "constant",
+        "severity": "high",
+        "description": "Constantly trying to accommodate partner's needs while neglecting own"
+      },
+      {
+        "pattern": "avoidance",
+        "frequency": "frequent",
+        "severity": "moderate",
+        "description": "Avoiding topics that might trigger conflict"
+      }
+    ],
+    "behavioralTriggers": ["conflict", "criticism", "rejection"],
+    "copingMechanisms": ["avoidance", "self_blame", "overthinking"],
+    "behavioralQuotes": [
+      "I've started avoiding bringing up any topics that might be 'controversial'",
+      "I'm walking on eggshells constantly"
+    ]
+  },
+  "relationshipDynamics": {
+    "powerDynamics": {
+      "initiator": "partner",
+      "controller": "partner",
+      "balance": "unbalanced",
+      "description": "Partner holds most power in decision-making and conflict resolution"
+    },
+    "decisionMakingStyle": "partner_dominant",
+    "intimacyLevel": "low",
+    "trustLevel": "low",
+    "effortBalance": "unbalanced",
+    "supportSystem": "weak",
+    "relationshipSatisfaction": "low",
+    "commitmentLevel": "questioning",
+    "relationshipQuotes": [
+      "I feel like I'm losing myself trying to accommodate their needs",
+      "I'm starting to question whether this relationship is good for me"
+    ]
+  },
+  "contextFactors": {
+    "interactionType": "conflict",
+    "duration": "extended",
+    "environment": "home",
+    "energyLevelYours": "low",
+    "energyLevelTheirs": "aggressive",
+    "timeOfDay": "evening",
+    "dayOfWeek": "weekday",
+    "externalStressors": ["vacation_planning", "financial_concerns"],
+    "relationshipStage": "established",
+    "recentEvents": ["ongoing_pattern_of_conflict", "increased_criticism"]
+  },
+  "progressTracking": {
+    "relationshipHealthTrend": "declining",
+    "communicationImprovement": "none",
+    "conflictResolutionProgress": "regressing",
+    "emotionalWellbeingTrend": "declining",
+    "personalGrowthAreas": [
+      "boundary_setting",
+      "self_advocacy",
+      "emotional_regulation"
+    ],
+    "relationshipMilestones": [],
+    "challengesOvercome": [],
+    "areasOfConcern": [
+      "increasing_conflict_frequency",
+      "declining_emotional_safety",
+      "loss_of_self_identity"
+    ]
+  },
+  "actionableInsights": {
+    "immediateActions": [
+      "Set clear boundaries about acceptable communication",
+      "Seek individual therapy for emotional support",
+      "Consider couples therapy if partner is willing"
+    ],
+    "shortTermGoals": [
+      "Improve communication skills",
+      "Build emotional regulation techniques",
+      "Establish personal boundaries"
+    ],
+    "longTermGoals": [
+      "Evaluate relationship compatibility",
+      "Develop healthy conflict resolution skills",
+      "Rebuild self-confidence and identity"
+    ],
+    "resourcesNeeded": [
+      "individual_therapy",
+      "couples_therapy",
+      "self_help_books",
+      "support_group"
+    ],
+    "warningSignsToWatch": [
+      "increased_frequency_of_conflicts",
+      "continued_gaslighting",
+      "isolation_from_support_system"
+    ]
+  },
+  "attachmentPatterns": {
+    "attachmentStyle": "anxious",
+    "attachmentTriggers": [
+      "abandonment_fears",
+      "rejection_sensitivity",
+      "need_for_validation"
+    ],
+    "attachmentBehaviors": [
+      "people_pleasing",
+      "overthinking",
+      "emotional_dependency"
+    ],
+    "attachmentQuotes": [
+      "I'm afraid to express my needs or opinions",
+      "I feel like I'm constantly trying to prove my worth"
+    ]
+  },
+  "traumaResponses": {
+    "traumaIndicators": [
+      "hypervigilance",
+      "emotional_flashbacks",
+      "self_blame"
+    ],
+    "traumaTriggers": ["conflict", "criticism", "abandonment_threats"],
+    "traumaResponses": ["freeze_response", "fawn_response"],
+    "traumaQuotes": [
+      "I felt like I was walking on eggshells",
+      "I keep replaying the conversation in my head"
+    ]
+  },
+  "connectionPatterns": {
+    "connectionStyle": "anxious",
+    "connectionNeeds": ["validation", "emotional_safety", "mutual_respect"],
+    "connectionBarriers": [
+      "poor_communication",
+      "power_imbalance",
+      "lack_of_trust"
+    ],
+    "connectionQuotes": [
+      "I need to feel heard and respected",
+      "I want to feel like my input matters"
+    ]
+  },
+  "cognitivePatterns": {
+    "detectedPatterns": [
+      {
+        "pattern": "catastrophizing",
+        "frequency": "frequent",
+        "severity": "moderate",
+        "description": "Expecting worst-case scenarios in relationship"
+      },
+      {
+        "pattern": "mind_reading",
+        "frequency": "constant",
+        "severity": "high",
+        "description": "Assuming partner's thoughts and intentions"
+      },
+      {
+        "pattern": "personalization",
+        "frequency": "frequent",
+        "severity": "high",
+        "description": "Taking partner's behavior personally"
+      }
+    ],
+    "cognitiveDistortions": [
+      "all_or_nothing_thinking",
+      "personalization",
+      "catastrophizing"
+    ],
+    "cognitiveQuotes": [
+      "I can't do anything right",
+      "I'm walking on eggshells constantly"
+    ]
+  },
+  "abuseDetection": {
+    "isAbusive": true,
+    "isAtImmediateRisk": false,
+    "detectedAbusiveBehaviors": [
+      {
+        "type": "emotional_abuse",
+        "severity": "moderate",
+        "frequency": "frequent",
+        "description": "Gaslighting, emotional manipulation, and invalidation"
+      },
+      {
+        "type": "psychological_abuse",
+        "severity": "moderate",
+        "frequency": "frequent",
+        "description": "Making user question their reality and self-worth"
+      }
+    ],
+    "riskFactors": [
+      "isolation",
+      "emotional_dependency",
+      "low_self_esteem",
+      "lack_of_support_system"
+    ],
+    "protectiveFactors": [
+      "self_awareness",
+      "desire_for_change",
+      "recognition_of_patterns"
+    ],
+    "safetyRecommendations": [
+      "Seek professional help immediately",
+      "Build support network outside relationship",
+      "Consider safety planning",
+      "Document concerning behaviors"
+    ]
+  },
+  "overallAssessment": {
+    "healthScore": 3,
+    "confidenceLevel": "high",
+    "summary": "This relationship exhibits concerning patterns of emotional abuse, gaslighting, and power imbalance. The user is experiencing significant distress, loss of self-identity, and emotional manipulation, indicating this relationship may be harmful to their wellbeing and requires immediate professional intervention.",
+    "keyInsights": [
+      "This relationship shows clear signs of emotional abuse and gaslighting",
+      "The user is experiencing significant emotional distress and loss of self-identity",
+      "There's a clear pattern of power imbalance favoring the partner",
+      "The user's needs are consistently dismissed while partner's needs dominate",
+      "The relationship is causing more harm than good to the user's wellbeing"
+    ],
+    "warningFlags": [
+      "Gaslighting and reality distortion",
+      "Emotional manipulation and control",
+      "Isolation and dependency patterns",
+      "Declining mental health and self-esteem",
+      "Fear-based communication avoidance"
+    ],
+    "positiveHighlights": [
+      "User demonstrates self-awareness and insight",
+      "User recognizes unhealthy patterns",
+      "User is seeking help and support",
+      "User maintains some boundaries around therapy consideration"
+    ]
+  }
+}

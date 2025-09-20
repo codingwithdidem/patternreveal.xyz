@@ -12,6 +12,11 @@ import ReflectionsMenuBar from "@/components/reflections/ReflectionsMenuBar";
 import AskAI from "@/components/reflections/ask-ai/AskAI";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SparklesIcon, WandSparklesIcon } from "lucide-react";
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/ui/resizable";
 
 import { experimental_useObject } from "ai/react";
 import { analysisSchema } from "@/lib/zod/schemas/analysis";
@@ -141,43 +146,50 @@ export default function ReflectionEditorClientPage() {
         </Link>
       </div>
       <ReflectionsMenuBar reflection={reflection} onAnalyze={onAnalyze} />
-      <div className="grid grid-cols-8 pl-2 gap-2">
-        <div className="col-span-5 flex flex-col gap-4">
-          <Toolbar />
-          <Tiptap
-            saveStatus={saveStatus}
-            charsCount={charsCount}
-            content={reflection.content}
-            onContentUpdate={debouncedUpdates}
-            textEvidence={allTextEvidence}
-          />
-        </div>
-        <div className="col-span-3 bg-gray-50/70 p-2 rounded-lg">
-          <Tabs defaultValue="analysis">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="analysis">
-                <WandSparklesIcon className="w-4 h-4 mr-2" />
-                Analysis
-              </TabsTrigger>
-
-              <TabsTrigger value="ask-ai">
-                <SparklesIcon className="w-4 h-4 mr-2" />
-                Ask AI
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="analysis">
-              <Analysis
-                isLoading={isLoadingAnalysis}
-                // @ts-expect-error - analysisReport is not typed
-                analysisReport={analysisReport}
+      <div className="pl-2">
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel defaultSize={62} minSize={30} collapsible>
+            <div className="flex flex-col gap-4">
+              <Toolbar />
+              <Tiptap
+                saveStatus={saveStatus}
+                charsCount={charsCount}
+                content={reflection.content}
+                onContentUpdate={debouncedUpdates}
+                textEvidence={allTextEvidence}
               />
-            </TabsContent>
+            </div>
+          </ResizablePanel>
+          <ResizableHandle withHandle />
+          <ResizablePanel defaultSize={38} minSize={25} collapsible>
+            <div className="bg-gray-50/70 p-2 rounded-lg">
+              <Tabs defaultValue="analysis">
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="analysis">
+                    <WandSparklesIcon className="w-4 h-4 mr-2" />
+                    Analysis
+                  </TabsTrigger>
 
-            <TabsContent value="ask-ai">
-              <AskAI />
-            </TabsContent>
-          </Tabs>
-        </div>
+                  <TabsTrigger value="ask-ai">
+                    <SparklesIcon className="w-4 h-4 mr-2" />
+                    Ask AI
+                  </TabsTrigger>
+                </TabsList>
+                <TabsContent value="analysis">
+                  <Analysis
+                    isLoading={isLoadingAnalysis}
+                    // @ts-expect-error - analysisReport is not typed
+                    analysisReport={analysisReport}
+                  />
+                </TabsContent>
+
+                <TabsContent value="ask-ai">
+                  <AskAI />
+                </TabsContent>
+              </Tabs>
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </div>
   );

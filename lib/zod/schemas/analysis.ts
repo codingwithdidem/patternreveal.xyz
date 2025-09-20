@@ -3185,6 +3185,11 @@ export const analysisSchema = z.object({
     confidenceLevel: z
       .enum(["high", "medium", "low"])
       .describe("AI confidence in this analysis"),
+    summary: z
+      .string()
+      .describe(
+        "A comprehensive 2-3 sentence summary of the relationship analysis"
+      ),
     keyInsights: z
       .array(z.string())
       .describe("Top 3-5 key insights from this reflection"),
