@@ -768,72 +768,6 @@ export const CONTEXT_FACTORS_DESCRIPTIONS = {
   technology_stress: "Issues with devices, internet, or digital communication.",
 } as const;
 
-// Progress tracking pattern descriptions - constants for consistency
-export const PROGRESS_TRACKING_DESCRIPTIONS = {
-  // Relationship trends
-  improving:
-    "Relationship is getting better, stronger, or more positive over time.",
-  stable:
-    "Relationship maintains consistent quality without significant changes.",
-  declining: "Relationship is deteriorating or becoming more negative.",
-  uncertain: "Relationship direction is unclear or fluctuating significantly.",
-
-  // Personal growth areas
-  emotional_intelligence:
-    "Developing better understanding and management of emotions.",
-  communication_skills:
-    "Improving ability to express thoughts and feelings clearly.",
-  assertiveness: "Learning to express needs and boundaries confidently.",
-  empathy: "Developing deeper understanding of others' perspectives.",
-  self_awareness:
-    "Increasing understanding of one's own patterns and behaviors.",
-  conflict_resolution: "Learning to handle disagreements constructively.",
-  emotional_regulation: "Improving ability to manage emotional responses.",
-  boundary_setting: "Learning to establish and maintain healthy boundaries.",
-
-  // Relationship goals
-  better_communication: "Improving how partners communicate with each other.",
-  increased_intimacy: "Deepening emotional and physical connection.",
-  conflict_reduction: "Decreasing frequency and intensity of conflicts.",
-  trust_building: "Strengthening trust and reliability in the relationship.",
-  mutual_support: "Enhancing ability to support each other effectively.",
-  shared_activities: "Spending more quality time together.",
-  individual_growth: "Supporting each other's personal development.",
-  relationship_stability: "Creating more consistent and predictable dynamics.",
-
-  // Milestone achievements
-  breakthrough_conversation:
-    "Had a significant conversation that improved understanding.",
-  conflict_resolution_milestone: "Successfully resolved a major disagreement.",
-  vulnerability_sharing: "Shared something deeply personal or vulnerable.",
-  support_provided: "Provided meaningful support during a difficult time.",
-  boundary_respected: "Successfully established and maintained a boundary.",
-  apology_accepted: "Gave or received a meaningful apology.",
-  goal_achieved: "Accomplished a shared or individual goal.",
-  pattern_broken: "Successfully changed a negative behavioral pattern.",
-
-  // Areas needing attention
-  communication_gaps:
-    "Misunderstandings or communication breakdowns occurring.",
-  emotional_distance: "Feeling disconnected or emotionally distant.",
-  unresolved_conflicts: "Ongoing disagreements that haven't been addressed.",
-  trust_issues: "Problems with reliability, honesty, or dependability.",
-  boundary_violations: "Respecting personal limits and boundaries.",
-  support_imbalance: "Unequal giving and receiving of support.",
-  intimacy_barriers: "Obstacles to emotional or physical closeness.",
-  individual_stress: "Personal stress affecting relationship dynamics.",
-
-  // Strengths identified
-  mutual_respect: "Both partners show respect for each other.",
-  effective_listening: "Partners listen to and understand each other well.",
-  conflict_skills: "Ability to handle disagreements constructively.",
-  emotional_support: "Providing comfort and encouragement to each other.",
-  shared_values: "Common beliefs and principles guiding the relationship.",
-  adaptability: "Ability to adjust and grow together.",
-  humor_connection: "Sharing laughter and light moments together.",
-  future_planning: "Working together toward common goals.",
-} as const;
-
 // Connection patterns descriptions - constants for consistency
 export const CONNECTION_PATTERNS_DESCRIPTIONS = {
   // Love languages
@@ -938,18 +872,10 @@ export const emotionalPatternSchema = z.object({
     ])
     .describe("The primary emotion experienced during this interaction"),
 
-  // Emotional intensity and regulation
-  emotionalIntensity: z
-    .number()
-    .min(1)
-    .max(10)
-    .describe("Emotional intensity scale 1-10"),
+  // Emotional regulation
   emotionalRegulation: z
     .enum(["excellent", "good", "fair", "poor"])
     .describe("How well emotions were managed and regulated"),
-  emotionalStability: z
-    .enum(["very_stable", "stable", "somewhat_unstable", "very_unstable"])
-    .describe("Consistency of emotional state during the interaction"),
 
   // Detected emotional patterns
   detectedPatterns: z
@@ -957,74 +883,40 @@ export const emotionalPatternSchema = z.object({
       z.object({
         pattern: z
           .enum([
-            // Emotional regulation patterns
+            // Core emotional regulation patterns
             "emotional_suppression",
             "emotional_explosion",
             "emotional_numbing",
             "emotional_avoidance",
-            "emotional_minimization",
-            "emotional_amplification",
-            "emotional_switching",
-            "emotional_stability",
 
-            // Emotional expression patterns
+            // Core emotional expression patterns
             "emotional_openness",
             "emotional_withdrawal",
             "emotional_dumping",
             "emotional_manipulation",
-            "emotional_validation_seeking",
-            "emotional_independence",
-            "emotional_contagion",
-            "emotional_boundaries",
 
-            // Emotional response patterns
+            // Core emotional response patterns
             "fight_response",
             "flight_response",
             "freeze_response",
             "fawn_response",
-            "adaptive_response",
-            "defensive_response",
-            "passive_response",
-            "assertive_response",
 
-            // Emotional intelligence patterns
-            "emotional_awareness",
-            "emotional_illiteracy",
-            "emotional_empathy",
-            "emotional_blindness",
-            "emotional_self_soothing",
+            // Core emotional intelligence patterns
             "emotional_dysregulation",
-            "emotional_resilience",
             "emotional_vulnerability",
+            "emotional_self_soothing",
 
-            // Relationship-specific emotional patterns
-            "emotional_caretaking",
+            // Core relationship emotional patterns
             "emotional_dependency",
-            "emotional_intimacy_avoidance",
-            "emotional_intimacy_seeking",
-            "emotional_competition",
+            "emotional_caretaking",
             "emotional_jealousy",
             "emotional_isolation",
-            "emotional_fusion",
 
-            // Trauma-related emotional patterns
-            "emotional_flashbacks",
+            // Core trauma-related patterns
             "emotional_dissociation",
             "emotional_hypervigilance",
             "emotional_shutdown",
-            "emotional_reexperiencing",
-            "emotional_avoidance_trauma",
-            "emotional_safety_seeking",
-            "emotional_trust_issues",
-
-            // Cultural and societal emotional patterns
-            "emotional_conformity",
-            "emotional_performance",
-            "emotional_scarcity",
-            "emotional_abundance",
-            "emotional_collectivism",
-            "emotional_individualism",
-            "emotional_cooperation",
+            "emotional_flashbacks",
           ])
           .describe("Specific emotional pattern detected"),
         quote: z
@@ -1056,82 +948,15 @@ export const emotionalPatternSchema = z.object({
     )
     .describe("Specific emotional patterns detected with evidence"),
 
-  // Emotional triggers and responses
+  // Emotional triggers
   emotionalTriggers: z
     .array(z.string())
     .describe("What triggered these emotions"),
-  emotionalTriggersAnalysis: z
-    .array(
-      z.object({
-        trigger: z.string().describe("Specific trigger identified"),
-        response: z.string().describe("Emotional response to this trigger"),
-        pattern: z
-          .string()
-          .describe("Pattern in how this trigger affects emotions"),
-      })
-    )
-    .describe("Detailed analysis of emotional triggers and responses"),
 
-  // Emotional recovery and resilience
-  emotionalRecoveryTime: z
-    .enum(["immediate", "hours", "days", "weeks"])
-    .describe("How long negative emotions lasted"),
-  emotionalRecoveryStrategies: z
-    .array(z.string())
-    .describe("Strategies used to recover from difficult emotions"),
-  emotionalResilience: z
-    .enum(["high", "moderate", "low"])
-    .describe("Ability to bounce back from emotional setbacks"),
-
-  // Emotional intelligence components
-  emotionalAwareness: z
-    .enum(["high", "moderate", "low"])
-    .describe("Awareness of one's own emotions"),
-  emotionalEmpathy: z
-    .enum(["high", "moderate", "low"])
-    .describe("Ability to understand others' emotions"),
-  emotionalExpression: z
-    .enum(["healthy", "suppressed", "exaggerated", "manipulative"])
-    .describe("How emotions are expressed"),
-  emotionalBoundaries: z
-    .enum(["healthy", "rigid", "porous", "nonexistent"])
-    .describe("Boundaries around emotional expression and reception"),
-
-  // Mood tracking
-  moodBeforeInteraction: z.number().min(1).max(10).optional(),
-  moodAfterInteraction: z.number().min(1).max(10).optional(),
-  moodChange: z
-    .enum(["improved", "worsened", "stable", "fluctuated"])
-    .describe("How mood changed during the interaction"),
-
-  // Emotional contagion and influence
-  emotionalContagion: z
-    .boolean()
-    .describe("Did their mood affect yours or vice versa?"),
-  emotionalInfluence: z
-    .enum([
-      "you_influenced_them",
-      "they_influenced_you",
-      "mutual_influence",
-      "no_influence",
-    ])
-    .describe("Direction of emotional influence"),
-
-  // Context and support
-  emotionalSupport: z
-    .enum(["excellent", "good", "fair", "poor", "none"])
-    .describe("Level of emotional support received or given"),
-  emotionalSafety: z
-    .enum(["very_safe", "safe", "somewhat_unsafe", "very_unsafe"])
-    .describe("Feeling of emotional safety in the interaction"),
-
-  // Evidence and insights
+  // Evidence
   textEvidence: z
     .array(textEvidenceSchema)
     .describe("Specific quotes showing emotional patterns"),
-  emotionalInsights: z
-    .array(z.string())
-    .describe("Key insights about emotional patterns and their impact"),
 });
 
 // Communication analysis
@@ -1455,36 +1280,6 @@ export const relationshipDynamicsSchema = z.object({
     .enum(["very_stable", "stable", "somewhat_unstable", "very_unstable"])
     .describe("Stability of the relationship"),
 
-  // Power dynamics assessment
-  powerDynamics: z.object({
-    whoInitiated: z
-      .enum(["you", "them", "mutual"])
-      .describe("Who started this interaction or brought up the topic"),
-    whoControlled: z
-      .enum(["you", "them", "balanced"])
-      .describe("Who had more control or influence during the interaction"),
-    decisionMaking: z
-      .enum(["collaborative", "dominated_by_you", "dominated_by_them"])
-      .describe("How decisions were made during this interaction"),
-    powerBalance: z
-      .enum(["balanced", "you_dominant", "them_dominant", "conflicted"])
-      .describe("Overall power balance in the relationship"),
-  }),
-
-  // Support patterns assessment
-  supportPatterns: z.object({
-    emotionalSupport: z
-      .enum(["you_supported", "they_supported", "mutual", "none"])
-      .describe("Who provided emotional comfort, empathy, or understanding"),
-    practicalSupport: z
-      .enum(["you_supported", "they_supported", "mutual", "none"])
-      .describe("Who provided practical help, advice, or tangible assistance"),
-    validationExchanged: z.boolean(),
-    supportBalance: z
-      .enum(["balanced", "you_give_more", "they_give_more", "both_low"])
-      .describe("Balance of support given and received"),
-  }),
-
   // Intimacy and connection assessment
   intimacyLevel: z
     .enum(["very_close", "close", "moderate", "distant", "very_distant"])
@@ -1492,17 +1287,6 @@ export const relationshipDynamicsSchema = z.object({
   trustLevel: z
     .enum(["high", "medium", "low", "broken"])
     .describe("Current level of trust between both parties"),
-  connectionTypes: z
-    .array(
-      z.enum([
-        "emotional",
-        "physical",
-        "intellectual",
-        "spiritual",
-        "practical",
-      ])
-    )
-    .describe("Types of connection present in the relationship"),
 
   // Effort and investment assessment
   effortBalance: z
@@ -1519,9 +1303,6 @@ export const relationshipDynamicsSchema = z.object({
   conflictResolution: z
     .enum(["excellent", "good", "fair", "poor", "none"])
     .describe("How well conflicts are resolved"),
-  conflictPatterns: z
-    .array(z.string())
-    .describe("Recurring patterns in conflicts"),
 
   // Growth and development assessment
   relationshipGrowth: z
@@ -1617,21 +1398,6 @@ export const contextFactorsSchema = z.object({
     .describe("Specific context factor patterns detected with evidence"),
 
   // Basic interaction context
-  interactionType: z
-    .enum([
-      "casual_conversation",
-      "serious_discussion",
-      "conflict",
-      "celebration",
-      "support_session",
-      "planning",
-      "reminiscing",
-      "problem_solving",
-    ])
-    .describe("The nature or type of this interaction"),
-  duration: z
-    .enum(["brief", "moderate", "extended", "marathon"])
-    .describe("How long this interaction lasted"),
   environment: z
     .enum(["home", "work", "public", "online", "phone", "text"])
     .describe("Where or how this interaction took place"),
@@ -1653,22 +1419,6 @@ export const contextFactorsSchema = z.object({
       })
     )
     .describe("Detailed analysis of external stressors"),
-
-  // Energy and mood assessment
-  energyLevels: z.object({
-    yours: z
-      .enum(["high", "medium", "low"])
-      .describe("Your energy level during this interaction"),
-    theirs: z
-      .enum(["high", "medium", "low", "unknown"])
-      .describe("Their apparent energy level during this interaction"),
-    energyMatch: z
-      .enum(["matched", "mismatched", "complementary"])
-      .describe("How well energy levels aligned"),
-    energyImpact: z
-      .string()
-      .describe("How energy levels affected the interaction"),
-  }),
 
   // Time context analysis
   timeContext: z.object({
@@ -1697,64 +1447,6 @@ export const contextFactorsSchema = z.object({
     specialCircumstances: z.array(z.string()).optional(),
   }),
 
-  // Environmental factors
-  environmentalFactors: z.object({
-    privacy: z
-      .enum(["very_private", "somewhat_private", "public", "very_public"])
-      .describe("Level of privacy during interaction"),
-    noise: z
-      .enum(["quiet", "moderate", "loud", "distracting"])
-      .describe("Noise level in the environment"),
-    comfort: z
-      .enum([
-        "very_comfortable",
-        "comfortable",
-        "uncomfortable",
-        "very_uncomfortable",
-      ])
-      .describe("Physical comfort level"),
-    distractions: z.array(z.string()).describe("Specific distractions present"),
-    environmentalImpact: z
-      .string()
-      .describe("How environment affected the interaction"),
-  }),
-
-  // Technology factors
-  technologyFactors: z.object({
-    platform: z
-      .enum([
-        "in_person",
-        "video_call",
-        "phone_call",
-        "text_message",
-        "social_media",
-      ])
-      .describe("Technology platform used"),
-    quality: z
-      .enum(["excellent", "good", "poor", "terrible"])
-      .describe("Technical quality of communication"),
-    interruptions: z
-      .array(z.string())
-      .describe("Technical interruptions or issues"),
-    techImpact: z.string().describe("How technology affected the interaction"),
-  }),
-
-  // Social context
-  socialContext: z.object({
-    othersPresent: z
-      .enum(["none", "few", "many", "crowd"])
-      .describe("Number of other people present"),
-    relationshipToOthers: z
-      .array(z.string())
-      .describe("Relationship to other people present"),
-    socialPressure: z
-      .enum(["none", "mild", "moderate", "high"])
-      .describe("Level of social pressure or judgment"),
-    socialImpact: z
-      .string()
-      .describe("How social context affected the interaction"),
-  }),
-
   // Emotional context
   emotionalContext: z.object({
     recentEvents: z
@@ -1763,12 +1455,6 @@ export const contextFactorsSchema = z.object({
     emotionalBaggage: z
       .array(z.string())
       .describe("Previous emotional experiences affecting this interaction"),
-    moodState: z
-      .enum(["positive", "neutral", "negative", "mixed"])
-      .describe("Overall emotional mood during interaction"),
-    emotionalReadiness: z
-      .enum(["ready", "somewhat_ready", "not_ready", "overwhelmed"])
-      .describe("Emotional readiness for this type of interaction"),
   }),
 
   // Context optimization recommendations
@@ -1797,299 +1483,6 @@ export const contextFactorsSchema = z.object({
   contextRecommendations: z
     .array(z.string())
     .describe("Recommendations for optimizing future interactions"),
-});
-
-// Comprehensive progress tracking analysis - detailed growth and development assessment
-export const progressTrackingSchema = z.object({
-  // Detected progress patterns
-  detectedPatterns: z
-    .array(
-      z.object({
-        pattern: z
-          .enum([
-            // Relationship trends
-            "improving",
-            "stable",
-            "declining",
-            "uncertain",
-
-            // Personal growth areas
-            "emotional_intelligence",
-            "communication_skills",
-            "assertiveness",
-            "empathy",
-            "self_awareness",
-            "conflict_resolution",
-            "emotional_regulation",
-            "boundary_setting",
-
-            // Relationship goals
-            "better_communication",
-            "increased_intimacy",
-            "conflict_reduction",
-            "trust_building",
-            "mutual_support",
-            "shared_activities",
-            "individual_growth",
-            "relationship_stability",
-
-            // Milestone achievements
-            "breakthrough_conversation",
-            "conflict_resolution_milestone",
-            "vulnerability_sharing",
-            "support_provided",
-            "boundary_respected",
-            "apology_accepted",
-            "goal_achieved",
-            "pattern_broken",
-
-            // Areas needing attention
-            "communication_gaps",
-            "emotional_distance",
-            "unresolved_conflicts",
-            "trust_issues",
-            "boundary_violations",
-            "support_imbalance",
-            "intimacy_barriers",
-            "individual_stress",
-
-            // Strengths identified
-            "mutual_respect",
-            "effective_listening",
-            "conflict_skills",
-            "emotional_support",
-            "shared_values",
-            "adaptability",
-            "humor_connection",
-            "future_planning",
-          ])
-          .describe("Specific progress pattern detected"),
-        quote: z
-          .string()
-          .describe(
-            "Specific quote from the reflection that demonstrates this progress pattern"
-          ),
-        impact: z
-          .string()
-          .describe("How this progress pattern affects the relationship"),
-        severity: z
-          .enum(["mild", "moderate", "severe", "extreme"])
-          .describe("Severity level of the progress pattern"),
-        timeframe: z
-          .string()
-          .describe(
-            "Timeframe for this progress (e.g., 'recent', 'ongoing', 'long-term')"
-          ),
-        nextSteps: z
-          .string()
-          .describe("Recommended next steps for this progress area"),
-        celebration: z
-          .string()
-          .describe("How to celebrate or acknowledge this progress"),
-      })
-    )
-    .describe("Specific progress patterns detected with evidence"),
-
-  // Overall relationship assessment
-  relationshipTrend: z
-    .enum(["improving", "stable", "declining", "uncertain"])
-    .describe("Overall direction the relationship appears to be heading"),
-  relationshipHealthScore: z
-    .number()
-    .min(1)
-    .max(10)
-    .describe("Current relationship health score"),
-  progressVelocity: z
-    .enum(["rapid", "steady", "slow", "stagnant", "declining"])
-    .describe("Speed of progress in the relationship"),
-
-  // Personal growth tracking
-  personalGrowthAreas: z
-    .array(z.string())
-    .describe("Areas where personal growth is occurring"),
-  personalGrowthProgress: z
-    .array(
-      z.object({
-        area: z.string().describe("Specific growth area"),
-        currentLevel: z
-          .enum(["beginning", "developing", "intermediate", "advanced"])
-          .describe("Current skill level"),
-        progressMade: z.string().describe("Specific progress made"),
-        challenges: z
-          .array(z.string())
-          .describe("Current challenges in this area"),
-        nextGoals: z.array(z.string()).describe("Next goals for this area"),
-        timeline: z.string().describe("Expected timeline for next progress"),
-      })
-    )
-    .describe("Detailed personal growth progress tracking"),
-
-  // Relationship goals tracking
-  relationshipGoals: z.array(z.string()).describe("Current relationship goals"),
-  goalProgress: z
-    .array(
-      z.object({
-        goal: z.string().describe("Specific relationship goal"),
-        priority: z.enum(["high", "medium", "low"]).describe("Priority level"),
-        progress: z
-          .enum([
-            "not_started",
-            "beginning",
-            "in_progress",
-            "nearly_complete",
-            "achieved",
-          ])
-          .describe("Current progress"),
-        milestones: z
-          .array(z.string())
-          .describe("Key milestones for this goal"),
-        obstacles: z.array(z.string()).describe("Current obstacles"),
-        supportNeeded: z
-          .string()
-          .describe("Support needed to achieve this goal"),
-        timeline: z.string().describe("Expected completion timeline"),
-      })
-    )
-    .describe("Detailed relationship goal progress tracking"),
-
-  // Milestone achievements
-  milestonesAchieved: z
-    .array(z.string())
-    .describe("Recent milestone achievements"),
-  milestoneDetails: z
-    .array(
-      z.object({
-        milestone: z.string().describe("Specific milestone achieved"),
-        date: z.string().describe("When this milestone was achieved"),
-        significance: z.string().describe("Why this milestone is important"),
-        celebration: z.string().describe("How this milestone was celebrated"),
-        nextMilestone: z
-          .string()
-          .describe("Next related milestone to work toward"),
-      })
-    )
-    .describe("Detailed milestone achievement tracking"),
-
-  // Areas needing attention
-  areasNeedingAttention: z
-    .array(z.string())
-    .describe("Areas that need focused attention"),
-  attentionAreas: z
-    .array(
-      z.object({
-        area: z.string().describe("Specific area needing attention"),
-        urgency: z
-          .enum(["low", "medium", "high", "critical"])
-          .describe("Urgency level"),
-        currentState: z.string().describe("Current state of this area"),
-        desiredState: z.string().describe("Desired state for this area"),
-        actionPlan: z.array(z.string()).describe("Specific actions to take"),
-        timeline: z.string().describe("Timeline for improvement"),
-        support: z.string().describe("Support needed for improvement"),
-      })
-    )
-    .describe("Detailed areas needing attention analysis"),
-
-  // Strengths identification
-  strengthsIdentified: z
-    .array(z.string())
-    .describe("Strengths and positive aspects identified"),
-  strengthDetails: z
-    .array(
-      z.object({
-        strength: z.string().describe("Specific strength identified"),
-        evidence: z.string().describe("Evidence of this strength"),
-        impact: z
-          .string()
-          .describe("How this strength benefits the relationship"),
-        development: z
-          .string()
-          .describe("How to further develop this strength"),
-        application: z
-          .string()
-          .describe("How to apply this strength more broadly"),
-      })
-    )
-    .describe("Detailed strength analysis"),
-
-  // Progress metrics
-  progressMetrics: z
-    .array(
-      z.object({
-        metric: z.string().describe("Specific metric being tracked"),
-        currentValue: z.string().describe("Current value of this metric"),
-        previousValue: z.string().describe("Previous value for comparison"),
-        trend: z
-          .enum(["improving", "stable", "declining"])
-          .describe("Trend direction"),
-        targetValue: z.string().describe("Target value for this metric"),
-        measurementMethod: z.string().describe("How this metric is measured"),
-        frequency: z.string().describe("How often this metric is checked"),
-      })
-    )
-    .describe("Quantitative progress metrics"),
-
-  // Growth indicators
-  growthIndicators: z
-    .array(
-      z.object({
-        indicator: z.string().describe("Specific growth indicator"),
-        evidence: z.string().describe("Evidence of this growth"),
-        timeframe: z.string().describe("Timeframe for this growth"),
-        sustainability: z
-          .enum(["high", "moderate", "low"])
-          .describe("Likelihood of sustained growth"),
-        nextSteps: z.string().describe("Steps to continue this growth"),
-      })
-    )
-    .describe("Detailed growth indicators analysis"),
-
-  // Challenges and obstacles
-  currentChallenges: z
-    .array(
-      z.object({
-        challenge: z.string().describe("Specific challenge being faced"),
-        impact: z
-          .enum(["low", "moderate", "high", "severe"])
-          .describe("Impact on progress"),
-        rootCause: z.string().describe("Root cause of this challenge"),
-        strategies: z
-          .array(z.string())
-          .describe("Strategies to address this challenge"),
-        timeline: z.string().describe("Expected timeline for resolution"),
-        support: z
-          .string()
-          .describe("Support needed to overcome this challenge"),
-      })
-    )
-    .describe("Current challenges and obstacles analysis"),
-
-  // Future planning
-  futurePlanning: z.object({
-    shortTermGoals: z.array(z.string()).describe("Goals for next 1-3 months"),
-    mediumTermGoals: z.array(z.string()).describe("Goals for next 3-12 months"),
-    longTermGoals: z.array(z.string()).describe("Goals for next 1-3 years"),
-    visionAlignment: z
-      .enum(["high", "moderate", "low"])
-      .describe("How well goals align with relationship vision"),
-    resourceNeeds: z
-      .array(z.string())
-      .describe("Resources needed to achieve goals"),
-    potentialObstacles: z
-      .array(z.string())
-      .describe("Potential obstacles to goal achievement"),
-  }),
-
-  // Evidence and insights
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing progress patterns"),
-  progressInsights: z
-    .array(z.string())
-    .describe("Key insights about progress and growth"),
-  progressRecommendations: z
-    .array(z.string())
-    .describe("Recommendations for continued progress"),
 });
 
 // Actionable insights
@@ -2274,20 +1667,6 @@ export const actionableInsightsSchema = z.object({
     )
     .describe("Warning signs to monitor and how to respond"),
 
-  // Success metrics and progress tracking
-  progressTracking: z
-    .array(
-      z.object({
-        metric: z.string().describe("What to track"),
-        currentState: z.string().describe("Current state of this metric"),
-        targetState: z.string().describe("Desired state of this metric"),
-        measurementMethod: z.string().describe("How to measure progress"),
-        frequency: z.string().describe("How often to check progress"),
-        milestones: z.array(z.string()).describe("Key milestones to celebrate"),
-      })
-    )
-    .describe("Metrics to track progress and success"),
-
   // Resource recommendations
   resourceRecommendations: z
     .array(
@@ -2315,21 +1694,6 @@ export const actionableInsightsSchema = z.object({
       })
     )
     .describe("Recommended resources for further learning and support"),
-
-  // Emergency protocols
-  emergencyProtocols: z
-    .array(
-      z.object({
-        situation: z.string().describe("Emergency situation"),
-        immediateActions: z
-          .array(z.string())
-          .describe("Immediate steps to take"),
-        contacts: z.array(z.string()).describe("Who to contact"),
-        resources: z.array(z.string()).describe("Emergency resources"),
-        followUp: z.string().describe("What to do after immediate crisis"),
-      })
-    )
-    .describe("Protocols for emergency situations"),
 
   // Long-term vision and goals
   longTermVision: z
@@ -2441,12 +1805,6 @@ export const abuseDetectionSchema = z.object({
         impact: z
           .string()
           .describe("How this abusive behavior affects the victim"),
-        severity: z
-          .enum(["mild", "moderate", "severe", "extreme"])
-          .describe("Severity level of the abuse"),
-        frequency: z
-          .enum(["one_time", "occasional", "frequent", "constant"])
-          .describe("How often this behavior occurs"),
         reasonings: z
           .array(z.string())
           .describe("Why this behavior is considered abusive"),
@@ -2549,12 +1907,6 @@ export const attachmentPatternsSchema = z.object({
       })
     )
     .describe("Specific attachment patterns detected with evidence"),
-  attachmentBehaviors: z
-    .array(z.string())
-    .describe("General attachment-related behaviors observed"),
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing attachment patterns"),
 });
 
 // Trauma responses analysis
@@ -2643,17 +1995,6 @@ export const traumaResponsesSchema = z.object({
     )
     .describe("Specific trauma response patterns detected with evidence"),
 
-  // Overall trauma assessment
-  traumaActivation: z
-    .enum(["none", "mild", "moderate", "severe", "extreme"])
-    .describe("Level of trauma activation during this interaction"),
-  traumaHistory: z
-    .enum(["none_evident", "possible", "likely", "confirmed"])
-    .describe("Evidence of trauma history"),
-  currentTraumaState: z
-    .enum(["stable", "activated", "overwhelmed", "healing", "recovered"])
-    .describe("Current state of trauma processing"),
-
   // Primary trauma responses
   yourPrimaryResponse: z
     .enum(["fight", "flight", "freeze", "fawn", "mixed", "none"])
@@ -2666,79 +2007,6 @@ export const traumaResponsesSchema = z.object({
   traumaTriggers: z
     .array(z.string())
     .describe("Specific triggers that activated trauma responses"),
-  triggerAnalysis: z
-    .array(
-      z.object({
-        trigger: z.string().describe("Specific trigger identified"),
-        response: z.string().describe("Trauma response to this trigger"),
-        intensity: z
-          .enum(["low", "moderate", "high", "extreme"])
-          .describe("Intensity of response"),
-        duration: z.string().describe("How long the response lasted"),
-        copingUsed: z.string().describe("Coping strategy used"),
-      })
-    )
-    .describe("Detailed analysis of trauma triggers and responses"),
-
-  // Physical trauma symptoms
-  physicalSymptoms: z
-    .array(z.string())
-    .describe("Physical symptoms related to trauma activation"),
-  somaticExperiences: z
-    .array(
-      z.object({
-        symptom: z.string().describe("Physical symptom"),
-        location: z.string().describe("Where in the body"),
-        intensity: z
-          .enum(["mild", "moderate", "severe"])
-          .describe("Intensity level"),
-        duration: z.string().describe("How long it lasted"),
-        trigger: z.string().describe("What seemed to trigger it"),
-      })
-    )
-    .describe("Detailed somatic experiences"),
-
-  // Emotional trauma responses
-  emotionalActivation: z
-    .enum(["none", "mild", "moderate", "severe", "overwhelming"])
-    .describe("Level of emotional activation"),
-  emotionalRegulation: z
-    .enum(["excellent", "good", "fair", "poor", "dysregulated"])
-    .describe("Ability to regulate emotions during trauma activation"),
-  emotionalRecovery: z
-    .enum(["immediate", "hours", "days", "weeks", "ongoing"])
-    .describe("Time to recover from emotional activation"),
-
-  // Cognitive trauma responses
-  cognitiveFunctioning: z
-    .enum(["clear", "foggy", "disrupted", "fragmented", "dissociated"])
-    .describe("State of cognitive functioning"),
-  memoryClarity: z
-    .enum(["clear", "hazy", "fragmented", "missing", "distorted"])
-    .describe("Clarity of memory during the interaction"),
-  concentrationLevel: z
-    .enum(["focused", "distracted", "scattered", "unable_to_focus"])
-    .describe("Ability to concentrate"),
-
-  // Behavioral trauma responses
-  avoidancePatterns: z
-    .array(z.string())
-    .describe("Avoidance behaviors exhibited"),
-  compulsiveBehaviors: z
-    .array(z.string())
-    .describe("Compulsive or repetitive behaviors"),
-  selfCareBehaviors: z.array(z.string()).describe("Self-care behaviors used"),
-
-  // Relational trauma impact
-  relationshipImpact: z
-    .enum(["none", "mild", "moderate", "severe", "damaging"])
-    .describe("Impact of trauma responses on the relationship"),
-  trustLevel: z
-    .enum(["high", "moderate", "low", "broken", "recovering"])
-    .describe("Current level of trust in relationships"),
-  attachmentSecurity: z
-    .enum(["secure", "anxious", "avoidant", "disorganized", "mixed"])
-    .describe("Attachment security level"),
 
   // Coping strategies assessment
   healthyCopingUsed: z
@@ -2747,48 +2015,11 @@ export const traumaResponsesSchema = z.object({
   unhealthyCopingUsed: z
     .array(z.string())
     .describe("Unhealthy coping strategies that were used"),
-  copingEffectiveness: z
-    .enum([
-      "very_effective",
-      "somewhat_effective",
-      "minimally_effective",
-      "ineffective",
-    ])
-    .describe("Effectiveness of coping strategies used"),
-
-  // Healing and recovery indicators
-  healingProgress: z
-    .enum([
-      "early_stages",
-      "making_progress",
-      "significant_progress",
-      "well_advanced",
-      "recovered",
-    ])
-    .describe("Current stage of healing progress"),
-  resilienceIndicators: z
-    .array(z.string())
-    .describe("Signs of resilience and strength"),
-  growthIndicators: z
-    .array(z.string())
-    .describe("Signs of post-traumatic growth"),
-
-  // Safety and support needs
-  safetyLevel: z
-    .enum(["very_safe", "safe", "somewhat_unsafe", "unsafe", "dangerous"])
-    .describe("Current level of emotional and physical safety"),
-  supportNeeded: z.array(z.string()).describe("Types of support needed"),
-  professionalHelp: z
-    .enum(["not_needed", "recommended", "urgent", "critical"])
-    .describe("Need for professional trauma therapy"),
 
   // Evidence and insights
   textEvidence: z
     .array(textEvidenceSchema)
     .describe("Specific quotes showing trauma responses"),
-  traumaInsights: z
-    .array(z.string())
-    .describe("Key insights about trauma patterns and their impact"),
   healingRecommendations: z
     .array(z.string())
     .describe("Specific recommendations for trauma healing"),
@@ -2881,213 +2112,16 @@ export const connectionPatternsSchema = z.object({
       ])
     )
     .describe("Love languages that were expressed or attempted"),
-  loveLanguageAnalysis: z
-    .array(
-      z.object({
-        language: z
-          .enum([
-            "words_of_affirmation",
-            "quality_time",
-            "physical_touch",
-            "acts_of_service",
-            "gifts",
-          ])
-          .describe("Specific love language"),
-        whoExpressed: z
-          .enum(["you", "them", "both"])
-          .describe("Who expressed this love language"),
-        effectiveness: z
-          .enum(["high", "moderate", "low"])
-          .describe("How effective this expression was"),
-        recipientResponse: z.string().describe("How the recipient responded"),
-        improvement: z
-          .string()
-          .describe("How to improve this love language expression"),
-      })
-    )
-    .describe("Detailed love language analysis"),
 
   // Connection attempts analysis
   connectionAttempts: z
     .array(z.string())
     .describe("Ways either person tried to connect"),
-  connectionAttemptAnalysis: z
-    .array(
-      z.object({
-        attempt: z.string().describe("Specific connection attempt"),
-        initiator: z
-          .enum(["you", "them"])
-          .describe("Who initiated this attempt"),
-        method: z.string().describe("Method used for connection"),
-        success: z
-          .enum(["successful", "partially_successful", "unsuccessful"])
-          .describe("Success level"),
-        barriers: z.array(z.string()).describe("Barriers encountered"),
-        improvement: z
-          .string()
-          .describe("How to improve this connection attempt"),
-      })
-    )
-    .describe("Detailed analysis of connection attempts"),
 
   // Connection barriers analysis
   connectionBarriers: z
     .array(z.string())
     .describe("What prevented or hindered connection"),
-  barrierAnalysis: z
-    .array(
-      z.object({
-        barrier: z.string().describe("Specific connection barrier"),
-        source: z
-          .enum(["internal", "external", "relational"])
-          .describe("Source of the barrier"),
-        impact: z
-          .enum(["low", "moderate", "high", "severe"])
-          .describe("Impact on connection"),
-        frequency: z
-          .enum(["rare", "occasional", "frequent", "constant"])
-          .describe("How often this barrier occurs"),
-        strategies: z
-          .array(z.string())
-          .describe("Strategies to overcome this barrier"),
-      })
-    )
-    .describe("Detailed analysis of connection barriers"),
-
-  // Intimacy assessment
-  intimacyTypes: z.object({
-    emotional: z
-      .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of emotional intimacy shared"),
-    physical: z
-      .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of physical intimacy or affection"),
-    intellectual: z
-      .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of intellectual connection and stimulation"),
-    spiritual: z
-      .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of spiritual or values-based connection"),
-    creative: z
-      .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of creative collaboration and expression"),
-    playful: z
-      .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of playful interaction and humor"),
-    supportive: z
-      .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of mutual support and care"),
-    adventurous: z
-      .enum(["high", "medium", "low", "blocked"])
-      .describe("Level of shared adventure and exploration"),
-  }),
-
-  // Intimacy development
-  intimacyDevelopment: z.object({
-    overallLevel: z
-      .enum(["very_high", "high", "moderate", "low", "very_low"])
-      .describe("Overall intimacy level in the relationship"),
-    growthAreas: z.array(z.string()).describe("Areas where intimacy can grow"),
-    strengths: z.array(z.string()).describe("Intimacy strengths to build upon"),
-    challenges: z
-      .array(z.string())
-      .describe("Challenges to intimacy development"),
-    nextSteps: z
-      .array(z.string())
-      .describe("Next steps for intimacy development"),
-  }),
-
-  // Connection quality metrics
-  connectionQuality: z.object({
-    depth: z
-      .enum(["superficial", "moderate", "deep", "very_deep"])
-      .describe("Depth of connection"),
-    frequency: z
-      .enum(["rare", "occasional", "regular", "constant"])
-      .describe("Frequency of meaningful connection"),
-    consistency: z
-      .enum([
-        "inconsistent",
-        "somewhat_consistent",
-        "consistent",
-        "very_consistent",
-      ])
-      .describe("Consistency of connection quality"),
-    satisfaction: z
-      .enum([
-        "very_dissatisfied",
-        "dissatisfied",
-        "neutral",
-        "satisfied",
-        "very_satisfied",
-      ])
-      .describe("Satisfaction with connection level"),
-  }),
-
-  // Connection rituals and patterns
-  connectionRituals: z
-    .array(
-      z.object({
-        ritual: z.string().describe("Specific connection ritual or pattern"),
-        frequency: z.string().describe("How often this ritual occurs"),
-        participants: z
-          .enum(["you", "them", "both"])
-          .describe("Who participates in this ritual"),
-        effectiveness: z
-          .enum(["high", "moderate", "low"])
-          .describe("Effectiveness of this ritual"),
-        improvement: z.string().describe("How to improve this ritual"),
-      })
-    )
-    .describe("Connection rituals and patterns analysis"),
-
-  // Emotional attunement
-  emotionalAttunement: z.object({
-    attunementLevel: z
-      .enum(["high", "moderate", "low", "absent"])
-      .describe("Level of emotional attunement between partners"),
-    attunementEvidence: z
-      .array(z.string())
-      .describe("Evidence of emotional attunement"),
-    attunementBarriers: z
-      .array(z.string())
-      .describe("Barriers to emotional attunement"),
-    attunementDevelopment: z
-      .string()
-      .describe("How to develop better emotional attunement"),
-  }),
-
-  // Vulnerability patterns
-  vulnerabilityPatterns: z.object({
-    vulnerabilityLevel: z
-      .enum(["high", "moderate", "low", "minimal"])
-      .describe("Level of vulnerability shared"),
-    vulnerabilitySafety: z
-      .enum(["very_safe", "safe", "somewhat_unsafe", "unsafe"])
-      .describe("Safety level for vulnerability"),
-    vulnerabilityReciprocity: z
-      .enum(["balanced", "one_sided", "minimal"])
-      .describe("Balance of vulnerability sharing"),
-    vulnerabilityGrowth: z
-      .string()
-      .describe("How to increase healthy vulnerability"),
-  }),
-
-  // Connection maintenance
-  connectionMaintenance: z.object({
-    maintenanceEffort: z
-      .enum(["high", "moderate", "low", "minimal"])
-      .describe("Effort put into maintaining connection"),
-    maintenanceMethods: z
-      .array(z.string())
-      .describe("Methods used to maintain connection"),
-    maintenanceEffectiveness: z
-      .enum(["very_effective", "somewhat_effective", "ineffective"])
-      .describe("Effectiveness of connection maintenance"),
-    maintenanceImprovement: z
-      .string()
-      .describe("How to improve connection maintenance"),
-  }),
 
   // Evidence and insights
   textEvidence: z
@@ -3163,7 +2197,6 @@ export const analysisSchema = z.object({
   behaviorPatterns: behaviorPatternSchema,
   relationshipDynamics: relationshipDynamicsSchema,
   contextFactors: contextFactorsSchema,
-  progressTracking: progressTrackingSchema,
   actionableInsights: actionableInsightsSchema,
 
   // Advanced psychological patterns
@@ -3207,7 +2240,6 @@ export type CommunicationPattern = z.infer<typeof communicationPatternSchema>;
 export type BehaviorPattern = z.infer<typeof behaviorPatternSchema>;
 export type RelationshipDynamics = z.infer<typeof relationshipDynamicsSchema>;
 export type ContextFactors = z.infer<typeof contextFactorsSchema>;
-export type ProgressTracking = z.infer<typeof progressTrackingSchema>;
 export type ActionableInsights = z.infer<typeof actionableInsightsSchema>;
 export type AttachmentPatterns = z.infer<typeof attachmentPatternsSchema>;
 export type TraumaResponses = z.infer<typeof traumaResponsesSchema>;

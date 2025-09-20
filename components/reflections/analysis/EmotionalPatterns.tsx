@@ -1,338 +1,287 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { ArrowRight, Clock, Heart, MessageCircle } from "lucide-react";
+import {
+  Heart,
+  MessageCircle,
+  AlertTriangle,
+  User,
+  Users,
+  Zap,
+  Target,
+} from "lucide-react";
 import type { Analysis as AnalysisType } from "@/lib/zod/schemas/analysis";
 
 interface EmotionalPatternsProps {
   analysisReport: AnalysisType;
 }
 
-const EmotionIcon = ({ emotion }: { emotion: string }) => {
+// Helper functions for styling
+const getSeverityColor = (severity: string) => {
+  switch (severity) {
+    case "mild":
+      return "bg-blue-100 text-blue-800";
+    case "moderate":
+      return "bg-yellow-100 text-yellow-800";
+    case "severe":
+      return "bg-orange-100 text-orange-800";
+    case "extreme":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+const getRegulationColor = (regulation: string) => {
+  switch (regulation) {
+    case "excellent":
+      return "bg-green-100 text-green-800";
+    case "good":
+      return "bg-blue-100 text-blue-800";
+    case "fair":
+      return "bg-yellow-100 text-yellow-800";
+    case "poor":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+const getEmotionIcon = (emotion: string) => {
   const icons: Record<string, React.ReactNode> = {
     joy: "😊",
     sadness: "😢",
     anger: "😠",
     fear: "😨",
     anxiety: "😰",
+    surprise: "😲",
+    disgust: "🤢",
     love: "🥰",
     frustration: "😤",
     contentment: "😌",
     guilt: "😔",
     shame: "😳",
+    hurt: "💔",
+    disappointment: "😞",
+    confusion: "😕",
+    excitement: "🤩",
+    relief: "😮‍💨",
+    jealousy: "😒",
+    loneliness: "😔",
+    gratitude: "🙏",
+    hope: "✨",
+    despair: "😩",
+    rage: "🤬",
+    panic: "😱",
+    numbness: "😐",
+    overwhelm: "😵",
+    peace: "😌",
+    longing: "🥺",
+    resentment: "😤",
+    compassion: "💝",
   };
-
-  return <span className="text-2xl">{icons[emotion] || "😐"}</span>;
+  return icons[emotion] || "😐";
 };
 
-const TextEvidenceDisplay = ({
-  evidence,
-}: {
-  evidence: Array<{ quote: string; analysis: string }>;
-}) => {
-  if (!evidence?.length) return null;
-
-  return (
-    <div className="space-y-3 mt-4">
-      <h5 className="font-medium text-sm flex items-center gap-2">
-        <MessageCircle className="w-4 h-4" />
-        Supporting Evidence
-      </h5>
-      <div className="space-y-3">
-        {evidence.map((item, index) => (
-          <div
-            key={index}
-            className="bg-slate-50 p-3 rounded-lg border-l-4 border-blue-500"
-          >
-            <blockquote className="text-sm italic text-slate-700 mb-2">
-              &quot;{item.quote}&quot;
-            </blockquote>
-            <p className="text-xs text-slate-600">{item.analysis}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+const getWhoExhibitedIcon = (who: string) => {
+  switch (who) {
+    case "you":
+      return <User className="w-4 h-4" />;
+    case "them":
+      return <User className="w-4 h-4" />;
+    case "both":
+      return <Users className="w-4 h-4" />;
+    default:
+      return <User className="w-4 h-4" />;
+  }
 };
 
 export default function EmotionalPatterns({
   analysisReport,
 }: EmotionalPatternsProps) {
+  const emotionalPatterns = analysisReport.emotionalPatterns;
+
+  if (!emotionalPatterns) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">
+          Emotional patterns analysis not available for this reflection.
+          <br />
+          Re-analyze this reflection to get emotional insights.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Heart className="w-5 h-5" />
-          Emotional Patterns
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div className="flex items-center gap-4">
-              <EmotionIcon
-                emotion={
-                  analysisReport.emotionalPatterns?.dominantEmotion || "neutral"
-                }
-              />
-              <div>
-                <p className="font-semibold capitalize">
-                  {analysisReport.emotionalPatterns?.dominantEmotion ||
-                    "Not detected"}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Dominant emotion
-                </p>
-              </div>
-            </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center gap-2">
+        <Heart className="w-5 h-5 text-red-600" />
+        <h3 className="text-lg font-semibold">Emotional Patterns</h3>
+      </div>
 
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-sm">Emotional Intensity</span>
-                <span className="text-sm font-medium">
-                  {analysisReport.emotionalPatterns?.emotionalIntensity || 0}
-                  /10
+      {/* Emotional Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+            <Heart className="w-4 h-4 text-red-600" />
+            Emotional State
+          </h4>
+          <div className="space-y-3">
+            {emotionalPatterns.dominantEmotion && (
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">
+                  {getEmotionIcon(emotionalPatterns.dominantEmotion)}
                 </span>
-              </div>
-              <Progress
-                value={
-                  (analysisReport.emotionalPatterns?.emotionalIntensity || 0) *
-                  10
-                }
-                className="h-2"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-sm font-medium">Recovery Time</span>
-              <Badge variant="outline" className="capitalize">
-                <Clock className="w-3 h-3 mr-1" />
-                {analysisReport.emotionalPatterns?.emotionalRecoveryTime ||
-                  "Not specified"}
-              </Badge>
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-sm font-medium">Emotional Stability</span>
-              <Badge
-                variant={
-                  analysisReport.emotionalPatterns?.emotionalStability ===
-                  "stable"
-                    ? "default"
-                    : "secondary"
-                }
-                className="capitalize"
-              >
-                {analysisReport.emotionalPatterns?.emotionalStability ||
-                  "Not assessed"}
-              </Badge>
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-sm font-medium">Stress Response</span>
-              <Badge variant="outline" className="capitalize">
-                {analysisReport.emotionalPatterns?.stressResponse ||
-                  "Not detected"}
-              </Badge>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <span className="text-sm font-medium">Self-Regulation</span>
-              <Badge
-                variant={
-                  analysisReport.emotionalPatterns?.selfRegulation ===
-                  "excellent"
-                    ? "default"
-                    : "secondary"
-                }
-                className="capitalize"
-              >
-                {analysisReport.emotionalPatterns?.selfRegulation ||
-                  "Not assessed"}
-              </Badge>
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-sm font-medium">Emotional Contagion</span>
-              <Badge
-                variant={
-                  analysisReport.emotionalPatterns?.emotionalContagion
-                    ? "destructive"
-                    : "default"
-                }
-              >
-                {analysisReport.emotionalPatterns?.emotionalContagion
-                  ? "Present"
-                  : "Not Detected"}
-              </Badge>
-            </div>
-
-            <div className="space-y-2">
-              <span className="text-sm font-medium">Emotional Exhaustion</span>
-              <Badge
-                variant={
-                  analysisReport.emotionalPatterns?.emotionalExhaustion
-                    ? "destructive"
-                    : "default"
-                }
-              >
-                {analysisReport.emotionalPatterns?.emotionalExhaustion
-                  ? "Present"
-                  : "Not Detected"}
-              </Badge>
-            </div>
-
-            {(analysisReport.emotionalPatterns?.moodBeforeInteraction ||
-              analysisReport.emotionalPatterns?.moodAfterInteraction) && (
-              <div className="space-y-3">
-                <span className="text-sm font-medium">Mood Changes</span>
-                <div className="flex items-center gap-4">
-                  {analysisReport.emotionalPatterns?.moodBeforeInteraction && (
-                    <div className="text-center">
-                      <div className="text-lg font-bold">
-                        {analysisReport.emotionalPatterns.moodBeforeInteraction}
-                        /10
-                      </div>
-                      <div className="text-xs text-muted-foreground">
-                        Before
-                      </div>
-                    </div>
-                  )}
-                  {analysisReport.emotionalPatterns?.moodBeforeInteraction &&
-                    analysisReport.emotionalPatterns?.moodAfterInteraction && (
-                      <ArrowRight className="w-4 h-4 text-muted-foreground" />
-                    )}
-                  {analysisReport.emotionalPatterns?.moodAfterInteraction && (
-                    <div className="text-center">
-                      <div className="text-lg font-bold">
-                        {analysisReport.emotionalPatterns.moodAfterInteraction}
-                        /10
-                      </div>
-                      <div className="text-xs text-muted-foreground">After</div>
-                    </div>
-                  )}
+                <div>
+                  <span className="text-sm font-medium capitalize">
+                    {emotionalPatterns.dominantEmotion}
+                  </span>
+                  <p className="text-xs text-gray-600">Dominant emotion</p>
                 </div>
+              </div>
+            )}
+            {emotionalPatterns.emotionalRegulation && (
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Regulation:</span>
+                <Badge
+                  className={getRegulationColor(
+                    emotionalPatterns.emotionalRegulation
+                  )}
+                >
+                  {emotionalPatterns.emotionalRegulation}
+                </Badge>
               </div>
             )}
           </div>
         </div>
 
-        {/* Specific Emotions */}
-        {analysisReport.emotionalPatterns?.specificEmotions?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold">Specific Emotions</h4>
-            <div className="space-y-3">
-              {analysisReport.emotionalPatterns.specificEmotions.map(
-                (emotion, index) => (
-                  <div key={index} className="p-3 border rounded-lg space-y-2">
-                    <div className="flex items-center gap-2">
-                      <EmotionIcon emotion={emotion.emotion} />
-                      <span className="font-medium capitalize">
-                        {emotion.emotion}
-                      </span>
-                      <Badge variant="outline">{emotion.intensity}/10</Badge>
-                      <Badge variant="secondary" className="capitalize">
-                        {emotion.duration}
-                      </Badge>
-                    </div>
-                    {emotion.triggers?.length > 0 && (
-                      <div className="flex flex-wrap gap-1">
-                        {emotion.triggers.map((trigger, triggerIndex) => (
-                          <Badge
-                            key={triggerIndex}
-                            variant="outline"
-                            className="text-xs"
-                          >
-                            {trigger}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Emotional Patterns */}
-        {analysisReport.emotionalPatterns?.emotionalPatterns?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold">Emotional Patterns</h4>
-            <div className="space-y-3">
-              {analysisReport.emotionalPatterns.emotionalPatterns.map(
-                (pattern, index) => (
-                  <div key={index} className="p-3 border rounded-lg space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium capitalize">
-                        {pattern.pattern.replace(/_/g, " ")}
-                      </span>
-                      <Badge variant="outline" className="capitalize">
-                        {pattern.frequency}
-                      </Badge>
-                      <Badge
-                        variant={
-                          pattern.impact === "severe"
-                            ? "destructive"
-                            : "secondary"
-                        }
-                        className="capitalize"
-                      >
-                        {pattern.impact}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      {pattern.description}
-                    </p>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
-
-        {analysisReport.emotionalPatterns?.emotionalTriggers?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold">Emotional Triggers</h4>
+        <div className="space-y-4">
+          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+            <Zap className="w-4 h-4 text-orange-600" />
+            Emotional Triggers
+          </h4>
+          {emotionalPatterns.emotionalTriggers?.length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {analysisReport.emotionalPatterns.emotionalTriggers.map(
-                (trigger, index) => (
-                  <Badge key={index} variant="outline">
-                    {trigger}
-                  </Badge>
-                )
-              )}
+              {emotionalPatterns.emotionalTriggers.map((trigger, index) => (
+                <Badge
+                  key={`trigger-${index}-${trigger.slice(0, 10)}`}
+                  variant="outline"
+                >
+                  {trigger}
+                </Badge>
+              ))}
             </div>
-          </div>
-        )}
+          )}
+        </div>
+      </div>
 
-        {/* Emotional Quotes */}
-        {analysisReport.emotionalPatterns?.emotionalQuotes?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold">Emotional Evidence</h4>
-            <div className="space-y-2">
-              {analysisReport.emotionalPatterns.emotionalQuotes.map(
-                (quote, index) => (
-                  <div
-                    key={index}
-                    className="p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500"
-                  >
+      {/* Detected Patterns */}
+      {emotionalPatterns.detectedPatterns?.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="font-medium text-sm text-gray-700">
+            Detected Emotional Patterns
+          </h4>
+          <div className="space-y-4">
+            {emotionalPatterns.detectedPatterns.map((pattern, index) => (
+              <div
+                key={`pattern-${index}-${pattern.pattern.slice(0, 20)}`}
+                className="border rounded-lg p-4 space-y-3"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    {getWhoExhibitedIcon(pattern.who_exhibited || "unknown")}
+                    <span className="font-medium capitalize">
+                      {pattern.pattern?.replace(/_/g, " ") || "Unknown pattern"}
+                    </span>
+                  </div>
+                  <div className="flex gap-2">
+                    <Badge
+                      className={getSeverityColor(pattern.severity || "mild")}
+                    >
+                      {pattern.severity?.replace(/_/g, " ") || "Unknown"}
+                    </Badge>
+                  </div>
+                </div>
+
+                {pattern.quote && (
+                  <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg">
                     <blockquote className="text-sm italic text-blue-900">
-                      &quot;{quote}&quot;
+                      &quot;{pattern.quote}&quot;
                     </blockquote>
                   </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
+                )}
 
-        <TextEvidenceDisplay
-          evidence={analysisReport.emotionalPatterns?.textEvidence || []}
-        />
-      </CardContent>
-    </Card>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {pattern.impact && (
+                    <div>
+                      <span className="text-xs font-medium text-gray-600">
+                        Impact:
+                      </span>
+                      <p className="text-sm text-gray-800">{pattern.impact}</p>
+                    </div>
+                  )}
+                  {pattern.trigger && (
+                    <div>
+                      <span className="text-xs font-medium text-gray-600">
+                        Trigger:
+                      </span>
+                      <p className="text-sm text-gray-800">{pattern.trigger}</p>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {pattern.unsustainableBehavior && (
+                    <div>
+                      <span className="text-xs font-medium text-gray-600">
+                        Unsustainable Behavior:
+                      </span>
+                      <p className="text-sm text-red-800">
+                        {pattern.unsustainableBehavior}
+                      </p>
+                    </div>
+                  )}
+                  {pattern.suggestedBehavior && (
+                    <div>
+                      <span className="text-xs font-medium text-gray-600">
+                        Suggested Behavior:
+                      </span>
+                      <p className="text-sm text-green-800">
+                        {pattern.suggestedBehavior}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Text Evidence */}
+      {emotionalPatterns.textEvidence?.length > 0 && (
+        <div className="space-y-3">
+          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+            <MessageCircle className="w-4 h-4 text-purple-600" />
+            Text Evidence
+          </h4>
+          <div className="space-y-3">
+            {emotionalPatterns.textEvidence.map((evidence, index) => (
+              <div
+                key={`evidence-${index}-${evidence.quote?.slice(0, 20)}`}
+                className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg"
+              >
+                <blockquote className="text-sm italic text-blue-900 mb-2">
+                  &quot;{evidence.quote}&quot;
+                </blockquote>
+                {evidence.analysis && (
+                  <p className="text-xs text-blue-800">{evidence.analysis}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

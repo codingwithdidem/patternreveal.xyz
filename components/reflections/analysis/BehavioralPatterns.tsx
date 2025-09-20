@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Activity,
   ArrowRight,
@@ -8,6 +7,7 @@ import {
   Star,
   Zap,
   MessageCircle,
+  AlertTriangle,
 } from "lucide-react";
 import type { Analysis as AnalysisType } from "@/lib/zod/schemas/analysis";
 
@@ -15,233 +15,188 @@ interface BehavioralPatternsProps {
   analysisReport: AnalysisType;
 }
 
-const TextEvidenceDisplay = ({
-  evidence,
-}: {
-  evidence: Array<{ quote: string; analysis: string }>;
-}) => {
-  if (!evidence?.length) return null;
-
-  return (
-    <div className="space-y-3 mt-4">
-      <h5 className="font-medium text-sm flex items-center gap-2">
-        <MessageCircle className="w-4 h-4" />
-        Supporting Evidence
-      </h5>
-      <div className="space-y-3">
-        {evidence.map((item, index) => (
-          <div
-            key={index}
-            className="bg-slate-50 p-3 rounded-lg border-l-4 border-blue-500"
-          >
-            <blockquote className="text-sm italic text-slate-700 mb-2">
-              &quot;{item.quote}&quot;
-            </blockquote>
-            <p className="text-xs text-slate-600">{item.analysis}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+// Helper functions for styling
+const getSeverityColor = (severity: string) => {
+  switch (severity) {
+    case "mild":
+      return "bg-blue-100 text-blue-800";
+    case "moderate":
+      return "bg-yellow-100 text-yellow-800";
+    case "severe":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
 };
 
 export default function BehavioralPatterns({
   analysisReport,
 }: BehavioralPatternsProps) {
+  const behaviorPatterns = analysisReport.behaviorPatterns;
+
+  if (!behaviorPatterns) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">
+          Behavioral patterns analysis not available for this reflection.
+          <br />
+          Re-analyze this reflection to get behavioral insights.
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Activity className="w-5 h-5" />
-          Behavioral Patterns
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        {/* Detected Patterns */}
-        {analysisReport.behaviorPatterns?.detectedPatterns?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold">Detected Behavioral Patterns</h4>
-            <div className="space-y-3">
-              {analysisReport.behaviorPatterns.detectedPatterns.map(
-                (pattern, index) => (
-                  <div key={index} className="p-3 border rounded-lg space-y-2">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium capitalize">
-                        {pattern.pattern.replace(/_/g, " ")}
-                      </span>
-                      <Badge variant="outline" className="capitalize">
-                        {pattern.frequency}
-                      </Badge>
-                      <Badge
-                        variant={
-                          pattern.severity === "high"
-                            ? "destructive"
-                            : "secondary"
-                        }
-                        className="capitalize"
-                      >
-                        {pattern.severity}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      {pattern.description}
-                    </p>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center gap-2">
+        <Activity className="w-5 h-5 text-blue-600" />
+        <h3 className="text-lg font-semibold">Behavioral Patterns</h3>
+      </div>
 
-        {/* Behavioral Triggers */}
-        {analysisReport.behaviorPatterns?.behavioralTriggers?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold">Behavioral Triggers</h4>
-            <div className="flex flex-wrap gap-2">
-              {analysisReport.behaviorPatterns.behavioralTriggers.map(
-                (trigger, index) => (
-                  <Badge key={index} variant="outline" className="capitalize">
-                    {trigger.replace(/_/g, " ")}
-                  </Badge>
-                )
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Coping Mechanisms */}
-        {analysisReport.behaviorPatterns?.copingMechanisms?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold">Coping Mechanisms</h4>
-            <div className="space-y-2">
-              {analysisReport.behaviorPatterns.copingMechanisms.map(
-                (mechanism, index) => (
-                  <div key={index} className="flex gap-2">
-                    <Activity className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm capitalize">
-                      {mechanism.replace(/_/g, " ")}
+      {/* Detected Patterns */}
+      {behaviorPatterns.detectedPatterns?.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="font-medium text-sm text-gray-700">
+            Detected Behavioral Patterns
+          </h4>
+          <div className="space-y-4">
+            {behaviorPatterns.detectedPatterns.map((pattern, index) => (
+              <div
+                key={`pattern-${index}-${pattern.pattern.slice(0, 20)}`}
+                className="border rounded-lg p-4 space-y-3"
+              >
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-blue-600" />
+                    <span className="font-medium capitalize">
+                      {pattern.pattern?.replace(/_/g, " ") || "Unknown pattern"}
                     </span>
                   </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
-
-        {/* Behavior Cycles */}
-        {analysisReport.behaviorPatterns?.behaviorCycles?.length > 0 && (
-          <div className="space-y-4">
-            <h4 className="font-semibold">Behavior Cycles</h4>
-            <div className="space-y-3">
-              {analysisReport.behaviorPatterns.behaviorCycles.map(
-                (cycle, index) => (
-                  <div key={index} className="p-4 border rounded-lg space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Zap className="w-4 h-4 text-blue-600" />
-                      <span className="font-medium">Trigger:</span>
-                      <span className="text-sm">{cycle.trigger}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <ArrowRight className="w-4 h-4 text-orange-600" />
-                      <span className="font-medium">Response:</span>
-                      <span className="text-sm">{cycle.response}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Target className="w-4 h-4 text-green-600" />
-                      <span className="font-medium">Outcome:</span>
-                      <span className="text-sm">{cycle.outcome}</span>
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {analysisReport.behaviorPatterns?.yourBehaviorPatterns?.length >
-            0 && (
-            <div className="space-y-3">
-              <h4 className="font-semibold">Your Patterns</h4>
-              <div className="space-y-2">
-                {analysisReport.behaviorPatterns.yourBehaviorPatterns.map(
-                  (pattern, index) => (
-                    <div key={index} className="p-2 bg-blue-50 rounded text-sm">
-                      {pattern}
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          )}
-
-          {analysisReport.behaviorPatterns?.theirBehaviorPatterns?.length >
-            0 && (
-            <div className="space-y-3">
-              <h4 className="font-semibold">Their Patterns</h4>
-              <div className="space-y-2">
-                {analysisReport.behaviorPatterns.theirBehaviorPatterns.map(
-                  (pattern, index) => (
-                    <div
-                      key={index}
-                      className="p-2 bg-purple-50 rounded text-sm"
+                  <div className="flex gap-2">
+                    <Badge
+                      className={getSeverityColor(pattern.severity || "mild")}
                     >
-                      {pattern}
-                    </div>
-                  )
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        {analysisReport.behaviorPatterns?.growthOpportunities?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" />
-              Growth Opportunities
-            </h4>
-            <div className="grid grid-cols-1 gap-2">
-              {analysisReport.behaviorPatterns.growthOpportunities.map(
-                (opportunity, index) => (
-                  <div
-                    key={index}
-                    className="flex gap-3 p-3 bg-green-50 rounded-lg"
-                  >
-                    <Star className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm">{opportunity}</span>
+                      {pattern.severity?.replace(/_/g, " ") || "Unknown"}
+                    </Badge>
                   </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
+                </div>
 
-        {/* Behavioral Quotes */}
-        {analysisReport.behaviorPatterns?.behavioralQuotes?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-semibold">Behavioral Evidence</h4>
-            <div className="space-y-2">
-              {analysisReport.behaviorPatterns.behavioralQuotes.map(
-                (quote, index) => (
-                  <div
-                    key={index}
-                    className="p-3 bg-purple-50 rounded-lg border-l-4 border-purple-500"
-                  >
-                    <blockquote className="text-sm italic text-purple-900">
-                      &quot;{quote}&quot;
+                {pattern.quote && (
+                  <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg">
+                    <blockquote className="text-sm italic text-blue-900">
+                      &quot;{pattern.quote}&quot;
                     </blockquote>
                   </div>
-                )
-              )}
-            </div>
-          </div>
-        )}
+                )}
 
-        <TextEvidenceDisplay
-          evidence={analysisReport.behaviorPatterns?.textEvidence || []}
-        />
-      </CardContent>
-    </Card>
+                {pattern.impact && (
+                  <div>
+                    <span className="text-xs font-medium text-gray-600">
+                      Impact:
+                    </span>
+                    <p className="text-sm text-gray-800">{pattern.impact}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Behavior Cycles */}
+      {behaviorPatterns.behaviorCycles?.length > 0 && (
+        <div className="space-y-4">
+          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+            <Zap className="w-4 h-4 text-orange-600" />
+            Behavior Cycles
+          </h4>
+          <div className="space-y-4">
+            {behaviorPatterns.behaviorCycles.map((cycle, index) => (
+              <div
+                key={`cycle-${index}-${cycle.trigger.slice(0, 20)}`}
+                className="border rounded-lg p-4 space-y-3"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-start gap-2">
+                    <AlertTriangle className="w-4 h-4 text-red-600 mt-1 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs font-medium text-gray-600">
+                        Trigger:
+                      </span>
+                      <p className="text-sm text-gray-800">{cycle.trigger}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <ArrowRight className="w-4 h-4 text-orange-600 mt-1 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs font-medium text-gray-600">
+                        Response:
+                      </span>
+                      <p className="text-sm text-gray-800">{cycle.response}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Target className="w-4 h-4 text-green-600 mt-1 flex-shrink-0" />
+                    <div>
+                      <span className="text-xs font-medium text-gray-600">
+                        Outcome:
+                      </span>
+                      <p className="text-sm text-gray-800">{cycle.outcome}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Growth Opportunities */}
+      {behaviorPatterns.growthOpportunities?.length > 0 && (
+        <div className="space-y-3">
+          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-green-600" />
+            Growth Opportunities
+          </h4>
+          <div className="space-y-2">
+            {behaviorPatterns.growthOpportunities.map((opportunity, index) => (
+              <div
+                key={`opportunity-${index}-${opportunity.slice(0, 20)}`}
+                className="flex gap-2"
+              >
+                <Star className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                <span className="text-sm">{opportunity}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Text Evidence */}
+      {behaviorPatterns.textEvidence?.length > 0 && (
+        <div className="space-y-3">
+          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+            <MessageCircle className="w-4 h-4 text-purple-600" />
+            Text Evidence
+          </h4>
+          <div className="space-y-3">
+            {behaviorPatterns.textEvidence.map((evidence, index) => (
+              <div
+                key={`evidence-${index}-${evidence.quote?.slice(0, 20)}`}
+                className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg"
+              >
+                <blockquote className="text-sm italic text-blue-900 mb-2">
+                  &quot;{evidence.quote}&quot;
+                </blockquote>
+                {evidence.analysis && (
+                  <p className="text-xs text-blue-800">{evidence.analysis}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

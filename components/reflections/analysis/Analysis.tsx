@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import AnimatedEmptyState from "@/components/AnimatedEmptyState";
 // Import the new analysis components
-import OverallAssessment from "./OverallAssessment";
+
 import EmotionalPatterns from "./EmotionalPatterns";
 import CommunicationPatterns from "./CommunicationPatterns";
 import BehavioralPatterns from "./BehavioralPatterns";
@@ -25,9 +25,9 @@ import ConnectionPatterns from "./ConnectionPatterns";
 import TraumaResponses from "./TraumaResponses";
 import CognitivePatterns from "./CognitivePatterns";
 import ContextFactors from "./ContextFactors";
-import ProgressTracking from "./ProgressTracking";
 import ActionableInsights from "./ActionableInsights";
 import SafetyAssessment from "./SafetyAssessment";
+import OverallAssessment from "./OverallAssessment";
 
 interface AnalysisProps {
   isLoading: boolean;
@@ -140,9 +140,6 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
             <LiftedTabsTrigger className="w-full" value="context">
               Context
             </LiftedTabsTrigger>
-            <LiftedTabsTrigger className="w-full" value="progress">
-              Progress
-            </LiftedTabsTrigger>
             <LiftedTabsTrigger className="w-full" value="actions">
               Actions
             </LiftedTabsTrigger>
@@ -199,11 +196,6 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
           {/* Context Factors */}
           <LiftedTabsContent value="context" className="space-y-4">
             <ContextFactors analysisReport={analysisReport} />
-          </LiftedTabsContent>
-
-          {/* Progress Tracking */}
-          <LiftedTabsContent value="progress" className="space-y-4">
-            <ProgressTracking analysisReport={analysisReport} />
           </LiftedTabsContent>
 
           {/* Actionable Insights */}
