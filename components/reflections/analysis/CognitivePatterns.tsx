@@ -175,28 +175,6 @@ export default function CognitivePatterns({
           </div>
         </div>
       )}
-
-      {/* Text Evidence */}
-      {cognitivePatterns.textEvidence?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700">Text Evidence</h4>
-          <div className="space-y-3">
-            {cognitivePatterns.textEvidence.map((evidence, index) => (
-              <div
-                key={`evidence-${index}-${evidence.quote?.slice(0, 20)}`}
-                className="bg-purple-50 border-l-4 border-purple-500 p-3 rounded-r-lg"
-              >
-                <blockquote className="text-sm italic text-purple-900 mb-2">
-                  &quot;{evidence.quote}&quot;
-                </blockquote>
-                {evidence.analysis && (
-                  <p className="text-xs text-purple-800">{evidence.analysis}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 }

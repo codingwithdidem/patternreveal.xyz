@@ -467,28 +467,6 @@ export default function ContextFactors({
         </div>
       )}
 
-      {/* Text Evidence */}
-      {contextFactors.textEvidence?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700">Text Evidence</h4>
-          <div className="space-y-3">
-            {contextFactors.textEvidence.map((evidence, index) => (
-              <div
-                key={`evidence-${index}-${evidence.quote?.slice(0, 20)}`}
-                className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg"
-              >
-                <blockquote className="text-sm italic text-blue-900 mb-2">
-                  &quot;{evidence.quote}&quot;
-                </blockquote>
-                {evidence.analysis && (
-                  <p className="text-xs text-blue-800">{evidence.analysis}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Context Insights */}
       {contextFactors.contextInsights?.length > 0 && (
         <div className="space-y-3">

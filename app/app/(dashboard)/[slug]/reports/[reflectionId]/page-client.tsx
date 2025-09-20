@@ -20,10 +20,7 @@ import {
 
 import { experimental_useObject } from "ai/react";
 import { analysisSchema } from "@/lib/zod/schemas/analysis";
-import type {
-  Analysis as AnalysisType,
-  TextEvidence,
-} from "@/lib/zod/schemas/analysis";
+import type { Analysis as AnalysisType } from "@/lib/zod/schemas/analysis";
 import Analysis from "@/components/reflections/analysis/Analysis";
 import Logo from "@/components/Logo";
 import Link from "next/link";
@@ -45,50 +42,191 @@ export default function ReflectionEditorClientPage() {
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [charsCount, setCharsCount] = useState(0);
 
-  // Collect all text evidence from the analysis report
+  // Collect all quotes from the analysis report patterns
   const allTextEvidence = useMemo(() => {
     if (!analysisReport) return [];
 
-    const evidence: TextEvidence[] = [];
+    const evidence: Array<{
+      quote: string;
+      analysis?: string;
+      startIndex?: number;
+      endIndex?: number;
+      pattern?: string;
+      severity?: string;
+      who_exhibited?: string;
+    }> = [];
 
-    // Collect evidence from all sections that have textEvidence
-    if (analysisReport.emotionalPatterns?.textEvidence) {
-      evidence.push(
-        ...analysisReport.emotionalPatterns.textEvidence.filter(
-          (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
-        )
-      );
+    // Collect quotes from emotional patterns
+    if (analysisReport.emotionalPatterns?.detectedPatterns) {
+      for (const pattern of analysisReport.emotionalPatterns.detectedPatterns) {
+        if (pattern?.quote) {
+          evidence.push({
+            quote: pattern.quote,
+            analysis: pattern.impact,
+            startIndex: pattern.startIndex,
+            endIndex: pattern.endIndex,
+            pattern: pattern.pattern,
+            severity: pattern.severity,
+            who_exhibited: pattern.who_exhibited,
+          });
+        }
+      }
     }
-    if (analysisReport.communicationPatterns?.textEvidence) {
-      evidence.push(
-        ...analysisReport.communicationPatterns.textEvidence.filter(
-          (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
-        )
-      );
+
+    // Collect quotes from communication patterns
+    if (analysisReport.communicationPatterns?.detectedPatterns) {
+      for (const pattern of analysisReport.communicationPatterns
+        .detectedPatterns) {
+        if (pattern?.quote) {
+          if (pattern?.quote) {
+            evidence.push({
+              quote: pattern.quote,
+              analysis: pattern.impact,
+              startIndex: pattern.startIndex,
+              endIndex: pattern.endIndex,
+              pattern: pattern.pattern,
+              severity: pattern.severity,
+            });
+          }
+        }
+      }
     }
-    if (analysisReport.behaviorPatterns?.textEvidence) {
-      evidence.push(
-        ...analysisReport.behaviorPatterns.textEvidence.filter(
-          (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
-        )
-      );
+
+    // Collect quotes from behavioral patterns
+    if (analysisReport.behaviorPatterns?.detectedPatterns) {
+      for (const pattern of analysisReport.behaviorPatterns.detectedPatterns) {
+        if (pattern?.quote) {
+          evidence.push({
+            quote: pattern.quote,
+            analysis: pattern.impact,
+            startIndex: pattern.startIndex,
+            endIndex: pattern.endIndex,
+            pattern: pattern.pattern,
+            severity: pattern.severity,
+          });
+        }
+      }
     }
-    if (analysisReport.attachmentPatterns?.textEvidence) {
-      evidence.push(
-        ...analysisReport.attachmentPatterns.textEvidence.filter(
-          (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
-        )
-      );
+
+    // Collect quotes from relationship dynamics
+    if (analysisReport.relationshipDynamics?.detectedPatterns) {
+      for (const pattern of analysisReport.relationshipDynamics
+        .detectedPatterns) {
+        if (pattern?.quote) {
+          if (pattern?.quote) {
+            evidence.push({
+              quote: pattern.quote,
+              analysis: pattern.impact,
+              startIndex: pattern.startIndex,
+              endIndex: pattern.endIndex,
+              pattern: pattern.pattern,
+              severity: pattern.severity,
+              who_exhibited: pattern.who_exhibited,
+            });
+          }
+        }
+      }
     }
+
+    // Collect quotes from context factors
+    if (analysisReport.contextFactors?.detectedPatterns) {
+      for (const pattern of analysisReport.contextFactors.detectedPatterns) {
+        if (pattern?.quote) {
+          evidence.push({
+            quote: pattern.quote,
+            analysis: pattern.impact,
+            startIndex: pattern.startIndex,
+            endIndex: pattern.endIndex,
+            pattern: pattern.pattern,
+            severity: pattern.severity,
+            who_exhibited: pattern.who_affected,
+          });
+        }
+      }
+    }
+
+    // Collect quotes from attachment patterns
+    if (analysisReport.attachmentPatterns?.detectedPatterns) {
+      for (const pattern of analysisReport.attachmentPatterns
+        .detectedPatterns) {
+        if (pattern?.quote) {
+          evidence.push({
+            quote: pattern.quote,
+            analysis: pattern.impact,
+            startIndex: pattern.startIndex,
+            endIndex: pattern.endIndex,
+            pattern: pattern.pattern,
+            severity: pattern.severity,
+            who_exhibited: pattern.who_exhibited,
+          });
+        }
+      }
+    }
+
+    // Collect quotes from trauma responses
+    if (analysisReport.traumaResponses?.detectedPatterns) {
+      for (const pattern of analysisReport.traumaResponses.detectedPatterns) {
+        if (pattern?.quote) {
+          evidence.push({
+            quote: pattern.quote,
+            analysis: pattern.impact,
+            startIndex: pattern.startIndex,
+            endIndex: pattern.endIndex,
+            pattern: pattern.pattern,
+            severity: pattern.severity,
+            who_exhibited: pattern.who_exhibited,
+          });
+        }
+      }
+    }
+
+    // Collect quotes from connection patterns
+    if (analysisReport.connectionPatterns?.detectedPatterns) {
+      for (const pattern of analysisReport.connectionPatterns
+        .detectedPatterns) {
+        if (pattern?.quote) {
+          evidence.push({
+            quote: pattern.quote,
+            analysis: pattern.impact,
+            startIndex: pattern.startIndex,
+            endIndex: pattern.endIndex,
+            pattern: pattern.pattern,
+            severity: pattern.severity,
+            who_exhibited: pattern.who_exhibited,
+          });
+        }
+      }
+    }
+
+    // Collect quotes from cognitive patterns (thinking traps)
+    if (analysisReport.cognitivePatterns?.thinkingTraps) {
+      for (const trap of analysisReport.cognitivePatterns.thinkingTraps) {
+        if (trap?.quote) {
+          evidence.push({
+            quote: trap.quote,
+            analysis: trap.impact,
+            startIndex: trap.startIndex,
+            endIndex: trap.endIndex,
+            pattern: trap.trap,
+            severity: "moderate", // thinking traps don't have severity
+          });
+        }
+      }
+    }
+
+    // Collect quotes from abuse detection
     if (analysisReport.abuseDetection?.detectedAbusiveBehaviors) {
       for (const behavior of analysisReport.abuseDetection
         .detectedAbusiveBehaviors) {
-        if (behavior?.textEvidence) {
-          evidence.push(
-            ...behavior.textEvidence.filter(
-              (e): e is TextEvidence => !!e && !!e.quote && !!e.analysis
-            )
-          );
+        if (behavior?.quote) {
+          evidence.push({
+            quote: behavior.quote,
+            analysis: behavior.impact,
+            startIndex: behavior.startIndex,
+            endIndex: behavior.endIndex,
+            pattern: behavior.behavior,
+            severity: "severe", // abuse behaviors are typically severe
+          });
         }
       }
     }

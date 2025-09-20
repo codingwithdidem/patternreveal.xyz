@@ -505,31 +505,6 @@ export default function RelationshipDynamics({
         </div>
       </div>
 
-      {/* Text Evidence */}
-      {relationshipDynamics.textEvidence?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-            <MessageCircle className="w-4 h-4 text-purple-600" />
-            Text Evidence
-          </h4>
-          <div className="space-y-3">
-            {relationshipDynamics.textEvidence.map((evidence, index) => (
-              <div
-                key={`evidence-${index}-${evidence.quote?.slice(0, 20)}`}
-                className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg"
-              >
-                <blockquote className="text-sm italic text-blue-900 mb-2">
-                  &quot;{evidence.quote}&quot;
-                </blockquote>
-                {evidence.analysis && (
-                  <p className="text-xs text-blue-800">{evidence.analysis}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Relationship Insights */}
       {relationshipDynamics.relationshipInsights?.length > 0 && (
         <div className="space-y-3">

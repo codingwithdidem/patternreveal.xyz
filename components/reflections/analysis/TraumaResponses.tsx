@@ -188,33 +188,6 @@ export default function TraumaResponses({
         )}
       </div>
 
-      {/* Text Evidence */}
-      {traumaResponses.textEvidence?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700">Text Evidence</h4>
-          <div className="space-y-2">
-            {traumaResponses.textEvidence.map((evidence, index) => (
-              <div
-                key={`evidence-${index}-${
-                  evidence.quote?.slice(0, 20) || "unknown"
-                }`}
-                className="p-3 bg-gray-50 rounded border-l-4 border-gray-500"
-              >
-                <blockquote className="text-sm italic text-gray-700 mb-2">
-                  &quot;{evidence.quote}&quot;
-                </blockquote>
-                {evidence.analysis && (
-                  <p className="text-xs text-gray-600">
-                    <span className="font-medium">Analysis:</span>{" "}
-                    {evidence.analysis}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* Detected Patterns */}
       {traumaResponses.detectedPatterns?.length > 0 && (
         <div className="space-y-4">

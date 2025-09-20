@@ -16,7 +16,6 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Link from "@tiptap/extension-link";
 import { FontFamily } from "@tiptap/extension-font-family";
 import { cx } from "class-variance-authority";
-import type { TextEvidence } from "@/lib/zod/schemas/analysis";
 import { useEffect } from "react";
 
 type TiptapProps = {
@@ -25,7 +24,15 @@ type TiptapProps = {
   charsCount: number;
   onContentUpdate: (editor: Editor) => void;
   className?: string;
-  textEvidence?: TextEvidence[];
+  textEvidence?: Array<{
+    quote: string;
+    analysis?: string;
+    startIndex?: number;
+    endIndex?: number;
+    pattern?: string;
+    severity?: string;
+    who_exhibited?: string;
+  }>;
 };
 const Tiptap = ({
   content,
@@ -238,11 +245,18 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
     // Apply highlights for each evidence
     for (const evidence of textEvidence) {
       const quote = evidence.quote.trim();
-      const startIndex = editorText.indexOf(quote);
+      let startIndex = evidence.startIndex;
+      let endIndex = evidence.endIndex;
 
-      if (startIndex !== -1) {
-        const endIndex = startIndex + quote.length;
+      // If we don't have startIndex/endIndex, fall back to text search
+      if (startIndex === undefined || endIndex === undefined) {
+        startIndex = editorText.indexOf(quote);
+        if (startIndex !== -1) {
+          endIndex = startIndex + quote.length;
+        }
+      }
 
+      if (startIndex !== -1 && endIndex !== undefined) {
         // Create a highlight with blue background
         editor.commands.setTextSelection({
           from: startIndex + 1,
@@ -290,11 +304,26 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
           console.log("Matching evidence found:", matchingEvidence);
 
           if (matchingEvidence) {
-            // Set the analysis text for tooltip
-            const analysisText =
+            // Create enhanced tooltip text with pattern information
+            let tooltipText =
               matchingEvidence.analysis || "No analysis available";
 
-            console.log("Setting data-analysis to:", analysisText);
+            if (matchingEvidence.pattern) {
+              tooltipText = `Pattern: ${matchingEvidence.pattern.replace(
+                /_/g,
+                " "
+              )}\n${tooltipText}`;
+            }
+
+            if (matchingEvidence.severity) {
+              tooltipText = `${tooltipText}\nSeverity: ${matchingEvidence.severity}`;
+            }
+
+            if (matchingEvidence.who_exhibited) {
+              tooltipText = `${tooltipText}\nExhibited by: ${matchingEvidence.who_exhibited}`;
+            }
+
+            console.log("Setting data-analysis to:", tooltipText);
 
             // Find this text in the editor and update the highlight mark
             const { state } = editor;

@@ -823,15 +823,6 @@ export const CONNECTION_PATTERNS_DESCRIPTIONS = {
 } as const;
 
 // Text evidence schema for referencing specific statements
-export const textEvidenceSchema = z.object({
-  quote: z.string().describe("Exact quote from the reflection text"),
-  analysis: z.string().describe("What this quote reveals about the pattern"),
-  startIndex: z
-    .number()
-    .optional()
-    .describe("Character index where quote starts"),
-  endIndex: z.number().optional().describe("Character index where quote ends"),
-});
 
 // Core emotional analysis
 // Emotional patterns analysis - comprehensive emotional intelligence assessment
@@ -944,6 +935,14 @@ export const emotionalPatternSchema = z.object({
         suggestedBehavior: z
           .string()
           .describe("Healthy alternative behavior to replace the pattern"),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("Specific emotional patterns detected with evidence"),
@@ -952,11 +951,6 @@ export const emotionalPatternSchema = z.object({
   emotionalTriggers: z
     .array(z.string())
     .describe("What triggered these emotions"),
-
-  // Evidence
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing emotional patterns"),
 });
 
 // Communication analysis
@@ -1014,6 +1008,14 @@ export const communicationPatternSchema = z.object({
         severity: z
           .enum(["mild", "moderate", "severe"])
           .describe("Severity level of this communication pattern"),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("Specific communication patterns detected with explanations"),
@@ -1048,9 +1050,6 @@ export const communicationPatternSchema = z.object({
     .array(z.string())
     .describe("What escalated the situation"),
   resolutionAchieved: z.boolean().describe("Was the issue resolved?"),
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing communication patterns"),
 });
 
 // Behavioral patterns
@@ -1138,6 +1137,14 @@ export const behaviorPatternSchema = z.object({
         severity: z
           .enum(["mild", "moderate", "severe"])
           .describe("Severity level of this pattern"),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("Specific behavioral patterns detected with explanations"),
@@ -1153,9 +1160,6 @@ export const behaviorPatternSchema = z.object({
   growthOpportunities: z
     .array(z.string())
     .describe("Areas for personal growth"),
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing behavioral patterns"),
 });
 
 // Relationship dynamics
@@ -1263,6 +1267,14 @@ export const relationshipDynamicsSchema = z.object({
         suggestedBehavior: z
           .string()
           .describe("Healthy alternative behavior to improve the relationship"),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("Specific relationship dynamics patterns detected with evidence"),
@@ -1313,9 +1325,6 @@ export const relationshipDynamicsSchema = z.object({
     .describe("How partners support each other's personal growth"),
 
   // Evidence and insights
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing relationship dynamics"),
   relationshipInsights: z
     .array(z.string())
     .describe("Key insights about relationship dynamics and health"),
@@ -1393,6 +1402,14 @@ export const contextFactorsSchema = z.object({
           .describe(
             "How to prevent or minimize this context factor in future interactions"
           ),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("Specific context factor patterns detected with evidence"),
@@ -1474,9 +1491,6 @@ export const contextFactorsSchema = z.object({
   }),
 
   // Evidence and insights
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing context factors"),
   contextInsights: z
     .array(z.string())
     .describe("Key insights about how context affected the interaction"),
@@ -1808,6 +1822,14 @@ export const abuseDetectionSchema = z.object({
         reasonings: z
           .array(z.string())
           .describe("Why this behavior is considered abusive"),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("The detected abusive behaviors with specific evidence"),
@@ -1904,6 +1926,14 @@ export const attachmentPatternsSchema = z.object({
         who_exhibited: z
           .enum(["you", "them", "both"])
           .describe("Who exhibited this attachment pattern"),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("Specific attachment patterns detected with evidence"),
@@ -1991,6 +2021,14 @@ export const traumaResponsesSchema = z.object({
         suggestedHealing: z
           .string()
           .describe("Recommended healing approach for this trauma response"),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("Specific trauma response patterns detected with evidence"),
@@ -2017,9 +2055,6 @@ export const traumaResponsesSchema = z.object({
     .describe("Unhealthy coping strategies that were used"),
 
   // Evidence and insights
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing trauma responses"),
   healingRecommendations: z
     .array(z.string())
     .describe("Specific recommendations for trauma healing"),
@@ -2096,6 +2131,14 @@ export const connectionPatternsSchema = z.object({
         improvement: z
           .string()
           .describe("How to improve this connection pattern"),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe("Specific connection patterns detected with evidence"),
@@ -2124,9 +2167,6 @@ export const connectionPatternsSchema = z.object({
     .describe("What prevented or hindered connection"),
 
   // Evidence and insights
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing connection patterns"),
   connectionInsights: z
     .array(z.string())
     .describe("Key insights about connection patterns and intimacy"),
@@ -2168,6 +2208,14 @@ export const cognitivePatternsSchema = z.object({
           .describe(
             "How this thinking trap affects the relationship or situation"
           ),
+        startIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote starts"),
+        endIndex: z
+          .number()
+          .optional()
+          .describe("Character index where quote ends"),
       })
     )
     .describe(
@@ -2184,9 +2232,6 @@ export const cognitivePatternsSchema = z.object({
     .describe(
       "Was decision-making overly influenced by emotions rather than facts?"
     ),
-  textEvidence: z
-    .array(textEvidenceSchema)
-    .describe("Specific quotes showing cognitive patterns"),
 });
 
 // Enhanced comprehensive analysis schema
@@ -2234,7 +2279,6 @@ export const analysisSchema = z.object({
 });
 
 export type Analysis = z.infer<typeof analysisSchema>;
-export type TextEvidence = z.infer<typeof textEvidenceSchema>;
 export type EmotionalPattern = z.infer<typeof emotionalPatternSchema>;
 export type CommunicationPattern = z.infer<typeof communicationPatternSchema>;
 export type BehaviorPattern = z.infer<typeof behaviorPatternSchema>;

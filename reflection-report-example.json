@@ -11,7 +11,9 @@
         "who_exhibited": "you",
         "trigger": "Conflict and criticism",
         "unsustainableBehavior": "Bottling up emotions leads to explosive outbursts later",
-        "suggestedBehavior": "Practice expressing emotions in the moment using 'I feel' statements"
+        "suggestedBehavior": "Practice expressing emotions in the moment using 'I feel' statements",
+        "startIndex": 0,
+        "endIndex": 49
       },
       {
         "pattern": "emotional_dependency",
@@ -21,7 +23,9 @@
         "who_exhibited": "you",
         "trigger": "Rejection and disapproval",
         "unsustainableBehavior": "Constantly seeking external validation",
-        "suggestedBehavior": "Develop internal self-worth and emotional independence"
+        "suggestedBehavior": "Develop internal self-worth and emotional independence",
+        "startIndex": 100,
+        "endIndex": 150
       },
       {
         "pattern": "emotional_hypervigilance",
@@ -31,7 +35,9 @@
         "who_exhibited": "you",
         "trigger": "Fear of conflict and abandonment",
         "unsustainableBehavior": "Hypervigilance leads to anxiety and relationship strain",
-        "suggestedBehavior": "Practice grounding techniques and trust-building exercises"
+        "suggestedBehavior": "Practice grounding techniques and trust-building exercises",
+        "startIndex": 200,
+        "endIndex": 256
       },
       {
         "pattern": "emotional_shutdown",
@@ -41,7 +47,9 @@
         "who_exhibited": "you",
         "trigger": "Overwhelming emotional situations",
         "unsustainableBehavior": "Emotional shutdown prevents healthy communication",
-        "suggestedBehavior": "Learn emotional regulation techniques and gradual exposure"
+        "suggestedBehavior": "Learn emotional regulation techniques and gradual exposure",
+        "startIndex": 300,
+        "endIndex": 342
       }
     ],
     "emotionalTriggers": [
@@ -52,24 +60,6 @@
       "Silent treatment and emotional withdrawal",
       "Criticism and blame",
       "Feeling like I'm walking on eggshells"
-    ],
-    "textEvidence": [
-      {
-        "quote": "I felt my chest tighten and my heart start racing",
-        "analysis": "Shows physical manifestation of emotional suppression and anxiety"
-      },
-      {
-        "quote": "I couldn't shake the feeling that something was wrong",
-        "analysis": "Indicates hypervigilance and anxiety patterns"
-      },
-      {
-        "quote": "I keep replaying the conversation in my head, wondering what I did wrong",
-        "analysis": "Demonstrates rumination and self-doubt patterns"
-      },
-      {
-        "quote": "I'm always watching for signs that they're getting upset",
-        "analysis": "Shows clear hypervigilance and fear-driven behavior"
-      }
     ]
   },
   "communicationPatterns": {
@@ -78,31 +68,41 @@
         "pattern": "passive_aggressive",
         "quote": "You're always so controlling about money",
         "impact": "Creates barriers to productive discussion",
-        "severity": "moderate"
+        "severity": "moderate",
+        "startIndex": 400,
+        "endIndex": 440
       },
       {
         "pattern": "avoiding",
         "quote": "I don't want to talk about this right now",
         "impact": "Prevents resolution of important issues",
-        "severity": "severe"
+        "severity": "severe",
+        "startIndex": 500,
+        "endIndex": 541
       },
       {
         "pattern": "gaslighting",
         "quote": "You're making things up again",
         "impact": "Undermines user's confidence in their own perceptions",
-        "severity": "severe"
+        "severity": "severe",
+        "startIndex": 600,
+        "endIndex": 629
       },
       {
         "pattern": "stonewalling",
         "quote": "I'm not going to discuss this anymore",
         "impact": "Shuts down communication and prevents resolution",
-        "severity": "moderate"
+        "severity": "moderate",
+        "startIndex": 700,
+        "endIndex": 737
       },
       {
         "pattern": "blaming",
         "quote": "This is all your fault for bringing it up",
         "impact": "Creates defensiveness and escalates conflict",
-        "severity": "moderate"
+        "severity": "moderate",
+        "startIndex": 800,
+        "endIndex": 841
       }
     ],
     "overallCommunicationStyle": "passive",
@@ -124,25 +124,7 @@
       "Expressing concerns about relationship",
       "Asking for transparency"
     ],
-    "resolutionAchieved": false,
-    "textEvidence": [
-      {
-        "quote": "You're always so controlling about money",
-        "analysis": "Shows passive-aggressive communication pattern"
-      },
-      {
-        "quote": "I don't want to talk about this right now",
-        "analysis": "Demonstrates avoidance and conflict avoidance"
-      },
-      {
-        "quote": "You're making things up again",
-        "analysis": "Indicates gaslighting behavior undermining user's reality"
-      },
-      {
-        "quote": "I'm not going to discuss this anymore",
-        "analysis": "Shows stonewalling and communication shutdown"
-      }
-    ]
+    "resolutionAchieved": false
   },
   "behaviorPatterns": {
     "detectedPatterns": [
@@ -150,31 +132,41 @@
         "pattern": "inability_to_say_no",
         "quote": "I've started avoiding bringing up any topics that might be 'controversial'",
         "impact": "Creates resentment and loss of personal identity",
-        "severity": "severe"
+        "severity": "severe",
+        "startIndex": 900,
+        "endIndex": 974
       },
       {
         "pattern": "avoidance_of_intimacy",
         "quote": "I'm walking on eggshells constantly",
         "impact": "Prevents resolution of important relationship issues",
-        "severity": "moderate"
+        "severity": "moderate",
+        "startIndex": 1000,
+        "endIndex": 1035
       },
       {
         "pattern": "emotional_outbursts",
         "quote": "I finally exploded when they criticized me again",
         "impact": "Creates tension and relationship instability",
-        "severity": "moderate"
+        "severity": "moderate",
+        "startIndex": 1100,
+        "endIndex": 1148
       },
       {
         "pattern": "excessive_apologizing",
         "quote": "I'm sorry, I didn't mean to upset you by asking about money",
         "impact": "Reinforces power imbalance and self-blame",
-        "severity": "mild"
+        "severity": "mild",
+        "startIndex": 1200,
+        "endIndex": 1259
       },
       {
         "pattern": "people_pleasing",
         "quote": "I just want to keep the peace, so I'll do whatever they want",
         "impact": "Leads to loss of personal boundaries and identity",
-        "severity": "severe"
+        "severity": "severe",
+        "startIndex": 1300,
+        "endIndex": 1360
       }
     ],
     "behaviorCycles": [
@@ -201,24 +193,6 @@
       "Practice emotional regulation techniques",
       "Work on communication skills to express needs clearly",
       "Address underlying fear of rejection and abandonment"
-    ],
-    "textEvidence": [
-      {
-        "quote": "I've started avoiding bringing up any topics that might be 'controversial'",
-        "analysis": "Shows people-pleasing and avoidance patterns"
-      },
-      {
-        "quote": "I'm walking on eggshells constantly",
-        "analysis": "Indicates fear-driven behavior and hypervigilance"
-      },
-      {
-        "quote": "I finally exploded when they criticized me again",
-        "analysis": "Demonstrates emotional regulation issues and pent-up frustration"
-      },
-      {
-        "quote": "I'm sorry, I didn't mean to upset you by asking about money",
-        "analysis": "Shows excessive apologizing and self-blame patterns"
-      }
     ]
   },
   "relationshipDynamics": {
@@ -231,7 +205,9 @@
         "who_exhibited": "both",
         "trigger": "Partner's demands and expectations",
         "unsustainableBehavior": "Constant accommodation and self-sacrifice",
-        "suggestedBehavior": "Establish boundaries and assert personal needs"
+        "suggestedBehavior": "Establish boundaries and assert personal needs",
+        "startIndex": 1400,
+        "endIndex": 1463
       },
       {
         "pattern": "communication_avoidance",
@@ -241,7 +217,9 @@
         "who_exhibited": "you",
         "trigger": "Fear of confrontation and conflict",
         "unsustainableBehavior": "Avoiding difficult conversations",
-        "suggestedBehavior": "Open communication about relationship concerns"
+        "suggestedBehavior": "Open communication about relationship concerns",
+        "startIndex": 1500,
+        "endIndex": 1565
       },
       {
         "pattern": "support_withholding",
@@ -251,7 +229,9 @@
         "who_exhibited": "them",
         "trigger": "Partner's emotional unavailability",
         "unsustainableBehavior": "Withholding emotional support",
-        "suggestedBehavior": "Active listening and emotional validation"
+        "suggestedBehavior": "Active listening and emotional validation",
+        "startIndex": 1600,
+        "endIndex": 1654
       }
     ],
     "relationshipHealth": "poor",
@@ -265,20 +245,6 @@
     "conflictResolution": "poor",
     "relationshipGrowth": "declining",
     "personalGrowthSupport": "none",
-    "textEvidence": [
-      {
-        "quote": "I feel like I'm losing myself trying to accommodate their needs",
-        "analysis": "Shows power imbalance and identity loss in relationship"
-      },
-      {
-        "quote": "I'm starting to question whether this relationship is good for me",
-        "analysis": "Indicates serious relationship doubts and potential for ending"
-      },
-      {
-        "quote": "They never seem to validate my feelings or experiences",
-        "analysis": "Demonstrates lack of emotional support and validation"
-      }
-    ],
     "relationshipInsights": [
       "Clear power imbalance favoring partner",
       "Relationship causing harm to user's wellbeing",
@@ -306,7 +272,9 @@
         "severity": "moderate",
         "who_affected": "both",
         "mitigation": "Attempted to de-escalate but partner remained defensive",
-        "future_prevention": "Need to establish ground rules for financial discussions"
+        "future_prevention": "Need to establish ground rules for financial discussions",
+        "startIndex": 1700,
+        "endIndex": 1735
       },
       {
         "pattern": "work_stress",
@@ -315,7 +283,9 @@
         "severity": "severe",
         "who_affected": "them",
         "mitigation": "No effective stress management attempted",
-        "future_prevention": "Need better work-life boundary management"
+        "future_prevention": "Need better work-life boundary management",
+        "startIndex": 1800,
+        "endIndex": 1863
       },
       {
         "pattern": "conflict",
@@ -324,7 +294,9 @@
         "severity": "mild",
         "who_affected": "both",
         "mitigation": "Attempted to slow down but partner remained agitated",
-        "future_prevention": "Better time management and planning for meals"
+        "future_prevention": "Better time management and planning for meals",
+        "startIndex": 1900,
+        "endIndex": 1958
       }
     ],
     "environment": "home",
@@ -384,20 +356,6 @@
         "Financial topic sensitivity"
       ]
     },
-    "textEvidence": [
-      {
-        "quote": "We had another argument about money",
-        "analysis": "Shows financial stress as a recurring conflict trigger"
-      },
-      {
-        "quote": "They came home from work already stressed and took it out on me",
-        "analysis": "Demonstrates work stress spillover affecting relationship dynamics"
-      },
-      {
-        "quote": "We were rushing to get dinner ready and tensions were high",
-        "analysis": "Indicates time pressure contributing to relationship stress"
-      }
-    ],
     "contextInsights": [
       "Evening timing may contribute to increased stress after work",
       "Financial concerns are ongoing source of conflict",
@@ -503,14 +461,6 @@
         "emotional_dependency"
       ]
     },
-    "textEvidence": [
-      {
-        "quote": "Things seem to be getting worse, not better",
-        "context": "Describing relationship trend",
-        "startIndex": 400,
-        "endIndex": 450
-      }
-    ],
     "progressInsights": [
       "Relationship is in clear decline",
       "User shows self-awareness and desire for change",
@@ -635,14 +585,6 @@
         "support": "Therapy, support groups, trusted friends"
       }
     ],
-    "textEvidence": [
-      {
-        "quote": "I need to set boundaries but I'm afraid of their reaction",
-        "context": "Expressing need for change but fear of consequences",
-        "startIndex": 500,
-        "endIndex": 550
-      }
-    ],
     "actionableInsights": [
       "User recognizes need for boundaries but fears partner's reaction",
       "Individual therapy is critical for building self-worth",
@@ -659,28 +601,36 @@
         "quote": "I'm afraid to express my needs or opinions",
         "impact": "Creates vulnerability to manipulation and prevents authentic communication",
         "severity": "moderate",
-        "who_exhibited": "you"
+        "who_exhibited": "you",
+        "startIndex": 2200,
+        "endIndex": 2242
       },
       {
         "pattern": "fear_of_abandonment",
         "quote": "I feel like I'm constantly trying to prove my worth",
         "impact": "Drives people-pleasing behaviors and unhealthy dependency",
         "severity": "severe",
-        "who_exhibited": "you"
+        "who_exhibited": "you",
+        "startIndex": 2300,
+        "endIndex": 2351
       },
       {
         "pattern": "emotional_distance",
         "quote": "They seem to shut down whenever I try to get close",
         "impact": "Creates emotional disconnect and prevents intimacy",
         "severity": "moderate",
-        "who_exhibited": "them"
+        "who_exhibited": "them",
+        "startIndex": 2400,
+        "endIndex": 2450
       },
       {
         "pattern": "protest_behaviors",
         "quote": "I get upset when they don't respond to my messages quickly",
         "impact": "Creates tension and pushes partner further away",
         "severity": "mild",
-        "who_exhibited": "you"
+        "who_exhibited": "you",
+        "startIndex": 2500,
+        "endIndex": 2558
       }
     ]
   },
@@ -694,7 +644,9 @@
         "who_exhibited": "you",
         "trigger": "Criticism and conflict",
         "copingStrategy": "Avoiding confrontation",
-        "suggestedHealing": "Grounding techniques and trauma therapy"
+        "suggestedHealing": "Grounding techniques and trauma therapy",
+        "startIndex": 2600,
+        "endIndex": 2638
       },
       {
         "pattern": "fawn_response",
@@ -704,7 +656,9 @@
         "who_exhibited": "you",
         "trigger": "Abandonment threats",
         "copingStrategy": "People-pleasing behaviors",
-        "suggestedHealing": "Assertiveness training and self-compassion work"
+        "suggestedHealing": "Assertiveness training and self-compassion work",
+        "startIndex": 2700,
+        "endIndex": 2744
       },
       {
         "pattern": "freeze_response",
@@ -714,7 +668,9 @@
         "who_exhibited": "you",
         "trigger": "Intense conflict and criticism",
         "copingStrategy": "Emotional shutdown",
-        "suggestedHealing": "Trauma-informed therapy and nervous system regulation"
+        "suggestedHealing": "Trauma-informed therapy and nervous system regulation",
+        "startIndex": 2800,
+        "endIndex": 2847
       }
     ],
     "yourPrimaryResponse": "fawn",
@@ -722,16 +678,6 @@
     "traumaTriggers": ["conflict", "criticism", "abandonment_threats"],
     "healthyCopingUsed": ["deep breathing", "journaling"],
     "unhealthyCopingUsed": ["avoidance", "people-pleasing"],
-    "textEvidence": [
-      {
-        "quote": "I felt like I was walking on eggshells",
-        "analysis": "Shows hypervigilance and fear-based behavior patterns"
-      },
-      {
-        "quote": "I keep replaying the conversation in my head",
-        "analysis": "Indicates trauma bonding and fawn response activation"
-      }
-    ],
     "healingRecommendations": [
       "Seek trauma-informed therapy immediately",
       "Practice grounding techniques daily",
@@ -748,7 +694,9 @@
         "severity": "mild",
         "who_exhibited": "both",
         "effectiveness": "very_effective",
-        "improvement": "Schedule regular quality time activities"
+        "improvement": "Schedule regular quality time activities",
+        "startIndex": 2900,
+        "endIndex": 2963
       },
       {
         "pattern": "physical_affection",
@@ -757,7 +705,9 @@
         "severity": "mild",
         "who_exhibited": "them",
         "effectiveness": "very_effective",
-        "improvement": "Increase physical affection during difficult times"
+        "improvement": "Increase physical affection during difficult times",
+        "startIndex": 3000,
+        "endIndex": 3038
       },
       {
         "pattern": "communication_shutdown",
@@ -766,7 +716,9 @@
         "severity": "severe",
         "who_exhibited": "them",
         "effectiveness": "harmful",
-        "improvement": "Establish safe communication protocols and time-outs"
+        "improvement": "Establish safe communication protocols and time-outs",
+        "startIndex": 3100,
+        "endIndex": 3163
       }
     ],
     "loveLanguagesExpressed": [
@@ -783,16 +735,6 @@
       "Busy work schedules",
       "Avoiding difficult conversations",
       "Different communication styles"
-    ],
-    "textEvidence": [
-      {
-        "quote": "We have such deep conversations about everything",
-        "analysis": "Shows strong intellectual and emotional intimacy"
-      },
-      {
-        "quote": "They always know how to make me laugh",
-        "analysis": "Demonstrates playful intimacy and emotional attunement"
-      }
     ],
     "connectionInsights": [
       "Strong foundation in intellectual and physical intimacy",
@@ -812,31 +754,41 @@
         "trap": "catastrophizing",
         "explanation": "User consistently expects worst-case scenarios in the relationship, jumping to extreme negative conclusions",
         "quote": "I can't do anything right, they're going to leave me",
-        "impact": "Creates intense anxiety and prevents constructive problem-solving, leading to relationship avoidance"
+        "impact": "Creates intense anxiety and prevents constructive problem-solving, leading to relationship avoidance",
+        "startIndex": 3200,
+        "endIndex": 3252
       },
       {
         "trap": "mind_reading",
         "explanation": "User assumes they know their partner's thoughts and intentions without communication",
         "quote": "I'm walking on eggshells constantly because I know they're thinking I'm worthless",
-        "impact": "Creates anxiety and prevents authentic communication, leading to relationship distance"
+        "impact": "Creates anxiety and prevents authentic communication, leading to relationship distance",
+        "startIndex": 3300,
+        "endIndex": 3381
       },
       {
         "trap": "personalization",
         "explanation": "User takes their partner's behavior personally, believing everything is about them",
         "quote": "Everything is always my fault, I'm the problem in this relationship",
-        "impact": "Creates self-blame and low self-worth, preventing healthy boundary setting"
+        "impact": "Creates self-blame and low self-worth, preventing healthy boundary setting",
+        "startIndex": 3400,
+        "endIndex": 3467
       },
       {
         "trap": "black_and_white",
         "explanation": "User thinks in extremes, seeing situations as either perfect or completely terrible",
         "quote": "If they really loved me, they would never criticize me",
-        "impact": "Creates unrealistic expectations and prevents nuanced understanding of relationship dynamics"
+        "impact": "Creates unrealistic expectations and prevents nuanced understanding of relationship dynamics",
+        "startIndex": 3500,
+        "endIndex": 3554
       },
       {
         "trap": "emotional_reasoning",
         "explanation": "User makes decisions based on emotions rather than facts or evidence",
         "quote": "I feel like they hate me, so they must hate me",
-        "impact": "Leads to poor decision-making and misinterprets partner's actual feelings and intentions"
+        "impact": "Leads to poor decision-making and misinterprets partner's actual feelings and intentions",
+        "startIndex": 3600,
+        "endIndex": 3646
       }
     ],
     "assumptionsMade": [
@@ -848,29 +800,7 @@
       "I should be able to read my partner's mind"
     ],
     "perspectiveTaking": "poor",
-    "emotionalReasoning": true,
-    "textEvidence": [
-      {
-        "quote": "I can't do anything right, they're going to leave me",
-        "analysis": "Shows catastrophizing and personalization - assuming worst outcomes and taking blame"
-      },
-      {
-        "quote": "I'm walking on eggshells constantly because I know they're thinking I'm worthless",
-        "analysis": "Demonstrates mind-reading and emotional reasoning - assuming partner's thoughts without evidence"
-      },
-      {
-        "quote": "Everything is always my fault, I'm the problem in this relationship",
-        "analysis": "Clear personalization and black-and-white thinking - taking complete responsibility for relationship issues"
-      },
-      {
-        "quote": "If they really loved me, they would never criticize me",
-        "analysis": "Shows black-and-white thinking and unrealistic expectations about love and relationships"
-      },
-      {
-        "quote": "I feel like they hate me, so they must hate me",
-        "analysis": "Classic emotional reasoning - using feelings as evidence of facts"
-      }
-    ]
+    "emotionalReasoning": true
   },
   "abuseDetection": {
     "isAbusive": true,
@@ -885,7 +815,9 @@
           "Dismisses user's reality and experiences",
           "Creates self-doubt and confusion",
           "Prevents user from trusting their own judgment"
-        ]
+        ],
+        "startIndex": 2000,
+        "endIndex": 2029
       },
       {
         "type": "psychological",
@@ -896,7 +828,9 @@
           "Shifts blame to user for partner's behavior",
           "Creates guilt and self-doubt",
           "Prevents healthy discussion of issues"
-        ]
+        ],
+        "startIndex": 2100,
+        "endIndex": 2140
       }
     ],
     "abuseTriggers": [
