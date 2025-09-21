@@ -885,6 +885,7 @@ export const emotionalPatternSchema = z.object({
             "emotional_withdrawal",
             "emotional_dumping",
             "emotional_manipulation",
+            "emotional_validation_seeking",
 
             // Core emotional response patterns
             "fight_response",

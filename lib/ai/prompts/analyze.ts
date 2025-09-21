@@ -11,6 +11,9 @@ You will analyze reflections through multiple lenses:
 7. Progress tracking and growth opportunities
 8. Actionable insights for improvement
 9. Safety and abuse detection (critical priority)
+10. Trauma response patterns
+11. Connection patterns
+
 
 APPROACH:
 - Be empathetic yet objective
@@ -73,8 +76,9 @@ For each abusive behavior detected, provide:
 3. quote: The exact quote from the reflection that demonstrates this abuse
 4. impact: How this abuse affects the victim
 5. severity: mild, moderate, severe, or extreme
-6. frequency: one_time, occasional, frequent, or constant
-7. reasonings: Why this behavior is considered abusive
+6. reasonings: Why this behavior is considered abusive
+7. startIndex: The index of the first character of the quote
+8. endIndex: The index of the last character of the quote
 
 CRITICAL: Silent treatment, stonewalling, gaslighting, and emotional manipulation are forms of emotional abuse that can be subtle but very damaging. Look for patterns of:
 - Extended periods of not talking (days, weeks)
@@ -120,10 +124,6 @@ EMOTIONAL REGULATION PATTERNS:
 - emotional_explosion: "I completely lost it", "I exploded with anger", "I had a meltdown"
 - emotional_numbing: "I felt nothing", "I was numb", "I couldn't feel anything"
 - emotional_avoidance: "I avoid talking about feelings", "I don't want to deal with emotions"
-- emotional_minimization: "It's not a big deal", "I'm fine", "It doesn't matter"
-- emotional_amplification: "I overreacted", "I made it worse than it was", "I blew it out of proportion"
-- emotional_switching: "My emotions changed rapidly", "I went from happy to angry quickly"
-- emotional_stability: "I stayed calm", "I managed my emotions well", "I remained composed"
 
 EMOTIONAL EXPRESSION PATTERNS:
 - emotional_openness: "I shared my feelings", "I was honest about how I felt", "I expressed myself"
@@ -131,58 +131,29 @@ EMOTIONAL EXPRESSION PATTERNS:
 - emotional_dumping: "I overwhelmed them with my problems", "I dumped all my emotions on them"
 - emotional_manipulation: "I used my emotions to get what I wanted", "I made them feel guilty"
 - emotional_validation_seeking: "I need reassurance", "Do you still love me?", "Tell me I'm okay"
-- emotional_independence: "I handled my emotions alone", "I didn't need their help"
-- emotional_contagion: "I caught their mood", "Their emotions affected me", "I mirrored their feelings"
-- emotional_boundaries: "I set limits on emotional sharing", "I protected my emotional space"
 
 EMOTIONAL RESPONSE PATTERNS:
 - fight_response: "I got aggressive", "I confronted them", "I fought back"
 - flight_response: "I ran away", "I avoided the situation", "I escaped"
 - freeze_response: "I froze up", "I couldn't move or speak", "I shut down completely"
 - fawn_response: "I tried to please them", "I agreed to avoid conflict", "I appeased them"
-- adaptive_response: "I handled it well", "I used healthy coping strategies", "I responded appropriately"
-- defensive_response: "I got defensive", "I blamed them", "I protected myself"
-- passive_response: "I became passive", "I withdrew", "I didn't respond"
-- assertive_response: "I communicated clearly", "I stood up for myself respectfully"
 
 EMOTIONAL INTELLIGENCE PATTERNS:
-- emotional_awareness: "I knew exactly how I felt", "I was aware of my emotions", "I understood my feelings"
-- emotional_illiteracy: "I don't know what I'm feeling", "I can't name my emotions", "I'm confused about my feelings"
-- emotional_empathy: "I understood how they felt", "I could feel their pain", "I resonated with their emotions"
-- emotional_blindness: "I couldn't tell how they felt", "I missed their emotional cues", "I was oblivious to their emotions"
 - emotional_self_soothing: "I calmed myself down", "I used breathing techniques", "I practiced mindfulness"
 - emotional_dysregulation: "I couldn't control my emotions", "My emotions were all over the place", "I was overwhelmed"
-- emotional_resilience: "I bounced back quickly", "I recovered well", "I was resilient"
 - emotional_vulnerability: "I was open and vulnerable", "I shared my true self", "I was authentic"
 
 RELATIONSHIP-SPECIFIC EMOTIONAL PATTERNS:
 - emotional_caretaking: "I took care of their emotions", "I managed their feelings", "I was their emotional support"
 - emotional_dependency: "I need them to regulate my emotions", "I can't handle my feelings alone", "I rely on them emotionally"
-- emotional_intimacy_avoidance: "I avoid deep emotional connection", "I keep my distance emotionally", "I'm afraid of emotional intimacy"
-- emotional_intimacy_seeking: "I crave deep emotional connection", "I want to be emotionally close", "I seek emotional intimacy"
-- emotional_competition: "I compete for emotional attention", "I want to be the most important", "I'm jealous of their other relationships"
 - emotional_jealousy: "I'm jealous of their emotional connections", "I want them all to myself", "I'm possessive of their emotions"
 - emotional_isolation: "I isolate myself emotionally", "I don't let anyone in", "I keep my emotions private"
-- emotional_fusion: "We're emotionally fused", "I can't tell where I end and they begin", "We're too emotionally enmeshed"
 
 TRAUMA-RELATED EMOTIONAL PATTERNS:
 - emotional_flashbacks: "I felt like I was back in the past", "I re-experienced old trauma", "I had an emotional flashback"
 - emotional_dissociation: "I disconnected from my emotions", "I felt detached", "I spaced out emotionally"
 - emotional_hypervigilance: "I'm always on emotional alert", "I scan for emotional threats", "I'm hypervigilant about emotions"
 - emotional_shutdown: "I completely shut down emotionally", "I went numb", "I disconnected completely"
-- emotional_reexperiencing: "I keep having the same emotional patterns", "I repeat old emotional responses", "I'm stuck in emotional loops"
-- emotional_avoidance_trauma: "I avoid emotions that remind me of trauma", "I can't handle certain feelings", "I'm triggered by emotions"
-- emotional_safety_seeking: "I constantly seek emotional safety", "I need to feel emotionally secure", "I'm always looking for emotional protection"
-- emotional_trust_issues: "I can't trust them with my emotions", "I'm afraid to be emotionally vulnerable", "I don't trust emotional intimacy"
-
-CULTURAL AND SOCIETAL EMOTIONAL PATTERNS:
-- emotional_conformity: "I hide my true feelings to fit in", "I suppress emotions to be accepted", "I conform to emotional expectations"
-- emotional_performance: "I fake emotions for approval", "I perform happiness to please others", "I act emotional for attention"
-- emotional_scarcity: "I feel emotionally deprived", "I never get enough emotional support", "I'm always emotionally hungry"
-- emotional_abundance: "I have plenty of emotional resources", "I can give emotional support easily", "I feel emotionally fulfilled"
-- emotional_collectivism: "I prioritize group harmony over my feelings", "I suppress my emotions for the group", "I value group emotional well-being"
-- emotional_individualism: "I prioritize my own emotional needs", "I express my feelings regardless of others", "I value individual emotional authenticity"
-- emotional_cooperation: "I collaborate emotionally with others", "I work together on emotional issues", "I support others emotionally"
 
 For each emotional pattern detected, provide:
 1. pattern: The specific emotional pattern name
@@ -193,6 +164,9 @@ For each emotional pattern detected, provide:
 6. trigger: What typically triggers this emotional pattern (e.g., "feeling criticized", "fear of abandonment", "stress at work")
 7. unsustainableBehavior: The problematic behavior this pattern leads to (e.g., "avoiding difficult conversations", "emotional outbursts", "people-pleasing")
 8. suggestedBehavior: Healthy alternative behavior to replace the pattern (e.g., "practicing assertive communication", "using mindfulness techniques", "setting healthy boundaries")
+9. startIndex: The index of the first character of the quote
+10. endIndex: The index of the last character of the quote
+
 
 EMOTIONAL PATTERN ANALYSIS EXAMPLES:
 Based on the Sustainability Directory's research, here are examples of how to analyze emotional patterns:
@@ -206,6 +180,8 @@ Example 1 - Emotional Suppression:
 - Trigger: "Fear of conflict or rejection"
 - Unsustainable behavior: "Avoiding difficult conversations, bottling up emotions"
 - Suggested behavior: "Practice expressing feelings assertively, use 'I feel' statements"
+- Start Index: 0
+- End Index: 49
 
 Example 2 - Emotional Explosion:
 - Pattern: emotional_explosion
@@ -216,6 +192,8 @@ Example 2 - Emotional Explosion:
 - Trigger: "Feeling overwhelmed or unheard"
 - Unsustainable behavior: "Emotional outbursts, intimidating others"
 - Suggested behavior: "Use breathing techniques, take breaks, practice emotional regulation"
+- Start Index: 50
+- End Index: 100
 
 Example 3 - Emotional Dependency:
 - Pattern: emotional_dependency
@@ -226,8 +204,8 @@ Example 3 - Emotional Dependency:
 - Trigger: "Feeling inadequate or unable to self-soothe"
 - Unsustainable behavior: "Over-relying on others for emotional support"
 - Suggested behavior: "Develop self-soothing techniques, build emotional independence"
-
-8. suggestedBehavior: "Develop self-soothing techniques, build emotional independence"
+- Start Index: 100
+- End Index: 150
 
 RELATIONSHIP DYNAMICS PATTERN DETECTION:
 Look for these specific relationship dynamics patterns in the reflection text:
@@ -311,8 +289,9 @@ For each relationship dynamics pattern detected, provide:
 6. trigger: What typically triggers this relationship pattern (e.g., "stress", "insecurity", "past trauma")
 7. unsustainableBehavior: The problematic behavior this pattern leads to (e.g., "avoiding intimacy", "controlling behavior", "emotional distance")
 8. suggestedBehavior: Healthy alternative behavior to improve the relationship (e.g., "practice active listening", "share decision-making", "express needs clearly")
+9. startIndex: The index of the first character of the quote
+10. endIndex: The index of the last character of the quote
 
-8. suggestedBehavior: "Practice active listening, share decision-making, express needs clearly"
 
 TRAUMA RESPONSE PATTERN DETECTION:
 Look for these specific trauma response patterns in the reflection text:
@@ -375,6 +354,8 @@ For each trauma response pattern detected, provide:
 6. trigger: What triggered this trauma response (e.g., "feeling criticized", "fear of abandonment", "past trauma")
 7. copingStrategy: Current coping strategy being used (e.g., "avoidance", "people-pleasing", "self-isolation")
 8. suggestedHealing: Recommended healing approach for this trauma response (e.g., "trauma therapy", "mindfulness", "EMDR")
+9. startIndex: The index of the first character of the quote
+10. endIndex: The index of the last character of the quote
 
 TRAUMA RESPONSE ANALYSIS EXAMPLES:
 Example 1 - Fight Response:
@@ -386,6 +367,8 @@ Example 1 - Fight Response:
 - Trigger: "Feeling criticized or attacked"
 - Coping strategy: "Defensive arguing and confrontation"
 - Suggested healing: "Practice emotional regulation techniques, learn assertive communication"
+- Start Index: 0
+- End Index: 49
 
 Example 2 - Dissociation:
 - Pattern: dissociation
@@ -396,6 +379,8 @@ Example 2 - Dissociation:
 - Trigger: "Overwhelming emotional or physical sensations"
 - Coping strategy: "Mental escape and disconnection"
 - Suggested healing: "Grounding techniques, trauma therapy, body-based healing"
+- Start Index: 50
+- End Index: 100
 
 Example 3 - Trauma Bonding:
 - Pattern: trauma_bonding
@@ -406,8 +391,8 @@ Example 3 - Trauma Bonding:
 - Trigger: "Intermittent reinforcement and trauma cycles"
 - Coping strategy: "Staying in harmful relationship"
 - Suggested healing: "Trauma therapy, support groups, gradual detachment with support"
-
-8. suggestedBehavior: "Trauma therapy, support groups, gradual detachment with support"
+- Start Index: 100
+- End Index: 150
 
 CONTEXT FACTORS PATTERN DETECTION:
 Look for these specific context factor patterns in the reflection text:
@@ -454,44 +439,8 @@ For each context factor pattern detected, provide:
 5. who_affected: you, them, or both
 6. mitigation: How the context factor was managed or could be managed
 7. future_prevention: How to prevent or minimize this context factor in future interactions
-
-PROGRESS TRACKING PATTERN DETECTION:
-Look for these specific progress patterns in the reflection text:
-
-RELATIONSHIP TRENDS:
-- improving: "We're getting better", "Things are improving", "We're making progress"
-- stable: "Things are the same", "No major changes", "We're consistent"
-- declining: "Things are getting worse", "We're drifting apart", "It's not working"
-- uncertain: "I'm not sure", "It's unclear", "Things are confusing"
-
-PERSONAL GROWTH AREAS:
-- emotional_intelligence: "I understand my emotions better", "I'm more aware of feelings"
-- communication_skills: "I'm communicating better", "I express myself more clearly"
-- assertiveness: "I stand up for myself", "I'm more confident", "I speak my mind"
-- empathy: "I understand them better", "I'm more compassionate", "I see their perspective"
-- self_awareness: "I know myself better", "I understand my patterns", "I'm more self-aware"
-- conflict_resolution: "We resolve conflicts better", "We handle disagreements well"
-- emotional_regulation: "I control my emotions better", "I manage my feelings"
-- boundary_setting: "I set boundaries", "I protect my limits", "I say no when needed"
-
-MILESTONE ACHIEVEMENTS:
-- breakthrough_conversation: "We had a breakthrough", "We finally understood each other"
-- conflict_resolution_milestone: "We resolved our conflict", "We worked it out"
-- vulnerability_sharing: "I opened up", "We shared something personal"
-- support_provided: "I supported them", "They helped me through it"
-- boundary_respected: "They respected my boundary", "I maintained my limit"
-- apology_accepted: "We apologized", "We made amends"
-- goal_achieved: "We achieved our goal", "We accomplished something"
-- pattern_broken: "We broke the pattern", "We changed our behavior"
-
-For each progress pattern detected, provide:
-1. pattern: The specific progress pattern name
-2. quote: The exact quote from the reflection that demonstrates this progress pattern
-3. impact: How this progress pattern affects the relationship (1-2 sentences)
-4. severity: mild, moderate, severe, or extreme based on the impact
-5. timeframe: Timeframe for this progress (e.g., 'recent', 'ongoing', 'long-term')
-6. nextSteps: Recommended next steps for this progress area
-7. celebration: How to celebrate or acknowledge this progress
+8. startIndex: The index of the first character of the quote
+9. endIndex: The index of the last character of the quote
 
 CONNECTION PATTERNS DETECTION:
 Look for these specific connection patterns in the reflection text:
@@ -531,6 +480,8 @@ For each connection pattern detected, provide:
 5. who_exhibited: you, them, or both
 6. effectiveness: very_effective, somewhat_effective, ineffective, or harmful
 7. improvement: How to improve this connection pattern
+8. startIndex: The index of the first character of the quote
+9. endIndex: The index of the last character of the quote
 
 ACTIONABLE INSIGHTS GENERATION:
 Provide comprehensive, structured, actionable insights that give users maximum value. For each category, provide detailed, specific guidance:
@@ -618,14 +569,6 @@ WARNING SIGNS:
 - prevention: How to prevent this from happening
 - support: Support resources if this occurs
 
-PROGRESS TRACKING:
-- metric: What to track (e.g., "conflict frequency", "emotional regulation", "communication quality")
-- currentState: Current state of this metric
-- targetState: Desired state of this metric
-- measurementMethod: How to measure progress
-- frequency: How often to check progress
-- milestones: Key milestones to celebrate
-
 RESOURCE RECOMMENDATIONS:
 - resource: Specific resource name
 - type: book, article, video, podcast, app, therapy, workshop, or community
@@ -663,6 +606,16 @@ Look for these specific communication patterns in the reflection text:
 - computing: "Logically speaking", "The facts are", overly analytical responses
 - distracting: "That reminds me of...", "Did you hear about...", changing subjects
 - placating: "You're right", "I'm sorry", agreeing to avoid conflict
+- collaborative: "We can work this out", "Let's find a solution", "We're on the same team"
+- competitive: "I'm right", "You're wrong", "I'm the best"
+- accommodating: "I'll do whatever you want", "I'm flexible", "I'll compromise"
+- avoiding: "I don't want to talk about it", "I'm not interested", "I'm not going to discuss this"
+- compromising: "We can find a middle ground", "Let's find a solution", "We're both right"
+- active_listening: "I'm listening to you", "I'm paying attention", "I understand what you're saying"
+- selective_listening: "I'm only listening to what I want to hear", "I'm not listening to you", "I'm not interested in what you're saying"
+- defensive_listening: "I'm listening to you", "I'm paying attention", "I understand what you're saying"
+- superficial_listening: "I'm only listening to what I want to hear", "I'm not listening to you", "I'm not interested in what you're saying"
+- empathetic_listening: "I'm listening to you", "I'm paying attention", "I understand what you're saying"
 - interrupting: Cutting off mid-sentence, not letting others finish
 - stonewalling: Silent treatment, refusing to respond, shutting down
 - gaslighting: "That never happened", "You're imagining things", "You're too sensitive"
@@ -679,6 +632,8 @@ For each communication pattern detected, provide:
 2. quote: The exact quote from the reflection that demonstrates this pattern
 3. impact: How this communication pattern affects the relationship or situation (1-2 sentences)
 4. severity: mild, moderate, or severe based on the impact and frequency
+5. startIndex: The index of the first character of the quote
+6. endIndex: The index of the last character of the quote
 
 BEHAVIORAL PATTERN DETECTION:
 Look for these specific behavioral patterns in the reflection text (based on Healthy Mind Coaching's comprehensive list):
@@ -753,6 +708,8 @@ For each behavioral pattern detected, provide:
 2. quote: The exact quote from the reflection that demonstrates this pattern
 3. impact: How this behavioral pattern affects the relationship or situation (1-2 sentences)
 4. severity: mild, moderate, or severe based on the impact and frequency
+5. startIndex: The index of the first character of the quote
+6. endIndex: The index of the last character of the quote
 
 COGNITIVE PATTERN DETECTION:
 Look for these specific thinking traps in the reflection text (based on Mindset Health's 12 cognitive distortions):
@@ -775,6 +732,8 @@ For each thinking trap detected, provide:
 2. explanation: How this thinking trap manifests in the reflection (2-3 sentences)
 3. quote: The exact quote from the reflection that demonstrates this trap
 4. impact: How this thinking trap affects the relationship or situation (1-2 sentences)
+5. startIndex: The index of the first character of the quote
+6. endIndex: The index of the last character of the quote
 
 ATTACHMENT PATTERN DETECTION:
 Look for these specific attachment patterns in the reflection text:
@@ -834,33 +793,41 @@ For each attachment pattern detected, provide:
 3. impact: How this attachment pattern affects the relationship or situation (1-2 sentences)
 4. severity: mild, moderate, or severe based on the impact and frequency
 5. who_exhibited: you, them, or both
+6. startIndex: The index of the first character of the quote
+7. endIndex: The index of the last character of the quote
 
-CRITICAL TEXT EVIDENCE REQUIREMENTS:
+CRITICAL QUOTE REQUIREMENTS:
 - For patterns you identify, provide specific quotes from the reflection as supporting evidence
-- In textEvidence arrays, include exact quotes and explain what each reveals
 - Use the person's exact words - don't paraphrase or modify their text
 - Focus on the most revealing quotes that support your analysis
 - If you detect concerning behaviors, provide multiple quotes as evidence
+- Include startIndex and endIndex for quotes when possible to help with text highlighting
 
 IMPORTANT: You MUST populate ALL fields in the response schema. If certain information isn't available from the reflection, make reasonable inferences or use empty arrays where appropriate. Every field is required for proper analysis.
 
 FIELD GUIDANCE:
 - strengthsIdentified: Even in difficult relationships, look for any positive qualities or moments
-- conversationStarters: Suggest topics that could help improve communication
 - positiveHighlights: Find any silver linings or growth opportunities, even in challenging situations
-- textEvidence: Always include relevant quotes with analysis of what they reveal
 - If arrays should be empty based on the content, that's acceptable - but ensure all fields are present
 
 CRITICAL ENUM VALUES - USE ONLY THESE EXACT VALUES:
-- dominantEmotion: Use only: "joy", "sadness", "anger", "fear", "surprise", "disgust", "love", "anxiety", "frustration", "contentment", "guilt", "shame", "hurt", "disappointment", "confusion", "excitement", "relief", "jealousy", "loneliness", "gratitude"
+- dominantEmotion: Use only: "joy", "sadness", "anger", "fear", "surprise", "disgust", "love", "anxiety", "frustration", "contentment", "guilt", "shame", "hurt", "disappointment", "confusion", "excitement", "relief", "jealousy", "loneliness", "gratitude", "hope", "despair", "rage", "panic", "numbness", "overwhelm", "peace", "longing", "resentment", "compassion"
+- emotionalRegulation: Use only: "excellent", "good", "fair", "poor"
 - dayOfWeek: Use only: "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "unknown"
 - timeOfDay: Use only: "morning", "afternoon", "evening", "night", "unknown"
-- communicationStyle: Use only: "assertive", "passive", "aggressive", "passive-aggressive", "avoidant", "dismissive"  
+- overallCommunicationStyle: Use only: "assertive", "passive", "aggressive", "passive_aggressive", "avoidant", "dismissive"  
 - conflictResolutionStyle: Use only: "collaborative", "competitive", "accommodating", "avoiding", "compromising"
 - listeningEffectiveness: Use only: "excellent", "good", "fair", "poor"
-- selfRegulation: Use only: "excellent", "good", "fair", "poor"
-- emotionalRecoveryTime: Use only: "immediate", "hours", "days", "weeks"
-- relationshipTrend: Use only: "improving", "stable", "declining", "uncertain"
+- relationshipHealth: Use only: "excellent", "good", "fair", "poor", "toxic"
+- relationshipStability: Use only: "very_stable", "stable", "somewhat_unstable", "very_unstable"
+- intimacyLevel: Use only: "very_close", "close", "moderate", "distant", "very_distant"
+- trustLevel: Use only: "high", "medium", "low", "broken"
+- effortBalance: Use only: "balanced", "you_more", "them_more", "both_low"
+- investmentLevel: Use only: "high", "moderate", "low", "minimal"
+- conflictFrequency: Use only: "rare", "occasional", "frequent", "constant"
+- conflictResolution: Use only: "excellent", "good", "fair", "poor", "none"
+- relationshipGrowth: Use only: "growing", "stable", "stagnant", "declining"
+- personalGrowthSupport: Use only: "mutual", "one_sided", "competitive", "none"
 - confidenceLevel: Use only: "high", "medium", "low"
 
 Please provide a thorough analysis covering all aspects of the schema, being specific and helpful while maintaining appropriate professional boundaries.`;
