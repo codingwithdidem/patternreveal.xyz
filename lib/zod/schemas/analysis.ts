@@ -861,12 +861,14 @@ export const emotionalPatternSchema = z.object({
       "resentment",
       "compassion",
     ])
-    .describe("The primary emotion experienced during this interaction"),
+    .describe("The primary emotion experienced during this interaction")
+    .optional(),
 
   // Emotional regulation
   emotionalRegulation: z
     .enum(["excellent", "good", "fair", "poor"])
-    .describe("How well emotions were managed and regulated"),
+    .describe("How well emotions were managed and regulated")
+    .optional(),
 
   // Detected emotional patterns
   detectedPatterns: z
@@ -910,48 +912,58 @@ export const emotionalPatternSchema = z.object({
             "emotional_shutdown",
             "emotional_flashbacks",
           ])
-          .describe("Specific emotional pattern detected"),
+          .describe("Specific emotional pattern detected")
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this emotional pattern"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
           .describe(
             "How this emotional pattern affects the relationship or situation"
-          ),
+          )
+          .optional(),
         severity: z
           .enum(["mild", "moderate", "severe", "extreme"])
-          .describe("Severity level of the emotional pattern"),
+          .describe("Severity level of the emotional pattern")
+          .optional(),
         who_exhibited: z
           .enum(["you", "them", "both"])
-          .describe("Who exhibited this emotional pattern"),
+          .describe("Who exhibited this emotional pattern")
+          .optional(),
         trigger: z
           .string()
-          .describe("What typically triggers this emotional pattern"),
+          .describe("What typically triggers this emotional pattern")
+          .optional(),
         unsustainableBehavior: z
           .string()
-          .describe("The problematic behavior this pattern leads to"),
+          .describe("The problematic behavior this pattern leads to")
+          .optional(),
         suggestedBehavior: z
           .string()
-          .describe("Healthy alternative behavior to replace the pattern"),
+          .describe("Healthy alternative behavior to replace the pattern")
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("Specific emotional patterns detected with evidence"),
+    .describe("Specific emotional patterns detected with evidence")
+    .optional(),
 
   // Emotional triggers
   emotionalTriggers: z
     .array(z.string())
-    .describe("What triggered these emotions"),
+    .describe("What triggered these emotions")
+    .optional(),
 });
 
 // Communication analysis
@@ -959,67 +971,74 @@ export const communicationPatternSchema = z.object({
   detectedPatterns: z
     .array(
       z.object({
-        pattern: z.enum([
-          // Basic communication styles
-          "assertive",
-          "passive",
-          "aggressive",
-          "passive_aggressive",
-          "avoidant",
-          "dismissive",
-          // Virginia Satir's patterns
-          "blaming",
-          "computing",
-          "distracting",
-          "placating",
-          // Conflict resolution styles
-          "collaborative",
-          "competitive",
-          "accommodating",
-          "avoiding",
-          "compromising",
-          // Listening patterns
-          "active_listening",
-          "selective_listening",
-          "defensive_listening",
-          "superficial_listening",
-          "empathetic_listening",
-          // Additional patterns
-          "interrupting",
-          "stonewalling",
-          "gaslighting",
-          "lecturing",
-          "sarcasm",
-          "silent_treatment",
-          "emotional_dumping",
-          "mind_reading_assumptions",
-          "catastrophizing",
-          "invalidating",
-        ]),
+        pattern: z
+          .enum([
+            // Basic communication styles
+            "assertive",
+            "passive",
+            "aggressive",
+            "passive_aggressive",
+            "avoidant",
+            "dismissive",
+            // Virginia Satir's patterns
+            "blaming",
+            "computing",
+            "distracting",
+            "placating",
+            // Conflict resolution styles
+            "collaborative",
+            "competitive",
+            "accommodating",
+            "avoiding",
+            "compromising",
+            // Listening patterns
+            "active_listening",
+            "selective_listening",
+            "defensive_listening",
+            "superficial_listening",
+            "empathetic_listening",
+            // Additional patterns
+            "interrupting",
+            "stonewalling",
+            "gaslighting",
+            "lecturing",
+            "sarcasm",
+            "silent_treatment",
+            "emotional_dumping",
+            "mind_reading_assumptions",
+            "catastrophizing",
+            "invalidating",
+            "belittling",
+          ])
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this communication pattern"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
           .describe(
             "How this communication pattern affects the relationship or situation"
-          ),
+          )
+          .optional(),
         severity: z
           .enum(["mild", "moderate", "severe"])
-          .describe("Severity level of this communication pattern"),
+          .describe("Severity level of this communication pattern")
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("Specific communication patterns detected with explanations"),
+    .describe("Specific communication patterns detected with explanations")
+    .optional(),
   overallCommunicationStyle: z
     .enum([
       "assertive",
@@ -1029,7 +1048,8 @@ export const communicationPatternSchema = z.object({
       "avoidant",
       "dismissive",
     ])
-    .describe("Overall communication approach used during this interaction"),
+    .describe("Overall communication approach used during this interaction")
+    .optional(),
   conflictResolutionStyle: z
     .enum([
       "collaborative",
@@ -1038,19 +1058,29 @@ export const communicationPatternSchema = z.object({
       "avoiding",
       "compromising",
     ])
-    .describe("How conflicts and disagreements were handled"),
+    .describe("How conflicts and disagreements were handled")
+    .optional(),
   listeningEffectiveness: z
     .enum(["excellent", "good", "fair", "poor"])
-    .describe("How well both parties listened and understood each other"),
-  expressedNeeds: z.array(z.string()).describe("What needs were expressed"),
-  unmetNeeds: z.array(z.string()).describe("What needs went unmet"),
+    .describe("How well both parties listened and understood each other")
+    .optional(),
+  expressedNeeds: z
+    .array(z.string())
+    .describe("What needs were expressed")
+    .optional(),
+  unmetNeeds: z.array(z.string()).describe("What needs went unmet").optional(),
   boundariesMaintained: z
     .boolean()
-    .describe("Were healthy boundaries maintained?"),
+    .describe("Were healthy boundaries maintained?")
+    .optional(),
   escalationTriggers: z
     .array(z.string())
-    .describe("What escalated the situation"),
-  resolutionAchieved: z.boolean().describe("Was the issue resolved?"),
+    .describe("What escalated the situation")
+    .optional(),
+  resolutionAchieved: z
+    .boolean()
+    .describe("Was the issue resolved?")
+    .optional(),
 });
 
 // Behavioral patterns
@@ -1058,109 +1088,117 @@ export const behaviorPatternSchema = z.object({
   detectedPatterns: z
     .array(
       z.object({
-        pattern: z.enum([
-          "procrastination",
-          "compulsive_behaviors",
-          "self_harm",
-          "chronic_lateness",
-          "workaholism",
-          "chronic_complaining",
-          "perfectionism",
-          "lack_of_boundaries",
-          "inappropriate_social_behavior",
-          "lack_of_motivation",
-          "difficulty_expressing_emotions",
-          "inability_to_say_no",
-          "lack_of_empathy",
-          "sabotage_success",
-          "habitual_gossiping",
-          "avoidance_of_eye_contact",
-          "lack_of_interest_in_growth",
-          "social_withdrawal",
-          "overeating_or_undereating",
-          "impulsive_spending",
-          "neglecting_self_care",
-          "obsessive_exercise",
-          "sexual_compulsions",
-          "fear_driven_avoidance",
-          "chronic_lying",
-          "excessive_health_worry",
-          "emotional_outbursts",
-          "stalking_or_obsessive_following",
-          "avoidance_of_intimacy",
-          "resistance_to_authority",
-          "excessive_dependency",
-          "manipulative_behavior",
-          "excessive_apologizing",
-          "inconsistent_behavior",
-          "substance_abuse",
-          "aggression_or_violence",
-          "relationship_conflict",
-          "avoidance_of_responsibilities",
-          "excessive_screen_time",
-          "hoarding",
-          "disruptive_sleep_patterns",
-          "driving_recklessly",
-          "resistance_to_change",
-          "habitual_blaming",
+        pattern: z
+          .enum([
+            "procrastination",
+            "compulsive_behaviors",
+            "self_harm",
+            "chronic_lateness",
+            "workaholism",
+            "chronic_complaining",
+            "perfectionism",
+            "lack_of_boundaries",
+            "inappropriate_social_behavior",
+            "lack_of_motivation",
+            "difficulty_expressing_emotions",
+            "inability_to_say_no",
+            "lack_of_empathy",
+            "sabotage_success",
+            "habitual_gossiping",
+            "avoidance_of_eye_contact",
+            "lack_of_interest_in_growth",
+            "social_withdrawal",
+            "overeating_or_undereating",
+            "impulsive_spending",
+            "neglecting_self_care",
+            "obsessive_exercise",
+            "sexual_compulsions",
+            "fear_driven_avoidance",
+            "chronic_lying",
+            "excessive_health_worry",
+            "emotional_outbursts",
+            "stalking_or_obsessive_following",
+            "avoidance_of_intimacy",
+            "resistance_to_authority",
+            "excessive_dependency",
+            "manipulative_behavior",
+            "excessive_apologizing",
+            "inconsistent_behavior",
+            "substance_abuse",
+            "aggression_or_violence",
+            "relationship_conflict",
+            "avoidance_of_responsibilities",
+            "excessive_screen_time",
+            "hoarding",
+            "disruptive_sleep_patterns",
+            "driving_recklessly",
+            "resistance_to_change",
+            "habitual_blaming",
 
-          // Relationship-specific behavioral patterns
-          "pursuer_distancer_dynamic",
-          "blame_game_pattern",
-          "caretaker_dependent_dynamic",
-          "conflict_avoidance_pattern",
-          "tit_for_tat_behavior",
-          "peacemaker_role",
-          "emotional_withdrawal_pattern",
-          "power_imbalance_dynamic",
-          "intimacy_initiator_pattern",
-          "score_keeping_behavior",
-          "emotional_dumping_pattern",
-          "stonewalling_pattern",
-          "love_bombing_pattern",
-          "devaluation_pattern",
-          "idealization_pattern",
-          "emotional_unavailability_pattern",
-          "codependent_enmeshment",
-          "protest_behavior_pattern",
-          "deactivating_strategy_pattern",
-        ]),
+            // Relationship-specific behavioral patterns
+            "pursuer_distancer_dynamic",
+            "blame_game_pattern",
+            "caretaker_dependent_dynamic",
+            "conflict_avoidance_pattern",
+            "tit_for_tat_behavior",
+            "peacemaker_role",
+            "emotional_withdrawal_pattern",
+            "power_imbalance_dynamic",
+            "intimacy_initiator_pattern",
+            "score_keeping_behavior",
+            "emotional_dumping_pattern",
+            "stonewalling_pattern",
+            "love_bombing_pattern",
+            "devaluation_pattern",
+            "idealization_pattern",
+            "emotional_unavailability_pattern",
+            "codependent_enmeshment",
+            "protest_behavior_pattern",
+            "deactivating_strategy_pattern",
+          ])
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this pattern"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
           .describe(
             "How this behavioral pattern affects the relationship or situation"
-          ),
+          )
+          .optional(),
         severity: z
           .enum(["mild", "moderate", "severe"])
-          .describe("Severity level of this pattern"),
+          .describe("Severity level of this pattern")
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("Specific behavioral patterns detected with explanations"),
+    .describe("Specific behavioral patterns detected with explanations")
+    .optional(),
   behaviorCycles: z
     .array(
       z.object({
-        trigger: z.string(),
-        response: z.string(),
-        outcome: z.string(),
+        trigger: z.string().optional(),
+        response: z.string().optional(),
+        outcome: z.string().optional(),
       })
     )
-    .describe("Identified behavioral cycles"),
+    .describe("Identified behavioral cycles")
+    .optional(),
   growthOpportunities: z
     .array(z.string())
-    .describe("Areas for personal growth"),
+    .describe("Areas for personal growth")
+    .optional(),
 });
 
 // Relationship dynamics
@@ -1242,99 +1280,122 @@ export const relationshipDynamicsSchema = z.object({
             "growth_acceleration",
             "growth_balance",
           ])
-          .describe("Specific relationship dynamics pattern detected"),
+          .describe("Specific relationship dynamics pattern detected")
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this relationship pattern"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
           .describe(
             "How this relationship pattern affects the overall relationship health"
-          ),
+          )
+          .optional(),
         severity: z
           .enum(["mild", "moderate", "severe", "extreme"])
-          .describe("Severity level of the relationship pattern"),
+          .describe("Severity level of the relationship pattern")
+          .optional(),
         who_exhibited: z
           .enum(["you", "them", "both"])
-          .describe("Who exhibited this relationship pattern"),
+          .describe("Who exhibited this relationship pattern")
+          .optional(),
         trigger: z
           .string()
-          .describe("What typically triggers this relationship pattern"),
+          .describe("What typically triggers this relationship pattern")
+          .optional(),
         unsustainableBehavior: z
           .string()
-          .describe("The problematic behavior this pattern leads to"),
+          .describe("The problematic behavior this pattern leads to")
+          .optional(),
         suggestedBehavior: z
           .string()
-          .describe("Healthy alternative behavior to improve the relationship"),
+          .describe("Healthy alternative behavior to improve the relationship")
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("Specific relationship dynamics patterns detected with evidence"),
+    .describe("Specific relationship dynamics patterns detected with evidence")
+    .optional(),
 
   // Overall relationship health metrics
   relationshipHealth: z
     .enum(["excellent", "good", "fair", "poor", "toxic"])
-    .describe("Overall health of the relationship"),
+    .describe("Overall health of the relationship")
+    .optional(),
   relationshipSatisfaction: z
     .number()
     .min(1)
     .max(10)
-    .describe("Overall satisfaction with the relationship (1-10)"),
+    .describe("Overall satisfaction with the relationship (1-10)")
+    .optional(),
   relationshipStability: z
     .enum(["very_stable", "stable", "somewhat_unstable", "very_unstable"])
-    .describe("Stability of the relationship"),
+    .describe("Stability of the relationship")
+    .optional(),
 
   // Intimacy and connection assessment
   intimacyLevel: z
     .enum(["very_close", "close", "moderate", "distant", "very_distant"])
-    .describe("Level of emotional closeness and vulnerability shared"),
+    .describe("Level of emotional closeness and vulnerability shared")
+    .optional(),
   trustLevel: z
     .enum(["high", "medium", "low", "broken"])
-    .describe("Current level of trust between both parties"),
+    .describe("Current level of trust between both parties")
+    .optional(),
 
   // Effort and investment assessment
   effortBalance: z
     .enum(["balanced", "you_more", "them_more", "both_low"])
-    .describe("Who is putting in more effort to maintain the relationship"),
+    .describe("Who is putting in more effort to maintain the relationship")
+    .optional(),
   investmentLevel: z
     .enum(["high", "moderate", "low", "minimal"])
-    .describe("Overall level of investment in the relationship"),
+    .describe("Overall level of investment in the relationship")
+    .optional(),
 
   // Conflict and resolution assessment
   conflictFrequency: z
     .enum(["rare", "occasional", "frequent", "constant"])
-    .describe("How often conflicts occur in the relationship"),
+    .describe("How often conflicts occur in the relationship")
+    .optional(),
   conflictResolution: z
     .enum(["excellent", "good", "fair", "poor", "none"])
-    .describe("How well conflicts are resolved"),
+    .describe("How well conflicts are resolved")
+    .optional(),
 
   // Growth and development assessment
   relationshipGrowth: z
     .enum(["growing", "stable", "stagnant", "declining"])
-    .describe("Direction of relationship growth"),
+    .describe("Direction of relationship growth")
+    .optional(),
   personalGrowthSupport: z
     .enum(["mutual", "one_sided", "competitive", "none"])
-    .describe("How partners support each other's personal growth"),
+    .describe("How partners support each other's personal growth")
+    .optional(),
 
   // Evidence and insights
   relationshipInsights: z
     .array(z.string())
-    .describe("Key insights about relationship dynamics and health"),
+    .describe("Key insights about relationship dynamics and health")
+    .optional(),
   improvementAreas: z
     .array(z.string())
-    .describe("Areas where the relationship could improve"),
+    .describe("Areas where the relationship could improve")
+    .optional(),
   strengthsIdentified: z
     .array(z.string())
-    .describe("Strengths and positive aspects of the relationship"),
+    .describe("Strengths and positive aspects of the relationship")
+    .optional(),
 });
 
 // Context factors
@@ -1380,124 +1441,163 @@ export const contextFactorsSchema = z.object({
             "environmental_stress",
             "technology_stress",
           ])
-          .describe("Specific context factor pattern detected"),
+          .describe("Specific context factor pattern detected")
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this context factor"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
-          .describe("How this context factor affected the interaction"),
+          .describe("How this context factor affected the interaction")
+          .optional(),
         severity: z
           .enum(["mild", "moderate", "severe", "extreme"])
-          .describe("Severity level of the context factor's impact"),
+          .describe("Severity level of the context factor's impact")
+          .optional(),
         who_affected: z
           .enum(["you", "them", "both"])
-          .describe("Who was most affected by this context factor"),
+          .describe("Who was most affected by this context factor")
+          .optional(),
         mitigation: z
           .string()
-          .describe("How the context factor was managed or could be managed"),
+          .describe("How the context factor was managed or could be managed")
+          .optional(),
         future_prevention: z
           .string()
           .describe(
             "How to prevent or minimize this context factor in future interactions"
-          ),
+          )
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("Specific context factor patterns detected with evidence"),
+    .describe("Specific context factor patterns detected with evidence")
+    .optional(),
 
   // Basic interaction context
   environment: z
     .enum(["home", "work", "public", "online", "phone", "text"])
-    .describe("Where or how this interaction took place"),
+    .describe("Where or how this interaction took place")
+    .optional(),
 
   // External factors analysis
   externalStressors: z
     .array(z.string())
-    .describe("External factors affecting the interaction"),
+    .describe("External factors affecting the interaction")
+    .optional(),
   stressorAnalysis: z
     .array(
       z.object({
-        stressor: z.string().describe("Specific external stressor"),
+        stressor: z.string().describe("Specific external stressor").optional(),
         impact: z
           .enum(["low", "moderate", "high", "severe"])
-          .describe("Impact on interaction"),
-        source: z.string().describe("Where this stressor originated"),
-        duration: z.string().describe("How long this stressor was present"),
-        coping: z.string().describe("How this stressor was handled"),
+          .describe("Impact on interaction")
+          .optional(),
+        source: z
+          .string()
+          .describe("Where this stressor originated")
+          .optional(),
+        duration: z
+          .string()
+          .describe("How long this stressor was present")
+          .optional(),
+        coping: z.string().describe("How this stressor was handled").optional(),
       })
     )
-    .describe("Detailed analysis of external stressors"),
+    .describe("Detailed analysis of external stressors")
+    .optional(),
 
   // Time context analysis
-  timeContext: z.object({
-    timeOfDay: z
-      .enum(["morning", "afternoon", "evening", "night", "unknown"])
-      .describe("What time of day this interaction occurred"),
-    dayOfWeek: z
-      .enum([
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
-        "sunday",
-        "unknown",
-      ])
-      .describe("What day of the week this interaction occurred"),
-    timingQuality: z
-      .enum(["optimal", "good", "poor", "terrible"])
-      .describe("How well-timed this interaction was"),
-    timePressure: z
-      .enum(["none", "mild", "moderate", "severe"])
-      .describe("Level of time pressure during interaction"),
-    timeImpact: z.string().describe("How timing affected the interaction"),
-    specialCircumstances: z.array(z.string()).optional(),
-  }),
+  timeContext: z
+    .object({
+      timeOfDay: z
+        .enum(["morning", "afternoon", "evening", "night", "unknown"])
+        .describe("What time of day this interaction occurred")
+        .optional(),
+      dayOfWeek: z
+        .enum([
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+          "sunday",
+          "unknown",
+        ])
+        .describe("What day of the week this interaction occurred")
+        .optional(),
+      timingQuality: z
+        .enum(["optimal", "good", "poor", "terrible"])
+        .describe("How well-timed this interaction was")
+        .optional(),
+      timePressure: z
+        .enum(["none", "mild", "moderate", "severe"])
+        .describe("Level of time pressure during interaction")
+        .optional(),
+      timeImpact: z
+        .string()
+        .describe("How timing affected the interaction")
+        .optional(),
+      specialCircumstances: z.array(z.string()).default([]).optional(),
+    })
+    .optional(),
 
   // Emotional context
-  emotionalContext: z.object({
-    recentEvents: z
-      .array(z.string())
-      .describe("Recent events affecting emotional state"),
-    emotionalBaggage: z
-      .array(z.string())
-      .describe("Previous emotional experiences affecting this interaction"),
-  }),
+  emotionalContext: z
+    .object({
+      recentEvents: z
+        .array(z.string())
+        .describe("Recent events affecting emotional state")
+        .optional(),
+      emotionalBaggage: z
+        .array(z.string())
+        .describe("Previous emotional experiences affecting this interaction")
+        .optional(),
+    })
+    .optional(),
 
   // Context optimization recommendations
-  contextOptimization: z.object({
-    idealTiming: z
-      .string()
-      .describe("When this type of interaction would work best"),
-    idealEnvironment: z
-      .string()
-      .describe("Best environment for this type of interaction"),
-    preparationNeeded: z
-      .array(z.string())
-      .describe("How to prepare for similar future interactions"),
-    barriersToRemove: z
-      .array(z.string())
-      .describe("Context barriers to avoid in future"),
-  }),
+  contextOptimization: z
+    .object({
+      idealTiming: z
+        .string()
+        .describe("When this type of interaction would work best")
+        .optional(),
+      idealEnvironment: z
+        .string()
+        .describe("Best environment for this type of interaction")
+        .optional(),
+      preparationNeeded: z
+        .array(z.string())
+        .describe("How to prepare for similar future interactions")
+        .optional(),
+      barriersToRemove: z
+        .array(z.string())
+        .describe("Context barriers to avoid in future")
+        .optional(),
+    })
+    .optional(),
 
   // Evidence and insights
   contextInsights: z
     .array(z.string())
-    .describe("Key insights about how context affected the interaction"),
+    .describe("Key insights about how context affected the interaction")
+    .optional(),
   contextRecommendations: z
     .array(z.string())
-    .describe("Recommendations for optimizing future interactions"),
+    .describe("Recommendations for optimizing future interactions")
+    .optional(),
 });
 
 // Actionable insights
@@ -1519,7 +1619,8 @@ export const actionableInsightsSchema = z.object({
           .describe("How difficult this action is"),
       })
     )
-    .describe("Actions to take immediately (next 24-48 hours)"),
+    .describe("Actions to take immediately (next 24-48 hours)")
+    .optional(),
 
   // Communication strategies
   communicationStrategies: z
@@ -1539,7 +1640,8 @@ export const actionableInsightsSchema = z.object({
           .describe("Expected outcome from this strategy"),
       })
     )
-    .describe("Communication strategies for better interactions"),
+    .describe("Communication strategies for better interactions")
+    .optional(),
 
   // Emotional regulation techniques
   emotionalRegulationTechniques: z
@@ -1557,7 +1659,8 @@ export const actionableInsightsSchema = z.object({
         whenToUse: z.string().describe("Best situations to use this technique"),
       })
     )
-    .describe("Techniques for managing emotions effectively"),
+    .describe("Techniques for managing emotions effectively")
+    .optional(),
 
   // Boundary setting guidance
   boundaryGuidance: z
@@ -1577,7 +1680,8 @@ export const actionableInsightsSchema = z.object({
         supportNeeded: z.string().describe("Support or resources needed"),
       })
     )
-    .describe("Guidance for setting and maintaining healthy boundaries"),
+    .describe("Guidance for setting and maintaining healthy boundaries")
+    .optional(),
 
   // Conflict resolution approaches
   conflictResolutionApproaches: z
@@ -1591,7 +1695,8 @@ export const actionableInsightsSchema = z.object({
         followUp: z.string().describe("What to do after using this approach"),
       })
     )
-    .describe("Approaches for resolving conflicts constructively"),
+    .describe("Approaches for resolving conflicts constructively")
+    .optional(),
 
   // Personal growth recommendations
   personalGrowthRecommendations: z
@@ -1608,7 +1713,8 @@ export const actionableInsightsSchema = z.object({
         measurement: z.string().describe("How to measure progress"),
       })
     )
-    .describe("Personal growth recommendations based on patterns"),
+    .describe("Personal growth recommendations based on patterns")
+    .optional(),
 
   // Relationship building activities
   relationshipBuildingActivities: z
@@ -1622,7 +1728,8 @@ export const actionableInsightsSchema = z.object({
         expectedBenefit: z.string().describe("Expected relationship benefit"),
       })
     )
-    .describe("Activities to strengthen the relationship"),
+    .describe("Activities to strengthen the relationship")
+    .optional(),
 
   // Self-care and wellness strategies
   selfCareStrategies: z
@@ -1643,7 +1750,8 @@ export const actionableInsightsSchema = z.object({
         resources: z.array(z.string()).describe("Resources or tools needed"),
       })
     )
-    .describe("Self-care strategies for personal wellbeing"),
+    .describe("Self-care strategies for personal wellbeing")
+    .optional(),
 
   // Conversation starters and topics
   conversationTopics: z
@@ -1664,29 +1772,44 @@ export const actionableInsightsSchema = z.object({
           .describe("Potential challenges and how to handle them"),
       })
     )
-    .describe("Conversation topics and how to approach them"),
+    .describe("Conversation topics and how to approach them")
+    .optional(),
 
   // Warning signs and red flags
   warningSigns: z
     .array(
       z.object({
-        sign: z.string().describe("Warning sign to watch for"),
+        sign: z.string().describe("Warning sign to watch for").optional(),
         severity: z
           .enum(["low", "medium", "high", "critical"])
-          .describe("Severity level"),
-        description: z.string().describe("What this warning sign looks like"),
-        action: z.string().describe("What to do if this sign appears"),
-        prevention: z.string().describe("How to prevent this from happening"),
-        support: z.string().describe("Support resources if this occurs"),
+          .describe("Severity level")
+          .optional(),
+        description: z
+          .string()
+          .describe("What this warning sign looks like")
+          .optional(),
+        action: z
+          .string()
+          .describe("What to do if this sign appears")
+          .optional(),
+        prevention: z
+          .string()
+          .describe("How to prevent this from happening")
+          .optional(),
+        support: z
+          .string()
+          .describe("Support resources if this occurs")
+          .optional(),
       })
     )
-    .describe("Warning signs to monitor and how to respond"),
+    .describe("Warning signs to monitor and how to respond")
+    .optional(),
 
   // Resource recommendations
   resourceRecommendations: z
     .array(
       z.object({
-        resource: z.string().describe("Resource name"),
+        resource: z.string().describe("Resource name").optional(),
         type: z
           .enum([
             "book",
@@ -1698,42 +1821,68 @@ export const actionableInsightsSchema = z.object({
             "workshop",
             "community",
           ])
-          .describe("Type of resource"),
+          .describe("Type of resource")
+          .optional(),
         purpose: z.string().describe("What this resource helps with"),
-        description: z.string().describe("Brief description of the resource"),
-        accessibility: z.string().describe("How to access this resource"),
-        cost: z.string().describe("Cost information"),
+        description: z
+          .string()
+          .describe("Brief description of the resource")
+          .optional(),
+        accessibility: z
+          .string()
+          .describe("How to access this resource")
+          .optional(),
+        cost: z.string().describe("Cost information").optional(),
         effectiveness: z
           .enum(["high", "moderate", "low"])
-          .describe("Expected effectiveness"),
+          .describe("Expected effectiveness")
+          .optional(),
       })
     )
-    .describe("Recommended resources for further learning and support"),
+    .describe("Recommended resources for further learning and support")
+    .optional(),
 
   // Long-term vision and goals
   longTermVision: z
     .array(
-      z.object({
-        timeframe: z.string().describe("Timeframe for this goal"),
-        goal: z.string().describe("Long-term goal"),
-        currentReality: z.string().describe("Current state"),
-        desiredOutcome: z.string().describe("Desired future state"),
-        steps: z.array(z.string()).describe("Steps to achieve this goal"),
-        obstacles: z.array(z.string()).describe("Potential obstacles"),
-        support: z.string().describe("Support needed to achieve this goal"),
-      })
+      z
+        .object({
+          timeframe: z.string().describe("Timeframe for this goal").optional(),
+          goal: z.string().describe("Long-term goal").optional(),
+          currentReality: z.string().describe("Current state").optional(),
+          desiredOutcome: z
+            .string()
+            .describe("Desired future state")
+            .optional(),
+          steps: z
+            .array(z.string())
+            .describe("Steps to achieve this goal")
+            .optional(),
+          obstacles: z
+            .array(z.string())
+            .describe("Potential obstacles")
+            .optional(),
+          support: z
+            .string()
+            .describe("Support needed to achieve this goal")
+            .optional(),
+        })
+        .optional()
     )
-    .describe("Long-term vision and goals for the relationship"),
+    .describe("Long-term vision and goals for the relationship")
+    .optional(),
 });
 
 // Enhanced abuse detection with comprehensive patterns and quotes
 export const abuseDetectionSchema = z.object({
   isAbusive: z
     .boolean()
-    .describe("Whether the reflection indicates abusive behavior"),
+    .describe("Whether the reflection indicates abusive behavior")
+    .optional(),
   isAtImmediateRisk: z
     .boolean()
-    .describe("Whether the user is at immediate risk"),
+    .describe("Whether the user is at immediate risk")
+    .optional(),
   detectedAbusiveBehaviors: z
     .array(
       z.object({
@@ -1749,113 +1898,127 @@ export const abuseDetectionSchema = z.object({
             "psychological",
             "verbal",
           ])
-          .describe("Category of abusive behavior detected"),
-        behavior: z.enum([
-          // Physical abuse
-          "hitting",
-          "pushing",
-          "slapping",
-          "kicking",
-          "choking",
-          "throwing_objects",
-          "physical_intimidation",
-          // Emotional abuse
-          "gaslighting",
-          "silent_treatment",
-          "emotional_manipulation",
-          "guilt_tripping",
-          "emotional_blackmail",
-          "constant_criticism",
-          "belittling",
-          "humiliation",
-          "threats",
-          "intimidation",
-          "isolation",
-          "controlling_behavior",
-          "jealousy_abuse",
-          "love_bombing",
-          "devaluation",
-          "stonewalling",
-          // Sexual abuse
-          "sexual_coercion",
-          "sexual_manipulation",
-          "unwanted_sexual_contact",
-          "sexual_threats",
-          // Financial abuse
-          "financial_control",
-          "economic_abuse",
-          "withholding_money",
-          "sabotaging_work",
-          // Mental/Psychological abuse
-          "mind_games",
-          "psychological_manipulation",
-          "brainwashing",
-          "psychological_torture",
-          // Digital abuse
-          "cyberstalking",
-          "digital_monitoring",
-          "revenge_porn",
-          "online_harassment",
-          // Social abuse
-          "social_isolation",
-          "reputation_damage",
-          "social_manipulation",
-          "alienation",
-          // Verbal abuse
-          "yelling",
-          "name_calling",
-          "verbal_threats",
-          "constant_criticism",
-          "screaming",
-          "insults",
-          "degrading_comments",
-          "verbal_intimidation",
-          "shouting",
-        ]),
+          .describe("Category of abusive behavior detected")
+          .optional(),
+        behavior: z
+          .enum([
+            // Physical abuse
+            "hitting",
+            "pushing",
+            "slapping",
+            "kicking",
+            "choking",
+            "throwing_objects",
+            "physical_intimidation",
+            // Emotional abuse
+            "gaslighting",
+            "silent_treatment",
+            "emotional_manipulation",
+            "guilt_tripping",
+            "emotional_blackmail",
+            "constant_criticism",
+            "belittling",
+            "humiliation",
+            "threats",
+            "intimidation",
+            "isolation",
+            "controlling_behavior",
+            "jealousy_abuse",
+            "love_bombing",
+            "devaluation",
+            "stonewalling",
+            // Sexual abuse
+            "sexual_coercion",
+            "sexual_manipulation",
+            "unwanted_sexual_contact",
+            "sexual_threats",
+            // Financial abuse
+            "financial_control",
+            "economic_abuse",
+            "withholding_money",
+            "sabotaging_work",
+            // Mental/Psychological abuse
+            "mind_games",
+            "psychological_manipulation",
+            "brainwashing",
+            "psychological_torture",
+            // Digital abuse
+            "cyberstalking",
+            "digital_monitoring",
+            "revenge_porn",
+            "online_harassment",
+            // Social abuse
+            "social_isolation",
+            "reputation_damage",
+            "social_manipulation",
+            "alienation",
+            // Verbal abuse
+            "yelling",
+            "name_calling",
+            "verbal_threats",
+            "constant_criticism",
+            "screaming",
+            "insults",
+            "degrading_comments",
+            "verbal_intimidation",
+            "shouting",
+          ])
+          .describe("Specific abusive behavior detected")
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this abusive behavior"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
-          .describe("How this abusive behavior affects the victim"),
+          .describe("How this abusive behavior affects the victim")
+          .optional(),
         reasonings: z
           .array(z.string())
-          .describe("Why this behavior is considered abusive"),
+          .describe("Why this behavior is considered abusive")
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("The detected abusive behaviors with specific evidence"),
+    .describe("The detected abusive behaviors with specific evidence")
+    .optional(),
   abuseTriggers: z
     .array(z.string())
-    .describe("The triggers or situations that lead to abusive behavior"),
+    .describe("The triggers or situations that lead to abusive behavior")
+    .optional(),
   warningSigns: z
     .array(z.string())
-    .describe("Additional warning signs or red flags present"),
+    .describe("Additional warning signs or red flags present")
+    .optional(),
   suggestedActionsToTake: z
     .array(z.string())
-    .describe("The suggested actions to take for safety"),
+    .describe("The suggested actions to take for safety")
+    .optional(),
 });
 
 // Attachment patterns analysis
 export const attachmentPatternsSchema = z.object({
   yourAttachmentStyle: z
     .enum(["secure", "anxious", "avoidant", "disorganized"])
-    .describe("Your attachment style evident in this interaction"),
+    .describe("Your attachment style evident in this interaction")
+    .optional(),
   theirAttachmentStyle: z
     .enum(["secure", "anxious", "avoidant", "disorganized"])
-    .describe("Their apparent attachment style"),
+    .describe("Their apparent attachment style")
+    .optional(),
   attachmentTriggered: z
     .boolean()
-    .describe("Did attachment issues surface during this interaction?"),
+    .describe("Did attachment issues surface during this interaction?")
+    .optional(),
   detectedPatterns: z
     .array(
       z.object({
@@ -1910,34 +2073,40 @@ export const attachmentPatternsSchema = z.object({
             "control_issues",
             "manipulation",
           ])
-          .describe("Specific attachment pattern detected"),
+          .describe("Specific attachment pattern detected")
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this attachment pattern"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
           .describe(
             "How this attachment pattern affects the relationship or situation"
-          ),
+          )
+          .optional(),
         severity: z
           .enum(["mild", "moderate", "severe", "extreme"])
-          .describe("Severity level of the attachment pattern"),
+          .describe("Severity level of the attachment pattern")
+          .optional(),
         who_exhibited: z
           .enum(["you", "them", "both"])
-          .describe("Who exhibited this attachment pattern"),
+          .describe("Who exhibited this attachment pattern")
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("Specific attachment patterns detected with evidence"),
+    .describe("Specific attachment patterns detected with evidence")
+    .optional(),
 });
 
 // Trauma responses analysis
@@ -1998,67 +2167,84 @@ export const traumaResponsesSchema = z.object({
             "post_traumatic_growth",
             "healing_relationships",
           ])
-          .describe("Specific trauma response pattern detected"),
+          .describe("Specific trauma response pattern detected")
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this trauma response"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
           .describe(
             "How this trauma response affects the individual and relationships"
-          ),
+          )
+          .optional(),
         severity: z
           .enum(["mild", "moderate", "severe", "extreme"])
-          .describe("Severity level of the trauma response"),
+          .describe("Severity level of the trauma response")
+          .optional(),
         who_exhibited: z
           .enum(["you", "them", "both"])
-          .describe("Who exhibited this trauma response"),
-        trigger: z.string().describe("What triggered this trauma response"),
+          .describe("Who exhibited this trauma response")
+          .optional(),
+        trigger: z
+          .string()
+          .describe("What triggered this trauma response")
+          .optional(),
         copingStrategy: z
           .string()
-          .describe("Current coping strategy being used"),
+          .describe("Current coping strategy being used")
+          .optional(),
         suggestedHealing: z
           .string()
-          .describe("Recommended healing approach for this trauma response"),
+          .describe("Recommended healing approach for this trauma response")
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("Specific trauma response patterns detected with evidence"),
+    .describe("Specific trauma response patterns detected with evidence")
+    .optional(),
 
   // Primary trauma responses
   yourPrimaryResponse: z
     .enum(["fight", "flight", "freeze", "fawn", "mixed", "none"])
-    .describe("Your primary trauma response pattern"),
+    .describe("Your primary trauma response pattern")
+    .optional(),
   theirPrimaryResponse: z
     .enum(["fight", "flight", "freeze", "fawn", "mixed", "none", "unknown"])
-    .describe("Their apparent primary trauma response pattern"),
+    .describe("Their apparent primary trauma response pattern")
+    .optional(),
 
   // Trauma triggers identified
   traumaTriggers: z
     .array(z.string())
-    .describe("Specific triggers that activated trauma responses"),
+    .describe("Specific triggers that activated trauma responses")
+    .optional(),
 
   // Coping strategies assessment
   healthyCopingUsed: z
     .array(z.string())
-    .describe("Healthy coping strategies that were employed"),
+    .describe("Healthy coping strategies that were employed")
+    .optional(),
   unhealthyCopingUsed: z
     .array(z.string())
-    .describe("Unhealthy coping strategies that were used"),
+    .describe("Unhealthy coping strategies that were used")
+    .optional(),
 
   // Evidence and insights
   healingRecommendations: z
     .array(z.string())
-    .describe("Specific recommendations for trauma healing"),
+    .describe("Specific recommendations for trauma healing")
+    .optional(),
 });
 
 // Comprehensive connection patterns analysis - detailed intimacy and bonding assessment
@@ -2106,21 +2292,26 @@ export const connectionPatternsSchema = z.object({
             "supportive_intimacy",
             "adventurous_intimacy",
           ])
-          .describe("Specific connection pattern detected"),
+          .describe("Specific connection pattern detected")
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this connection pattern"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
-          .describe("How this connection pattern affects the relationship"),
+          .describe("How this connection pattern affects the relationship")
+          .optional(),
         severity: z
           .enum(["mild", "moderate", "severe", "extreme"])
-          .describe("Severity level of the connection pattern"),
+          .describe("Severity level of the connection pattern")
+          .optional(),
         who_exhibited: z
           .enum(["you", "them", "both"])
-          .describe("Who exhibited this connection pattern"),
+          .describe("Who exhibited this connection pattern")
+          .optional(),
         effectiveness: z
           .enum([
             "very_effective",
@@ -2128,21 +2319,24 @@ export const connectionPatternsSchema = z.object({
             "ineffective",
             "harmful",
           ])
-          .describe("Effectiveness of this connection pattern"),
+          .describe("Effectiveness of this connection pattern")
+          .optional(),
         improvement: z
           .string()
-          .describe("How to improve this connection pattern"),
+          .describe("How to improve this connection pattern")
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
-    .describe("Specific connection patterns detected with evidence"),
+    .describe("Specific connection patterns detected with evidence")
+    .optional(),
 
   // Love languages assessment
   loveLanguagesExpressed: z
@@ -2155,25 +2349,30 @@ export const connectionPatternsSchema = z.object({
         "gifts",
       ])
     )
-    .describe("Love languages that were expressed or attempted"),
+    .describe("Love languages that were expressed or attempted")
+    .optional(),
 
   // Connection attempts analysis
   connectionAttempts: z
     .array(z.string())
-    .describe("Ways either person tried to connect"),
+    .describe("Ways either person tried to connect")
+    .optional(),
 
   // Connection barriers analysis
   connectionBarriers: z
     .array(z.string())
-    .describe("What prevented or hindered connection"),
+    .describe("What prevented or hindered connection")
+    .optional(),
 
   // Evidence and insights
   connectionInsights: z
     .array(z.string())
-    .describe("Key insights about connection patterns and intimacy"),
+    .describe("Key insights about connection patterns and intimacy")
+    .optional(),
   connectionRecommendations: z
     .array(z.string())
-    .describe("Recommendations for improving connection and intimacy"),
+    .describe("Recommendations for improving connection and intimacy")
+    .optional(),
 });
 
 // Cognitive patterns analysis
@@ -2181,102 +2380,121 @@ export const cognitivePatternsSchema = z.object({
   thinkingTraps: z
     .array(
       z.object({
-        trap: z.enum([
-          "mind_reading",
-          "fortune_telling",
-          "overgeneralization",
-          "catastrophizing",
-          "black_and_white",
-          "personalization",
-          "filtering",
-          "jumping_to_conclusions",
-          "control_fallacies",
-          "blaming",
-          "always_being_right",
-          "emotional_reasoning",
-          "fallacy_of_fairness",
-        ]),
+        trap: z
+          .enum([
+            "mind_reading",
+            "fortune_telling",
+            "overgeneralization",
+            "catastrophizing",
+            "black_and_white",
+            "personalization",
+            "filtering",
+            "jumping_to_conclusions",
+            "control_fallacies",
+            "blaming",
+            "always_being_right",
+            "emotional_reasoning",
+            "fallacy_of_fairness",
+          ])
+          .optional(),
         explanation: z
           .string()
-          .describe("How this thinking trap manifests in the reflection"),
+          .describe("How this thinking trap manifests in the reflection")
+          .optional(),
         quote: z
           .string()
           .describe(
             "Specific quote from the reflection that demonstrates this trap"
-          ),
+          )
+          .optional(),
         impact: z
           .string()
           .describe(
             "How this thinking trap affects the relationship or situation"
-          ),
+          )
+          .optional(),
         startIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote starts"),
+          .describe("Character index where quote starts")
+          .optional(),
         endIndex: z
           .number()
-          .optional()
-          .describe("Character index where quote ends"),
+          .describe("Character index where quote ends")
+          .optional(),
       })
     )
     .describe(
       "Cognitive distortions or thinking traps identified with explanations"
-    ),
+    )
+    .optional(),
   assumptionsMade: z
     .array(z.string())
-    .describe("Assumptions made by either party"),
+    .describe("Assumptions made by either party")
+    .optional(),
   perspectiveTaking: z
     .enum(["excellent", "good", "limited", "poor"])
-    .describe("Ability to see the other person's perspective"),
+    .describe("Ability to see the other person's perspective")
+    .optional(),
   emotionalReasoning: z
     .boolean()
     .describe(
       "Was decision-making overly influenced by emotions rather than facts?"
-    ),
+    )
+    .optional(),
 });
 
 // Enhanced comprehensive analysis schema
 export const analysisSchema = z.object({
   // Core analysis components
-  emotionalPatterns: emotionalPatternSchema,
-  communicationPatterns: communicationPatternSchema,
-  behaviorPatterns: behaviorPatternSchema,
-  relationshipDynamics: relationshipDynamicsSchema,
-  contextFactors: contextFactorsSchema,
-  actionableInsights: actionableInsightsSchema,
+  emotionalPatterns: emotionalPatternSchema.optional(),
+  communicationPatterns: communicationPatternSchema.optional(),
+  behaviorPatterns: behaviorPatternSchema.optional(),
+  relationshipDynamics: relationshipDynamicsSchema.optional(),
+  contextFactors: contextFactorsSchema.optional(),
+  actionableInsights: actionableInsightsSchema.optional(),
 
   // Advanced psychological patterns
-  attachmentPatterns: attachmentPatternsSchema,
-  traumaResponses: traumaResponsesSchema,
-  connectionPatterns: connectionPatternsSchema,
-  cognitivePatterns: cognitivePatternsSchema,
+  attachmentPatterns: attachmentPatternsSchema.optional(),
+  traumaResponses: traumaResponsesSchema.optional(),
+  connectionPatterns: connectionPatternsSchema.optional(),
+  cognitivePatterns: cognitivePatternsSchema.optional(),
 
   // Safety first - keep abuse detection
-  abuseDetection: abuseDetectionSchema,
+  abuseDetection: abuseDetectionSchema.optional(),
 
   // Meta analysis
-  overallAssessment: z.object({
-    healthScore: z
-      .number()
-      .min(1)
-      .max(10)
-      .describe("Overall relationship health score"),
-    confidenceLevel: z
-      .enum(["high", "medium", "low"])
-      .describe("AI confidence in this analysis"),
-    summary: z
-      .string()
-      .describe(
-        "A comprehensive 2-3 sentence summary of the relationship analysis"
-      ),
-    keyInsights: z
-      .array(z.string())
-      .describe("Top 3-5 key insights from this reflection"),
-    warningFlags: z.array(z.string()).describe("Any warning flags to monitor"),
-    positiveHighlights: z
-      .array(z.string())
-      .describe("Positive aspects to celebrate"),
-  }),
+  overallAssessment: z
+    .object({
+      healthScore: z
+        .number()
+        .min(1)
+        .max(10)
+        .describe("Overall relationship health score")
+        .optional(),
+      confidenceLevel: z
+        .enum(["high", "medium", "low"])
+        .describe("AI confidence in this analysis")
+        .optional(),
+      summary: z
+        .string()
+        .describe(
+          "A comprehensive 2-3 sentence summary of the relationship analysis"
+        )
+        .optional(),
+      keyInsights: z
+        .array(z.string())
+        .describe("Top 3-5 key insights from this reflection")
+        .optional(),
+      warningFlags: z
+        .array(z.string())
+        .describe("Any warning flags to monitor")
+        .optional(),
+      positiveHighlights: z
+        .array(z.string())
+        .describe("Positive aspects to celebrate")
+        .optional(),
+    })
+    .optional(),
 });
 
 export type Analysis = z.infer<typeof analysisSchema>;

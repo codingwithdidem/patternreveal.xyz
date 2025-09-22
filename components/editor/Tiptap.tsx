@@ -42,6 +42,7 @@ const Tiptap = ({
   className,
   textEvidence = [],
 }: TiptapProps) => {
+  console.log("textEvidence", textEvidence);
   const { setEditor } = useEditorStore();
 
   const editor = useEditor({
@@ -233,7 +234,6 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to him‚Ä
     },
   });
 
-  // Highlight text evidence when editor is ready and evidence changes
   useEffect(() => {
     if (!editor || !textEvidence.length) return;
 
@@ -245,25 +245,18 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to him‚Ä
     // Apply highlights for each evidence
     for (const evidence of textEvidence) {
       const quote = evidence.quote.trim();
-      let startIndex = evidence.startIndex;
-      let endIndex = evidence.endIndex;
+      const startIndex = editorText.indexOf(quote);
 
-      // If we don't have startIndex/endIndex, fall back to text search
-      if (startIndex === undefined || endIndex === undefined) {
-        startIndex = editorText.indexOf(quote);
-        if (startIndex !== -1) {
-          endIndex = startIndex + quote.length;
-        }
-      }
+      if (startIndex !== -1) {
+        const endIndex = startIndex + quote.length;
 
-      if (startIndex !== -1 && endIndex !== undefined) {
         // Create a highlight with blue background
         editor.commands.setTextSelection({
           from: startIndex + 1,
           to: endIndex + 1,
         });
         editor.commands.setHighlight({
-          color: "#dbeafe", // Light blue background
+          color: "#e0e7ff", // Light indigo background
         });
       }
     }
@@ -274,11 +267,11 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to him‚Ä
 
       // Try multiple selectors to find highlight elements
       let highlightElements = editorElement.querySelectorAll(
-        'mark[data-color="#dbeafe"]'
+        'mark[data-color="#e0e7ff"]'
       );
       if (highlightElements.length === 0) {
         highlightElements = editorElement.querySelectorAll(
-          'mark[style*="#dbeafe"]'
+          'mark[style*="#e0e7ff"]'
         );
       }
       if (highlightElements.length === 0) {
@@ -304,23 +297,48 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to him‚Ä
           console.log("Matching evidence found:", matchingEvidence);
 
           if (matchingEvidence) {
-            // Create enhanced tooltip text with pattern information
-            let tooltipText =
-              matchingEvidence.analysis || "No analysis available";
+            // Create enhanced tooltip text with comprehensive information
+            let tooltipText = "";
 
+            // Pattern information
             if (matchingEvidence.pattern) {
-              tooltipText = `Pattern: ${matchingEvidence.pattern.replace(
-                /_/g,
-                " "
-              )}\n${tooltipText}`;
+              const patternDisplay = matchingEvidence.pattern
+                .replace(/_/g, " ")
+                .replace(/\b\w/g, (l) => l.toUpperCase());
+              tooltipText += `üîç Pattern: ${patternDisplay}\n\n`;
             }
 
+            // Severity with visual indicator
             if (matchingEvidence.severity) {
-              tooltipText = `${tooltipText}\nSeverity: ${matchingEvidence.severity}`;
+              const severityEmoji =
+                {
+                  mild: "üü¢",
+                  moderate: "üü°",
+                  severe: "üü†",
+                  extreme: "üî¥",
+                }[matchingEvidence.severity] || "‚ö™";
+              tooltipText += `${severityEmoji} Severity: ${
+                matchingEvidence.severity.charAt(0).toUpperCase() +
+                matchingEvidence.severity.slice(1)
+              }\n\n`;
             }
 
+            // Who exhibited the pattern
             if (matchingEvidence.who_exhibited) {
-              tooltipText = `${tooltipText}\nExhibited by: ${matchingEvidence.who_exhibited}`;
+              const whoDisplay =
+                matchingEvidence.who_exhibited === "you"
+                  ? "You"
+                  : matchingEvidence.who_exhibited === "them"
+                  ? "Them"
+                  : "Both parties";
+              tooltipText += `üë§ Exhibited by: ${whoDisplay}\n\n`;
+            }
+
+            // Analysis/Impact
+            if (matchingEvidence.analysis) {
+              tooltipText += `üí° Analysis:\n${matchingEvidence.analysis}`;
+            } else {
+              tooltipText += `üí° Analysis:\nNo detailed analysis available for this pattern.`;
             }
 
             console.log("Setting data-analysis to:", tooltipText);
@@ -342,13 +360,13 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to him‚Ä
                     pos + node.nodeSize,
                     mark.type.create({
                       ...mark.attrs,
-                      dataAnalysis: analysisText,
+                      dataAnalysis: tooltipText,
                     })
                   );
                   editor.view.dispatch(tr);
                   console.log(
                     "Updated highlight mark with data-analysis:",
-                    analysisText
+                    tooltipText
                   );
                 }
                 return false; // Stop after first match
@@ -357,7 +375,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to him‚Ä
             });
 
             // Also set DOM attributes as fallback
-            element.setAttribute("data-analysis", analysisText);
+            element.setAttribute("data-analysis", tooltipText);
             element.classList.add("evidence-highlight");
 
             console.log("Element after setting:", element.outerHTML);

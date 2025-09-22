@@ -115,6 +115,23 @@ ANALYSIS INSTRUCTIONS:
 10. Evaluate progress and growth opportunities
 11. Provide comprehensive, structured, actionable insights with detailed guidance
 12. Most importantly, assess for any safety concerns or abusive patterns
+13. CRITICAL: You MUST generate ALL required fields in the schema - no field can be missing or undefined
+
+REQUIRED FIELDS TO GENERATE:
+1. emotionalPatterns
+2. communicationPatterns  
+3. behaviorPatterns
+4. relationshipDynamics
+5. contextFactors
+6. actionableInsights
+7. attachmentPatterns
+8. traumaResponses
+9. connectionPatterns
+10. cognitivePatterns
+11. abuseDetection
+12. overallAssessment
+
+Generate ALL 12 fields above. If no patterns are detected in a category, use empty arrays but still include the field structure. DO NOT STOP GENERATING UNTIL ALL 12 FIELDS ARE COMPLETE.
 
 EMOTIONAL PATTERN DETECTION:
 Look for these specific emotional patterns in the reflection text:
@@ -357,6 +374,15 @@ For each trauma response pattern detected, provide:
 9. startIndex: The index of the first character of the quote
 10. endIndex: The index of the last character of the quote
 
+TRAUMA RESPONSE ANALYSIS REQUIREMENTS:
+You MUST also provide:
+- yourPrimaryResponse: "fight", "flight", "freeze", "fawn", "mixed", or "none" based on your primary trauma response pattern
+- theirPrimaryResponse: "fight", "flight", "freeze", "fawn", "mixed", "none", or "unknown" based on their apparent primary trauma response pattern
+- traumaTriggers: Array of specific triggers that activated trauma responses
+- healthyCopingUsed: Array of healthy coping strategies that were employed
+- unhealthyCopingUsed: Array of unhealthy coping strategies that were used
+- healingRecommendations: Array of specific recommendations for trauma healing
+
 TRAUMA RESPONSE ANALYSIS EXAMPLES:
 Example 1 - Fight Response:
 - Pattern: fight_response
@@ -483,6 +509,14 @@ For each connection pattern detected, provide:
 8. startIndex: The index of the first character of the quote
 9. endIndex: The index of the last character of the quote
 
+CONNECTION PATTERN ANALYSIS REQUIREMENTS:
+You MUST also provide:
+- loveLanguagesExpressed: Array of love languages that were expressed or attempted (from: "words_of_affirmation", "quality_time", "physical_touch", "acts_of_service", "gifts")
+- connectionAttempts: Array of ways either person tried to connect
+- connectionBarriers: Array of what prevented or hindered connection
+- connectionInsights: Array of key insights about connection patterns and intimacy
+- connectionRecommendations: Array of recommendations for improving connection and intimacy
+
 ACTIONABLE INSIGHTS GENERATION:
 Provide comprehensive, structured, actionable insights that give users maximum value. For each category, provide detailed, specific guidance:
 
@@ -567,7 +601,7 @@ WARNING SIGNS:
 - description: What this warning sign looks like
 - action: What to do if this sign appears
 - prevention: How to prevent this from happening
-- support: Support resources if this occurs
+- support: Support resources if this occurs (e.g., "Contact a therapist", "Reach out to trusted friends", "Call a helpline")
 
 RESOURCE RECOMMENDATIONS:
 - resource: Specific resource name
@@ -626,6 +660,17 @@ Look for these specific communication patterns in the reflection text:
 - mind_reading_assumptions: "You think...", "Obviously you...", assuming thoughts
 - catastrophizing: "This will ruin everything", "It's a disaster", worst-case scenarios
 - invalidating: "You're being dramatic", "It's not that bad", dismissing feelings
+- belittling: "You're so stupid", "That's ridiculous", "You don't know what you're talking about"
+
+COMMUNICATION PATTERNS include:
+- assertive, passive, aggressive, passive_aggressive, avoidant, dismissive
+- blaming, computing, distracting, placating
+- collaborative, competitive, accommodating, avoiding, compromising
+- active_listening, selective_listening, defensive_listening, superficial_listening, empathetic_listening
+- interrupting, stonewalling, gaslighting, lecturing, sarcasm, silent_treatment, emotional_dumping
+- mind_reading_assumptions, catastrophizing, invalidating, belittling
+
+NOTE: Some communication patterns like "belittling", "gaslighting", and "stonewalling" may also be considered abusive behaviors. When you detect these patterns, include them in both the communicationPatterns section AND the abuseDetection section if they meet the criteria for abuse.
 
 For each communication pattern detected, provide:
 1. pattern: The specific communication pattern name
@@ -735,6 +780,12 @@ For each thinking trap detected, provide:
 5. startIndex: The index of the first character of the quote
 6. endIndex: The index of the last character of the quote
 
+COGNITIVE PATTERN ANALYSIS REQUIREMENTS:
+You MUST also provide:
+- assumptionsMade: Array of assumptions made by either party
+- perspectiveTaking: "excellent", "good", "limited", or "poor" - ability to see the other person's perspective
+- emotionalReasoning: true or false - was decision-making overly influenced by emotions rather than facts?
+
 ATTACHMENT PATTERN DETECTION:
 Look for these specific attachment patterns in the reflection text:
 
@@ -791,10 +842,16 @@ For each attachment pattern detected, provide:
 1. pattern: The specific attachment pattern name
 2. quote: The exact quote from the reflection that demonstrates this pattern
 3. impact: How this attachment pattern affects the relationship or situation (1-2 sentences)
-4. severity: mild, moderate, or severe based on the impact and frequency
+4. severity: mild, moderate, severe, or extreme based on the impact and frequency
 5. who_exhibited: you, them, or both
 6. startIndex: The index of the first character of the quote
 7. endIndex: The index of the last character of the quote
+
+ATTACHMENT PATTERN ANALYSIS REQUIREMENTS:
+You MUST also provide:
+- yourAttachmentStyle: "secure", "anxious", "avoidant", or "disorganized" based on patterns exhibited by the user
+- theirAttachmentStyle: "secure", "anxious", "avoidant", or "disorganized" based on patterns exhibited by the other person (if no clear patterns are evident, choose the most likely based on their behaviors)
+- attachmentTriggered: true or false indicating if attachment issues surfaced during this interaction
 
 CRITICAL QUOTE REQUIREMENTS:
 - For patterns you identify, provide specific quotes from the reflection as supporting evidence
@@ -829,5 +886,195 @@ CRITICAL ENUM VALUES - USE ONLY THESE EXACT VALUES:
 - relationshipGrowth: Use only: "growing", "stable", "stagnant", "declining"
 - personalGrowthSupport: Use only: "mutual", "one_sided", "competitive", "none"
 - confidenceLevel: Use only: "high", "medium", "low"
+
+TRAUMA RESPONSE PATTERN DETECTION:
+Look for these specific trauma response patterns in the reflection text:
+
+PRIMARY TRAUMA RESPONSES:
+- fight_response: "I got aggressive", "I confronted them", "I fought back", "I got defensive"
+- flight_response: "I left the room", "I avoided the conversation", "I walked away", "I escaped"
+- freeze_response: "I couldn't move", "I felt paralyzed", "I couldn't speak", "I froze up"
+- fawn_response: "I tried to please them", "I agreed to everything", "I appeased them", "I people-pleased"
+
+COMPLEX TRAUMA RESPONSES:
+- dissociation: "I felt disconnected", "I wasn't really there", "I felt outside my body", "I felt numb"
+- hypervigilance: "I was constantly on edge", "I was scanning for danger", "I couldn't relax", "I was hyperalert"
+- emotional_flashback: "I felt like I was back in the past", "I re-experienced old trauma", "I had an emotional flashback"
+- trauma_reenactment: "This feels familiar", "I keep recreating the same pattern", "I'm repeating old trauma"
+- trauma_bonding: "I feel attached to them despite the harm", "I can't leave even though it's toxic"
+
+PHYSICAL TRAUMA RESPONSES:
+- somatic_symptoms: "I got a headache", "My stomach hurt", "I felt pain", "I had physical symptoms"
+- sleep_disturbances: "I couldn't sleep", "I had nightmares", "I woke up panicking", "Sleep was disrupted"
+- appetite_changes: "I couldn't eat", "I overate", "My appetite changed", "I felt nauseous"
+- energy_fluctuations: "I felt exhausted", "I had too much energy", "I felt wired", "My energy was erratic"
+
+COGNITIVE TRAUMA RESPONSES:
+- memory_fragmentation: "I can't remember details", "My memory is fragmented", "I have gaps in memory"
+- concentration_issues: "I couldn't focus", "My mind was scattered", "I had trouble concentrating"
+- intrusive_thoughts: "I kept having unwanted thoughts", "I couldn't stop thinking about it", "Intrusive memories"
+- cognitive_distortions: "I'm worthless", "Everything is my fault", "I'm always wrong", "I can't trust anyone"
+
+EMOTIONAL TRAUMA RESPONSES:
+- emotional_numbing: "I felt nothing", "I was emotionally numb", "I couldn't feel emotions"
+- emotional_overwhelm: "I was completely overwhelmed", "I couldn't handle my emotions", "I felt flooded"
+- emotional_dysregulation: "I couldn't control my emotions", "My emotions were all over the place"
+- shame_and_guilt: "I felt so ashamed", "I blamed myself", "I felt guilty", "I felt worthless"
+
+BEHAVIORAL TRAUMA RESPONSES:
+- avoidance_behaviors: "I avoided them", "I stayed away", "I didn't want to see them"
+- compulsive_behaviors: "I kept doing the same thing", "I had repetitive behaviors", "I couldn't stop"
+- self_harm_behaviors: "I hurt myself", "I engaged in self-harm", "I punished myself"
+- substance_use: "I drank to cope", "I used substances", "I numbed myself with drugs/alcohol"
+
+RELATIONAL TRAUMA RESPONSES:
+- attachment_disruption: "I can't form close relationships", "I push people away", "I'm afraid of intimacy"
+- trust_issues: "I can't trust anyone", "I'm always suspicious", "I expect betrayal"
+- boundary_confusion: "I don't know where I end and they begin", "I have no boundaries", "I'm confused about limits"
+- codependency_patterns: "I can't function without them", "I'm completely dependent", "I lose myself in relationships"
+
+RECOVERY AND HEALING PATTERNS:
+- trauma_processing: "I'm working through my trauma", "I'm processing what happened", "I'm healing"
+- resilience_building: "I'm getting stronger", "I'm building resilience", "I'm developing coping skills"
+- post_traumatic_growth: "I've grown from this", "I'm stronger because of it", "I've learned and grown"
+- healing_relationships: "I'm forming healthy relationships", "I'm learning to trust again", "I'm healing through connection"
+
+CONNECTION PATTERN DETECTION:
+Look for these specific connection patterns in the reflection text:
+
+LOVE LANGUAGES:
+- words_of_affirmation: "I told them I love them", "I complimented them", "I expressed appreciation"
+- quality_time: "We spent time together", "We had undivided attention", "We focused on each other"
+- physical_touch: "We hugged", "We held hands", "We were physically close"
+- acts_of_service: "I helped them", "I did something for them", "I took care of them"
+- gifts: "I gave them something", "I bought them a gift", "I surprised them"
+
+CONNECTION ATTEMPTS:
+- active_listening: "I really listened", "I paid attention", "I focused on them"
+- vulnerability_sharing: "I opened up", "I shared something personal", "I was vulnerable"
+- physical_affection: "I hugged them", "I touched them", "I was affectionate"
+- shared_activities: "We did something together", "We shared an activity", "We collaborated"
+- emotional_support: "I supported them", "I comforted them", "I was there for them"
+- humor_sharing: "We laughed together", "We joked around", "We had fun"
+- future_planning: "We planned together", "We talked about the future", "We made plans"
+- appreciation_expressing: "I thanked them", "I showed gratitude", "I appreciated them"
+
+CONNECTION BARRIERS:
+- emotional_withdrawal: "I pulled back", "I became distant", "I shut down"
+- communication_shutdown: "I stopped talking", "I went silent", "I shut down"
+- physical_distance: "I avoided touch", "I kept my distance", "I was cold"
+- criticism_patterns: "I criticized them", "I found faults", "I was negative"
+- defensiveness: "I got defensive", "I was defensive", "I protected myself"
+- stonewalling: "I refused to engage", "I wouldn't respond", "I shut them out"
+- busy_schedules: "We were too busy", "No time to connect", "Schedules conflicted"
+- external_distractions: "We were distracted", "Other things got in the way", "We couldn't focus"
+
+INTIMACY TYPES:
+- emotional_intimacy: "We shared deep emotional connection", "We're emotionally close", "We're vulnerable with each other"
+- physical_intimacy: "We have great physical connection", "We're physically close", "We enjoy physical affection"
+- intellectual_intimacy: "We have deep conversations", "We connect intellectually", "We enjoy discussing ideas"
+- spiritual_intimacy: "We share spiritual beliefs", "We connect on a spiritual level", "We have shared values"
+- creative_intimacy: "We create together", "We share artistic expression", "We collaborate creatively"
+- playful_intimacy: "We have fun together", "We play games", "We're silly together"
+- supportive_intimacy: "We support each other", "We're there for each other", "We help each other"
+- adventurous_intimacy: "We try new things together", "We explore together", "We adventure together"
+
+COGNITIVE PATTERN DETECTION:
+Look for these specific thinking traps in the reflection text (based on Mindset Health's 12 cognitive distortions):
+- mind_reading: "They think...", "They must believe...", "Obviously they..."
+- fortune_telling: "I just know I'm going to fail", "This will never work", "I'm doomed"
+- overgeneralization: Words like "always", "never", "everyone", "nobody"
+- catastrophizing: "worst case", "disaster", "ruined", "terrible"
+- black_and_white: "perfect", "awful", "complete failure", "total success"
+- personalization: "It's my fault", "They're doing this because of me"
+- filtering: Focusing only on negative details while ignoring positive ones
+- jumping_to_conclusions: Making assumptions without evidence
+- control_fallacies: "I can't control anything" or "I must control everything"
+- blaming: "It's their fault", "They made me do it"
+- always_being_right: Refusing to consider other perspectives or admit mistakes
+- emotional_reasoning: "I feel it, so it must be true", "Because I'm anxious, something bad will happen"
+- fallacy_of_fairness: "It's not fair", "That's unfair", "Life should be fair"
+
+ABUSE DETECTION PATTERN DETECTION:
+Look for these specific abusive behaviors in the reflection text:
+
+PHYSICAL ABUSE:
+- hitting: "hit me", "pushed me", "threw", "grabbed", "choked", "punched"
+- pushing: Physical force used to shove or move someone against their will
+- slapping: Striking someone with an open hand, often across the face
+- kicking: Using feet or legs to strike or harm another person
+- choking: Applying pressure to the neck or throat to restrict breathing
+- throwing_objects: Throwing items at someone as a form of intimidation or harm
+- physical_intimidation: Using physical presence or gestures to threaten or frighten someone
+
+EMOTIONAL ABUSE (often subtle):
+- gaslighting: "That never happened", "You're imagining things", "You're too sensitive"
+- silent_treatment: "They won't talk to me", "Ignoring me for days", "Giving me the silent treatment"
+- emotional_manipulation: "If you loved me, you would...", "You're making me do this"
+- guilt_tripping: "After all I've done for you", "You owe me", "I sacrificed everything"
+- constant_criticism: "You always mess up", "You're worthless", "You can't do anything right"
+- belittling: "You're stupid", "You don't understand", "That's ridiculous"
+- humiliation: "Everyone thinks you're pathetic", "You embarrass me"
+- threats: "I'll leave you", "You'll be sorry", "I'll make you pay"
+- intimidation: "You better watch out", "I know where you live"
+- isolation: "Your friends don't like you", "Don't talk to them", "They're bad influences"
+- controlling_behavior: "You can't go there", "I decide what you wear", "You need my permission"
+- jealousy_abuse: "Who were you talking to?", "You're cheating on me", "I don't trust you"
+- love_bombing: "You're perfect", "I can't live without you", "You're my everything"
+- devaluation: "You used to be better", "You've changed", "You're not the person I fell in love with"
+- stonewalling: "I'm not talking about this", "End of conversation", "I'm done"
+
+VERBAL ABUSE:
+- yelling: "screamed at me", "called me", "yelled", "insulted me"
+- screaming: Shouting loudly and aggressively to intimidate or control someone
+- name_calling: Using derogatory names or labels to insult, demean, or hurt someone
+- verbal_threats: Expressing intent to harm someone through spoken words or threats
+- insults: Using offensive or hurtful language to demean or belittle someone
+- degrading_comments: Making remarks that diminish someone's dignity, worth, or self-esteem
+- verbal_intimidation: Using threatening or aggressive language to frighten or control someone
+- shouting: Speaking loudly and aggressively to intimidate or dominate someone
+
+FINANCIAL ABUSE:
+- financial_control: "won't give me money", "controls the finances", "won't let me work"
+- economic_abuse: Using money or economic resources to control, manipulate, or harm someone
+- withholding_money: Refusing to provide necessary financial support or access to shared resources
+- sabotaging_work: Interfering with someone's employment or career opportunities
+
+DIGITAL ABUSE:
+- cyberstalking: "checking my phone", "tracking me", "monitoring my social media"
+- digital_monitoring: Surveilling someone's digital activities, communications, or online presence
+- revenge_porn: Sharing intimate images or videos without consent to harm or humiliate someone
+- online_harassment: Persistent harassment, threats, or intimidation through digital platforms
+
+For each abusive behavior detected, provide:
+1. type: The category of abuse (physical, emotional, sexual, etc.)
+2. behavior: The specific abusive behavior
+3. quote: The exact quote from the reflection that demonstrates this abuse
+4. impact: How this abuse affects the victim
+5. reasonings: Why this behavior is considered abusive
+6. startIndex: The index of the first character of the quote
+7. endIndex: The index of the last character of the quote
+
+ABUSE DETECTION ANALYSIS REQUIREMENTS:
+You MUST also provide:
+- isAbusive: true or false - whether the reflection indicates abusive behavior
+- isAtImmediateRisk: true or false - whether the user is at immediate risk
+- abuseTriggers: Array of triggers or situations that lead to abusive behavior
+- warningSigns: Array of additional warning signs or red flags present
+- suggestedActionsToTake: Array of suggested actions to take for safety
+
+OVERALL ASSESSMENT REQUIREMENTS:
+You MUST provide a comprehensive overallAssessment with:
+- healthScore: A number from 1-10 representing overall relationship health
+- confidenceLevel: "high", "medium", or "low" based on your confidence in the analysis
+- summary: A comprehensive 2-3 sentence summary of the relationship analysis
+- keyInsights: Top 3-5 key insights from this reflection
+- warningFlags: Any warning flags to monitor
+- positiveHighlights: Positive aspects to celebrate
+
+FINAL REMINDER: You MUST generate ALL 12 required fields:
+1. emotionalPatterns 2. communicationPatterns 3. behaviorPatterns 4. relationshipDynamics 5. contextFactors 6. actionableInsights 7. attachmentPatterns 8. traumaResponses 9. connectionPatterns 10. cognitivePatterns 11. abuseDetection 12. overallAssessment
+
+DO NOT STOP UNTIL ALL FIELDS ARE COMPLETE. If you stop early, the analysis will fail.
 
 Please provide a thorough analysis covering all aspects of the schema, being specific and helpful while maintaining appropriate professional boundaries.`;
