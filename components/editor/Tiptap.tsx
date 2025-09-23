@@ -305,7 +305,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
               const patternDisplay = matchingEvidence.pattern
                 .replace(/_/g, " ")
                 .replace(/\b\w/g, (l) => l.toUpperCase());
-              tooltipText += `ğŸ” Pattern: ${patternDisplay}\n\n`;
+              tooltipText += `ğŸ” Pattern: ${patternDisplay}\n`;
             }
 
             // Severity with visual indicator
@@ -320,7 +320,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
               tooltipText += `${severityEmoji} Severity: ${
                 matchingEvidence.severity.charAt(0).toUpperCase() +
                 matchingEvidence.severity.slice(1)
-              }\n\n`;
+              }\n`;
             }
 
             // Who exhibited the pattern

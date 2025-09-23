@@ -4,11 +4,10 @@ import {
   MenubarContent,
   MenubarItem,
   MenubarMenu,
-  MenubarShortcut,
   MenubarSub,
   MenubarSubTrigger,
   MenubarSubContent,
-  MenubarTrigger
+  MenubarTrigger,
 } from "@/components/ui/menubar";
 import {
   DownloadIcon,
@@ -16,16 +15,18 @@ import {
   FileIcon,
   FileJsonIcon,
   FileTypeIcon,
-  SparklesIcon
+  SparklesIcon,
 } from "lucide-react";
 import ReflectionTitleInput from "./ReflectionTitleInput";
 import type { Prisma } from "@prisma/client";
 import { useEditorStore } from "@/lib/store/useEditorStore";
 import { RainbowButton } from "@/components/magicui/rainbow-button";
 import { Button } from "@/components/ui/button";
+import { Tooltip } from "@/components/ui/tooltip";
 import { useKeyboardShortcut } from "@/hooks/use-keyboard-shortcut";
 import { useState } from "react";
 import ShareReportModal from "../modals/ShareReportModal";
+import { toast } from "sonner";
 
 type ReflectionsMenuBarProps = {
   reflection: Prisma.ReflectionGetPayload<{
@@ -38,7 +39,7 @@ type ReflectionsMenuBarProps = {
 
 export default function ReflectionsMenuBar({
   reflection,
-  onAnalyze
+  onAnalyze,
 }: ReflectionsMenuBarProps) {
   const { editor } = useEditorStore();
 
@@ -58,7 +59,7 @@ export default function ReflectionsMenuBar({
       }
     },
     {
-      enabled: false
+      enabled: false,
     }
   );
 
@@ -76,7 +77,7 @@ export default function ReflectionsMenuBar({
     const json = editor.getJSON();
 
     const blob = new Blob([JSON.stringify(json)], {
-      type: "application/json"
+      type: "application/json",
     });
 
     onDownload(blob, `${reflection.title}.json`);
@@ -88,7 +89,7 @@ export default function ReflectionsMenuBar({
     const html = editor.getHTML();
 
     const blob = new Blob([html], {
-      type: "text/html"
+      type: "text/html",
     });
 
     onDownload(blob, `${reflection.title}.html`);
@@ -100,18 +101,74 @@ export default function ReflectionsMenuBar({
     const text = editor.getText();
 
     const blob = new Blob([text], {
-      type: "text/plain"
+      type: "text/plain",
     });
 
     onDownload(blob, `${reflection.title}.txt`);
   };
 
+  const onDownloadAnalysisReport = async () => {
+    if (
+      !reflection.analysisReport ||
+      reflection.analysisStatus !== "COMPLETED"
+    ) {
+      console.log("No analysis report found or analysis not completed");
+      return;
+    }
+
+    console.log("Analysis report data:", reflection.analysisReport);
+
+    try {
+      console.log("Starting PDF generation...");
+
+      // Import react-pdf dynamically
+      const { pdf } = await import("@react-pdf/renderer");
+      console.log("React PDF imported successfully");
+
+      const AnalysisReportPDF = (await import("./analysis/AnalysisReportPDF"))
+        .default;
+      console.log("AnalysisReportPDF component imported successfully");
+
+      // Generate PDF blob
+      console.log("Generating PDF blob...");
+      const blob = await pdf(
+        <AnalysisReportPDF
+          title={reflection.title}
+          createdAt={reflection.createdAt}
+          analysisReport={reflection.analysisReport}
+        />
+      ).toBlob();
+
+      console.log("PDF blob generated successfully, size:", blob.size);
+
+      // Create download link
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${reflection.title}-analysis-report.pdf`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      console.log("PDF download initiated");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+      toast.error("Failed to generate PDF report. Please try again later.");
+    }
+  };
+
   const onAnalyzeReflection = async () => {
     if (!editor) return;
 
-    const text = editor.getText();
+    // Don't allow analysis if already in progress or completed
+    if (
+      reflection.analysisStatus === "IN_PROGRESS" ||
+      reflection.analysisStatus === "COMPLETED"
+    ) {
+      return;
+    }
 
-    onAnalyze(text);
+    const text = editor.getText();
+    await onAnalyze(text);
   };
 
   return (
@@ -146,6 +203,16 @@ export default function ReflectionsMenuBar({
                 </MenubarSub>
               </MenubarContent>
             </MenubarMenu>
+
+            <MenubarMenu>
+              <MenubarTrigger>Report</MenubarTrigger>
+              <MenubarContent className="print:hidden">
+                <MenubarItem onClick={onDownloadAnalysisReport}>
+                  <DownloadIcon size={16} className="mr-2" /> Download Analysis
+                  Report (PDF)
+                </MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
           </Menubar>
         </div>
       </div>
@@ -160,13 +227,35 @@ export default function ReflectionsMenuBar({
         >
           Share
         </Button>
-        <RainbowButton
-          className="h-10 px-4 rounded-full"
-          onClick={onAnalyzeReflection}
+        <Tooltip
+          content={
+            reflection.analysisStatus === "IN_PROGRESS"
+              ? "Analysis in progress..."
+              : reflection.analysisStatus === "COMPLETED"
+              ? "This reflection has already been analyzed"
+              : reflection.analysisStatus === "FAILED"
+              ? "Previous analysis failed. Click to retry."
+              : "Analyze this reflection for patterns and insights"
+          }
         >
-          <SparklesIcon size={16} className="mr-2" />
-          Analyze
-        </RainbowButton>
+          <RainbowButton
+            className="h-10 px-4 rounded-full"
+            onClick={onAnalyzeReflection}
+            disabled={
+              reflection.analysisStatus === "IN_PROGRESS" ||
+              reflection.analysisStatus === "COMPLETED"
+            }
+          >
+            <SparklesIcon size={16} className="mr-2" />
+            {reflection.analysisStatus === "IN_PROGRESS"
+              ? "Analyzing..."
+              : reflection.analysisStatus === "COMPLETED"
+              ? "Analyzed"
+              : reflection.analysisStatus === "FAILED"
+              ? "Retry Analysis"
+              : "Analyze"}
+          </RainbowButton>
+        </Tooltip>
       </div>
 
       <ShareReportModal

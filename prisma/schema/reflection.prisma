@@ -1,3 +1,10 @@
+enum AnalysisStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
 model Reflection {
   id             String          @id @default(cuid())
   title          String
@@ -5,6 +12,7 @@ model Reflection {
   content        String
   userId         String
   createdAt      DateTime        @default(now())
+  analysisStatus AnalysisStatus  @default(NOT_STARTED)
   analysisReport AnalysisReport?
   user           User            @relation(fields: [userId], references: [id])
   report         Report?

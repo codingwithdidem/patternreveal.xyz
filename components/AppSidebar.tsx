@@ -90,7 +90,7 @@ const NAV_AREAS: SidebarNavAreas<{
             href: `/${slug}/reflections${
               pathname === `/${slug}/reflections` ? "" : queryString
             }`,
-            subItems: topReflections?.map((reflection) => ({
+            subItems: (topReflections || []).map((reflection) => ({
               name: reflection.title,
               href: `/app/${slug}/reports/${reflection.id}`,
             })),

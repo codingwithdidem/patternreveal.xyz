@@ -81,41 +81,67 @@ export default function ActionableInsights({
             Immediate Actions
           </h3>
           <div className="space-y-4">
-            {insights.immediateActions.map((action, index) => (
-              <div key={index} className="p-4 border rounded-lg space-y-3">
-                <div className="flex items-start justify-between">
-                  <h4 className="font-semibold text-gray-900">
-                    {action.action}
-                  </h4>
-                  <div className="flex gap-2">
-                    <Badge className={getPriorityColor(action.priority)}>
-                      {action.priority}
-                    </Badge>
-                    <Badge className={getDifficultyColor(action.difficulty)}>
-                      {action.difficulty}
-                    </Badge>
+            {insights.immediateActions.map((action, index) => {
+              // Handle both string and object formats
+              const isString = typeof action === "string";
+              const actionText = isString
+                ? action
+                : action.action || String(action);
+              const priority = isString
+                ? "medium"
+                : action.priority || "medium";
+              const difficulty = isString
+                ? "moderate"
+                : action.difficulty || "moderate";
+              const timeframe = isString
+                ? "Within 24-48 hours"
+                : action.timeframe || "Within 24-48 hours";
+              const expectedOutcome = isString
+                ? "Improved situation"
+                : action.expectedOutcome || "Improved situation";
+              const reasoning = isString
+                ? "This action is important for your wellbeing"
+                : action.reasoning ||
+                  "This action is important for your wellbeing";
+
+              return (
+                <div key={index} className="p-4 border rounded-lg space-y-3">
+                  <div className="flex items-start justify-between">
+                    <h4 className="font-semibold text-gray-900">
+                      {actionText}
+                    </h4>
+                    <div className="flex gap-2">
+                      <Badge className={getPriorityColor(priority)}>
+                        {priority}
+                      </Badge>
+                      <Badge className={getDifficultyColor(difficulty)}>
+                        {difficulty}
+                      </Badge>
+                    </div>
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Timeframe:
+                      </span>
+                      <p className="text-gray-600">{timeframe}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Expected Outcome:
+                      </span>
+                      <p className="text-gray-600">{expectedOutcome}</p>
+                    </div>
+                  </div>
                   <div>
                     <span className="font-medium text-gray-700">
-                      Timeframe:
+                      Reasoning:
                     </span>
-                    <p className="text-gray-600">{action.timeframe}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">
-                      Expected Outcome:
-                    </span>
-                    <p className="text-gray-600">{action.expectedOutcome}</p>
+                    <p className="text-gray-600">{reasoning}</p>
                   </div>
                 </div>
-                <div>
-                  <span className="font-medium text-gray-700">Reasoning:</span>
-                  <p className="text-gray-600">{action.reasoning}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
@@ -249,38 +275,57 @@ export default function ActionableInsights({
             Warning Signs
           </h3>
           <div className="space-y-4">
-            {insights.warningSigns.map((sign, index) => (
-              <div key={index} className="p-4 border rounded-lg space-y-3">
-                <div className="flex items-start justify-between">
-                  <h4 className="font-semibold text-gray-900">{sign.sign}</h4>
-                  <Badge className={getSeverityColor(sign.severity)}>
-                    {sign.severity}
-                  </Badge>
-                </div>
-                <div>
-                  <span className="font-medium text-gray-700">
-                    Description:
-                  </span>
-                  <p className="text-gray-600">{sign.description}</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <span className="font-medium text-gray-700">Action:</span>
-                    <p className="text-gray-600">{sign.action}</p>
+            {insights.warningSigns.map((sign, index) => {
+              // Handle both string and object formats
+              const isString = typeof sign === "string";
+              const signText = isString ? sign : sign.sign || String(sign);
+              const severity = isString ? "medium" : sign.severity || "medium";
+              const description = isString
+                ? "This is a warning sign to watch for"
+                : sign.description || "This is a warning sign to watch for";
+              const action = isString
+                ? "Take appropriate action"
+                : sign.action || "Take appropriate action";
+              const prevention = isString
+                ? "Monitor closely"
+                : sign.prevention || "Monitor closely";
+              const support = isString
+                ? "Seek support if needed"
+                : sign.support || "Seek support if needed";
+
+              return (
+                <div key={index} className="p-4 border rounded-lg space-y-3">
+                  <div className="flex items-start justify-between">
+                    <h4 className="font-semibold text-gray-900">{signText}</h4>
+                    <Badge className={getSeverityColor(severity)}>
+                      {severity}
+                    </Badge>
                   </div>
                   <div>
                     <span className="font-medium text-gray-700">
-                      Prevention:
+                      Description:
                     </span>
-                    <p className="text-gray-600">{sign.prevention}</p>
+                    <p className="text-gray-600">{description}</p>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-700">Action:</span>
+                      <p className="text-gray-600">{action}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Prevention:
+                      </span>
+                      <p className="text-gray-600">{prevention}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-700">Support:</span>
+                    <p className="text-gray-600">{support}</p>
                   </div>
                 </div>
-                <div>
-                  <span className="font-medium text-gray-700">Support:</span>
-                  <p className="text-gray-600">{sign.support}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}

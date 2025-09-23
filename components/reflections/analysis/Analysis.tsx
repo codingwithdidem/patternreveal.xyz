@@ -28,6 +28,7 @@ import ContextFactors from "./ContextFactors";
 import ActionableInsights from "./ActionableInsights";
 import SafetyAssessment from "./SafetyAssessment";
 import OverallAssessment from "./OverallAssessment";
+import AnalysisSkeleton from "./AnalysisSkeleton";
 
 interface AnalysisProps {
   isLoading: boolean;
@@ -36,14 +37,7 @@ interface AnalysisProps {
 
 export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center p-12">
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-          <p className="text-muted-foreground">Analyzing your reflection...</p>
-        </div>
-      </div>
-    );
+    return <AnalysisSkeleton />;
   }
 
   if (!analysisReport) {

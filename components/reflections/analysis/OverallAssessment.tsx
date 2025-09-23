@@ -1,7 +1,15 @@
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { Analysis as AnalysisType } from "@/lib/zod/schemas/analysis";
-import { CheckCircle, AlertTriangle, Star, Brain, Copy } from "lucide-react";
+import {
+  CheckCircle,
+  AlertTriangle,
+  Star,
+  Brain,
+  Copy,
+  Check,
+} from "lucide-react";
+import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 
 interface OverallAssessmentProps {
   analysisReport: AnalysisType;
@@ -11,6 +19,12 @@ export default function OverallAssessment({
   analysisReport,
 }: OverallAssessmentProps) {
   const assessment = analysisReport?.overallAssessment;
+  const { isCopied, copy } = useCopyToClipboard({
+    timeout: 2000,
+    onSuccess: () => {
+      // Optional: Add toast notification here if needed
+    },
+  });
   const healthScore = assessment?.healthScore || 0;
 
   const getScoreColor = (score: number) => {
@@ -92,11 +106,15 @@ export default function OverallAssessment({
             <h2 className="text-lg font-bold text-slate-900">Overview</h2>
             <button
               type="button"
-              onClick={() => navigator.clipboard.writeText(assessment?.summary)}
+              onClick={() => copy(assessment?.summary || "")}
               className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
-              title="Copy summary"
+              title={isCopied ? "Copied!" : "Copy summary"}
             >
-              <Copy className="w-4 h-4 text-slate-600" />
+              {isCopied ? (
+                <Check className="w-4 h-4 text-green-600" />
+              ) : (
+                <Copy className="w-4 h-4 text-slate-600" />
+              )}
             </button>
           </div>
           <div className="prose prose-slate max-w-none">

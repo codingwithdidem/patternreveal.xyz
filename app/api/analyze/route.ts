@@ -43,6 +43,7 @@ export const POST = withWorkspace(
               id: true,
             },
           },
+          analysisReport: true,
         },
       });
 
@@ -52,6 +53,28 @@ export const POST = withWorkspace(
           message: "Reflection not found.",
         });
       }
+
+      // Check if reflection is already being analyzed or completed
+      if (reflection.analysisStatus === "IN_PROGRESS") {
+        throw new PatternRevealApiError({
+          code: "conflict",
+          message: "This reflection is currently being analyzed. Please wait.",
+        });
+      }
+
+      if (reflection.analysisStatus === "COMPLETED") {
+        throw new PatternRevealApiError({
+          code: "conflict",
+          message:
+            "This reflection has already been analyzed. Cannot analyze again.",
+        });
+      }
+
+      // Set status to IN_PROGRESS
+      await prisma.reflection.update({
+        where: { id: reflectionId },
+        data: { analysisStatus: "IN_PROGRESS" },
+      });
 
       const startTime = Date.now();
 
@@ -93,6 +116,7 @@ export const POST = withWorkspace(
           id: reflectionId,
         },
         data: {
+          analysisStatus: "COMPLETED",
           analysisReport: {
             upsert: {
               create: {
@@ -135,6 +159,20 @@ export const POST = withWorkspace(
       });
     } catch (error) {
       console.error("Analysis generation error:", error);
+
+      // Set status to FAILED if analysis fails
+      try {
+        await prisma.reflection.update({
+          where: { id: reflectionId },
+          data: { analysisStatus: "FAILED" },
+        });
+      } catch (updateError) {
+        console.error(
+          "Failed to update analysis status to FAILED:",
+          updateError
+        );
+      }
+
       throw new PatternRevealApiError({
         code: "internal_server_error",
         message: "Failed to generate comprehensive analysis.",
