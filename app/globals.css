@@ -133,7 +133,7 @@
 
 /* Evidence highlighting styles */
 .evidence-highlight {
-  background-color: #e0e7ff !important;
+  background-color: #c7d2fe !important;
   cursor: help !important;
   padding: 0 2px;
   border-radius: 3px;
@@ -142,7 +142,7 @@
 }
 
 .evidence-highlight:hover {
-  background-color: #c7d2fe !important;
+  background-color: #a5b4fc !important;
 }
 
 /* Evidence tooltip */

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { PricingSection } from "@/components/PricingSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
@@ -6,7 +7,6 @@ import { constructMetadata } from "@/utils/functions/construct-metadata";
 import BackgroundPattern from "@/components/BackgroundPattern";
 import { InteractiveGridPattern } from "@/components/magicui/interactive-grid-pattern";
 import { Highlighter } from "@/components/magicui/highlighter";
-import { cn } from "@/lib/utils";
 import {
   ArrowRight,
   Shield,
@@ -41,9 +41,9 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative z-10 pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-12 gap-4 items-center">
             {/* Left side - Text content */}
-            <div className="text-left">
+            <div className="text-left lg:col-span-5">
               <h1 className="text-6xl md:text-7xl font-bold mb-8 leading-tight text-black">
                 Discover the{" "}
                 <Highlighter color="#DDA0DD" action="highlight">
@@ -76,64 +76,18 @@ export default function LandingPage() {
                   <Shield className="h-4 w-4 text-blue-500" />
                   <span>Privacy first</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Lock className="h-4 w-4 text-purple-500" />
-                  <span>Secure & compliant</span>
-                </div>
               </div>
             </div>
 
-            {/* Right side - Dashboard mockup */}
-            <div className="relative">
-              <div className="relative w-full h-[500px] md:h-[600px] bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
-                {/* Dashboard mockup content */}
-                <div className="p-6 h-full flex flex-col">
-                  {/* Header */}
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-black rounded-lg" />
-                      <span className="font-semibold text-gray-800">
-                        PatternReveal
-                      </span>
-                    </div>
-                    <div className="w-8 h-8 bg-gray-300 rounded-full" />
-                  </div>
-
-                  {/* Sidebar */}
-                  <div className="flex gap-6 flex-1">
-                    <div className="w-48 space-y-3">
-                      <div className="h-8 bg-gray-200 rounded" />
-                      <div className="space-y-2">
-                        <div className="h-6 bg-gray-200 rounded" />
-                        <div className="h-6 bg-gray-200 rounded" />
-                        <div className="h-6 bg-gray-200 rounded" />
-                        <div className="h-6 bg-gray-200 rounded" />
-                      </div>
-                    </div>
-
-                    {/* Main content */}
-                    <div className="flex-1 space-y-4">
-                      <div className="h-32 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-4">
-                        <div className="text-2xl font-bold text-gray-800 mb-2">
-                          Total Insights
-                        </div>
-                        <div className="text-3xl font-bold text-purple-600">
-                          1,247
-                        </div>
-                        <div className="text-sm text-gray-600">
-                          +12.5% vs last month
-                        </div>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="h-24 bg-gray-200 rounded-lg" />
-                        <div className="h-24 bg-gray-200 rounded-lg" />
-                      </div>
-
-                      <div className="h-32 bg-gray-200 rounded-lg" />
-                    </div>
-                  </div>
-                </div>
+            {/* Right side - Demo Screenshot */}
+            <div className="relative lg:col-span-7">
+              <div className="relative w-full h-[450px] aspect-video bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+                <Image
+                  src="/images/demo.png"
+                  alt="PatternReveal reflection analysis interface showing relationship pattern insights"
+                  fill
+                  priority
+                />
               </div>
             </div>
           </div>
@@ -217,7 +171,9 @@ export default function LandingPage() {
                 viewBox="0 0 800 40"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
+                aria-label="Decorative curved line"
               >
+                <title>Decorative curved line connecting steps</title>
                 <path
                   d="M50 20 Q200 5 350 20 T650 20 T750 20"
                   stroke="#E5E7EB"
@@ -273,7 +229,7 @@ export default function LandingPage() {
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialsSection />
+      {/* <TestimonialsSection /> */}
 
       {/* Pricing Section */}
       <PricingSection />

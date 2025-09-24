@@ -28,7 +28,7 @@ export default function UpgradeToProButton({
   const baseClasses = cn(
     "font-medium transition-all duration-200 flex items-center gap-2",
     {
-      "bg-gradient-to-r from-blue-600 to-black hover:from-blue-700 hover:to-gray-900 text-white shadow-lg":
+      "bg-gradient-to-br from-indigo-600 to-indigo-900 hover:from-indigo-700 hover:to-gray-900 text-white shadow-lg":
         variant === "gradient",
       "px-4 py-2 text-sm": size === "sm",
       "px-6 py-2": size === "default",

@@ -77,8 +77,6 @@ For each abusive behavior detected, provide:
 4. impact: How this abuse affects the victim
 5. severity: mild, moderate, severe, or extreme
 6. reasonings: Why this behavior is considered abusive
-7. startIndex: The index of the first character of the quote
-8. endIndex: The index of the last character of the quote
 
 CRITICAL: Silent treatment, stonewalling, gaslighting, and emotional manipulation are forms of emotional abuse that can be subtle but very damaging. Look for patterns of:
 - Extended periods of not talking (days, weeks)
@@ -181,8 +179,6 @@ For each emotional pattern detected, provide:
 6. trigger: What typically triggers this emotional pattern (e.g., "feeling criticized", "fear of abandonment", "stress at work")
 7. unsustainableBehavior: The problematic behavior this pattern leads to (e.g., "avoiding difficult conversations", "emotional outbursts", "people-pleasing")
 8. suggestedBehavior: Healthy alternative behavior to replace the pattern (e.g., "practicing assertive communication", "using mindfulness techniques", "setting healthy boundaries")
-9. startIndex: The index of the first character of the quote
-10. endIndex: The index of the last character of the quote
 
 
 EMOTIONAL PATTERN ANALYSIS EXAMPLES:
@@ -306,8 +302,6 @@ For each relationship dynamics pattern detected, provide:
 6. trigger: What typically triggers this relationship pattern (e.g., "stress", "insecurity", "past trauma")
 7. unsustainableBehavior: The problematic behavior this pattern leads to (e.g., "avoiding intimacy", "controlling behavior", "emotional distance")
 8. suggestedBehavior: Healthy alternative behavior to improve the relationship (e.g., "practice active listening", "share decision-making", "express needs clearly")
-9. startIndex: The index of the first character of the quote
-10. endIndex: The index of the last character of the quote
 
 
 TRAUMA RESPONSE PATTERN DETECTION:
@@ -371,8 +365,6 @@ For each trauma response pattern detected, provide:
 6. trigger: What triggered this trauma response (e.g., "feeling criticized", "fear of abandonment", "past trauma")
 7. copingStrategy: Current coping strategy being used (e.g., "avoidance", "people-pleasing", "self-isolation")
 8. suggestedHealing: Recommended healing approach for this trauma response (e.g., "trauma therapy", "mindfulness", "EMDR")
-9. startIndex: The index of the first character of the quote
-10. endIndex: The index of the last character of the quote
 
 TRAUMA RESPONSE ANALYSIS REQUIREMENTS:
 You MUST also provide:
@@ -465,8 +457,6 @@ For each context factor pattern detected, provide:
 5. who_affected: you, them, or both
 6. mitigation: How the context factor was managed or could be managed
 7. future_prevention: How to prevent or minimize this context factor in future interactions
-8. startIndex: The index of the first character of the quote
-9. endIndex: The index of the last character of the quote
 
 CONNECTION PATTERNS DETECTION:
 Look for these specific connection patterns in the reflection text:
@@ -506,8 +496,6 @@ For each connection pattern detected, provide:
 5. who_exhibited: you, them, or both
 6. effectiveness: very_effective, somewhat_effective, ineffective, or harmful
 7. improvement: How to improve this connection pattern
-8. startIndex: The index of the first character of the quote
-9. endIndex: The index of the last character of the quote
 
 CONNECTION PATTERN ANALYSIS REQUIREMENTS:
 You MUST also provide:
@@ -677,8 +665,6 @@ For each communication pattern detected, provide:
 2. quote: The exact quote from the reflection that demonstrates this pattern
 3. impact: How this communication pattern affects the relationship or situation (1-2 sentences)
 4. severity: mild, moderate, or severe based on the impact and frequency
-5. startIndex: The index of the first character of the quote
-6. endIndex: The index of the last character of the quote
 
 BEHAVIORAL PATTERN DETECTION:
 Look for these specific behavioral patterns in the reflection text (based on Healthy Mind Coaching's comprehensive list):
@@ -753,8 +739,6 @@ For each behavioral pattern detected, provide:
 2. quote: The exact quote from the reflection that demonstrates this pattern
 3. impact: How this behavioral pattern affects the relationship or situation (1-2 sentences)
 4. severity: mild, moderate, or severe based on the impact and frequency
-5. startIndex: The index of the first character of the quote
-6. endIndex: The index of the last character of the quote
 
 COGNITIVE PATTERN DETECTION:
 Look for these specific thinking traps in the reflection text (based on Mindset Health's 12 cognitive distortions):
@@ -777,8 +761,6 @@ For each thinking trap detected, provide:
 2. explanation: How this thinking trap manifests in the reflection (2-3 sentences)
 3. quote: The exact quote from the reflection that demonstrates this trap
 4. impact: How this thinking trap affects the relationship or situation (1-2 sentences)
-5. startIndex: The index of the first character of the quote
-6. endIndex: The index of the last character of the quote
 
 COGNITIVE PATTERN ANALYSIS REQUIREMENTS:
 You MUST also provide:
@@ -844,8 +826,6 @@ For each attachment pattern detected, provide:
 3. impact: How this attachment pattern affects the relationship or situation (1-2 sentences)
 4. severity: mild, moderate, severe, or extreme based on the impact and frequency
 5. who_exhibited: you, them, or both
-6. startIndex: The index of the first character of the quote
-7. endIndex: The index of the last character of the quote
 
 ATTACHMENT PATTERN ANALYSIS REQUIREMENTS:
 You MUST also provide:
@@ -858,7 +838,6 @@ CRITICAL QUOTE REQUIREMENTS:
 - Use the person's exact words - don't paraphrase or modify their text
 - Focus on the most revealing quotes that support your analysis
 - If you detect concerning behaviors, provide multiple quotes as evidence
-- Include startIndex and endIndex for quotes when possible to help with text highlighting
 
 IMPORTANT: You MUST populate ALL fields in the response schema. If certain information isn't available from the reflection, make reasonable inferences or use empty arrays where appropriate. Every field is required for proper analysis.
 
@@ -1052,8 +1031,6 @@ For each abusive behavior detected, provide:
 3. quote: The exact quote from the reflection that demonstrates this abuse
 4. impact: How this abuse affects the victim
 5. reasonings: Why this behavior is considered abusive
-6. startIndex: The index of the first character of the quote
-7. endIndex: The index of the last character of the quote
 
 ABUSE DETECTION ANALYSIS REQUIREMENTS:
 You MUST also provide:

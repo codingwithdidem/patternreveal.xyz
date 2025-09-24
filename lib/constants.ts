@@ -48,8 +48,8 @@ export const PLANS = [
     name: "Pro",
     link: "",
     price: {
-      monthly: 10, // $10 per month
-      yearly: 5, // $5 per month
+      monthly: 16.99, // $16.99 per month
+      yearly: 8.49, // $8.49 per month
       monthlyId: "pri_01jxt8keeh6cx5wk96bpbyehd5",
       yearlyId: "pri_01jxt8qpc94nyymrqws8he2c8g",
       ids: [
@@ -60,16 +60,16 @@ export const PLANS = [
     },
     limits: {
       reflections: 1_000, // 1K reflections per month
-      "ask-ai": 100, // 100 AI questions per month
-      "ai-analysis": 100, // 100 AI analysis per month
+      "ask-ai": 15, // 15 AI questions per month
+      "ai-analysis": 8, // 8 AI analysis per month
       users: 5, // 5 users
       retention: "1-year", // 1-year analytics retention
     },
     featureTitle: "Everything in Free, plus:",
     features: [
       { id: "reflections", text: "1K reflections per month" },
-      { id: "ask-ai", text: "100 AI questions per month" },
-      { id: "ai-analysis", text: "100 AI analysis per month" },
+      { id: "ask-ai", text: "15 AI questions per month" },
+      { id: "ai-analysis", text: "8 AI analysis per month" },
       { id: "users", text: "5 users" },
       { id: "retention", text: "1-year analytics retention" },
       {

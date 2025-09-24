@@ -139,8 +139,6 @@ export default function ReflectionEditorClientPage() {
     const evidence: Array<{
       quote: string;
       analysis?: string;
-      startIndex?: number;
-      endIndex?: number;
       pattern?: string;
       severity?: string;
       who_exhibited?: string;
@@ -153,8 +151,6 @@ export default function ReflectionEditorClientPage() {
           evidence.push({
             quote: pattern.quote,
             analysis: pattern.impact,
-            startIndex: pattern.startIndex,
-            endIndex: pattern.endIndex,
             pattern: pattern.pattern,
             severity: pattern.severity,
             who_exhibited: pattern.who_exhibited,
@@ -172,8 +168,6 @@ export default function ReflectionEditorClientPage() {
             evidence.push({
               quote: pattern.quote,
               analysis: pattern.impact,
-              startIndex: pattern.startIndex,
-              endIndex: pattern.endIndex,
               pattern: pattern.pattern,
               severity: pattern.severity,
             });
@@ -189,8 +183,6 @@ export default function ReflectionEditorClientPage() {
           evidence.push({
             quote: pattern.quote,
             analysis: pattern.impact,
-            startIndex: pattern.startIndex,
-            endIndex: pattern.endIndex,
             pattern: pattern.pattern,
             severity: pattern.severity,
           });
@@ -207,8 +199,6 @@ export default function ReflectionEditorClientPage() {
             evidence.push({
               quote: pattern.quote,
               analysis: pattern.impact,
-              startIndex: pattern.startIndex,
-              endIndex: pattern.endIndex,
               pattern: pattern.pattern,
               severity: pattern.severity,
               who_exhibited: pattern.who_exhibited,
@@ -225,8 +215,6 @@ export default function ReflectionEditorClientPage() {
           evidence.push({
             quote: pattern.quote,
             analysis: pattern.impact,
-            startIndex: pattern.startIndex,
-            endIndex: pattern.endIndex,
             pattern: pattern.pattern,
             severity: pattern.severity,
             who_exhibited: pattern.who_affected,
@@ -243,8 +231,6 @@ export default function ReflectionEditorClientPage() {
           evidence.push({
             quote: pattern.quote,
             analysis: pattern.impact,
-            startIndex: pattern.startIndex,
-            endIndex: pattern.endIndex,
             pattern: pattern.pattern,
             severity: pattern.severity,
             who_exhibited: pattern.who_exhibited,
@@ -260,8 +246,6 @@ export default function ReflectionEditorClientPage() {
           evidence.push({
             quote: pattern.quote,
             analysis: pattern.impact,
-            startIndex: pattern.startIndex,
-            endIndex: pattern.endIndex,
             pattern: pattern.pattern,
             severity: pattern.severity,
             who_exhibited: pattern.who_exhibited,
@@ -278,8 +262,6 @@ export default function ReflectionEditorClientPage() {
           evidence.push({
             quote: pattern.quote,
             analysis: pattern.impact,
-            startIndex: pattern.startIndex,
-            endIndex: pattern.endIndex,
             pattern: pattern.pattern,
             severity: pattern.severity,
             who_exhibited: pattern.who_exhibited,
@@ -295,8 +277,6 @@ export default function ReflectionEditorClientPage() {
           evidence.push({
             quote: trap.quote,
             analysis: trap.impact,
-            startIndex: trap.startIndex,
-            endIndex: trap.endIndex,
             pattern: trap.trap,
             severity: "moderate", // thinking traps don't have severity
           });
@@ -312,8 +292,6 @@ export default function ReflectionEditorClientPage() {
           evidence.push({
             quote: behavior.quote,
             analysis: behavior.impact,
-            startIndex: behavior.startIndex,
-            endIndex: behavior.endIndex,
             pattern: behavior.behavior,
             severity: "severe", // abuse behaviors are typically severe
           });

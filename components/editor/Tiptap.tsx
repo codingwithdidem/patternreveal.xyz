@@ -27,8 +27,6 @@ type TiptapProps = {
   textEvidence?: Array<{
     quote: string;
     analysis?: string;
-    startIndex?: number;
-    endIndex?: number;
     pattern?: string;
     severity?: string;
     who_exhibited?: string;
@@ -204,7 +202,7 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
       attributes: {
         style: "padding-left: 56px; padding-right: 56px;",
         class:
-          "prose prose-pink prose-sm sm:prose-base focus:outline-none print:border-0 bg-white border border-[#C7C7C7] flex flex-col h-[1054px] overflow-y-auto scrollbar-hide min-w-[816px] pt-10 pr-14 pb-10 cursor-text selection:bg-gray-950 selection:text-white bg-[#faf8f7]",
+          "prose prose-pink prose-sm sm:prose-base focus:outline-none print:border-0 bg-[#faf8f7] border border-[#C7C7C7] flex flex-col h-[1054px] overflow-y-auto overflow-x-visible scrollbar-hide min-w-[816px] pt-10 pr-14 pb-10 cursor-text selection:bg-indigo-700 selection:text-white bg-[#faf8f7]",
       },
     },
     onCreate: ({ editor }) => {
@@ -338,7 +336,8 @@ By the time I went to bed, I felt invisible. Like I'm not even a person to himâ€
             if (matchingEvidence.analysis) {
               tooltipText += `ðŸ’¡ Analysis:\n${matchingEvidence.analysis}`;
             } else {
-              tooltipText += `ðŸ’¡ Analysis:\nNo detailed analysis available for this pattern.`;
+              tooltipText +=
+                "ðŸ’¡ Analysis:\nNo detailed analysis available for this pattern.";
             }
 
             console.log("Setting data-analysis to:", tooltipText);

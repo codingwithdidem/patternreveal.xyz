@@ -131,9 +131,6 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
             <LiftedTabsTrigger className="w-full" value="cognitive">
               Cognitive
             </LiftedTabsTrigger>
-            <LiftedTabsTrigger className="w-full" value="context">
-              Context
-            </LiftedTabsTrigger>
             <LiftedTabsTrigger className="w-full" value="actions">
               Actions
             </LiftedTabsTrigger>
@@ -185,11 +182,6 @@ export default function Analysis({ isLoading, analysisReport }: AnalysisProps) {
           {/* Cognitive Patterns */}
           <LiftedTabsContent value="cognitive" className="space-y-4">
             <CognitivePatterns analysisReport={analysisReport} />
-          </LiftedTabsContent>
-
-          {/* Context Factors */}
-          <LiftedTabsContent value="context" className="space-y-4">
-            <ContextFactors analysisReport={analysisReport} />
           </LiftedTabsContent>
 
           {/* Actionable Insights */}
