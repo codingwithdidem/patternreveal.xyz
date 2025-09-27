@@ -130,170 +130,181 @@ export default function TraumaResponses({
       </div>
 
       {/* Trauma Triggers */}
-      {traumaResponses.traumaTriggers?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700">Trauma Triggers</h4>
-          <div className="flex flex-wrap gap-2">
-            {traumaResponses.traumaTriggers.map((trigger, index) => (
-              <Badge
-                key={`trigger-${index}-${trigger.slice(0, 20)}`}
-                variant="destructive"
-                className="capitalize"
-              >
-                {trigger.replace(/_/g, " ")}
-              </Badge>
-            ))}
+      {traumaResponses.traumaTriggers?.length &&
+        traumaResponses.traumaTriggers.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium text-sm text-gray-700">
+              Trauma Triggers
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {traumaResponses.traumaTriggers.map((trigger, index) => (
+                <Badge
+                  key={`trigger-${index}-${trigger.slice(0, 20)}`}
+                  variant="destructive"
+                  className="capitalize"
+                >
+                  {trigger.replace(/_/g, " ")}
+                </Badge>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Coping Strategies */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {traumaResponses.healthyCopingUsed?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm text-gray-700">
-              Healthy Coping Used
-            </h4>
-            <div className="space-y-2">
-              {traumaResponses.healthyCopingUsed.map((strategy, index) => (
-                <div
-                  key={`healthy-${index}-${strategy.slice(0, 20)}`}
-                  className="flex gap-2 p-2 bg-green-50 rounded border-l-4 border-green-500"
-                >
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">{strategy}</span>
-                </div>
-              ))}
+        {traumaResponses.healthyCopingUsed?.length &&
+          traumaResponses.healthyCopingUsed.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm text-gray-700">
+                Healthy Coping Used
+              </h4>
+              <div className="space-y-2">
+                {traumaResponses.healthyCopingUsed.map((strategy, index) => (
+                  <div
+                    key={`healthy-${index}-${strategy.slice(0, 20)}`}
+                    className="flex gap-2 p-2 bg-green-50 rounded border-l-4 border-green-500"
+                  >
+                    <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{strategy}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {traumaResponses.unhealthyCopingUsed?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm text-gray-700">
-              Unhealthy Coping Used
-            </h4>
-            <div className="space-y-2">
-              {traumaResponses.unhealthyCopingUsed.map((strategy, index) => (
-                <div
-                  key={`unhealthy-${index}-${strategy.slice(0, 20)}`}
-                  className="flex gap-2 p-2 bg-red-50 rounded border-l-4 border-red-500"
-                >
-                  <AlertTriangle className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">{strategy}</span>
-                </div>
-              ))}
+        {traumaResponses.unhealthyCopingUsed?.length &&
+          traumaResponses.unhealthyCopingUsed.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm text-gray-700">
+                Unhealthy Coping Used
+              </h4>
+              <div className="space-y-2">
+                {traumaResponses.unhealthyCopingUsed.map((strategy, index) => (
+                  <div
+                    key={`unhealthy-${index}-${strategy.slice(0, 20)}`}
+                    className="flex gap-2 p-2 bg-red-50 rounded border-l-4 border-red-500"
+                  >
+                    <AlertTriangle className="w-4 h-4 text-red-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{strategy}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
 
       {/* Detected Patterns */}
-      {traumaResponses.detectedPatterns?.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="font-medium text-sm text-gray-700">
-            Detected Trauma Patterns
-          </h4>
+      {traumaResponses.detectedPatterns?.length &&
+        traumaResponses.detectedPatterns.length > 0 && (
           <div className="space-y-4">
-            {traumaResponses.detectedPatterns.map((pattern, index) => (
-              <div
-                key={`pattern-${index}-${
-                  pattern.pattern?.slice(0, 20) || "unknown"
-                }`}
-                className="border rounded-lg p-4 bg-gray-50"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="capitalize">
-                      {pattern.pattern?.replace(/_/g, " ") || "Unknown pattern"}
-                    </Badge>
-                    <Badge
-                      className={getSeverityColor(pattern.severity || "mild")}
-                    >
-                      {pattern.severity || "mild"}
-                    </Badge>
+            <h4 className="font-medium text-sm text-gray-700">
+              Detected Trauma Patterns
+            </h4>
+            <div className="space-y-4">
+              {traumaResponses.detectedPatterns.map((pattern, index) => (
+                <div
+                  key={`pattern-${index}-${
+                    pattern.pattern?.slice(0, 20) || "unknown"
+                  }`}
+                  className="border rounded-lg p-4 bg-gray-50"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="capitalize">
+                        {pattern.pattern?.replace(/_/g, " ") ||
+                          "Unknown pattern"}
+                      </Badge>
+                      <Badge
+                        className={getSeverityColor(pattern.severity || "mild")}
+                      >
+                        {pattern.severity || "mild"}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                      {getWhoExhibitedIcon(pattern.who_exhibited || "you")}
+                      <span className="capitalize">
+                        {pattern.who_exhibited || "you"}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-gray-600">
-                    {getWhoExhibitedIcon(pattern.who_exhibited || "you")}
-                    <span className="capitalize">
-                      {pattern.who_exhibited || "you"}
-                    </span>
-                  </div>
+
+                  {pattern.quote && (
+                    <div className="mb-3">
+                      <blockquote className="text-sm italic text-gray-700 bg-white p-3 rounded border-l-4 border-orange-500">
+                        &quot;{pattern.quote}&quot;
+                      </blockquote>
+                    </div>
+                  )}
+
+                  {pattern.impact && (
+                    <div className="mb-3">
+                      <h5 className="font-medium text-sm text-gray-600 mb-1">
+                        Impact:
+                      </h5>
+                      <p className="text-sm text-gray-700">{pattern.impact}</p>
+                    </div>
+                  )}
+
+                  {pattern.trigger && (
+                    <div className="mb-3">
+                      <h5 className="font-medium text-sm text-gray-600 mb-1">
+                        Trigger:
+                      </h5>
+                      <p className="text-sm text-gray-700">{pattern.trigger}</p>
+                    </div>
+                  )}
+
+                  {pattern.copingStrategy && (
+                    <div className="mb-3">
+                      <h5 className="font-medium text-sm text-gray-600 mb-1">
+                        Coping Strategy:
+                      </h5>
+                      <p className="text-sm text-gray-700">
+                        {pattern.copingStrategy}
+                      </p>
+                    </div>
+                  )}
+
+                  {pattern.suggestedHealing && (
+                    <div>
+                      <h5 className="font-medium text-sm text-gray-600 mb-1">
+                        Suggested Healing:
+                      </h5>
+                      <p className="text-sm text-gray-700">
+                        {pattern.suggestedHealing}
+                      </p>
+                    </div>
+                  )}
                 </div>
-
-                {pattern.quote && (
-                  <div className="mb-3">
-                    <blockquote className="text-sm italic text-gray-700 bg-white p-3 rounded border-l-4 border-orange-500">
-                      &quot;{pattern.quote}&quot;
-                    </blockquote>
-                  </div>
-                )}
-
-                {pattern.impact && (
-                  <div className="mb-3">
-                    <h5 className="font-medium text-sm text-gray-600 mb-1">
-                      Impact:
-                    </h5>
-                    <p className="text-sm text-gray-700">{pattern.impact}</p>
-                  </div>
-                )}
-
-                {pattern.trigger && (
-                  <div className="mb-3">
-                    <h5 className="font-medium text-sm text-gray-600 mb-1">
-                      Trigger:
-                    </h5>
-                    <p className="text-sm text-gray-700">{pattern.trigger}</p>
-                  </div>
-                )}
-
-                {pattern.copingStrategy && (
-                  <div className="mb-3">
-                    <h5 className="font-medium text-sm text-gray-600 mb-1">
-                      Coping Strategy:
-                    </h5>
-                    <p className="text-sm text-gray-700">
-                      {pattern.copingStrategy}
-                    </p>
-                  </div>
-                )}
-
-                {pattern.suggestedHealing && (
-                  <div>
-                    <h5 className="font-medium text-sm text-gray-600 mb-1">
-                      Suggested Healing:
-                    </h5>
-                    <p className="text-sm text-gray-700">
-                      {pattern.suggestedHealing}
-                    </p>
-                  </div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Insights & Recommendations */}
-      {traumaResponses.healingRecommendations?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700">
-            Healing Recommendations
-          </h4>
-          <div className="space-y-2">
-            {traumaResponses.healingRecommendations.map(
-              (recommendation, index) => (
-                <div
-                  key={`recommendation-${index}-${recommendation.slice(0, 20)}`}
-                  className="p-3 bg-green-50 rounded border-l-4 border-green-500"
-                >
-                  <span className="text-sm">{recommendation}</span>
-                </div>
-              )
-            )}
+      {traumaResponses.healingRecommendations?.length &&
+        traumaResponses.healingRecommendations.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium text-sm text-gray-700">
+              Healing Recommendations
+            </h4>
+            <div className="space-y-2">
+              {traumaResponses.healingRecommendations.map(
+                (recommendation, index) => (
+                  <div
+                    key={`recommendation-${index}-${recommendation.slice(
+                      0,
+                      20
+                    )}`}
+                    className="p-3 bg-green-50 rounded border-l-4 border-green-500"
+                  >
+                    <span className="text-sm">{recommendation}</span>
+                  </div>
+                )
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

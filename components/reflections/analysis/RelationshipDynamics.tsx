@@ -236,87 +236,93 @@ export default function RelationshipDynamics({
       </div>
 
       {/* Detected Patterns */}
-      {relationshipDynamics.detectedPatterns?.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="font-medium text-sm text-gray-700">
-            Detected Relationship Patterns
-          </h4>
+      {relationshipDynamics.detectedPatterns?.length &&
+        relationshipDynamics.detectedPatterns.length > 0 && (
           <div className="space-y-4">
-            {relationshipDynamics.detectedPatterns.map((pattern, index) => (
-              <div
-                key={`pattern-${index}-${pattern.pattern.slice(0, 20)}`}
-                className="border rounded-lg p-4 space-y-3"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {getWhoExhibitedIcon(pattern.who_exhibited || "unknown")}
-                    <span className="font-medium capitalize">
-                      {pattern.pattern?.replace(/_/g, " ") || "Unknown pattern"}
-                    </span>
+            <h4 className="font-medium text-sm text-gray-700">
+              Detected Relationship Patterns
+            </h4>
+            <div className="space-y-4">
+              {relationshipDynamics.detectedPatterns.map((pattern, index) => (
+                <div
+                  key={`pattern-${index}-${pattern.pattern?.slice(0, 20)}`}
+                  className="border rounded-lg p-4 space-y-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      {getWhoExhibitedIcon(pattern.who_exhibited || "unknown")}
+                      <span className="font-medium capitalize">
+                        {pattern.pattern?.replace(/_/g, " ") ||
+                          "Unknown pattern"}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Badge
+                        className={getSeverityColor(pattern.severity || "mild")}
+                      >
+                        {pattern.severity?.replace(/_/g, " ") || "Unknown"}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Badge
-                      className={getSeverityColor(pattern.severity || "mild")}
-                    >
-                      {pattern.severity?.replace(/_/g, " ") || "Unknown"}
-                    </Badge>
+
+                  {pattern.quote && (
+                    <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg">
+                      <blockquote className="text-sm italic text-blue-900">
+                        &quot;{pattern.quote}&quot;
+                      </blockquote>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {pattern.impact && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Impact:
+                        </span>
+                        <p className="text-sm text-gray-800">
+                          {pattern.impact}
+                        </p>
+                      </div>
+                    )}
+                    {pattern.trigger && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Trigger:
+                        </span>
+                        <p className="text-sm text-gray-800">
+                          {pattern.trigger}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {pattern.unsustainableBehavior && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Unsustainable Behavior:
+                        </span>
+                        <p className="text-sm text-red-800">
+                          {pattern.unsustainableBehavior}
+                        </p>
+                      </div>
+                    )}
+                    {pattern.suggestedBehavior && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Suggested Behavior:
+                        </span>
+                        <p className="text-sm text-green-800">
+                          {pattern.suggestedBehavior}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
-
-                {pattern.quote && (
-                  <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg">
-                    <blockquote className="text-sm italic text-blue-900">
-                      &quot;{pattern.quote}&quot;
-                    </blockquote>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {pattern.impact && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Impact:
-                      </span>
-                      <p className="text-sm text-gray-800">{pattern.impact}</p>
-                    </div>
-                  )}
-                  {pattern.trigger && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Trigger:
-                      </span>
-                      <p className="text-sm text-gray-800">{pattern.trigger}</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {pattern.unsustainableBehavior && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Unsustainable Behavior:
-                      </span>
-                      <p className="text-sm text-red-800">
-                        {pattern.unsustainableBehavior}
-                      </p>
-                    </div>
-                  )}
-                  {pattern.suggestedBehavior && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Suggested Behavior:
-                      </span>
-                      <p className="text-sm text-green-800">
-                        {pattern.suggestedBehavior}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Relationship Overview */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -506,67 +512,74 @@ export default function RelationshipDynamics({
       </div>
 
       {/* Relationship Insights */}
-      {relationshipDynamics.relationshipInsights?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-            <Zap className="w-4 h-4 text-purple-600" />
-            Relationship Insights
-          </h4>
-          <div className="space-y-2">
-            {relationshipDynamics.relationshipInsights.map((insight, index) => (
-              <div
-                key={`insight-${index}-${insight.slice(0, 20)}`}
-                className="flex gap-2"
-              >
-                <Zap className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">{insight}</span>
-              </div>
-            ))}
+      {relationshipDynamics.relationshipInsights?.length &&
+        relationshipDynamics.relationshipInsights.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+              <Zap className="w-4 h-4 text-purple-600" />
+              Relationship Insights
+            </h4>
+            <div className="space-y-2">
+              {relationshipDynamics.relationshipInsights.map(
+                (insight, index) => (
+                  <div
+                    key={`insight-${index}-${insight.slice(0, 20)}`}
+                    className="flex gap-2"
+                  >
+                    <Zap className="w-4 h-4 text-purple-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{insight}</span>
+                  </div>
+                )
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Improvement Areas */}
-      {relationshipDynamics.improvementAreas?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-            <Target className="w-4 h-4 text-orange-600" />
-            Improvement Areas
-          </h4>
-          <div className="space-y-2">
-            {relationshipDynamics.improvementAreas.map((area, index) => (
-              <div
-                key={`improvement-${index}-${area.slice(0, 20)}`}
-                className="flex gap-2"
-              >
-                <Target className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">{area}</span>
-              </div>
-            ))}
+      {relationshipDynamics.improvementAreas?.length &&
+        relationshipDynamics.improvementAreas.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+              <Target className="w-4 h-4 text-orange-600" />
+              Improvement Areas
+            </h4>
+            <div className="space-y-2">
+              {relationshipDynamics.improvementAreas.map((area, index) => (
+                <div
+                  key={`improvement-${index}-${area.slice(0, 20)}`}
+                  className="flex gap-2"
+                >
+                  <Target className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                  <span className="text-sm">{area}</span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Strengths Identified */}
-      {relationshipDynamics.strengthsIdentified?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-            <Shield className="w-4 h-4 text-green-600" />
-            Strengths Identified
-          </h4>
-          <div className="space-y-2">
-            {relationshipDynamics.strengthsIdentified.map((strength, index) => (
-              <div
-                key={`strength-${index}-${strength.slice(0, 20)}`}
-                className="flex gap-2"
-              >
-                <Shield className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">{strength}</span>
-              </div>
-            ))}
+      {relationshipDynamics.strengthsIdentified?.length &&
+        relationshipDynamics.strengthsIdentified.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+              <Shield className="w-4 h-4 text-green-600" />
+              Strengths Identified
+            </h4>
+            <div className="space-y-2">
+              {relationshipDynamics.strengthsIdentified.map(
+                (strength, index) => (
+                  <div
+                    key={`strength-${index}-${strength.slice(0, 20)}`}
+                    className="flex gap-2"
+                  >
+                    <Shield className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{strength}</span>
+                  </div>
+                )
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

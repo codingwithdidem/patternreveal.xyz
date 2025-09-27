@@ -160,103 +160,110 @@ export default function EmotionalPatterns({
             <Zap className="w-4 h-4 text-orange-600" />
             Emotional Triggers
           </h4>
-          {emotionalPatterns.emotionalTriggers?.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {emotionalPatterns.emotionalTriggers.map((trigger, index) => (
-                <Badge
-                  key={`trigger-${index}-${trigger.slice(0, 10)}`}
-                  variant="outline"
-                >
-                  {trigger}
-                </Badge>
-              ))}
-            </div>
-          )}
+          {emotionalPatterns.emotionalTriggers?.length &&
+            emotionalPatterns.emotionalTriggers.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {emotionalPatterns.emotionalTriggers.map((trigger, index) => (
+                  <Badge
+                    key={`trigger-${index}-${trigger.slice(0, 10)}`}
+                    variant="outline"
+                  >
+                    {trigger}
+                  </Badge>
+                ))}
+              </div>
+            )}
         </div>
       </div>
 
       {/* Detected Patterns */}
-      {emotionalPatterns.detectedPatterns?.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="font-medium text-sm text-gray-700">
-            Detected Emotional Patterns
-          </h4>
+      {emotionalPatterns.detectedPatterns?.length &&
+        emotionalPatterns.detectedPatterns.length > 0 && (
           <div className="space-y-4">
-            {emotionalPatterns.detectedPatterns.map((pattern, index) => (
-              <div
-                key={`pattern-${index}-${pattern.pattern.slice(0, 20)}`}
-                className="border rounded-lg p-4 space-y-3"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {getWhoExhibitedIcon(pattern.who_exhibited || "unknown")}
-                    <span className="font-medium capitalize">
-                      {pattern.pattern?.replace(/_/g, " ") || "Unknown pattern"}
-                    </span>
+            <h4 className="font-medium text-sm text-gray-700">
+              Detected Emotional Patterns
+            </h4>
+            <div className="space-y-4">
+              {emotionalPatterns.detectedPatterns.map((pattern, index) => (
+                <div
+                  key={`pattern-${index}-${pattern.pattern?.slice(0, 20)}`}
+                  className="border rounded-lg p-4 space-y-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      {getWhoExhibitedIcon(pattern.who_exhibited || "unknown")}
+                      <span className="font-medium capitalize">
+                        {pattern.pattern?.replace(/_/g, " ") ||
+                          "Unknown pattern"}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Badge
+                        className={getSeverityColor(pattern.severity || "mild")}
+                      >
+                        {pattern.severity?.replace(/_/g, " ") || "Unknown"}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Badge
-                      className={getSeverityColor(pattern.severity || "mild")}
-                    >
-                      {pattern.severity?.replace(/_/g, " ") || "Unknown"}
-                    </Badge>
+
+                  {pattern.quote && (
+                    <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg">
+                      <blockquote className="text-sm italic text-blue-900">
+                        &quot;{pattern.quote}&quot;
+                      </blockquote>
+                    </div>
+                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {pattern.impact && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Impact:
+                        </span>
+                        <p className="text-sm text-gray-800">
+                          {pattern.impact}
+                        </p>
+                      </div>
+                    )}
+                    {pattern.trigger && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Trigger:
+                        </span>
+                        <p className="text-sm text-gray-800">
+                          {pattern.trigger}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {pattern.unsustainableBehavior && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Unsustainable Behavior:
+                        </span>
+                        <p className="text-sm text-red-800">
+                          {pattern.unsustainableBehavior}
+                        </p>
+                      </div>
+                    )}
+                    {pattern.suggestedBehavior && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Suggested Behavior:
+                        </span>
+                        <p className="text-sm text-green-800">
+                          {pattern.suggestedBehavior}
+                        </p>
+                      </div>
+                    )}
                   </div>
                 </div>
-
-                {pattern.quote && (
-                  <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg">
-                    <blockquote className="text-sm italic text-blue-900">
-                      &quot;{pattern.quote}&quot;
-                    </blockquote>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {pattern.impact && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Impact:
-                      </span>
-                      <p className="text-sm text-gray-800">{pattern.impact}</p>
-                    </div>
-                  )}
-                  {pattern.trigger && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Trigger:
-                      </span>
-                      <p className="text-sm text-gray-800">{pattern.trigger}</p>
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {pattern.unsustainableBehavior && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Unsustainable Behavior:
-                      </span>
-                      <p className="text-sm text-red-800">
-                        {pattern.unsustainableBehavior}
-                      </p>
-                    </div>
-                  )}
-                  {pattern.suggestedBehavior && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Suggested Behavior:
-                      </span>
-                      <p className="text-sm text-green-800">
-                        {pattern.suggestedBehavior}
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }
