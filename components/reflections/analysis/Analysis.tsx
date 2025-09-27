@@ -14,7 +14,6 @@ import {
   Activity,
 } from "lucide-react";
 import AnimatedEmptyState from "@/components/AnimatedEmptyState";
-// Import the new analysis components
 
 import EmotionalPatterns from "./EmotionalPatterns";
 import CommunicationPatterns from "./CommunicationPatterns";
@@ -24,7 +23,6 @@ import AttachmentPatterns from "./AttachmentPatterns";
 import ConnectionPatterns from "./ConnectionPatterns";
 import TraumaResponses from "./TraumaResponses";
 import CognitivePatterns from "./CognitivePatterns";
-import ContextFactors from "./ContextFactors";
 import ActionableInsights from "./ActionableInsights";
 import SafetyAssessment from "./SafetyAssessment";
 import OverallAssessment from "./OverallAssessment";

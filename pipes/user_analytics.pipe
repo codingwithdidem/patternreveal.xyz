@@ -1,5 +1,9 @@
 DESCRIPTION >
-    User-specific reflection analytics with detailed insights and patterns
+    Individual user analytics that provides comprehensive insights into personal reflection 
+    patterns, emotional trends, and relationship dynamics. This endpoint tracks user-specific 
+    metrics including communication preferences, success rates, emotional patterns, and 
+    behavioral tendencies. Offers detailed personal insights for self-awareness and 
+    relationship improvement.
 
 NODE user_analytics_node
 SQL >
@@ -15,49 +19,39 @@ SQL >
         dateDiff('day', min(reflection_created_at), max(reflection_created_at)) as days_active,
         
         -- Emotional patterns
-        avg(emotional_intensity) as avg_emotional_intensity,
         topK(5)(dominant_emotion) as most_common_emotions,
-        avg(health_score) as avg_health_score,
+        avg(CASE WHEN health_score != 'unknown' AND health_score != '0' 
+                 THEN toFloat64(health_score) ELSE NULL END) as avg_health_score,
         
         -- Communication and interaction patterns
         topK(3)(communication_style) as preferred_communication_styles,
-        topK(3)(interaction_type) as preferred_interaction_types,
         topK(3)(conflict_resolution_style) as conflict_resolution_preferences,
-        
-        -- Energy and environment patterns
-        topK(3)(energy_level_yours) as energy_level_patterns,
-        topK(3)(environment) as preferred_environments,
-        topK(3)(time_of_day) as preferred_times,
-        topK(3)(day_of_week) as preferred_days,
+        topK(3)(listening_effectiveness) as listening_effectiveness_patterns,
         
         -- Success metrics
-        avg(CASE WHEN resolution_achieved = true THEN 1 ELSE 0 END) * 100 as resolution_success_rate,
-        avg(CASE WHEN boundaries_maintained = true THEN 1 ELSE 0 END) * 100 as boundaries_maintenance_rate,
+        avg(CASE WHEN resolution_achieved = 'true' THEN 1 ELSE 0 END) * 100 as resolution_success_rate,
+        avg(CASE WHEN boundaries_maintained = 'true' THEN 1 ELSE 0 END) * 100 as boundaries_maintenance_rate,
         
         -- Trust and intimacy patterns
         topK(3)(trust_level) as trust_level_patterns,
         topK(3)(intimacy_level) as intimacy_level_patterns,
         
-        -- Decision making and effort patterns
-        topK(3)(decision_making_style) as decision_making_preferences,
+        -- Effort balance and relationship health patterns
         topK(3)(effort_balance) as effort_balance_patterns,
+        topK(3)(relationship_health) as relationship_health_patterns,
+        topK(3)(relationship_stability) as relationship_stability_patterns,
         
-        -- Self-regulation and listening
+        -- Self-regulation patterns
         topK(3)(self_regulation) as self_regulation_patterns,
-        topK(3)(listening_effectiveness) as listening_patterns,
         
-        -- Power dynamics
-        topK(3)(power_dynamics_initiator) as power_dynamics_initiator_patterns,
-        topK(3)(power_dynamics_controller) as power_dynamics_controller_patterns,
-        
-        -- Recovery and contagion
-        topK(3)(emotional_recovery_time) as recovery_time_patterns,
-        avg(CASE WHEN emotional_contagion = true THEN 1 ELSE 0 END) * 100 as emotional_contagion_rate,
+        -- Attachment and trauma patterns
+        topK(3)(your_attachment_style) as attachment_style_patterns,
+        topK(3)(your_primary_trauma_response) as trauma_response_patterns,
         
         -- Recent trends (last 7 days)
         countIf(reflection_created_at >= now() - interval 7 day) as reflections_last_7_days,
-        avg(CASE WHEN reflection_created_at >= now() - interval 7 day THEN health_score ELSE NULL END) as recent_health_score,
-        avg(CASE WHEN reflection_created_at >= now() - interval 7 day THEN emotional_intensity ELSE NULL END) as recent_emotional_intensity
+        avg(CASE WHEN reflection_created_at >= now() - interval 7 day AND health_score != 'unknown' AND health_score != '0' 
+                 THEN toFloat64(health_score) ELSE NULL END) as recent_health_score
         
     FROM patterns
     WHERE 

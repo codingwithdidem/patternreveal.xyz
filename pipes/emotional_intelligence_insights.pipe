@@ -1,5 +1,9 @@
 DESCRIPTION >
-    Advanced emotional intelligence insights with pattern analysis and actionable recommendations
+    Advanced emotional intelligence analysis that tracks emotional patterns, regulation 
+    effectiveness, and emotional growth over time. This endpoint analyzes dominant emotions, 
+    self-regulation strategies, emotional triggers, and how attachment styles and trauma 
+    responses influence emotional experiences. Provides actionable insights for improving 
+    emotional awareness and regulation skills.
 
 NODE emotional_intelligence_analysis
 SQL >
@@ -7,107 +11,79 @@ SQL >
     SELECT 
         user_id,
         
-        -- Emotional Contagion Analysis
-        round(avg(CASE WHEN emotional_contagion = true THEN 1 ELSE 0 END) * 100, 1) as emotional_contagion_rate,
-        round(avg(CASE WHEN emotional_contagion = true AND emotional_intensity >= 7 THEN 1 ELSE 0 END) * 100, 1) as high_intensity_contagion_rate,
+        -- Emotional Pattern Analysis
+        topK(5)(dominant_emotion) as most_common_emotions,
+        countIf(dominant_emotion IN ('joy', 'contentment', 'peace', 'gratitude')) as positive_emotions_count,
+        countIf(dominant_emotion IN ('anger', 'frustration', 'rage', 'resentment')) as negative_emotions_count,
+        countIf(dominant_emotion IN ('anxiety', 'fear', 'panic', 'overwhelm')) as anxious_emotions_count,
+        countIf(dominant_emotion IN ('sadness', 'hurt', 'disappointment', 'despair')) as sad_emotions_count,
         
-        -- Recovery Pattern Analysis
-        avg(CASE 
-            WHEN emotional_recovery_time = 'immediate' THEN 0
-            WHEN emotional_recovery_time = '30 minutes' THEN 0.5
-            WHEN emotional_recovery_time = '1 hour' THEN 1
-            WHEN emotional_recovery_time = '2 hours' THEN 2
-            WHEN emotional_recovery_time = '4 hours' THEN 4
-            WHEN emotional_recovery_time = '1 day' THEN 24
-            ELSE 6 END) as avg_recovery_hours,
-            
-        -- Recovery Improvement Analysis (comparing first half vs second half of period)
-        avg(CASE WHEN reflection_created_at < now() - interval 15 day
-                 AND emotional_recovery_time = 'immediate' THEN 0
-                 WHEN reflection_created_at < now() - interval 15 day
-                 AND emotional_recovery_time = '30 minutes' THEN 0.5
-                 WHEN reflection_created_at < now() - interval 15 day
-                 AND emotional_recovery_time = '1 hour' THEN 1
-                 WHEN reflection_created_at < now() - interval 15 day
-                 AND emotional_recovery_time = '2 hours' THEN 2
-                 WHEN reflection_created_at < now() - interval 15 day
-                 AND emotional_recovery_time = '4 hours' THEN 4
-                 WHEN reflection_created_at < now() - interval 15 day
-                 AND emotional_recovery_time = '1 day' THEN 24
-                 ELSE 6 END) as early_avg_recovery_hours,
-        avg(CASE WHEN reflection_created_at >= now() - interval 15 day
-                 AND emotional_recovery_time = 'immediate' THEN 0
-                 WHEN reflection_created_at >= now() - interval 15 day
-                 AND emotional_recovery_time = '30 minutes' THEN 0.5
-                 WHEN reflection_created_at >= now() - interval 15 day
-                 AND emotional_recovery_time = '1 hour' THEN 1
-                 WHEN reflection_created_at >= now() - interval 15 day
-                 AND emotional_recovery_time = '2 hours' THEN 2
-                 WHEN reflection_created_at >= now() - interval 15 day
-                 AND emotional_recovery_time = '4 hours' THEN 4
-                 WHEN reflection_created_at >= now() - interval 15 day
-                 AND emotional_recovery_time = '1 day' THEN 24
-                 ELSE 6 END) as recent_avg_recovery_hours,
+        -- Emotional Regulation Analysis
+        topK(3)(self_regulation) as most_common_regulation_methods,
+        countIf(self_regulation != 'unknown' AND self_regulation != '') as regulation_attempts_count,
+        countIf(self_regulation = 'excellent') as excellent_regulation_count,
+        countIf(self_regulation = 'poor') as poor_regulation_count,
         
-        -- Emotional Evolution Analysis
+        -- Emotional Triggers Analysis
+        countIf(length(emotional_triggers) > 0) as triggered_interactions_count,
+        avg(length(emotional_triggers)) as avg_triggers_per_interaction,
+        
+        -- Attachment Style Emotional Patterns
+        countIf(your_attachment_style = 'anxious' AND dominant_emotion IN ('anxiety', 'fear', 'panic')) as anxious_attachment_anxiety_count,
+        countIf(your_attachment_style = 'avoidant' AND dominant_emotion IN ('numbness', 'disconnection')) as avoidant_attachment_numbness_count,
+        countIf(your_attachment_style = 'secure' AND dominant_emotion IN ('joy', 'contentment', 'peace')) as secure_attachment_positive_count,
+        
+        -- Trauma Response Emotional Patterns
+        countIf(your_primary_trauma_response = 'fight' AND dominant_emotion IN ('anger', 'rage', 'frustration')) as fight_response_anger_count,
+        countIf(your_primary_trauma_response = 'flight' AND dominant_emotion IN ('anxiety', 'fear', 'panic')) as flight_response_fear_count,
+        countIf(your_primary_trauma_response = 'freeze' AND dominant_emotion IN ('numbness', 'disconnection', 'overwhelm')) as freeze_response_numbness_count,
+        countIf(your_primary_trauma_response = 'fawn' AND dominant_emotion IN ('guilt', 'shame', 'hurt')) as fawn_response_guilt_count,
+        
+        -- Cognitive Emotional Patterns
+        countIf(emotional_reasoning = 'true' AND dominant_emotion IN ('anger', 'frustration', 'resentment')) as emotional_reasoning_negative_count,
+        countIf(thinking_traps_count != '0' AND thinking_traps_count != 'unknown' AND dominant_emotion IN ('anxiety', 'fear', 'overwhelm')) as cognitive_distortions_anxiety_count,
+        
+        -- Communication Style Emotional Impact
+        countIf(communication_style = 'assertive' AND dominant_emotion IN ('confidence', 'satisfaction', 'peace')) as assertive_positive_emotions_count,
+        countIf(communication_style = 'passive' AND dominant_emotion IN ('resentment', 'hurt', 'frustration')) as passive_negative_emotions_count,
+        countIf(communication_style = 'aggressive' AND dominant_emotion IN ('anger', 'rage', 'frustration')) as aggressive_anger_count,
+        
+        -- Listening Effectiveness Emotional Impact
+        countIf(listening_effectiveness = 'excellent' AND dominant_emotion IN ('understanding', 'connection', 'peace')) as excellent_listening_positive_count,
+        countIf(listening_effectiveness = 'poor' AND dominant_emotion IN ('frustration', 'hurt', 'disconnection')) as poor_listening_negative_count,
+        
+        -- Emotional Evolution Over Time
         topK(3)(CASE WHEN reflection_created_at < now() - interval 15 day THEN dominant_emotion ELSE NULL END) as early_common_emotions,
         topK(3)(CASE WHEN reflection_created_at >= now() - interval 15 day THEN dominant_emotion ELSE NULL END) as recent_common_emotions,
         
-        -- Context-Specific Contagion Analysis
-        round(avg(CASE WHEN emotional_contagion = true AND environment = 'work' THEN 1 ELSE 0 END) * 100, 1) as work_contagion_rate,
-        round(avg(CASE WHEN emotional_contagion = true AND environment = 'home' THEN 1 ELSE 0 END) * 100, 1) as home_contagion_rate,
-        round(avg(CASE WHEN emotional_contagion = true AND environment = 'public' THEN 1 ELSE 0 END) * 100, 1) as public_contagion_rate,
-        
-        -- Temporal Pattern Analysis
-        round(avg(CASE WHEN emotional_contagion = true AND time_of_day = 'morning' THEN 1 ELSE 0 END) * 100, 1) as morning_contagion_rate,
-        round(avg(CASE WHEN emotional_contagion = true AND time_of_day = 'afternoon' THEN 1 ELSE 0 END) * 100, 1) as afternoon_contagion_rate,
-        round(avg(CASE WHEN emotional_contagion = true AND time_of_day = 'evening' THEN 1 ELSE 0 END) * 100, 1) as evening_contagion_rate,
-        
-        -- Weekly Pattern Analysis
-        round(avg(CASE WHEN emotional_contagion = true AND day_of_week = 'monday' THEN 1 ELSE 0 END) * 100, 1) as monday_contagion_rate,
-        round(avg(CASE WHEN emotional_contagion = true AND day_of_week = 'friday' THEN 1 ELSE 0 END) * 100, 1) as friday_contagion_rate,
-        
-        -- Energy Level Contagion Analysis
-        round(avg(CASE WHEN emotional_contagion = true AND energy_level_yours = 'low' THEN 1 ELSE 0 END) * 100, 1) as low_energy_contagion_rate,
-        round(avg(CASE WHEN emotional_contagion = true AND energy_level_yours = 'medium' THEN 1 ELSE 0 END) * 100, 1) as medium_energy_contagion_rate,
-        round(avg(CASE WHEN emotional_contagion = true AND energy_level_yours = 'high' THEN 1 ELSE 0 END) * 100, 1) as high_energy_contagion_rate,
-        
-        -- Regulation Effectiveness Analysis
-        topK(3)(self_regulation) as most_effective_regulation_methods,
-        
-        -- Intensity Pattern Analysis
-        avg(emotional_intensity) as avg_emotional_intensity,
-        avg(CASE WHEN emotional_contagion = true THEN emotional_intensity ELSE NULL END) as contagious_emotional_intensity,
-        avg(CASE WHEN emotional_contagion = false THEN emotional_intensity ELSE NULL END) as non_contagious_emotional_intensity,
-        
-        -- Advanced Pattern Recognition
-        round(avg(CASE WHEN emotional_intensity >= 7 AND emotional_contagion = true THEN 1 ELSE 0 END) * 100, 1) as high_intensity_contagion_risk,
-        round(avg(CASE WHEN emotional_recovery_time IN ('4 hours', '1 day') AND emotional_intensity >= 6 THEN 1 ELSE 0 END) * 100, 1) as slow_recovery_high_intensity_rate,
-        round(avg(CASE WHEN self_regulation = 'deep breathing' AND emotional_contagion = false THEN 1 ELSE 0 END) * 100, 1) as breathing_regulation_effectiveness,
-        round(avg(CASE WHEN self_regulation = 'meditation' AND emotional_recovery_time = 'immediate' THEN 1 ELSE 0 END) * 100, 1) as meditation_recovery_effectiveness,
-        
         -- Emotional Intelligence Growth Metrics
         CASE 
-            WHEN recent_avg_recovery_hours < early_avg_recovery_hours THEN 'improving'
-            WHEN recent_avg_recovery_hours > early_avg_recovery_hours THEN 'declining'
+            WHEN countIf(reflection_created_at >= now() - interval 15 day AND dominant_emotion IN ('joy', 'contentment', 'peace')) > 
+                 countIf(reflection_created_at < now() - interval 15 day AND dominant_emotion IN ('joy', 'contentment', 'peace')) THEN 'improving'
+            WHEN countIf(reflection_created_at >= now() - interval 15 day AND dominant_emotion IN ('joy', 'contentment', 'peace')) < 
+                 countIf(reflection_created_at < now() - interval 15 day AND dominant_emotion IN ('joy', 'contentment', 'peace')) THEN 'declining'
             ELSE 'stable'
-        END as recovery_trend,
+        END as positive_emotion_trend,
         
         CASE 
-            WHEN avg(CASE WHEN reflection_created_at >= now() - interval 15 day THEN emotional_contagion ELSE NULL END) < 
-                 avg(CASE WHEN reflection_created_at < now() - interval 15 day THEN emotional_contagion ELSE NULL END) THEN 'improving'
-            WHEN avg(CASE WHEN reflection_created_at >= now() - interval 15 day THEN emotional_contagion ELSE NULL END) > 
-                 avg(CASE WHEN reflection_created_at < now() - interval 15 day THEN emotional_contagion ELSE NULL END) THEN 'declining'
+            WHEN countIf(reflection_created_at >= now() - interval 15 day AND self_regulation = 'excellent') > 
+                 countIf(reflection_created_at < now() - interval 15 day AND self_regulation = 'excellent') THEN 'improving'
+            WHEN countIf(reflection_created_at >= now() - interval 15 day AND self_regulation = 'excellent') < 
+                 countIf(reflection_created_at < now() - interval 15 day AND self_regulation = 'excellent') THEN 'declining'
             ELSE 'stable'
-        END as contagion_trend,
+        END as regulation_trend,
         
         -- Actionable Insights
         CASE 
-            WHEN avg_recovery_hours > 4 THEN 'needs_recovery_improvement'
-            WHEN emotional_contagion_rate > 70 THEN 'high_contagion_risk'
-            WHEN high_intensity_contagion_rate > 50 THEN 'intensity_management_needed'
-            ELSE 'good_emotional_control'
-        END as primary_improvement_area
+            WHEN countIf(self_regulation = 'poor') > countIf(self_regulation = 'excellent') THEN 'needs_regulation_improvement'
+            WHEN countIf(dominant_emotion IN ('anxiety', 'fear', 'panic')) > countIf(dominant_emotion IN ('joy', 'contentment', 'peace')) THEN 'needs_anxiety_management'
+            WHEN countIf(emotional_reasoning = 'true') > 0 THEN 'needs_cognitive_work'
+            WHEN countIf(attachment_triggered = 'true') > 0 THEN 'needs_attachment_healing'
+            ELSE 'good_emotional_health'
+        END as primary_improvement_area,
+        
+        -- Total interactions for percentage calculations
+        count() as total_interactions
         
     FROM patterns 
     WHERE workspace_id = {{ String(workspace_id) }}

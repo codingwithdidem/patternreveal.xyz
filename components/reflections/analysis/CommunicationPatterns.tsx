@@ -3,10 +3,8 @@ import {
   MessageCircle,
   CheckCircle,
   AlertTriangle,
-  XCircle,
   Users,
   Shield,
-  Target,
   Zap,
 } from "lucide-react";
 import type { Analysis as AnalysisType } from "@/lib/zod/schemas/analysis";
@@ -108,54 +106,58 @@ export default function CommunicationPatterns({
       </div>
 
       {/* Detected Patterns */}
-      {communicationPatterns.detectedPatterns?.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="font-medium text-sm text-gray-700">
-            Detected Communication Patterns
-          </h4>
+      {communicationPatterns.detectedPatterns &&
+        communicationPatterns.detectedPatterns.length > 0 && (
           <div className="space-y-4">
-            {communicationPatterns.detectedPatterns.map((pattern, index) => (
-              <div
-                key={`pattern-${index}-${pattern.pattern.slice(0, 20)}`}
-                className="border rounded-lg p-4 space-y-3"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <MessageCircle className="w-4 h-4 text-blue-600" />
-                    <span className="font-medium capitalize">
-                      {pattern.pattern?.replace(/_/g, " ") || "Unknown pattern"}
-                    </span>
+            <h4 className="font-medium text-sm text-gray-700">
+              Detected Communication Patterns
+            </h4>
+            <div className="space-y-4">
+              {communicationPatterns.detectedPatterns.map((pattern, index) => (
+                <div
+                  key={`pattern-${index}-${
+                    pattern.pattern?.slice(0, 20) || "unknown"
+                  }`}
+                  className="border rounded-lg p-4 space-y-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4 text-blue-600" />
+                      <span className="font-medium capitalize">
+                        {pattern.pattern?.replace(/_/g, " ") ||
+                          "Unknown pattern"}
+                      </span>
+                    </div>
+                    <div className="flex gap-2">
+                      <Badge
+                        className={getSeverityColor(pattern.severity || "mild")}
+                      >
+                        {pattern.severity?.replace(/_/g, " ") || "Unknown"}
+                      </Badge>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Badge
-                      className={getSeverityColor(pattern.severity || "mild")}
-                    >
-                      {pattern.severity?.replace(/_/g, " ") || "Unknown"}
-                    </Badge>
-                  </div>
+
+                  {pattern.quote && (
+                    <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg">
+                      <blockquote className="text-sm italic text-blue-900">
+                        &quot;{pattern.quote}&quot;
+                      </blockquote>
+                    </div>
+                  )}
+
+                  {pattern.impact && (
+                    <div>
+                      <span className="text-xs font-medium text-gray-600">
+                        Impact:
+                      </span>
+                      <p className="text-sm text-gray-800">{pattern.impact}</p>
+                    </div>
+                  )}
                 </div>
-
-                {pattern.quote && (
-                  <div className="bg-blue-50 border-l-4 border-blue-500 p-3 rounded-r-lg">
-                    <blockquote className="text-sm italic text-blue-900">
-                      &quot;{pattern.quote}&quot;
-                    </blockquote>
-                  </div>
-                )}
-
-                {pattern.impact && (
-                  <div>
-                    <span className="text-xs font-medium text-gray-600">
-                      Impact:
-                    </span>
-                    <p className="text-sm text-gray-800">{pattern.impact}</p>
-                  </div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Communication Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -256,66 +258,71 @@ export default function CommunicationPatterns({
 
       {/* Needs Analysis */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {communicationPatterns.expressedNeeds?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-              <CheckCircle className="w-4 h-4 text-green-600" />
-              Expressed Needs
-            </h4>
-            <div className="space-y-2">
-              {communicationPatterns.expressedNeeds.map((need, index) => (
-                <div
-                  key={`expressed-need-${index}-${need.slice(0, 20)}`}
-                  className="flex gap-2"
-                >
-                  <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">{need}</span>
-                </div>
-              ))}
+        {communicationPatterns.expressedNeeds &&
+          communicationPatterns.expressedNeeds.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-green-600" />
+                Expressed Needs
+              </h4>
+              <div className="space-y-2">
+                {communicationPatterns.expressedNeeds.map((need, index) => (
+                  <div
+                    key={`expressed-need-${index}-${need.slice(0, 20)}`}
+                    className="flex gap-2"
+                  >
+                    <CheckCircle className="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{need}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {communicationPatterns.unmetNeeds?.length > 0 && (
-          <div className="space-y-3">
-            <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-orange-600" />
-              Unmet Needs
-            </h4>
-            <div className="space-y-2">
-              {communicationPatterns.unmetNeeds.map((need, index) => (
-                <div
-                  key={`unmet-need-${index}-${need.slice(0, 20)}`}
-                  className="flex gap-2"
-                >
-                  <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                  <span className="text-sm">{need}</span>
-                </div>
-              ))}
+        {communicationPatterns.unmetNeeds &&
+          communicationPatterns.unmetNeeds.length > 0 && (
+            <div className="space-y-3">
+              <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-orange-600" />
+                Unmet Needs
+              </h4>
+              <div className="space-y-2">
+                {communicationPatterns.unmetNeeds.map((need, index) => (
+                  <div
+                    key={`unmet-need-${index}-${need.slice(0, 20)}`}
+                    className="flex gap-2"
+                  >
+                    <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                    <span className="text-sm">{need}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
       </div>
 
       {/* Escalation Triggers */}
-      {communicationPatterns.escalationTriggers?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-            <Zap className="w-4 h-4 text-red-600" />
-            Escalation Triggers
-          </h4>
-          <div className="flex flex-wrap gap-2">
-            {communicationPatterns.escalationTriggers.map((trigger, index) => (
-              <Badge
-                key={`trigger-${index}-${trigger.slice(0, 10)}`}
-                variant="destructive"
-              >
-                {trigger}
-              </Badge>
-            ))}
+      {communicationPatterns.escalationTriggers &&
+        communicationPatterns.escalationTriggers.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+              <Zap className="w-4 h-4 text-red-600" />
+              Escalation Triggers
+            </h4>
+            <div className="flex flex-wrap gap-2">
+              {communicationPatterns.escalationTriggers.map(
+                (trigger, index) => (
+                  <Badge
+                    key={`trigger-${index}-${trigger.slice(0, 10)}`}
+                    variant="destructive"
+                  >
+                    {trigger}
+                  </Badge>
+                )
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

@@ -1,19 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import {
-  Target,
   Zap,
   Star,
-  Lightbulb,
   AlertTriangle,
-  Heart,
   MessageCircle,
   Brain,
-  Users,
-  Calendar,
   BookOpen,
-  Phone,
-  Clock,
-  CheckCircle,
 } from "lucide-react";
 import type { Analysis as AnalysisType } from "@/lib/zod/schemas/analysis";
 
@@ -74,14 +66,14 @@ export default function ActionableInsights({
   return (
     <div className="space-y-6">
       {/* Immediate Actions */}
-      {insights?.immediateActions?.length > 0 && (
+      {insights?.immediateActions && insights.immediateActions.length > 0 && (
         <div className="space-y-4">
           <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
             <Zap className="w-5 h-5 text-red-600" />
             Immediate Actions
           </h3>
           <div className="space-y-4">
-            {insights.immediateActions.map((action, index) => {
+            {insights.immediateActions.map((action) => {
               // Handle both string and object formats
               const isString = typeof action === "string";
               const actionText = isString
@@ -105,7 +97,10 @@ export default function ActionableInsights({
                   "This action is important for your wellbeing";
 
               return (
-                <div key={index} className="p-4 border rounded-lg space-y-3">
+                <div
+                  key={actionText}
+                  className="p-4 border rounded-lg space-y-3"
+                >
                   <div className="flex items-start justify-between">
                     <h4 className="font-semibold text-gray-900">
                       {actionText}
@@ -147,135 +142,148 @@ export default function ActionableInsights({
       )}
 
       {/* Communication Strategies */}
-      {insights?.communicationStrategies?.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
-            <MessageCircle className="w-5 h-5 text-blue-600" />
-            Communication Strategies
-          </h3>
+      {insights?.communicationStrategies &&
+        insights.communicationStrategies.length > 0 && (
           <div className="space-y-4">
-            {insights.communicationStrategies.map((strategy, index) => (
-              <div key={index} className="p-4 border rounded-lg space-y-3">
-                <h4 className="font-semibold text-gray-900">
-                  {strategy.strategy}
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+              <MessageCircle className="w-5 h-5 text-blue-600" />
+              Communication Strategies
+            </h3>
+            <div className="space-y-4">
+              {insights.communicationStrategies.map((strategy) => (
+                <div
+                  key={strategy.strategy}
+                  className="p-4 border rounded-lg space-y-3"
+                >
+                  <h4 className="font-semibold text-gray-900">
+                    {strategy.strategy}
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        When to Use:
+                      </span>
+                      <p className="text-gray-600">{strategy.whenToUse}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Expected Result:
+                      </span>
+                      <p className="text-gray-600">{strategy.expectedResult}</p>
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-700">
+                      How to Implement:
+                    </span>
+                    <p className="text-gray-600">{strategy.howToImplement}</p>
+                  </div>
+                  {strategy.examplePhrases &&
+                    strategy.examplePhrases.length > 0 && (
+                      <div>
+                        <span className="font-medium text-gray-700">
+                          Example Phrases:
+                        </span>
+                        <ul className="list-disc list-inside text-gray-600 space-y-1">
+                          {strategy.examplePhrases.map((phrase) => (
+                            <li key={phrase}>"{phrase}"</li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  {strategy.whatToAvoid && strategy.whatToAvoid.length > 0 && (
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        What to Avoid:
+                      </span>
+                      <ul className="list-disc list-inside text-gray-600 space-y-1">
+                        {strategy.whatToAvoid.map((avoid) => (
+                          <li key={avoid}>{avoid}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+      {/* Emotional Regulation Techniques */}
+      {insights?.emotionalRegulationTechniques &&
+        insights.emotionalRegulationTechniques.length > 0 && (
+          <div className="space-y-4">
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+              <Brain className="w-5 h-5 text-purple-600" />
+              Emotional Regulation Techniques
+            </h3>
+            <div className="space-y-4">
+              {insights.emotionalRegulationTechniques.map((technique) => (
+                <div
+                  key={technique.technique}
+                  className="p-4 border rounded-lg space-y-3"
+                >
+                  <div className="flex items-start justify-between">
+                    <h4 className="font-semibold text-gray-900">
+                      {technique.technique}
+                    </h4>
+                    <Badge
+                      className={
+                        technique.effectiveness === "high"
+                          ? "bg-green-100 text-green-800"
+                          : technique.effectiveness === "moderate"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-red-100 text-red-800"
+                      }
+                    >
+                      {technique.effectiveness} effectiveness
+                    </Badge>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Trigger:
+                      </span>
+                      <p className="text-gray-600">{technique.trigger}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Duration:
+                      </span>
+                      <p className="text-gray-600">{technique.duration}</p>
+                    </div>
+                  </div>
                   <div>
                     <span className="font-medium text-gray-700">
                       When to Use:
                     </span>
-                    <p className="text-gray-600">{strategy.whenToUse}</p>
+                    <p className="text-gray-600">{technique.whenToUse}</p>
                   </div>
-                  <div>
-                    <span className="font-medium text-gray-700">
-                      Expected Result:
-                    </span>
-                    <p className="text-gray-600">{strategy.expectedResult}</p>
-                  </div>
+                  {technique.steps && technique.steps.length > 0 && (
+                    <div>
+                      <span className="font-medium text-gray-700">Steps:</span>
+                      <ol className="list-decimal list-inside text-gray-600 space-y-1">
+                        {technique.steps.map((step) => (
+                          <li key={step}>{step}</li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
                 </div>
-                <div>
-                  <span className="font-medium text-gray-700">
-                    How to Implement:
-                  </span>
-                  <p className="text-gray-600">{strategy.howToImplement}</p>
-                </div>
-                {strategy.examplePhrases?.length > 0 && (
-                  <div>
-                    <span className="font-medium text-gray-700">
-                      Example Phrases:
-                    </span>
-                    <ul className="list-disc list-inside text-gray-600 space-y-1">
-                      {strategy.examplePhrases.map((phrase, phraseIndex) => (
-                        <li key={phraseIndex}>"{phrase}"</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {strategy.whatToAvoid?.length > 0 && (
-                  <div>
-                    <span className="font-medium text-gray-700">
-                      What to Avoid:
-                    </span>
-                    <ul className="list-disc list-inside text-gray-600 space-y-1">
-                      {strategy.whatToAvoid.map((avoid, avoidIndex) => (
-                        <li key={avoidIndex}>{avoid}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
-
-      {/* Emotional Regulation Techniques */}
-      {insights?.emotionalRegulationTechniques?.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
-            <Brain className="w-5 h-5 text-purple-600" />
-            Emotional Regulation Techniques
-          </h3>
-          <div className="space-y-4">
-            {insights.emotionalRegulationTechniques.map((technique, index) => (
-              <div key={index} className="p-4 border rounded-lg space-y-3">
-                <div className="flex items-start justify-between">
-                  <h4 className="font-semibold text-gray-900">
-                    {technique.technique}
-                  </h4>
-                  <Badge
-                    className={
-                      technique.effectiveness === "high"
-                        ? "bg-green-100 text-green-800"
-                        : technique.effectiveness === "moderate"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : "bg-red-100 text-red-800"
-                    }
-                  >
-                    {technique.effectiveness} effectiveness
-                  </Badge>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
-                  <div>
-                    <span className="font-medium text-gray-700">Trigger:</span>
-                    <p className="text-gray-600">{technique.trigger}</p>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">Duration:</span>
-                    <p className="text-gray-600">{technique.duration}</p>
-                  </div>
-                </div>
-                <div>
-                  <span className="font-medium text-gray-700">
-                    When to Use:
-                  </span>
-                  <p className="text-gray-600">{technique.whenToUse}</p>
-                </div>
-                {technique.steps?.length > 0 && (
-                  <div>
-                    <span className="font-medium text-gray-700">Steps:</span>
-                    <ol className="list-decimal list-inside text-gray-600 space-y-1">
-                      {technique.steps.map((step, stepIndex) => (
-                        <li key={stepIndex}>{step}</li>
-                      ))}
-                    </ol>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+        )}
 
       {/* Warning Signs */}
-      {insights?.warningSigns?.length > 0 && (
+      {insights?.warningSigns && insights.warningSigns.length > 0 && (
         <div className="space-y-4">
           <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
             <AlertTriangle className="w-5 h-5 text-orange-600" />
             Warning Signs
           </h3>
           <div className="space-y-4">
-            {insights.warningSigns.map((sign, index) => {
+            {insights.warningSigns.map((sign) => {
               // Handle both string and object formats
               const isString = typeof sign === "string";
               const signText = isString ? sign : sign.sign || String(sign);
@@ -294,7 +302,7 @@ export default function ActionableInsights({
                 : sign.support || "Seek support if needed";
 
               return (
-                <div key={index} className="p-4 border rounded-lg space-y-3">
+                <div key={signText} className="p-4 border rounded-lg space-y-3">
                   <div className="flex items-start justify-between">
                     <h4 className="font-semibold text-gray-900">{signText}</h4>
                     <Badge className={getSeverityColor(severity)}>
@@ -331,72 +339,81 @@ export default function ActionableInsights({
       )}
 
       {/* Resource Recommendations */}
-      {insights?.resourceRecommendations?.length > 0 && (
-        <div className="space-y-4">
-          <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
-            <BookOpen className="w-5 h-5 text-indigo-600" />
-            Resource Recommendations
-          </h3>
+      {insights?.resourceRecommendations &&
+        insights.resourceRecommendations.length > 0 && (
           <div className="space-y-4">
-            {insights.resourceRecommendations.map((resource, index) => (
-              <div key={index} className="p-4 border rounded-lg space-y-3">
-                <div className="flex items-start justify-between">
-                  <h4 className="font-semibold text-gray-900">
-                    {resource.resource}
-                  </h4>
-                  <div className="flex gap-2">
-                    <Badge variant="outline">{resource.type}</Badge>
-                    <Badge
-                      className={
-                        resource.effectiveness === "high"
-                          ? "bg-green-100 text-green-800"
-                          : resource.effectiveness === "moderate"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-red-100 text-red-800"
-                      }
-                    >
-                      {resource.effectiveness}
-                    </Badge>
+            <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
+              <BookOpen className="w-5 h-5 text-indigo-600" />
+              Resource Recommendations
+            </h3>
+            <div className="space-y-4">
+              {insights.resourceRecommendations.map((resource) => (
+                <div
+                  key={resource.resource}
+                  className="p-4 border rounded-lg space-y-3"
+                >
+                  <div className="flex items-start justify-between">
+                    <h4 className="font-semibold text-gray-900">
+                      {resource.resource}
+                    </h4>
+                    <div className="flex gap-2">
+                      <Badge variant="outline">{resource.type}</Badge>
+                      <Badge
+                        className={
+                          resource.effectiveness === "high"
+                            ? "bg-green-100 text-green-800"
+                            : resource.effectiveness === "moderate"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-red-100 text-red-800"
+                        }
+                      >
+                        {resource.effectiveness}
+                      </Badge>
+                    </div>
                   </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                    <div>
+                      <span className="font-medium text-gray-700">
+                        Purpose:
+                      </span>
+                      <p className="text-gray-600">{resource.purpose}</p>
+                    </div>
+                    <div>
+                      <span className="font-medium text-gray-700">Cost:</span>
+                      <p className="text-gray-600">{resource.cost}</p>
+                    </div>
+                  </div>
                   <div>
-                    <span className="font-medium text-gray-700">Purpose:</span>
-                    <p className="text-gray-600">{resource.purpose}</p>
+                    <span className="font-medium text-gray-700">
+                      Description:
+                    </span>
+                    <p className="text-gray-600">{resource.description}</p>
                   </div>
                   <div>
-                    <span className="font-medium text-gray-700">Cost:</span>
-                    <p className="text-gray-600">{resource.cost}</p>
+                    <span className="font-medium text-gray-700">
+                      Accessibility:
+                    </span>
+                    <p className="text-gray-600">{resource.accessibility}</p>
                   </div>
                 </div>
-                <div>
-                  <span className="font-medium text-gray-700">
-                    Description:
-                  </span>
-                  <p className="text-gray-600">{resource.description}</p>
-                </div>
-                <div>
-                  <span className="font-medium text-gray-700">
-                    Accessibility:
-                  </span>
-                  <p className="text-gray-600">{resource.accessibility}</p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Long-term Vision */}
-      {insights?.longTermVision?.length > 0 && (
+      {insights?.longTermVision && insights.longTermVision.length > 0 && (
         <div className="space-y-4">
           <h3 className="flex items-center gap-2 text-lg font-semibold text-gray-900">
             <Star className="w-5 h-5 text-blue-600" />
             Long-term Vision
           </h3>
           <div className="space-y-4">
-            {insights.longTermVision.map((vision, index) => (
-              <div key={index} className="p-4 border rounded-lg space-y-3">
+            {insights.longTermVision.map((vision) => (
+              <div
+                key={vision.goal}
+                className="p-4 border rounded-lg space-y-3"
+              >
                 <div className="flex items-start justify-between">
                   <h4 className="font-semibold text-gray-900">{vision.goal}</h4>
                   <Badge variant="outline">{vision.timeframe}</Badge>
@@ -418,8 +435,8 @@ export default function ActionableInsights({
                 <div>
                   <span className="font-medium text-gray-700">Steps:</span>
                   <ol className="list-decimal list-inside text-gray-600 space-y-1">
-                    {vision.steps.map((step, stepIndex) => (
-                      <li key={stepIndex}>{step}</li>
+                    {vision.steps?.map((step) => (
+                      <li key={step}>{step}</li>
                     ))}
                   </ol>
                 </div>
@@ -429,8 +446,8 @@ export default function ActionableInsights({
                       Obstacles:
                     </span>
                     <ul className="list-disc list-inside text-gray-600 space-y-1">
-                      {vision.obstacles.map((obstacle, obstacleIndex) => (
-                        <li key={obstacleIndex}>{obstacle}</li>
+                      {vision.obstacles?.map((obstacle) => (
+                        <li key={obstacle}>{obstacle}</li>
                       ))}
                     </ul>
                   </div>

@@ -68,63 +68,64 @@ export default function CognitivePatterns({
       </div>
 
       {/* Thinking Traps */}
-      {cognitivePatterns.thinkingTraps?.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-orange-600" />
-            Thinking Traps Identified
-          </h4>
+      {cognitivePatterns.thinkingTraps &&
+        cognitivePatterns.thinkingTraps.length > 0 && (
           <div className="space-y-4">
-            {cognitivePatterns.thinkingTraps.map((trap, index) => (
-              <div
-                key={`trap-${index}-${trap.trap.slice(0, 20)}`}
-                className="border rounded-lg p-4 space-y-3"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="w-4 h-4 text-orange-600" />
-                    <span className="font-medium capitalize">
-                      {trap.trap?.replace(/_/g, " ") || "Unknown trap"}
-                    </span>
-                  </div>
-                  <Badge className={getTrapColor(trap.trap || "unknown")}>
-                    {trap.trap?.replace(/_/g, " ") || "Unknown"}
-                  </Badge>
-                </div>
-
-                {trap.quote && (
-                  <div className="bg-orange-50 border-l-4 border-orange-500 p-3 rounded-r-lg">
-                    <blockquote className="text-sm italic text-orange-900">
-                      &quot;{trap.quote}&quot;
-                    </blockquote>
-                  </div>
-                )}
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {trap.explanation && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Explanation:
+            <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-orange-600" />
+              Thinking Traps Identified
+            </h4>
+            <div className="space-y-4">
+              {cognitivePatterns.thinkingTraps.map((trap, index) => (
+                <div
+                  key={`trap-${index}-${trap.trap?.slice(0, 20) || "unknown"}`}
+                  className="border rounded-lg p-4 space-y-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="w-4 h-4 text-orange-600" />
+                      <span className="font-medium capitalize">
+                        {trap.trap?.replace(/_/g, " ") || "Unknown trap"}
                       </span>
-                      <p className="text-sm text-gray-800">
-                        {trap.explanation}
-                      </p>
+                    </div>
+                    <Badge className={getTrapColor(trap.trap || "unknown")}>
+                      {trap.trap?.replace(/_/g, " ") || "Unknown"}
+                    </Badge>
+                  </div>
+
+                  {trap.quote && (
+                    <div className="bg-orange-50 border-l-4 border-orange-500 p-3 rounded-r-lg">
+                      <blockquote className="text-sm italic text-orange-900">
+                        &quot;{trap.quote}&quot;
+                      </blockquote>
                     </div>
                   )}
-                  {trap.impact && (
-                    <div>
-                      <span className="text-xs font-medium text-gray-600">
-                        Impact:
-                      </span>
-                      <p className="text-sm text-gray-800">{trap.impact}</p>
-                    </div>
-                  )}
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {trap.explanation && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Explanation:
+                        </span>
+                        <p className="text-sm text-gray-800">
+                          {trap.explanation}
+                        </p>
+                      </div>
+                    )}
+                    {trap.impact && (
+                      <div>
+                        <span className="text-xs font-medium text-gray-600">
+                          Impact:
+                        </span>
+                        <p className="text-sm text-gray-800">{trap.impact}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
       {/* Cognitive Assessment */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -157,24 +158,25 @@ export default function CognitivePatterns({
       </div>
 
       {/* Assumptions Made */}
-      {cognitivePatterns.assumptionsMade?.length > 0 && (
-        <div className="space-y-3">
-          <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
-            <User className="w-4 h-4 text-blue-600" />
-            Assumptions Made
-          </h4>
-          <div className="space-y-2">
-            {cognitivePatterns.assumptionsMade.map((assumption, index) => (
-              <div
-                key={`assumption-${index}-${assumption.slice(0, 20)}`}
-                className="bg-yellow-50 border-l-4 border-yellow-500 p-3 rounded-r-lg"
-              >
-                <p className="text-sm text-yellow-900">{assumption}</p>
-              </div>
-            ))}
+      {cognitivePatterns.assumptionsMade &&
+        cognitivePatterns.assumptionsMade.length > 0 && (
+          <div className="space-y-3">
+            <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
+              <User className="w-4 h-4 text-blue-600" />
+              Assumptions Made
+            </h4>
+            <div className="space-y-2">
+              {cognitivePatterns.assumptionsMade.map((assumption, index) => (
+                <div
+                  key={`assumption-${index}-${assumption.slice(0, 20)}`}
+                  className="bg-yellow-50 border-l-4 border-yellow-500 p-3 rounded-r-lg"
+                >
+                  <p className="text-sm text-yellow-900">{assumption}</p>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

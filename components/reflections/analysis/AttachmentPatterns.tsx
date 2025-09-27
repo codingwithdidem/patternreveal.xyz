@@ -1,5 +1,5 @@
 import { Badge } from "@/components/ui/badge";
-import { Heart, MessageCircle, User, Users } from "lucide-react";
+import { Heart, User, Users } from "lucide-react";
 import type { Analysis as AnalysisType } from "@/lib/zod/schemas/analysis";
 
 interface AttachmentPatternsProps {
@@ -82,7 +82,7 @@ export default function AttachmentPatterns({
           </h4>
           <Badge
             className={`capitalize ${getAttachmentStyleColor(
-              attachmentPatterns.yourAttachmentStyle
+              attachmentPatterns.yourAttachmentStyle || "unknown"
             )}`}
           >
             {attachmentPatterns.yourAttachmentStyle?.replace(/_/g, " ") ||
@@ -96,7 +96,7 @@ export default function AttachmentPatterns({
           </h4>
           <Badge
             className={`capitalize ${getAttachmentStyleColor(
-              attachmentPatterns.theirAttachmentStyle
+              attachmentPatterns.theirAttachmentStyle || "unknown"
             )}`}
           >
             {attachmentPatterns.theirAttachmentStyle?.replace(/_/g, " ") ||
@@ -125,59 +125,61 @@ export default function AttachmentPatterns({
       </div>
 
       {/* Detected Patterns */}
-      {attachmentPatterns.detectedPatterns?.length > 0 && (
-        <div className="space-y-4">
-          <h4 className="font-medium text-sm text-gray-700">
-            Detected Attachment Patterns
-          </h4>
+      {attachmentPatterns.detectedPatterns &&
+        attachmentPatterns.detectedPatterns.length > 0 && (
           <div className="space-y-4">
-            {attachmentPatterns.detectedPatterns.map((pattern, index) => (
-              <div
-                key={`pattern-${index}-${
-                  pattern.pattern?.slice(0, 20) || "unknown"
-                }`}
-                className="border rounded-lg p-4 bg-gray-50"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="capitalize">
-                      {pattern.pattern?.replace(/_/g, " ") || "Unknown pattern"}
-                    </Badge>
-                    <Badge
-                      className={getSeverityColor(pattern.severity || "mild")}
-                    >
-                      {pattern.severity || "mild"}
-                    </Badge>
+            <h4 className="font-medium text-sm text-gray-700">
+              Detected Attachment Patterns
+            </h4>
+            <div className="space-y-4">
+              {attachmentPatterns.detectedPatterns.map((pattern, index) => (
+                <div
+                  key={`pattern-${index}-${
+                    pattern.pattern?.slice(0, 20) || "unknown"
+                  }`}
+                  className="border rounded-lg p-4 bg-gray-50"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="capitalize">
+                        {pattern.pattern?.replace(/_/g, " ") ||
+                          "Unknown pattern"}
+                      </Badge>
+                      <Badge
+                        className={getSeverityColor(pattern.severity || "mild")}
+                      >
+                        {pattern.severity || "mild"}
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-1 text-sm text-gray-600">
+                      {getWhoExhibitedIcon(pattern.who_exhibited || "you")}
+                      <span className="capitalize">
+                        {pattern.who_exhibited || "you"}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-1 text-sm text-gray-600">
-                    {getWhoExhibitedIcon(pattern.who_exhibited || "you")}
-                    <span className="capitalize">
-                      {pattern.who_exhibited || "you"}
-                    </span>
-                  </div>
+
+                  {pattern.quote && (
+                    <div className="mb-3">
+                      <blockquote className="text-sm italic text-gray-700 bg-white p-3 rounded border-l-4 border-pink-500">
+                        &quot;{pattern.quote}&quot;
+                      </blockquote>
+                    </div>
+                  )}
+
+                  {pattern.impact && (
+                    <div>
+                      <h5 className="font-medium text-sm text-gray-600 mb-1">
+                        Impact:
+                      </h5>
+                      <p className="text-sm text-gray-700">{pattern.impact}</p>
+                    </div>
+                  )}
                 </div>
-
-                {pattern.quote && (
-                  <div className="mb-3">
-                    <blockquote className="text-sm italic text-gray-700 bg-white p-3 rounded border-l-4 border-pink-500">
-                      &quot;{pattern.quote}&quot;
-                    </blockquote>
-                  </div>
-                )}
-
-                {pattern.impact && (
-                  <div>
-                    <h5 className="font-medium text-sm text-gray-600 mb-1">
-                      Impact:
-                    </h5>
-                    <p className="text-sm text-gray-700">{pattern.impact}</p>
-                  </div>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

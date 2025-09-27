@@ -9,40 +9,51 @@ export const patternAnalyticsSchema = z.object({
   workspace_id: z.string(),
   reflection_id: z.string(),
 
-  // Emotional patterns
+  // Emotional patterns (only fields that exist in Analysis schema)
   dominant_emotion: z.string(),
-  emotional_intensity: z.number(),
   emotional_triggers: z.array(z.string()),
-  emotional_recovery_time: z.string(),
-  emotional_contagion: z.boolean(),
   self_regulation: z.string(),
 
-  // Communication patterns
+  // Communication patterns (only fields that exist in Analysis schema)
   communication_style: z.string(),
   conflict_resolution_style: z.string(),
   listening_effectiveness: z.string(),
   boundaries_maintained: z.boolean(),
   resolution_achieved: z.boolean(),
 
-  // Relationship dynamics
-  power_dynamics_initiator: z.string(),
-  power_dynamics_controller: z.string(),
-  decision_making_style: z.string(),
+  // Relationship dynamics (only fields that exist in Analysis schema)
   intimacy_level: z.string(),
   trust_level: z.string(),
   effort_balance: z.string(),
+  relationship_health: z.string(),
+  relationship_satisfaction: z.union([z.number(), z.string()]),
+  relationship_stability: z.string(),
 
-  // Context factors
-  interaction_type: z.string(),
-  duration: z.string(),
-  environment: z.string(),
-  energy_level_yours: z.string(),
-  energy_level_theirs: z.string(),
-  time_of_day: z.string(),
-  day_of_week: z.string(),
+  // Behavioral patterns
+  behavioral_patterns_count: z.union([z.number(), z.string()]),
+  behavioral_patterns_severity: z.string(),
+
+  // Attachment patterns
+  your_attachment_style: z.string(),
+  their_attachment_style: z.string(),
+  attachment_triggered: z.union([z.boolean(), z.string()]),
+
+  // Trauma responses
+  your_primary_trauma_response: z.string(),
+  their_primary_trauma_response: z.string(),
+  trauma_triggers_count: z.union([z.number(), z.string()]),
+
+  // Cognitive patterns
+  thinking_traps_count: z.string(),
+  emotional_reasoning: z.string(),
+
+  // Abuse detection
+  is_abusive: z.string(),
+  is_at_immediate_risk: z.string(),
+  abusive_behaviors_count: z.string(),
 
   // Analysis metadata
-  health_score: z.number(),
+  health_score: z.string(),
   confidence_level: z.string(),
   analysis_duration_ms: z.number(),
   ai_model_used: z.string(),
@@ -119,46 +130,81 @@ export const record_pattern_analytics = async (payload: {
       reflection_id: reflectionId,
 
       // Emotional patterns
-      dominant_emotion: analysis.emotionalPatterns.dominantEmotion,
-      emotional_intensity: analysis.emotionalPatterns.emotionalIntensity,
-      emotional_triggers: analysis.emotionalPatterns.emotionalTriggers,
-      emotional_recovery_time: analysis.emotionalPatterns.emotionalRecoveryTime,
-      emotional_contagion: analysis.emotionalPatterns.emotionalContagion,
-      self_regulation: analysis.emotionalPatterns.selfRegulation,
+      dominant_emotion:
+        analysis?.emotionalPatterns?.dominantEmotion || "unknown",
+      emotional_triggers: analysis?.emotionalPatterns?.emotionalTriggers || [],
+      self_regulation:
+        analysis?.emotionalPatterns?.emotionalRegulation || "unknown",
 
       // Communication patterns
-      communication_style: analysis.communicationPatterns.communicationStyle,
+      communication_style:
+        analysis?.communicationPatterns?.overallCommunicationStyle || "unknown",
       conflict_resolution_style:
-        analysis.communicationPatterns.conflictResolutionStyle,
+        analysis?.communicationPatterns?.conflictResolutionStyle || "unknown",
       listening_effectiveness:
-        analysis.communicationPatterns.listeningEffectiveness,
+        analysis?.communicationPatterns?.listeningEffectiveness || "unknown",
       boundaries_maintained:
-        analysis.communicationPatterns.boundariesMaintained,
-      resolution_achieved: analysis.communicationPatterns.resolutionAchieved,
+        analysis?.communicationPatterns?.boundariesMaintained || false,
+      resolution_achieved:
+        analysis?.communicationPatterns?.resolutionAchieved || false,
 
       // Relationship dynamics
-      power_dynamics_initiator:
-        analysis.relationshipDynamics.powerDynamics.whoInitiated,
-      power_dynamics_controller:
-        analysis.relationshipDynamics.powerDynamics.whoControlled,
-      decision_making_style:
-        analysis.relationshipDynamics.powerDynamics.decisionMaking,
-      intimacy_level: analysis.relationshipDynamics.intimacyLevel,
-      trust_level: analysis.relationshipDynamics.trustLevel,
-      effort_balance: analysis.relationshipDynamics.effortBalance,
+      intimacy_level:
+        analysis?.relationshipDynamics?.intimacyLevel || "unknown",
+      trust_level: analysis?.relationshipDynamics?.trustLevel || "unknown",
+      effort_balance:
+        analysis?.relationshipDynamics?.effortBalance || "unknown",
+      relationship_health:
+        analysis?.relationshipDynamics?.relationshipHealth || "unknown",
+      relationship_satisfaction:
+        analysis?.relationshipDynamics?.relationshipSatisfaction || 0,
+      relationship_stability:
+        analysis?.relationshipDynamics?.relationshipStability || "unknown",
 
-      // Context factors
-      interaction_type: analysis.contextFactors.interactionType,
-      duration: analysis.contextFactors.duration,
-      environment: analysis.contextFactors.environment,
-      energy_level_yours: analysis.contextFactors.energyLevels.yours,
-      energy_level_theirs: analysis.contextFactors.energyLevels.theirs,
-      time_of_day: analysis.contextFactors.timeContext.timeOfDay,
-      day_of_week: analysis.contextFactors.timeContext.dayOfWeek,
+      // Behavioral patterns
+      behavioral_patterns_count:
+        analysis?.behaviorPatterns?.detectedPatterns?.length || 0,
+      behavioral_patterns_severity:
+        analysis?.behaviorPatterns?.detectedPatterns?.find((p) => p.severity)
+          ?.severity || "unknown",
+
+      // Attachment patterns
+      your_attachment_style:
+        analysis?.attachmentPatterns?.yourAttachmentStyle || "unknown",
+      their_attachment_style:
+        analysis?.attachmentPatterns?.theirAttachmentStyle || "unknown",
+      attachment_triggered:
+        analysis?.attachmentPatterns?.attachmentTriggered || false,
+
+      // Trauma responses
+      your_primary_trauma_response:
+        analysis?.traumaResponses?.yourPrimaryResponse || "unknown",
+      their_primary_trauma_response:
+        analysis?.traumaResponses?.theirPrimaryResponse || "unknown",
+      trauma_triggers_count:
+        analysis?.traumaResponses?.traumaTriggers?.length || 0,
+
+      // Cognitive patterns
+      thinking_traps_count:
+        analysis?.cognitivePatterns?.thinkingTraps?.length?.toString() ||
+        "unknown",
+      emotional_reasoning:
+        analysis?.cognitivePatterns?.emotionalReasoning?.toString() ||
+        "unknown",
+
+      // Abuse detection
+      is_abusive: analysis?.abuseDetection?.isAbusive?.toString() || "unknown",
+      is_at_immediate_risk:
+        analysis?.abuseDetection?.isAtImmediateRisk?.toString() || "unknown",
+      abusive_behaviors_count:
+        analysis?.abuseDetection?.detectedAbusiveBehaviors?.length?.toString() ||
+        "unknown",
 
       // Analysis metadata
-      health_score: analysis.overallAssessment.healthScore,
-      confidence_level: analysis.overallAssessment.confidenceLevel,
+      health_score:
+        analysis?.overallAssessment?.healthScore?.toString() || "unknown",
+      confidence_level:
+        analysis?.overallAssessment?.confidenceLevel || "unknown",
       analysis_duration_ms: analysisDurationMs,
       ai_model_used: aiModelUsed,
 

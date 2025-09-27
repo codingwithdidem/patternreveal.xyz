@@ -208,21 +208,6 @@ export default function ReflectionEditorClientPage() {
       }
     }
 
-    // Collect quotes from context factors
-    if (analysisReport.contextFactors?.detectedPatterns) {
-      for (const pattern of analysisReport.contextFactors.detectedPatterns) {
-        if (pattern?.quote) {
-          evidence.push({
-            quote: pattern.quote,
-            analysis: pattern.impact,
-            pattern: pattern.pattern,
-            severity: pattern.severity,
-            who_exhibited: pattern.who_affected,
-          });
-        }
-      }
-    }
-
     // Collect quotes from attachment patterns
     if (analysisReport.attachmentPatterns?.detectedPatterns) {
       for (const pattern of analysisReport.attachmentPatterns
