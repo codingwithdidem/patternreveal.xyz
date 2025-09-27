@@ -1568,29 +1568,24 @@ export const actionableInsightsSchema = z.object({
   // Long-term vision and goals
   longTermVision: z
     .array(
-      z
-        .object({
-          timeframe: z.string().describe("Timeframe for this goal").optional(),
-          goal: z.string().describe("Long-term goal").optional(),
-          currentReality: z.string().describe("Current state").optional(),
-          desiredOutcome: z
-            .string()
-            .describe("Desired future state")
-            .optional(),
-          steps: z
-            .array(z.string())
-            .describe("Steps to achieve this goal")
-            .optional(),
-          obstacles: z
-            .array(z.string())
-            .describe("Potential obstacles")
-            .optional(),
-          support: z
-            .string()
-            .describe("Support needed to achieve this goal")
-            .optional(),
-        })
-        .optional()
+      z.object({
+        timeframe: z.string().describe("Timeframe for this goal").optional(),
+        goal: z.string().describe("Long-term goal").optional(),
+        currentReality: z.string().describe("Current state").optional(),
+        desiredOutcome: z.string().describe("Desired future state").optional(),
+        steps: z
+          .array(z.string())
+          .describe("Steps to achieve this goal")
+          .optional(),
+        obstacles: z
+          .array(z.string())
+          .describe("Potential obstacles")
+          .optional(),
+        support: z
+          .string()
+          .describe("Support needed to achieve this goal")
+          .optional(),
+      })
     )
     .describe("Long-term vision and goals for the relationship")
     .optional(),
