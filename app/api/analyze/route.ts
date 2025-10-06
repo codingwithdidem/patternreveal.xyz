@@ -140,6 +140,7 @@ export const POST = withWorkspace(
 
       // Record pattern analytics for insights
       if (session?.user?.id) {
+        console.log("Recording pattern analytics...");
         // Record analytics asynchronously without blocking the response
         await record_pattern_analytics({
           userId: session.user.id,
