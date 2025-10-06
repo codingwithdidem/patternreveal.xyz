@@ -1543,6 +1543,7 @@ export const actionableInsightsSchema = z.object({
             "therapy",
             "workshop",
             "community",
+            "helpline",
           ])
           .describe("Type of resource")
           .optional(),
