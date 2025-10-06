@@ -221,6 +221,12 @@ Example 3 - Emotional Dependency:
 - End Index: 150
 
 RELATIONSHIP DYNAMICS PATTERN DETECTION:
+IMPORTANT: Relationship dynamics are about POWER, COMMUNICATION, INTIMACY, TRUST, SUPPORT, and GROWTH patterns between people.
+- Do NOT put emotional patterns (like "emotional_suppression", "emotional_manipulation") in relationship dynamics
+- Do NOT put communication styles (like "gaslighting", "silent_treatment") in relationship dynamics
+- Do NOT put behavioral patterns (like "procrastination", "avoidance") in relationship dynamics
+- Relationship dynamics are INTERACTION PATTERNS like "power_imbalance", "communication_avoidance", "trust_erosion"
+
 Look for these specific relationship dynamics patterns in the reflection text:
 
 POWER DYNAMICS PATTERNS:
@@ -667,6 +673,12 @@ For each communication pattern detected, provide:
 4. severity: mild, moderate, or severe based on the impact and frequency
 
 BEHAVIORAL PATTERN DETECTION:
+IMPORTANT: Behavioral patterns are ACTIONS and BEHAVIORS, not emotional states or communication styles.
+- Do NOT put emotional patterns (like "emotional_suppression", "emotional_manipulation") in behavioral patterns
+- Do NOT put communication patterns (like "gaslighting", "silent_treatment") in behavioral patterns  
+- Do NOT put relationship dynamics (like "power_imbalance", "emotional_manipulation") in behavioral patterns
+- Behavioral patterns are SPECIFIC BEHAVIORS like procrastination, substance abuse, avoidance of responsibilities
+
 Look for these specific behavioral patterns in the reflection text (based on Healthy Mind Coaching's comprehensive list):
 - procrastination: "I'll do it later", "I keep putting it off"
 - compulsive_behaviors: "I have to check multiple times", "I can't stop doing this"
