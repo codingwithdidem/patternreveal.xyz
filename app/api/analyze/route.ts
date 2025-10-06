@@ -141,17 +141,15 @@ export const POST = withWorkspace(
       // Record pattern analytics for insights
       if (session?.user?.id) {
         // Record analytics asynchronously without blocking the response
-        record_pattern_analytics({
+        await record_pattern_analytics({
           userId: session.user.id,
           workspaceId: workspace.id,
           reflectionId: reflectionId,
           analysis: object as Analysis,
           analysisDurationMs,
-          aiModelUsed: "gpt-4-turbo",
+          aiModelUsed: "gpt-4o",
           userPlan: workspace.plan,
           reflectionCreatedAt: reflection.createdAt.toISOString(),
-        }).catch((error) => {
-          console.error("Failed to record pattern analytics:", error);
         });
       }
 
