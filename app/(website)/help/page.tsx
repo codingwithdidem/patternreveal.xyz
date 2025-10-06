@@ -112,12 +112,12 @@ const helpContent = [
       {
         question: "What's included in the free plan?",
         answer:
-          "The free plan includes: 2 AI analyses per month, 10 reflections per month, basic pattern analysis, 1 user, and 30-day data retention.",
+          "The free plan includes: 2 AI analyses per month, 10 reflections per month, 1 user, and 30-day data retention.",
       },
       {
         question: "How do I upgrade to Pro?",
         answer:
-          "You can upgrade anytime from your account settings. Pro includes 8 AI analyses per month, 15 AI questions per month, 1,000 reflections per month, advanced relationship insights, 5 users, 1-year data retention, and priority support.",
+          "You can upgrade anytime from your account settings. Pro includes 30 AI analyses per month, 15 AI questions per month, 1,000 reflections per month, advanced relationship insights, analytics insights, 5 users, 1-year data retention, and priority support.",
       },
       {
         question: "Can I cancel my subscription?",

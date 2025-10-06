@@ -40,8 +40,8 @@ SQL >
         countIf(your_primary_trauma_response = 'fawn' AND dominant_emotion IN ('guilt', 'shame', 'hurt')) as fawn_response_guilt_count,
         
         -- Cognitive Emotional Patterns
-        countIf(emotional_reasoning = 'true' AND dominant_emotion IN ('anger', 'frustration', 'resentment')) as emotional_reasoning_negative_count,
-        countIf(thinking_traps_count != '0' AND thinking_traps_count != 'unknown' AND dominant_emotion IN ('anxiety', 'fear', 'overwhelm')) as cognitive_distortions_anxiety_count,
+        countIf(emotional_reasoning = true AND dominant_emotion IN ('anger', 'frustration', 'resentment')) as emotional_reasoning_negative_count,
+        countIf(length(thinking_traps) > 0 AND dominant_emotion IN ('anxiety', 'fear', 'overwhelm')) as cognitive_distortions_anxiety_count,
         
         -- Communication Style Emotional Impact
         countIf(communication_style = 'assertive' AND dominant_emotion IN ('confidence', 'satisfaction', 'peace')) as assertive_positive_emotions_count,
@@ -77,15 +77,15 @@ SQL >
         CASE 
             WHEN countIf(self_regulation = 'poor') > countIf(self_regulation = 'excellent') THEN 'needs_regulation_improvement'
             WHEN countIf(dominant_emotion IN ('anxiety', 'fear', 'panic')) > countIf(dominant_emotion IN ('joy', 'contentment', 'peace')) THEN 'needs_anxiety_management'
-            WHEN countIf(emotional_reasoning = 'true') > 0 THEN 'needs_cognitive_work'
-            WHEN countIf(attachment_triggered = 'true') > 0 THEN 'needs_attachment_healing'
+            WHEN countIf(emotional_reasoning = true) > 0 THEN 'needs_cognitive_work'
+            WHEN countIf(attachment_triggered = true) > 0 THEN 'needs_attachment_healing'
             ELSE 'good_emotional_health'
         END as primary_improvement_area,
         
         -- Total interactions for percentage calculations
         count() as total_interactions
         
-    FROM patterns 
+    FROM patterns_v2 
     WHERE workspace_id = {{ String(workspace_id) }}
     AND (deleted IS NULL OR deleted = false)
     {% if defined(user_id) %}

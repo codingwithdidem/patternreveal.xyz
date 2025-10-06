@@ -14,8 +14,8 @@ SQL >
         -- Overall workspace metrics
         count() as total_reflections,
         count(DISTINCT user_id) as total_users,
-        avg(CASE WHEN health_score != 'unknown' AND health_score != '0' 
-                 THEN toFloat64(health_score) ELSE NULL END) as overall_health_score,
+        avg(CASE WHEN health_score IS NOT NULL AND health_score > 0 
+                 THEN health_score ELSE NULL END) as overall_health_score,
         
         -- Time-based metrics
         min(reflection_created_at) as workspace_start_date,
@@ -23,8 +23,8 @@ SQL >
         dateDiff('day', min(reflection_created_at), max(reflection_created_at)) as workspace_age_days,
         
         -- Success metrics
-        avg(CASE WHEN resolution_achieved = 'true' THEN 1 ELSE 0 END) * 100 as overall_resolution_rate,
-        avg(CASE WHEN boundaries_maintained = 'true' THEN 1 ELSE 0 END) * 100 as overall_boundaries_rate,
+        avg(CASE WHEN resolution_achieved = true THEN 1 ELSE 0 END) * 100 as overall_resolution_rate,
+        avg(CASE WHEN boundaries_maintained = true THEN 1 ELSE 0 END) * 100 as overall_boundaries_rate,
         
         -- Most common patterns across workspace
         topK(5)(dominant_emotion) as workspace_common_emotions,
@@ -33,14 +33,14 @@ SQL >
         topK(5)(self_regulation) as workspace_self_regulation_methods,
         
         -- Health score distribution
-        countIf(health_score != 'unknown' AND health_score != '0' 
-                AND toFloat64(health_score) >= 8) as excellent_health_count,
-        countIf(health_score != 'unknown' AND health_score != '0' 
-                AND toFloat64(health_score) >= 6 AND toFloat64(health_score) < 8) as good_health_count,
-        countIf(health_score != 'unknown' AND health_score != '0' 
-                AND toFloat64(health_score) >= 4 AND toFloat64(health_score) < 6) as moderate_health_count,
-        countIf(health_score != 'unknown' AND health_score != '0' 
-                AND toFloat64(health_score) < 4) as poor_health_count,
+        countIf(health_score IS NOT NULL AND health_score > 0 
+                AND health_score >= 8) as excellent_health_count,
+        countIf(health_score IS NOT NULL AND health_score > 0 
+                AND health_score >= 6 AND health_score < 8) as good_health_count,
+        countIf(health_score IS NOT NULL AND health_score > 0 
+                AND health_score >= 4 AND health_score < 6) as moderate_health_count,
+        countIf(health_score IS NOT NULL AND health_score > 0 
+                AND health_score < 4) as poor_health_count,
         
         -- Confidence level distribution
         countIf(confidence_level = 'high') as high_confidence_count,
@@ -69,7 +69,7 @@ SQL >
         SELECT 
             *,
             count() OVER (PARTITION BY user_id) as total_reflections_per_user
-        FROM patterns
+        FROM patterns_v2
         WHERE 
             workspace_id = {{ String(workspace_id) }}
             AND (deleted IS NULL OR deleted = false)

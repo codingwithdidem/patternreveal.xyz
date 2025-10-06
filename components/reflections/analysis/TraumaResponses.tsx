@@ -130,7 +130,7 @@ export default function TraumaResponses({
       </div>
 
       {/* Trauma Triggers */}
-      {traumaResponses.traumaTriggers?.length &&
+      {traumaResponses.traumaTriggers &&
         traumaResponses.traumaTriggers.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700">
@@ -152,7 +152,7 @@ export default function TraumaResponses({
 
       {/* Coping Strategies */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {traumaResponses.healthyCopingUsed?.length &&
+        {traumaResponses.healthyCopingUsed &&
           traumaResponses.healthyCopingUsed.length > 0 && (
             <div className="space-y-3">
               <h4 className="font-medium text-sm text-gray-700">
@@ -172,7 +172,7 @@ export default function TraumaResponses({
             </div>
           )}
 
-        {traumaResponses.unhealthyCopingUsed?.length &&
+        {traumaResponses.unhealthyCopingUsed &&
           traumaResponses.unhealthyCopingUsed.length > 0 && (
             <div className="space-y-3">
               <h4 className="font-medium text-sm text-gray-700">
@@ -194,7 +194,7 @@ export default function TraumaResponses({
       </div>
 
       {/* Detected Patterns */}
-      {traumaResponses.detectedPatterns?.length &&
+      {traumaResponses.detectedPatterns &&
         traumaResponses.detectedPatterns.length > 0 && (
           <div className="space-y-4">
             <h4 className="font-medium text-sm text-gray-700">
@@ -282,7 +282,7 @@ export default function TraumaResponses({
         )}
 
       {/* Insights & Recommendations */}
-      {traumaResponses.healingRecommendations?.length &&
+      {traumaResponses.healingRecommendations &&
         traumaResponses.healingRecommendations.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700">

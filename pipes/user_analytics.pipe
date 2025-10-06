@@ -20,8 +20,8 @@ SQL >
         
         -- Emotional patterns
         topK(5)(dominant_emotion) as most_common_emotions,
-        avg(CASE WHEN health_score != 'unknown' AND health_score != '0' 
-                 THEN toFloat64(health_score) ELSE NULL END) as avg_health_score,
+        avg(CASE WHEN health_score IS NOT NULL AND health_score > 0 
+                 THEN health_score ELSE NULL END) as avg_health_score,
         
         -- Communication and interaction patterns
         topK(3)(communication_style) as preferred_communication_styles,
@@ -29,8 +29,8 @@ SQL >
         topK(3)(listening_effectiveness) as listening_effectiveness_patterns,
         
         -- Success metrics
-        avg(CASE WHEN resolution_achieved = 'true' THEN 1 ELSE 0 END) * 100 as resolution_success_rate,
-        avg(CASE WHEN boundaries_maintained = 'true' THEN 1 ELSE 0 END) * 100 as boundaries_maintenance_rate,
+        avg(CASE WHEN resolution_achieved = true THEN 1 ELSE 0 END) * 100 as resolution_success_rate,
+        avg(CASE WHEN boundaries_maintained = true THEN 1 ELSE 0 END) * 100 as boundaries_maintenance_rate,
         
         -- Trust and intimacy patterns
         topK(3)(trust_level) as trust_level_patterns,
@@ -50,10 +50,10 @@ SQL >
         
         -- Recent trends (last 7 days)
         countIf(reflection_created_at >= now() - interval 7 day) as reflections_last_7_days,
-        avg(CASE WHEN reflection_created_at >= now() - interval 7 day AND health_score != 'unknown' AND health_score != '0' 
-                 THEN toFloat64(health_score) ELSE NULL END) as recent_health_score
+        avg(CASE WHEN reflection_created_at >= now() - interval 7 day AND health_score IS NOT NULL AND health_score > 0 
+                 THEN health_score ELSE NULL END) as recent_health_score
         
-    FROM patterns
+    FROM patterns_v2
     WHERE 
         workspace_id = {{ String(workspace_id) }}
         AND (deleted IS NULL OR deleted = false)

@@ -129,51 +129,50 @@ export default function OverallAssessment({
       {assessment && (
         <div className="space-y-6">
           {/* Key Insights */}
-          {assessment?.keyInsights?.length &&
-            assessment.keyInsights.length > 0 && (
-              <div className="border-blue-200 bg-blue-50/50 rounded-lg p-4">
-                <h3 className="flex items-center gap-2 text-base font-semibold text-blue-800 mb-3">
-                  <Brain className="w-4 h-4 text-blue-600" />
-                  Key Insights
-                </h3>
-                <div className="space-y-2">
-                  {assessment?.keyInsights?.map((insight, index) => (
-                    <div
-                      key={`insight-${index}-${insight.slice(0, 20)}`}
-                      className="flex gap-3 p-3 bg-white rounded-lg border border-blue-200/50"
-                    >
-                      <CheckCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-blue-900">{insight}</p>
-                    </div>
-                  ))}
-                </div>
+          {assessment?.keyInsights && assessment.keyInsights.length > 0 && (
+            <div className="border-blue-200 bg-blue-50/50 rounded-lg p-4">
+              <h3 className="flex items-center gap-2 text-base font-semibold text-blue-800 mb-3">
+                <Brain className="w-4 h-4 text-blue-600" />
+                Key Insights
+              </h3>
+              <div className="space-y-2">
+                {assessment?.keyInsights?.map((insight, index) => (
+                  <div
+                    key={`insight-${index}-${insight.slice(0, 20)}`}
+                    className="flex gap-3 p-3 bg-white rounded-lg border border-blue-200/50"
+                  >
+                    <CheckCircle className="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-blue-900">{insight}</p>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
           {/* Warning Flags */}
-          {assessment.warningFlags?.length &&
-            assessment.warningFlags.length > 0 && (
-              <div className="border-orange-200 bg-orange-50/50 rounded-lg p-4">
-                <h3 className="flex items-center gap-2 text-base font-semibold text-orange-800 mb-3">
-                  <AlertTriangle className="w-4 h-4 text-orange-600" />
-                  Areas to Monitor
-                </h3>
-                <div className="space-y-2">
-                  {assessment?.warningFlags?.map((flag, index) => (
-                    <div
-                      key={`warning-${index}-${flag.slice(0, 20)}`}
-                      className="flex gap-3 p-3 bg-white rounded-lg border border-orange-200/50"
-                    >
-                      <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-orange-900">{flag}</p>
-                    </div>
-                  ))}
-                </div>
+          {assessment.warningFlags && assessment.warningFlags.length > 0 && (
+            <div className="border-orange-200 bg-orange-50/50 rounded-lg p-4">
+              <h3 className="flex items-center gap-2 text-base font-semibold text-orange-800 mb-3">
+                <AlertTriangle className="w-4 h-4 text-orange-600" />
+                Areas to Monitor
+              </h3>
+              <div className="space-y-2">
+                {assessment?.warningFlags?.map((flag, index) => (
+                  <div
+                    key={`warning-${index}-${flag.slice(0, 20)}`}
+                    className="flex gap-3 p-3 bg-white rounded-lg border border-orange-200/50"
+                  >
+                    <AlertTriangle className="w-4 h-4 text-orange-600 mt-0.5 flex-shrink-0" />
+                    <p className="text-sm text-orange-900">{flag}</p>
+                  </div>
+                ))}
               </div>
-            )}
+            </div>
+          )}
 
           {/* Positive Highlights */}
-          {assessment?.positiveHighlights?.length &&
+
+          {assessment?.positiveHighlights &&
             assessment.positiveHighlights.length > 0 && (
               <div className="border-green-200 bg-green-50/50 rounded-lg p-4">
                 <h3 className="flex items-center gap-2 text-base font-semibold text-green-800 mb-3">

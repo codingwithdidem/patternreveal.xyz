@@ -12,8 +12,8 @@ SQL >
         user_id,
         
         -- Boundary patterns - analyzing boundary maintenance and conflict resolution effectiveness
-        countIf(boundaries_maintained = 'false') as boundary_violations_count,
-        countIf(boundaries_maintained = 'true') as boundary_success_count,
+        countIf(boundaries_maintained = false) as boundary_violations_count,
+        countIf(boundaries_maintained = true) as boundary_success_count,
         countIf(conflict_resolution_style = 'avoidant' OR conflict_resolution_style = 'avoiding') as avoided_conflict_count,
         countIf(conflict_resolution_style = 'collaborative' OR conflict_resolution_style = 'compromising') as engaged_conflict_count,
         
@@ -35,10 +35,10 @@ SQL >
         countIf(effort_balance = 'you_more') as overgiving_count,
         countIf(effort_balance = 'them_more') as undergiving_count,
         countIf(effort_balance = 'balanced') as balanced_effort_count,
-        countIf(trust_level IN ('high', 'medium') AND boundaries_maintained = 'true') as healthy_boundaries_count,
+        countIf(trust_level IN ('high', 'medium') AND boundaries_maintained = true) as healthy_boundaries_count,
         
         -- Trust patterns - analyzing trust levels and their impact on conflict resolution
-        countIf(trust_level IN ('high', 'medium') AND resolution_achieved = 'true') as trusted_resolution_count,
+        countIf(trust_level IN ('high', 'medium') AND resolution_achieved = true) as trusted_resolution_count,
         countIf(trust_level = 'low' AND conflict_resolution_style = 'avoiding') as low_trust_avoidance_count,
         countIf(trust_level = 'broken' OR trust_level = 'low') as trust_issues_count,
         
@@ -46,7 +46,7 @@ SQL >
         countIf(your_attachment_style = 'anxious') as anxious_attachment_count,
         countIf(your_attachment_style = 'avoidant') as avoidant_attachment_count,
         countIf(your_attachment_style = 'secure') as secure_attachment_count,
-        countIf(attachment_triggered = 'true') as attachment_triggered_count,
+        countIf(attachment_triggered = true) as attachment_triggered_count,
         
         -- Trauma response patterns - identifying primary trauma responses (fight, flight, freeze, fawn)
         countIf(your_primary_trauma_response = 'fight') as fight_response_count,
@@ -55,13 +55,13 @@ SQL >
         countIf(your_primary_trauma_response = 'fawn') as fawn_response_count,
         
         -- Cognitive patterns - analyzing thinking traps and emotional reasoning
-        countIf(thinking_traps_count != '0' AND thinking_traps_count != 'unknown') as cognitive_distortions_count,
-        countIf(emotional_reasoning = 'true') as emotional_reasoning_count,
+        countIf(length(thinking_traps) > 0) as cognitive_distortions_count,
+        countIf(emotional_reasoning = true) as emotional_reasoning_count,
         
         -- Abuse detection patterns - identifying abusive behaviors and safety risks
-        countIf(is_abusive = 'true') as abusive_behavior_count,
-        countIf(is_at_immediate_risk = 'true') as immediate_risk_count,
-        countIf(abusive_behaviors_count != '0' AND abusive_behaviors_count != 'unknown') as detected_abuse_count,
+        countIf(is_abusive = true) as abusive_behavior_count,
+        countIf(is_at_immediate_risk = true) as immediate_risk_count,
+        countIf(length(abusive_patterns) > 0) as detected_abuse_count,
         
         -- Relationship health patterns - analyzing overall relationship quality and stability
         countIf(relationship_health = 'excellent' OR relationship_health = 'good') as healthy_relationship_count,
@@ -72,7 +72,7 @@ SQL >
         -- Total interactions for percentage calculations
         count() as total_interactions
         
-    FROM patterns 
+    FROM patterns_v2 
     WHERE workspace_id = {{ String(workspace_id) }}
     AND (deleted IS NULL OR deleted = false)
     {% if defined(user_id) %}

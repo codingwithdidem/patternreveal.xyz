@@ -61,7 +61,7 @@ export const PLANS = [
     limits: {
       reflections: 1_000, // 1K reflections per month
       "ask-ai": 15, // 15 AI questions per month
-      "ai-analysis": 8, // 8 AI analysis per month
+      "ai-analysis": 30, // 30 AI analysis per month (increased from 8)
       users: 5, // 5 users
       retention: "1-year", // 1-year analytics retention
     },
@@ -69,7 +69,7 @@ export const PLANS = [
     features: [
       { id: "reflections", text: "1K reflections per month" },
       { id: "ask-ai", text: "15 AI questions per month" },
-      { id: "ai-analysis", text: "8 AI analysis per month" },
+      { id: "ai-analysis", text: "30 AI analysis per month" },
       { id: "users", text: "5 users" },
       { id: "retention", text: "1-year analytics retention" },
       {

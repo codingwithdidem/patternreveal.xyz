@@ -5,7 +5,7 @@ import { z } from "zod";
 // Schema for marking records as deleted in TinyBird
 export const deletePatternAnalyticsSchema = patternAnalyticsSchema.extend({
   deleted: z.boolean().default(true),
-  deleted_at: z.date(),
+  deleted_at: z.string(),
 });
 
 export type DeletePatternAnalyticsData = z.infer<
@@ -13,7 +13,7 @@ export type DeletePatternAnalyticsData = z.infer<
 >;
 
 export const recordDeletePatternAnalyticsTB = tb.buildIngestEndpoint({
-  datasource: "patterns",
+  datasource: "patterns_v2",
   event: deletePatternAnalyticsSchema,
   wait: true,
 });
@@ -46,42 +46,9 @@ export const deletePatternAnalytics = async (reflectionId: string) => {
 
       // Mark as deleted
       deleted: true,
-      deleted_at: new Date(),
+      deleted_at: new Date().toISOString(),
 
-      // Minimal placeholder values for required fields
-      dominant_emotion: "deleted",
-      emotional_triggers: [],
-      self_regulation: "deleted",
-      communication_style: "deleted",
-      conflict_resolution_style: "deleted",
-      listening_effectiveness: "deleted",
-      boundaries_maintained: false,
-      resolution_achieved: false,
-      intimacy_level: "deleted",
-      trust_level: "deleted",
-      effort_balance: "deleted",
-      relationship_health: "deleted",
-      relationship_satisfaction: "0",
-      relationship_stability: "deleted",
-      behavioral_patterns_count: "0",
-      behavioral_patterns_severity: "deleted",
-      your_attachment_style: "deleted",
-      their_attachment_style: "deleted",
-      attachment_triggered: "false",
-      your_primary_trauma_response: "deleted",
-      their_primary_trauma_response: "deleted",
-      trauma_triggers_count: "0",
-      thinking_traps_count: "0",
-      emotional_reasoning: "false",
-      is_abusive: "false",
-      is_at_immediate_risk: "false",
-      abusive_behaviors_count: "0",
-      health_score: "0",
-      confidence_level: "deleted",
-      analysis_duration_ms: 0,
-      ai_model_used: "deleted",
-      user_plan: "deleted",
-      user_experience_level: "deleted",
+      // Timestamps
       reflection_created_at: new Date().toISOString(),
       analysis_created_at: new Date().toISOString(),
       timestamp: new Date().toISOString(),

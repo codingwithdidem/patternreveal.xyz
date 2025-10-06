@@ -1715,7 +1715,7 @@ export const abuseDetectionSchema = z.object({
     .optional(),
 });
 
-// Attachment patterns analysis
+// Attachment patterns
 export const attachmentPatternsSchema = z.object({
   yourAttachmentStyle: z
     .enum(["secure", "anxious", "avoidant", "disorganized"])

@@ -84,7 +84,7 @@ export default function ConnectionPatterns({
       </div>
 
       {/* Detected Patterns */}
-      {connectionPatterns.detectedPatterns?.length &&
+      {connectionPatterns.detectedPatterns &&
         connectionPatterns.detectedPatterns.length > 0 && (
           <div className="space-y-4">
             <h4 className="font-medium text-sm text-gray-700">
@@ -157,7 +157,7 @@ export default function ConnectionPatterns({
         )}
 
       {/* Love Languages */}
-      {connectionPatterns.loveLanguagesExpressed?.length &&
+      {connectionPatterns.loveLanguagesExpressed &&
         connectionPatterns.loveLanguagesExpressed.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700">
@@ -180,7 +180,7 @@ export default function ConnectionPatterns({
         )}
 
       {/* Connection Attempts */}
-      {connectionPatterns.connectionAttempts?.length &&
+      {connectionPatterns.connectionAttempts &&
         connectionPatterns.connectionAttempts.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
@@ -202,7 +202,7 @@ export default function ConnectionPatterns({
         )}
 
       {/* Connection Barriers */}
-      {connectionPatterns.connectionBarriers?.length &&
+      {connectionPatterns.connectionBarriers &&
         connectionPatterns.connectionBarriers.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
@@ -224,7 +224,7 @@ export default function ConnectionPatterns({
         )}
 
       {/* Connection Insights */}
-      {connectionPatterns.connectionInsights?.length &&
+      {connectionPatterns.connectionInsights &&
         connectionPatterns.connectionInsights.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
@@ -246,7 +246,7 @@ export default function ConnectionPatterns({
         )}
 
       {/* Connection Recommendations */}
-      {connectionPatterns.connectionRecommendations?.length &&
+      {connectionPatterns.connectionRecommendations &&
         connectionPatterns.connectionRecommendations.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">

@@ -42,7 +42,7 @@ export default function WebsiteLayout({
                 connections.
               </p>
               <div className="flex gap-4">
-                <Link
+                {/* <Link
                   href="#"
                   className="text-black hover:text-purple-600 transition-colors"
                 >
@@ -53,7 +53,7 @@ export default function WebsiteLayout({
                   className="text-black hover:text-purple-600 transition-colors"
                 >
                   <Github className="h-5 w-5" />
-                </Link>
+                </Link> */}
               </div>
             </div>
 

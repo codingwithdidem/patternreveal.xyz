@@ -12,23 +12,23 @@ SQL >
         user_id,
         
         -- Boundary Effectiveness Analysis
-        round(avg(CASE WHEN boundaries_maintained = 'true' THEN 1 ELSE 0 END) * 100, 1) as overall_boundary_success_rate,
-        countIf(boundaries_maintained = 'true') as boundary_success_count,
-        countIf(boundaries_maintained = 'false') as boundary_violation_count,
+        round(avg(CASE WHEN boundaries_maintained = true THEN 1 ELSE 0 END) * 100, 1) as overall_boundary_success_rate,
+        countIf(boundaries_maintained = true) as boundary_success_count,
+        countIf(boundaries_maintained = false) as boundary_violation_count,
         
         -- Communication Style Boundary Effectiveness
-        round(avg(CASE WHEN boundaries_maintained = 'true' AND communication_style = 'assertive' THEN 1 ELSE 0 END) * 100, 1) as assertive_boundary_success_rate,
-        round(avg(CASE WHEN boundaries_maintained = 'true' AND communication_style = 'empathetic' THEN 1 ELSE 0 END) * 100, 1) as empathetic_boundary_success_rate,
-        round(avg(CASE WHEN boundaries_maintained = 'true' AND communication_style = 'passive' THEN 1 ELSE 0 END) * 100, 1) as passive_boundary_success_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND communication_style = 'assertive' THEN 1 ELSE 0 END) * 100, 1) as assertive_boundary_success_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND communication_style = 'empathetic' THEN 1 ELSE 0 END) * 100, 1) as empathetic_boundary_success_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND communication_style = 'passive' THEN 1 ELSE 0 END) * 100, 1) as passive_boundary_success_rate,
         
         -- Resolution Success Analysis
-        round(avg(CASE WHEN resolution_achieved = 'true' THEN 1 ELSE 0 END) * 100, 1) as overall_resolution_rate,
-        countIf(resolution_achieved = 'true') as resolution_success_count,
-        countIf(resolution_achieved = 'false') as resolution_failure_count,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND conflict_resolution_style = 'collaborative' THEN 1 ELSE 0 END) * 100, 1) as collaborative_resolution_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND conflict_resolution_style = 'compromising' THEN 1 ELSE 0 END) * 100, 1) as compromising_resolution_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND conflict_resolution_style = 'avoiding' THEN 1 ELSE 0 END) * 100, 1) as avoidant_resolution_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND conflict_resolution_style = 'accommodating' THEN 1 ELSE 0 END) * 100, 1) as accommodating_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true THEN 1 ELSE 0 END) * 100, 1) as overall_resolution_rate,
+        countIf(resolution_achieved = true) as resolution_success_count,
+        countIf(resolution_achieved = false) as resolution_failure_count,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'collaborative' THEN 1 ELSE 0 END) * 100, 1) as collaborative_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'compromising' THEN 1 ELSE 0 END) * 100, 1) as compromising_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'avoiding' THEN 1 ELSE 0 END) * 100, 1) as avoidant_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'accommodating' THEN 1 ELSE 0 END) * 100, 1) as accommodating_resolution_rate,
         
         -- Trust Pattern Analysis
         topK(3)(trust_level) as most_common_trust_levels,
@@ -62,51 +62,51 @@ SQL >
         round(avg(CASE WHEN relationship_stability IN ('very_stable', 'stable') THEN 1 ELSE 0 END) * 100, 1) as stable_relationship_rate,
         
         -- Relationship Satisfaction Analysis
-        countIf(relationship_satisfaction != 'unknown' AND relationship_satisfaction != '0') as satisfaction_rated_count,
-        avg(CASE WHEN relationship_satisfaction != 'unknown' AND relationship_satisfaction != '0' 
-                 THEN toFloat64(relationship_satisfaction) ELSE NULL END) as avg_satisfaction_score,
+        countIf(relationship_satisfaction IS NOT NULL AND relationship_satisfaction > 0) as satisfaction_rated_count,
+        avg(CASE WHEN relationship_satisfaction IS NOT NULL AND relationship_satisfaction > 0 
+                 THEN relationship_satisfaction ELSE NULL END) as avg_satisfaction_score,
         
         -- Listening Effectiveness Impact
         topK(3)(listening_effectiveness) as most_common_listening_styles,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND listening_effectiveness = 'excellent' THEN 1 ELSE 0 END) * 100, 1) as excellent_listening_resolution_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND listening_effectiveness = 'good' THEN 1 ELSE 0 END) * 100, 1) as good_listening_resolution_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as poor_listening_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'excellent' THEN 1 ELSE 0 END) * 100, 1) as excellent_listening_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'good' THEN 1 ELSE 0 END) * 100, 1) as good_listening_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as poor_listening_resolution_rate,
         
         -- Health Score Correlation Analysis
-        countIf(health_score != 'unknown' AND health_score != '0') as health_rated_count,
-        avg(CASE WHEN health_score != 'unknown' AND health_score != '0' 
-                 THEN toFloat64(health_score) ELSE NULL END) as avg_health_score,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND health_score != 'unknown' AND health_score != '0' 
-                      AND toFloat64(health_score) >= 7 THEN 1 ELSE 0 END) * 100, 1) as high_health_resolution_rate,
-        round(avg(CASE WHEN boundaries_maintained = 'true' AND health_score != 'unknown' AND health_score != '0' 
-                      AND toFloat64(health_score) >= 7 THEN 1 ELSE 0 END) * 100, 1) as high_health_boundary_rate,
+        countIf(health_score IS NOT NULL AND health_score > 0) as health_rated_count,
+        avg(CASE WHEN health_score IS NOT NULL AND health_score > 0 
+                 THEN health_score ELSE NULL END) as avg_health_score,
+        round(avg(CASE WHEN resolution_achieved = true AND health_score IS NOT NULL AND health_score > 0 
+                      AND health_score >= 7 THEN 1 ELSE 0 END) * 100, 1) as high_health_resolution_rate,
+        round(avg(CASE WHEN boundaries_maintained = true AND health_score IS NOT NULL AND health_score > 0 
+                      AND health_score >= 7 THEN 1 ELSE 0 END) * 100, 1) as high_health_boundary_rate,
         
         -- Confidence Level Analysis
         topK(3)(confidence_level) as most_common_confidence_levels,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND confidence_level = 'high' THEN 1 ELSE 0 END) * 100, 1) as high_confidence_resolution_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND confidence_level = 'medium' THEN 1 ELSE 0 END) * 100, 1) as medium_confidence_resolution_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND confidence_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as low_confidence_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND confidence_level = 'high' THEN 1 ELSE 0 END) * 100, 1) as high_confidence_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND confidence_level = 'medium' THEN 1 ELSE 0 END) * 100, 1) as medium_confidence_resolution_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND confidence_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as low_confidence_resolution_rate,
         
         -- Advanced Pattern Recognition
-        round(avg(CASE WHEN boundaries_maintained = 'false' AND trust_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as boundary_violation_low_trust_rate,
-        round(avg(CASE WHEN resolution_achieved = 'false' AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as poor_listening_failure_rate,
+        round(avg(CASE WHEN boundaries_maintained = false AND trust_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as boundary_violation_low_trust_rate,
+        round(avg(CASE WHEN resolution_achieved = false AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as poor_listening_failure_rate,
         round(avg(CASE WHEN trust_level = 'low' AND intimacy_level = 'distant' THEN 1 ELSE 0 END) * 100, 1) as low_trust_distant_intimacy_rate,
-        round(avg(CASE WHEN effort_balance = 'you_more' AND resolution_achieved = 'false' THEN 1 ELSE 0 END) * 100, 1) as overgiving_failure_rate,
+        round(avg(CASE WHEN effort_balance = 'you_more' AND resolution_achieved = false THEN 1 ELSE 0 END) * 100, 1) as overgiving_failure_rate,
         
         -- Relationship Health Growth Metrics
         CASE 
-            WHEN countIf(reflection_created_at >= now() - interval 15 day AND boundaries_maintained = 'true') > 
-                 countIf(reflection_created_at < now() - interval 15 day AND boundaries_maintained = 'true') THEN 'improving'
-            WHEN countIf(reflection_created_at >= now() - interval 15 day AND boundaries_maintained = 'true') < 
-                 countIf(reflection_created_at < now() - interval 15 day AND boundaries_maintained = 'true') THEN 'declining'
+            WHEN countIf(reflection_created_at >= now() - interval 15 day AND boundaries_maintained = true) > 
+                 countIf(reflection_created_at < now() - interval 15 day AND boundaries_maintained = true) THEN 'improving'
+            WHEN countIf(reflection_created_at >= now() - interval 15 day AND boundaries_maintained = true) < 
+                 countIf(reflection_created_at < now() - interval 15 day AND boundaries_maintained = true) THEN 'declining'
             ELSE 'stable'
         END as boundary_trend,
         
         CASE 
-            WHEN countIf(reflection_created_at >= now() - interval 15 day AND resolution_achieved = 'true') > 
-                 countIf(reflection_created_at < now() - interval 15 day AND resolution_achieved = 'true') THEN 'improving'
-            WHEN countIf(reflection_created_at >= now() - interval 15 day AND resolution_achieved = 'true') < 
-                 countIf(reflection_created_at < now() - interval 15 day AND resolution_achieved = 'true') THEN 'declining'
+            WHEN countIf(reflection_created_at >= now() - interval 15 day AND resolution_achieved = true) > 
+                 countIf(reflection_created_at < now() - interval 15 day AND resolution_achieved = true) THEN 'improving'
+            WHEN countIf(reflection_created_at >= now() - interval 15 day AND resolution_achieved = true) < 
+                 countIf(reflection_created_at < now() - interval 15 day AND resolution_achieved = true) THEN 'declining'
             ELSE 'stable'
         END as resolution_trend,
         
@@ -123,7 +123,7 @@ SQL >
         -- Total interactions for percentage calculations
         count() as total_interactions
         
-    FROM patterns 
+    FROM patterns_v2 
     WHERE workspace_id = {{ String(workspace_id) }}
     AND (deleted IS NULL OR deleted = false)
     {% if defined(user_id) %}

@@ -9,26 +9,14 @@ SCHEMA >
     `dominant_emotion` String `json:$.dominant_emotion`,
     `emotional_triggers` Array(String) `json:$.emotional_triggers[:]`,
     `self_regulation` String `json:$.self_regulation`,
-    `emotional_patterns` Array(Nested(
-        `pattern` String,
-        `quote` String,
-        `trigger` String,
-        `impact` String,
-        `severity` String,
-        `who_exhibited` String,
-        `suggestedBehavior` String,
-        `unsustainableBehavior` String
-    )) `json:$.emotional_patterns`,
+    `emotional_patterns` String `json:$.emotional_patterns`,
 
     `communication_style` String `json:$.communication_style`,
     `conflict_resolution_style` String `json:$.conflict_resolution_style`,
     `listening_effectiveness` String `json:$.listening_effectiveness`,
     `boundaries_maintained` Bool `json:$.boundaries_maintained`,
     `resolution_achieved` Bool `json:$.resolution_achieved`,
-    `communication_patterns` Array(Nested(
-        `pattern` String,
-        `quote` String
-    )) `json:$.communication_patterns`,
+    `communication_patterns` String `json:$.communication_patterns`,
     `unmet_needs` Array(String) `json:$.unmet_needs[:]`,
     `escalation_triggers` Array(String) `json:$.escalation_triggers[:]`,
 
@@ -45,61 +33,26 @@ SCHEMA >
     `relationship_health` String `json:$.relationship_health`,
     `relationship_satisfaction` Int32 `json:$.relationship_satisfaction`,
     `relationship_stability` String `json:$.relationship_stability`,
-    `relationship_patterns` Array(Nested(
-        `pattern` String,
-        `quote` String,
-        `trigger` String,
-        `unsustainableBehavior` String,
-        `suggestedBehavior` String,
-        `impact` String,
-        `severity` String,
-        `who_exhibited` String
-    )) `json:$.relationship_patterns`,
+    `relationship_patterns` String `json:$.relationship_patterns`,
 
-    `behavioral_patterns` Array(Nested(
-        `pattern` String,
-        `quote` String
-    )) `json:$.behavioral_patterns`,
-    `behavioral_cycles` Array(Nested(
-        `trigger` String,
-        `response` String,
-        `outcome` String
-    )) `json:$.behavioral_cycles`,
+    `behavioral_patterns` String `json:$.behavioral_patterns`,
+    `behavioral_cycles` String `json:$.behavioral_cycles`,
     `growth_opportunities` Array(String) `json:$.growth_opportunities[:]`,
 
     `your_attachment_style` String `json:$.your_attachment_style`,
     `their_attachment_style` String `json:$.their_attachment_style`,
     `attachment_triggered` Bool `json:$.attachment_triggered`,
-    `attachment_patterns` Array(Nested(
-        `pattern` String,
-        `quote` String,
-        `impact` String,
-        `severity` String,
-        `who_exhibited` String
-    )) `json:$.attachment_patterns`,
+    `attachment_patterns` String `json:$.attachment_patterns`,
 
     `your_primary_trauma_response` String `json:$.your_primary_trauma_response`,
     `their_primary_trauma_response` String `json:$.their_primary_trauma_response`,
     `trauma_triggers` Array(String) `json:$.trauma_triggers[:]`,
-    `trauma_patterns` Array(Nested(
-        `pattern` String,
-        `quote` String,
-        `impact` String,
-        `severity` String,
-        `who_exhibited` String,
-        `trigger` String,
-        `copingStrategy` String,
-        `suggestedHealing` String
-    )) `json:$.trauma_patterns`,
+    `trauma_patterns` String `json:$.trauma_patterns`,
     `unhealthy_coping_used` Array(String) `json:$.unhealthy_coping_used[:]`,
     `healthy_coping_used` Array(String) `json:$.healthy_coping_used[:]`,
     `healing_recommendations` Array(String) `json:$.healing_recommendations[:]`,
 
-    `thinking_traps` Array(Nested(
-        `trap` String,
-        `quote` String,
-        `explanation` String
-    )) `json:$.thinking_traps`,
+    `thinking_traps` String `json:$.thinking_traps`,
     `emotional_reasoning` Bool `json:$.emotional_reasoning`,
     `perspective_taking` String `json:$.perspective_taking`,
     `assumptions_made` Array(String) `json:$.assumptions_made[:]`,
@@ -109,13 +62,7 @@ SCHEMA >
     `warning_signs` Array(String) `json:$.warning_signs[:]`,
     `suggested_actions_to_take` Array(String) `json:$.suggested_actions_to_take[:]`,
     `abuse_triggers` Array(String) `json:$.abuse_triggers[:]`,
-    `abusive_patterns` Array(Nested(
-        `type` String,
-        `behavior` String,
-        `quote` String,
-        `impact` String,
-        `reasonings` Array(String)
-    )) `json:$.abusive_patterns`,
+    `abusive_patterns` String `json:$.abusive_patterns`,
 
     `health_score` Int32 `json:$.health_score`,
     `confidence_level` String `json:$.confidence_level`,
@@ -128,15 +75,7 @@ SCHEMA >
 
     `user_plan` String `json:$.user_plan`,
 
-    `connection_patterns` Array(Nested(
-        `pattern` String,
-        `quote` String,
-        `impact` String,
-        `severity` String,
-        `who_exhibited` String,
-        `effectiveness` String,
-        `improvement` String
-    )) `json:$.connection_patterns`,
+    `connection_patterns` String `json:$.connection_patterns`,
     `love_languages_expressed` Array(String) `json:$.love_languages_expressed[:]`,
     `connection_attempts` Array(String) `json:$.connection_attempts[:]`,
     `connection_barriers` Array(String) `json:$.connection_barriers[:]`,
@@ -151,3 +90,6 @@ SCHEMA >
 
 ENGINE "MergeTree"
 ENGINE_SORTING_KEY "timestamp, user_id, workspace_id"
+
+FORWARD_QUERY >
+  SELECT user_id, workspace_id, reflection_id, dominant_emotion, emotional_triggers, self_regulation, CAST(emotional_patterns, 'String') AS emotional_patterns, communication_style, conflict_resolution_style, listening_effectiveness, boundaries_maintained, resolution_achieved, CAST(communication_patterns, 'String') AS communication_patterns, unmet_needs, escalation_triggers, intimacy_level, trust_level, effort_balance, conflict_frequency, conflict_resolution, relationship_growth, personal_growth_support, relationship_insights, improvement_areas, strengths_identified, relationship_health, relationship_satisfaction, relationship_stability, CAST(relationship_patterns, 'String') AS relationship_patterns, CAST(behavioral_patterns, 'String') AS behavioral_patterns, CAST(behavioral_cycles, 'String') AS behavioral_cycles, growth_opportunities, your_attachment_style, their_attachment_style, attachment_triggered, CAST(attachment_patterns, 'String') AS attachment_patterns, your_primary_trauma_response, their_primary_trauma_response, trauma_triggers, CAST(trauma_patterns, 'String') AS trauma_patterns, unhealthy_coping_used, healthy_coping_used, healing_recommendations, CAST(thinking_traps, 'String') AS thinking_traps, emotional_reasoning, perspective_taking, assumptions_made, is_abusive, is_at_immediate_risk, warning_signs, suggested_actions_to_take, abuse_triggers, CAST(abusive_patterns, 'String') AS abusive_patterns, health_score, confidence_level, summary, key_insights, warning_flags, positive_highlights, analysis_duration_ms, ai_model_used, user_plan, CAST(connection_patterns, 'String') AS connection_patterns, love_languages_expressed, connection_attempts, connection_barriers, connection_insights, connection_recommendations, reflection_created_at, analysis_created_at, timestamp, deleted, deleted_at

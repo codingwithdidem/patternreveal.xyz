@@ -160,7 +160,7 @@ export default function EmotionalPatterns({
             <Zap className="w-4 h-4 text-orange-600" />
             Emotional Triggers
           </h4>
-          {emotionalPatterns.emotionalTriggers?.length &&
+          {emotionalPatterns.emotionalTriggers &&
             emotionalPatterns.emotionalTriggers.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {emotionalPatterns.emotionalTriggers.map((trigger, index) => (
@@ -177,7 +177,7 @@ export default function EmotionalPatterns({
       </div>
 
       {/* Detected Patterns */}
-      {emotionalPatterns.detectedPatterns?.length &&
+      {emotionalPatterns.detectedPatterns &&
         emotionalPatterns.detectedPatterns.length > 0 && (
           <div className="space-y-4">
             <h4 className="font-medium text-sm text-gray-700">

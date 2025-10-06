@@ -12,7 +12,6 @@ const plans = [
     features: [
       "2 AI analyses per month",
       "10 reflections per month",
-      "Basic pattern analysis",
       "1 user",
       "30-day data retention",
     ],
@@ -26,10 +25,11 @@ const plans = [
     period: "per month",
     description: "For individuals serious about growth",
     features: [
-      "8 AI analyses per month",
+      "30 AI analyses per month",
       "15 AI questions per month",
       "1,000 reflections per month",
       "Advanced relationship insights",
+      "Analytics insights",
       "5 users",
       "1-year data retention",
       "Priority support",
@@ -61,7 +61,7 @@ export function PricingSection() {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative p-8 rounded-2xl border transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl ${
+              className={`relative p-8 rounded-2xl border transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-xl flex flex-col h-full ${
                 plan.popular
                   ? "bg-gradient-to-br from-purple-50 to-indigo-50 border-purple-200 shadow-lg"
                   : "bg-white border-gray-200"
@@ -89,7 +89,7 @@ export function PricingSection() {
                 <p className="text-black">{plan.description}</p>
               </div>
 
-              <ul className="space-y-4 mb-8">
+              <ul className="space-y-4 mb-8 flex-grow">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
@@ -98,7 +98,7 @@ export function PricingSection() {
                 ))}
               </ul>
 
-              <Link href={plan.href} className="block">
+              <Link href={plan.href} className="block mt-auto">
                 <Button
                   className={`w-full ${
                     plan.popular

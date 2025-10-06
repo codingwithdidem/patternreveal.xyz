@@ -236,7 +236,7 @@ export default function RelationshipDynamics({
       </div>
 
       {/* Detected Patterns */}
-      {relationshipDynamics.detectedPatterns?.length &&
+      {relationshipDynamics.detectedPatterns &&
         relationshipDynamics.detectedPatterns.length > 0 && (
           <div className="space-y-4">
             <h4 className="font-medium text-sm text-gray-700">
@@ -512,7 +512,7 @@ export default function RelationshipDynamics({
       </div>
 
       {/* Relationship Insights */}
-      {relationshipDynamics.relationshipInsights?.length &&
+      {relationshipDynamics.relationshipInsights &&
         relationshipDynamics.relationshipInsights.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
@@ -536,7 +536,7 @@ export default function RelationshipDynamics({
         )}
 
       {/* Improvement Areas */}
-      {relationshipDynamics.improvementAreas?.length &&
+      {relationshipDynamics.improvementAreas &&
         relationshipDynamics.improvementAreas.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">
@@ -558,7 +558,7 @@ export default function RelationshipDynamics({
         )}
 
       {/* Strengths Identified */}
-      {relationshipDynamics.strengthsIdentified?.length &&
+      {relationshipDynamics.strengthsIdentified &&
         relationshipDynamics.strengthsIdentified.length > 0 && (
           <div className="space-y-3">
             <h4 className="font-medium text-sm text-gray-700 flex items-center gap-2">

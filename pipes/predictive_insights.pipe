@@ -12,67 +12,67 @@ SQL >
         user_id,
         
         -- Success Predictors Analysis
-        round(avg(CASE WHEN resolution_achieved = 'true' AND conflict_resolution_style = 'collaborative' THEN 1 ELSE 0 END) * 100, 1) as collaborative_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND conflict_resolution_style = 'compromising' THEN 1 ELSE 0 END) * 100, 1) as compromising_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND conflict_resolution_style = 'avoiding' THEN 1 ELSE 0 END) * 100, 1) as avoiding_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND conflict_resolution_style = 'accommodating' THEN 1 ELSE 0 END) * 100, 1) as accommodating_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'collaborative' THEN 1 ELSE 0 END) * 100, 1) as collaborative_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'compromising' THEN 1 ELSE 0 END) * 100, 1) as compromising_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'avoiding' THEN 1 ELSE 0 END) * 100, 1) as avoiding_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND conflict_resolution_style = 'accommodating' THEN 1 ELSE 0 END) * 100, 1) as accommodating_success_rate,
         
         -- Red Flag Pattern Detection
         round(avg(CASE WHEN dominant_emotion IN ('anger', 'rage', 'frustration') AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as red_flag_negative_emotions_poor_listening_rate,
         round(avg(CASE WHEN confidence_level = 'low' AND conflict_resolution_style = 'avoiding' THEN 1 ELSE 0 END) * 100, 1) as red_flag_low_confidence_avoiding_rate,
-        round(avg(CASE WHEN boundaries_maintained = 'false' AND trust_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as red_flag_no_boundaries_low_trust_rate,
-        round(avg(CASE WHEN is_abusive = 'true' OR is_at_immediate_risk = 'true' THEN 1 ELSE 0 END) * 100, 1) as red_flag_abuse_risk_rate,
+        round(avg(CASE WHEN boundaries_maintained = false AND trust_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as red_flag_no_boundaries_low_trust_rate,
+        round(avg(CASE WHEN is_abusive = true OR is_at_immediate_risk = true THEN 1 ELSE 0 END) * 100, 1) as red_flag_abuse_risk_rate,
         
         -- Communication Style Success Patterns
-        round(avg(CASE WHEN resolution_achieved = 'true' AND communication_style = 'assertive' THEN 1 ELSE 0 END) * 100, 1) as assertive_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND communication_style = 'empathetic' THEN 1 ELSE 0 END) * 100, 1) as empathetic_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND communication_style = 'passive' THEN 1 ELSE 0 END) * 100, 1) as passive_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND communication_style = 'aggressive' THEN 1 ELSE 0 END) * 100, 1) as aggressive_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'assertive' THEN 1 ELSE 0 END) * 100, 1) as assertive_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'empathetic' THEN 1 ELSE 0 END) * 100, 1) as empathetic_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'passive' THEN 1 ELSE 0 END) * 100, 1) as passive_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'aggressive' THEN 1 ELSE 0 END) * 100, 1) as aggressive_success_rate,
         
         -- Listening Effectiveness Success Patterns
-        round(avg(CASE WHEN resolution_achieved = 'true' AND listening_effectiveness = 'excellent' THEN 1 ELSE 0 END) * 100, 1) as excellent_listening_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND listening_effectiveness = 'good' THEN 1 ELSE 0 END) * 100, 1) as good_listening_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as poor_listening_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'excellent' THEN 1 ELSE 0 END) * 100, 1) as excellent_listening_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'good' THEN 1 ELSE 0 END) * 100, 1) as good_listening_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as poor_listening_success_rate,
         
         -- Health Score Threshold Analysis
-        round(avg(CASE WHEN resolution_achieved = 'true' AND health_score != 'unknown' AND health_score != '0' 
-                      AND toFloat64(health_score) >= 8 THEN 1 ELSE 0 END) * 100, 1) as excellent_health_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND health_score != 'unknown' AND health_score != '0' 
-                      AND toFloat64(health_score) BETWEEN 6 AND 7 THEN 1 ELSE 0 END) * 100, 1) as good_health_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND health_score != 'unknown' AND health_score != '0' 
-                      AND toFloat64(health_score) BETWEEN 4 AND 5 THEN 1 ELSE 0 END) * 100, 1) as moderate_health_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND health_score != 'unknown' AND health_score != '0' 
-                      AND toFloat64(health_score) <= 3 THEN 1 ELSE 0 END) * 100, 1) as poor_health_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND health_score IS NOT NULL AND health_score > 0 
+                      AND health_score >= 8 THEN 1 ELSE 0 END) * 100, 1) as excellent_health_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND health_score IS NOT NULL AND health_score > 0 
+                      AND health_score BETWEEN 6 AND 7 THEN 1 ELSE 0 END) * 100, 1) as good_health_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND health_score IS NOT NULL AND health_score > 0 
+                      AND health_score BETWEEN 4 AND 5 THEN 1 ELSE 0 END) * 100, 1) as moderate_health_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND health_score IS NOT NULL AND health_score > 0 
+                      AND health_score <= 3 THEN 1 ELSE 0 END) * 100, 1) as poor_health_success_rate,
         
         -- Trust Level Impact Analysis
-        round(avg(CASE WHEN resolution_achieved = 'true' AND trust_level = 'high' THEN 1 ELSE 0 END) * 100, 1) as high_trust_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND trust_level = 'medium' THEN 1 ELSE 0 END) * 100, 1) as medium_trust_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND trust_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as low_trust_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND trust_level = 'high' THEN 1 ELSE 0 END) * 100, 1) as high_trust_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND trust_level = 'medium' THEN 1 ELSE 0 END) * 100, 1) as medium_trust_success_rate,
+        round(avg(CASE WHEN resolution_achieved = true AND trust_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as low_trust_success_rate,
         
         -- Advanced Predictive Patterns
-        round(avg(CASE WHEN resolution_achieved = 'true' AND dominant_emotion IN ('joy', 'contentment', 'peace') 
+        round(avg(CASE WHEN resolution_achieved = true AND dominant_emotion IN ('joy', 'contentment', 'peace') 
                       AND listening_effectiveness IN ('excellent', 'good') THEN 1 ELSE 0 END) * 100, 1) as positive_emotions_good_listening_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND boundaries_maintained = 'true' 
+        round(avg(CASE WHEN resolution_achieved = true AND boundaries_maintained = true 
                       AND effort_balance = 'balanced' THEN 1 ELSE 0 END) * 100, 1) as balanced_boundaries_effort_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND effort_balance = 'balanced' 
+        round(avg(CASE WHEN resolution_achieved = true AND effort_balance = 'balanced' 
                       AND conflict_resolution_style = 'collaborative' THEN 1 ELSE 0 END) * 100, 1) as balanced_effort_collaborative_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND confidence_level = 'high' 
+        round(avg(CASE WHEN resolution_achieved = true AND confidence_level = 'high' 
                       AND communication_style = 'assertive' THEN 1 ELSE 0 END) * 100, 1) as high_confidence_assertive_success_rate,
         
         -- Risk Pattern Analysis
-        round(avg(CASE WHEN resolution_achieved = 'false' AND dominant_emotion IN ('anger', 'rage', 'frustration') 
+        round(avg(CASE WHEN resolution_achieved = false AND dominant_emotion IN ('anger', 'rage', 'frustration') 
                       AND listening_effectiveness = 'poor' THEN 1 ELSE 0 END) * 100, 1) as high_risk_negative_emotions_poor_listening_rate,
-        round(avg(CASE WHEN resolution_achieved = 'false' AND boundaries_maintained = 'false' 
+        round(avg(CASE WHEN resolution_achieved = false AND boundaries_maintained = false 
                       AND trust_level = 'low' THEN 1 ELSE 0 END) * 100, 1) as high_risk_no_boundaries_low_trust_rate,
-        round(avg(CASE WHEN resolution_achieved = 'false' AND listening_effectiveness = 'poor' 
+        round(avg(CASE WHEN resolution_achieved = false AND listening_effectiveness = 'poor' 
                       AND communication_style = 'passive' THEN 1 ELSE 0 END) * 100, 1) as high_risk_poor_listening_passive_rate,
         
         -- Optimal Condition Combinations
-        round(avg(CASE WHEN resolution_achieved = 'true' AND dominant_emotion IN ('joy', 'contentment', 'peace') 
+        round(avg(CASE WHEN resolution_achieved = true AND dominant_emotion IN ('joy', 'contentment', 'peace') 
                       AND trust_level IN ('high', 'medium') THEN 1 ELSE 0 END) * 100, 1) as optimal_positive_emotions_trust_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND communication_style = 'assertive' 
+        round(avg(CASE WHEN resolution_achieved = true AND communication_style = 'assertive' 
                       AND listening_effectiveness = 'excellent' THEN 1 ELSE 0 END) * 100, 1) as optimal_assertive_excellent_listening_success_rate,
-        round(avg(CASE WHEN resolution_achieved = 'true' AND boundaries_maintained = 'true' 
+        round(avg(CASE WHEN resolution_achieved = true AND boundaries_maintained = true 
                       AND conflict_resolution_style = 'collaborative' THEN 1 ELSE 0 END) * 100, 1) as optimal_boundaries_collaborative_success_rate,
         
         -- Predictive Insights
@@ -104,7 +104,7 @@ SQL >
             (high_confidence_assertive_success_rate * 0.1), 1
         ) as predicted_success_probability
         
-    FROM patterns 
+    FROM patterns_v2 
     WHERE workspace_id = {{ String(workspace_id) }}
     AND (deleted IS NULL OR deleted = false)
     {% if defined(user_id) %}

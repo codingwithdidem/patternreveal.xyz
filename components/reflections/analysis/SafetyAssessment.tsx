@@ -47,7 +47,7 @@ export default function SafetyAssessment({
       </CardHeader>
       <CardContent className="space-y-6">
         {/* Detected Abusive Behaviors */}
-        {abuseDetection?.detectedAbusiveBehaviors?.length &&
+        {abuseDetection?.detectedAbusiveBehaviors &&
           abuseDetection.detectedAbusiveBehaviors.length > 0 && (
             <div className="space-y-4">
               <h4 className="font-semibold text-red-700">
@@ -79,7 +79,8 @@ export default function SafetyAssessment({
                         <strong>Impact:</strong>{" "}
                         {behavior.impact || "No impact description"}
                       </p>
-                      {behavior.reasonings?.length &&
+                      {behavior.reasonings &&
+                        behavior.reasonings.length > 0 &&
                         behavior.reasonings.length > 0 && (
                           <div>
                             <p className="text-xs text-red-700 font-medium mb-1">
@@ -110,7 +111,7 @@ export default function SafetyAssessment({
           )}
 
         {/* Abuse Triggers */}
-        {abuseDetection?.abuseTriggers?.length &&
+        {abuseDetection?.abuseTriggers &&
           abuseDetection.abuseTriggers.length > 0 && (
             <div className="space-y-3">
               <h4 className="font-semibold text-red-700">Common Triggers</h4>
@@ -129,7 +130,7 @@ export default function SafetyAssessment({
           )}
 
         {/* Warning Signs */}
-        {abuseDetection?.warningSigns?.length &&
+        {abuseDetection?.warningSigns &&
           abuseDetection.warningSigns.length > 0 && (
             <div className="space-y-3">
               <h4 className="font-semibold text-red-700">Warning Signs</h4>
@@ -148,7 +149,7 @@ export default function SafetyAssessment({
           )}
 
         {/* Suggested Actions */}
-        {abuseDetection?.suggestedActionsToTake?.length &&
+        {abuseDetection?.suggestedActionsToTake &&
           abuseDetection.suggestedActionsToTake.length > 0 && (
             <div className="space-y-3">
               <h4 className="font-semibold">Recommended Actions</h4>
