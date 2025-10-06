@@ -79,7 +79,7 @@ export const POST = withWorkspace(
       const startTime = Date.now();
 
       const { object, usage } = await generateObject({
-        model: openai("gpt-4-turbo"),
+        model: openai("gpt-4o"), // Using gpt-4o which supports up to 16k output tokens and better structured output
         system: ANALYSIS_SYSTEM_PROMPT,
         prompt: createAnalysisPrompt(
           reflection.Workspace?.name || "Unknown",
@@ -89,6 +89,7 @@ export const POST = withWorkspace(
         ),
         schema: analysisSchema,
         temperature: 0.3, // Lower temperature for more consistent analysis
+        maxTokens: 16384, // Maximum output tokens for gpt-4o to ensure complete response
       });
 
       const analysisDurationMs = Date.now() - startTime;
