@@ -832,44 +832,10 @@ export const emotionalPatternSchema = z.object({
     .array(
       z.object({
         pattern: z
-          .enum([
-            // Core emotional regulation patterns
-            "emotional_suppression",
-            "emotional_explosion",
-            "emotional_numbing",
-            "emotional_avoidance",
-
-            // Core emotional expression patterns
-            "emotional_openness",
-            "emotional_withdrawal",
-            "emotional_dumping",
-            "emotional_manipulation",
-            "emotional_validation_seeking",
-
-            // Core emotional response patterns
-            "fight_response",
-            "flight_response",
-            "freeze_response",
-            "fawn_response",
-
-            // Core emotional intelligence patterns
-            "emotional_dysregulation",
-            "emotional_vulnerability",
-            "emotional_self_soothing",
-
-            // Core relationship emotional patterns
-            "emotional_dependency",
-            "emotional_caretaking",
-            "emotional_jealousy",
-            "emotional_isolation",
-
-            // Core trauma-related patterns
-            "emotional_dissociation",
-            "emotional_hypervigilance",
-            "emotional_shutdown",
-            "emotional_flashbacks",
-          ])
-          .describe("Specific emotional pattern detected")
+          .string()
+          .describe(
+            "Specific emotional pattern detected (e.g., emotional_suppression, emotional_withdrawal, emotional_dysregulation)"
+          )
           .optional(),
         quote: z
           .string()
@@ -921,44 +887,10 @@ export const communicationPatternSchema = z.object({
     .array(
       z.object({
         pattern: z
-          .enum([
-            // Basic communication styles
-            "assertive",
-            "passive",
-            "aggressive",
-            "passive_aggressive",
-            "avoidant",
-            "dismissive",
-            // Virginia Satir's patterns
-            "blaming",
-            "computing",
-            "distracting",
-            "placating",
-            // Conflict resolution styles
-            "collaborative",
-            "competitive",
-            "accommodating",
-            "avoiding",
-            "compromising",
-            // Listening patterns
-            "active_listening",
-            "selective_listening",
-            "defensive_listening",
-            "superficial_listening",
-            "empathetic_listening",
-            // Additional patterns
-            "interrupting",
-            "stonewalling",
-            "gaslighting",
-            "lecturing",
-            "sarcasm",
-            "silent_treatment",
-            "emotional_dumping",
-            "mind_reading_assumptions",
-            "catastrophizing",
-            "invalidating",
-            "belittling",
-          ])
+          .string()
+          .describe(
+            "Specific communication pattern detected (e.g., gaslighting, silent_treatment, assertive, stonewalling)"
+          )
           .optional(),
         quote: z
           .string()
@@ -1030,73 +962,10 @@ export const behaviorPatternSchema = z.object({
     .array(
       z.object({
         pattern: z
-          .enum([
-            "procrastination",
-            "compulsive_behaviors",
-            "self_harm",
-            "chronic_lateness",
-            "workaholism",
-            "chronic_complaining",
-            "perfectionism",
-            "lack_of_boundaries",
-            "inappropriate_social_behavior",
-            "lack_of_motivation",
-            "difficulty_expressing_emotions",
-            "inability_to_say_no",
-            "lack_of_empathy",
-            "sabotage_success",
-            "habitual_gossiping",
-            "avoidance_of_eye_contact",
-            "lack_of_interest_in_growth",
-            "social_withdrawal",
-            "overeating_or_undereating",
-            "impulsive_spending",
-            "neglecting_self_care",
-            "obsessive_exercise",
-            "sexual_compulsions",
-            "fear_driven_avoidance",
-            "chronic_lying",
-            "excessive_health_worry",
-            "emotional_outbursts",
-            "stalking_or_obsessive_following",
-            "avoidance_of_intimacy",
-            "resistance_to_authority",
-            "excessive_dependency",
-            "manipulative_behavior",
-            "excessive_apologizing",
-            "inconsistent_behavior",
-            "substance_abuse",
-            "aggression_or_violence",
-            "relationship_conflict",
-            "avoidance_of_responsibilities",
-            "excessive_screen_time",
-            "hoarding",
-            "disruptive_sleep_patterns",
-            "driving_recklessly",
-            "resistance_to_change",
-            "habitual_blaming",
-
-            // Relationship-specific behavioral patterns
-            "pursuer_distancer_dynamic",
-            "blame_game_pattern",
-            "caretaker_dependent_dynamic",
-            "conflict_avoidance_pattern",
-            "tit_for_tat_behavior",
-            "peacemaker_role",
-            "emotional_withdrawal_pattern",
-            "power_imbalance_dynamic",
-            "intimacy_initiator_pattern",
-            "score_keeping_behavior",
-            "emotional_dumping_pattern",
-            "stonewalling_pattern",
-            "love_bombing_pattern",
-            "devaluation_pattern",
-            "idealization_pattern",
-            "emotional_unavailability_pattern",
-            "codependent_enmeshment",
-            "protest_behavior_pattern",
-            "deactivating_strategy_pattern",
-          ])
+          .string()
+          .describe(
+            "Specific behavioral pattern detected (e.g., procrastination, avoidance_of_responsibilities, manipulative_behavior)"
+          )
           .optional(),
         quote: z
           .string()
@@ -1142,78 +1011,10 @@ export const relationshipDynamicsSchema = z.object({
     .array(
       z.object({
         pattern: z
-          .enum([
-            // Power dynamics patterns
-            "power_imbalance",
-            "power_sharing",
-            "power_struggle",
-            "power_vacuum",
-            "power_manipulation",
-            "power_resistance",
-            "power_collaboration",
-            "power_delegation",
-
-            // Communication dynamics patterns
-            "communication_openness",
-            "communication_avoidance",
-            "communication_dominance",
-            "communication_passivity",
-            "communication_conflict",
-            "communication_superficial",
-            "communication_validation",
-            "communication_criticism",
-
-            // Intimacy and connection patterns
-            "emotional_intimacy",
-            "emotional_distance",
-            "physical_intimacy",
-            "physical_withdrawal",
-            "intellectual_intimacy",
-            "intellectual_competition",
-            "spiritual_intimacy",
-            "spiritual_disconnect",
-
-            // Trust and security patterns
-            "trust_building",
-            "trust_erosion",
-            "trust_restoration",
-            "trust_stability",
-            "security_seeking",
-            "security_providing",
-            "security_independence",
-            "security_dependency",
-
-            // Conflict resolution patterns
-            "conflict_collaboration",
-            "conflict_avoidance",
-            "conflict_escalation",
-            "conflict_competition",
-            "conflict_mediation",
-            "conflict_stonewalling",
-            "conflict_resolution",
-            "conflict_cycling",
-
-            // Support and care patterns
-            "mutual_support",
-            "one_sided_support",
-            "support_withholding",
-            "support_overwhelming",
-            "support_boundaries",
-            "support_competition",
-            "support_balance",
-            "support_neglect",
-
-            // Growth and development patterns
-            "growth_encouragement",
-            "growth_competition",
-            "growth_stagnation",
-            "growth_individual",
-            "growth_collaborative",
-            "growth_resistance",
-            "growth_acceleration",
-            "growth_balance",
-          ])
-          .describe("Specific relationship dynamics pattern detected")
+          .string()
+          .describe(
+            "Specific relationship dynamics pattern detected (e.g., power_imbalance, trust_erosion, conflict_avoidance)"
+          )
           .optional(),
         quote: z
           .string()
@@ -1534,18 +1335,10 @@ export const actionableInsightsSchema = z.object({
       z.object({
         resource: z.string().describe("Resource name").optional(),
         type: z
-          .enum([
-            "book",
-            "article",
-            "video",
-            "podcast",
-            "app",
-            "therapy",
-            "workshop",
-            "community",
-            "helpline",
-          ])
-          .describe("Type of resource")
+          .string()
+          .describe(
+            "Type of resource (e.g., book, article, video, podcast, app, therapy, workshop, community, helpline)"
+          )
           .optional(),
         purpose: z.string().describe("What this resource helps with"),
         description: z
@@ -1734,57 +1527,10 @@ export const attachmentPatternsSchema = z.object({
     .array(
       z.object({
         pattern: z
-          .enum([
-            // Secure attachment behaviors
-            "secure_communication",
-            "healthy_boundaries",
-            "emotional_regulation",
-            "trust_and_intimacy",
-            "conflict_resolution",
-            "self_soothing",
-            "mutual_support",
-
-            // Anxious attachment behaviors
-            "clinginess",
-            "fear_of_abandonment",
-            "hypervigilance",
-            "emotional_dysregulation",
-            "seeking_reassurance",
-            "protest_behaviors",
-            "merging_identity",
-            "jealousy_and_possessiveness",
-
-            // Avoidant attachment behaviors
-            "emotional_distance",
-            "self_reliance",
-            "dismissing_emotions",
-            "commitment_phobia",
-            "stonewalling",
-            "deactivating_strategies",
-            "workaholism",
-            "casual_relationships",
-
-            // Disorganized attachment behaviors
-            "contradictory_behaviors",
-            "fear_of_intimacy",
-            "unpredictable_reactions",
-            "trauma_responses",
-            "dissociation",
-            "chaotic_relationships",
-            "identity_confusion",
-            "hypervigilance_and_shutdown",
-
-            // General attachment behaviors
-            "projection",
-            "idealization_and_devaluation",
-            "splitting",
-            "codependency",
-            "enmeshment",
-            "emotional_unavailability",
-            "control_issues",
-            "manipulation",
-          ])
-          .describe("Specific attachment pattern detected")
+          .string()
+          .describe(
+            "Specific attachment pattern detected (e.g., fear_of_abandonment, emotional_distance, secure_communication)"
+          )
           .optional(),
         quote: z
           .string()
@@ -1820,57 +1566,10 @@ export const traumaResponsesSchema = z.object({
     .array(
       z.object({
         pattern: z
-          .enum([
-            // Primary trauma responses
-            "fight_response",
-            "flight_response",
-            "freeze_response",
-            "fawn_response",
-
-            // Complex trauma responses
-            "dissociation",
-            "hypervigilance",
-            "emotional_flashback",
-            "trauma_reenactment",
-            "trauma_bonding",
-
-            // Physical trauma responses
-            "somatic_symptoms",
-            "sleep_disturbances",
-            "appetite_changes",
-            "energy_fluctuations",
-
-            // Cognitive trauma responses
-            "memory_fragmentation",
-            "concentration_issues",
-            "intrusive_thoughts",
-            "cognitive_distortions",
-
-            // Emotional trauma responses
-            "emotional_numbing",
-            "emotional_overwhelm",
-            "emotional_dysregulation",
-            "shame_and_guilt",
-
-            // Behavioral trauma responses
-            "avoidance_behaviors",
-            "compulsive_behaviors",
-            "self_harm_behaviors",
-            "substance_use",
-
-            // Relational trauma responses
-            "attachment_disruption",
-            "trust_issues",
-            "boundary_confusion",
-            "codependency_patterns",
-
-            // Recovery and healing patterns
-            "trauma_processing",
-            "resilience_building",
-            "post_traumatic_growth",
-            "healing_relationships",
-          ])
-          .describe("Specific trauma response pattern detected")
+          .string()
+          .describe(
+            "Specific trauma response pattern detected (e.g., freeze_response, trauma_bonding, dissociation)"
+          )
           .optional(),
         quote: z
           .string()
@@ -1949,45 +1648,10 @@ export const connectionPatternsSchema = z.object({
     .array(
       z.object({
         pattern: z
-          .enum([
-            // Love languages
-            "words_of_affirmation",
-            "quality_time",
-            "physical_touch",
-            "acts_of_service",
-            "gifts",
-
-            // Connection attempts
-            "active_listening",
-            "vulnerability_sharing",
-            "physical_affection",
-            "shared_activities",
-            "emotional_support",
-            "humor_sharing",
-            "future_planning",
-            "appreciation_expressing",
-
-            // Connection barriers
-            "emotional_withdrawal",
-            "communication_shutdown",
-            "physical_distance",
-            "criticism_patterns",
-            "defensiveness",
-            "stonewalling",
-            "busy_schedules",
-            "external_distractions",
-
-            // Intimacy types
-            "emotional_intimacy",
-            "physical_intimacy",
-            "intellectual_intimacy",
-            "spiritual_intimacy",
-            "creative_intimacy",
-            "playful_intimacy",
-            "supportive_intimacy",
-            "adventurous_intimacy",
-          ])
-          .describe("Specific connection pattern detected")
+          .string()
+          .describe(
+            "Specific connection pattern detected (e.g., emotional_withdrawal, quality_time, vulnerability_sharing)"
+          )
           .optional(),
         quote: z
           .string()
@@ -2068,21 +1732,10 @@ export const cognitivePatternsSchema = z.object({
     .array(
       z.object({
         trap: z
-          .enum([
-            "mind_reading",
-            "fortune_telling",
-            "overgeneralization",
-            "catastrophizing",
-            "black_and_white",
-            "personalization",
-            "filtering",
-            "jumping_to_conclusions",
-            "control_fallacies",
-            "blaming",
-            "always_being_right",
-            "emotional_reasoning",
-            "fallacy_of_fairness",
-          ])
+          .string()
+          .describe(
+            "Type of thinking trap (e.g., mind_reading, catastrophizing, personalization)"
+          )
           .optional(),
         explanation: z
           .string()
