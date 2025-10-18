@@ -127,7 +127,7 @@ const helpContent = [
       {
         question: "Do you offer refunds?",
         answer:
-          "Yes! We offer a 15-day money-back guarantee for new subscriptions only. You can request a refund by contacting support@patternreveal.xyz within 15 days of your initial purchase. No refunds are available after 15 days or for existing subscriptions.",
+          "Yes! We offer a 15-day money-back guarantee for new subscriptions only. You can request a refund by contacting info@patternreveal.xyz within 15 days of your initial purchase. No refunds are available after 15 days or for existing subscriptions. Full details are in our Terms of Service.",
       },
     ],
   },

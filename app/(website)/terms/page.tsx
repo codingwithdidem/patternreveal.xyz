@@ -354,11 +354,8 @@ export default function TermsAndConditions() {
           </li>
           <li>
             <strong>Refund Requests:</strong> To request a refund, contact us at{" "}
-            <a
-              href="mailto:support@patternreveal.xyz"
-              className="text-blue-600"
-            >
-              support@patternreveal.xyz
+            <a href="mailto:info@patternreveal.xyz" className="text-blue-600">
+              info@patternreveal.xyz
             </a>{" "}
             with your account details and reason for the refund request.
           </li>
