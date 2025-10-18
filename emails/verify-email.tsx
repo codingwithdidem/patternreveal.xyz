@@ -84,10 +84,10 @@ export function VerifyEmail({
               <Text className="text-xs leading-5 text-slate-500 text-center my-0">
                 Need help? Contact us at{" "}
                 <Link
-                  href="mailto:support@patternreveal.xyz"
+                  href="mailto:info@patternreveal.xyz"
                   className="text-blue-600 underline"
                 >
-                  support@patternreveal.xyz
+                  info@patternreveal.xyz
                 </Link>
               </Text>
 
