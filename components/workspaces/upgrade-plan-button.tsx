@@ -130,6 +130,13 @@ export default function UpgradePlanButton({
           });
         }
       } else {
+        posthog.capture("checkout_failed", {
+          currentPlan: currentPlan?.name,
+          selectedPlan: plan,
+          period,
+          workspace: workspaceSlug,
+          action: "checkout",
+        });
         throw new Error("Failed to upgrade plan");
       }
     } catch (error) {

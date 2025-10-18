@@ -124,6 +124,11 @@ const helpContent = [
         answer:
           "Yes, you can cancel your Pro subscription anytime from your account settings. You'll continue to have Pro features until the end of your current billing period, then revert to the free plan.",
       },
+      {
+        question: "Do you offer refunds?",
+        answer:
+          "Yes! We offer a 15-day money-back guarantee for new subscriptions only. You can request a refund by contacting support@patternreveal.xyz within 15 days of your initial purchase. No refunds are available after 15 days or for existing subscriptions.",
+      },
     ],
   },
 ];

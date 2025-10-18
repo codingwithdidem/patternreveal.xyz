@@ -62,11 +62,11 @@ export function UpgradeEmail({
               </Text>
             ))}
             <Text className="text-sm leading-6 text-black">
-              If you have any questions or feedback about Dub, please don't
-              hesitate to reach out – I'm always happy to help!
+              If you have any questions or feedback about PatternReveal, please
+              don't hesitate to reach out – I'm always happy to help!
             </Text>
             <Text className="text-sm font-light leading-6 text-neutral-400">
-              Steven from Dub
+              Didem from PatternReveal
             </Text>
           </Container>
         </Body>

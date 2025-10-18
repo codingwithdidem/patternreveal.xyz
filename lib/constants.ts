@@ -56,6 +56,8 @@ export const PLANS = [
         // 2025 pricing
         "pri_01jxt8qpc94nyymrqws8he2c8g", // yearly (test),
         "pri_01jxt8keeh6cx5wk96bpbyehd5", // monthly (test),
+        "pri_01k6x96d4m6tgt837kk55dbnah", // monthly (prod)
+        "pri_01k6x9az5wm3rzc7h6zvpvpy3k", // yearly (prod)
       ],
     },
     limits: {

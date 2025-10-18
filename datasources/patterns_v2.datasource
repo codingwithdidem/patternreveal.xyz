@@ -23,13 +23,13 @@ SCHEMA >
     `intimacy_level` String `json:$.intimacy_level`,
     `trust_level` String `json:$.trust_level`,
     `effort_balance` String `json:$.effort_balance`,
-    `conflict_frequency` String `json:$.conflict_frequency`,
-    `conflict_resolution` String `json:$.conflict_resolution`,
-    `relationship_growth` String `json:$.relationship_growth`,
-    `personal_growth_support` String `json:$.personal_growth_support`,
-    `relationship_insights` Array(String) `json:$.relationship_insights[:]`,
-    `improvement_areas` Array(String) `json:$.improvement_areas[:]`,
-    `strengths_identified` Array(String) `json:$.strengths_identified[:]`,
+    `conflict_frequency` Nullable(String) `json:$.conflict_frequency`,
+    `conflict_resolution` Nullable(String) `json:$.conflict_resolution`,
+    `relationship_growth` Nullable(String) `json:$.relationship_growth`,
+    `personal_growth_support` Nullable(String) `json:$.personal_growth_support`,
+    `relationship_insights` Array(String) DEFAULT [] `json:$.relationship_insights[:]`,
+    `improvement_areas` Array(String) DEFAULT [] `json:$.improvement_areas[:]`,
+    `strengths_identified` Array(String) DEFAULT [] `json:$.strengths_identified[:]`,
     `relationship_health` String `json:$.relationship_health`,
     `relationship_satisfaction` Int32 `json:$.relationship_satisfaction`,
     `relationship_stability` String `json:$.relationship_stability`,
@@ -86,10 +86,10 @@ SCHEMA >
     `analysis_created_at` DateTime `json:$.analysis_created_at`,
     `timestamp` DateTime `json:$.timestamp`,
     `deleted` Bool `json:$.deleted`,
-    `deleted_at` DateTime `json:$.deleted_at`
+    `deleted_at` Nullable(DateTime) `json:$.deleted_at`
 
 ENGINE "MergeTree"
 ENGINE_SORTING_KEY "timestamp, user_id, workspace_id"
 
 FORWARD_QUERY >
-  SELECT user_id, workspace_id, reflection_id, dominant_emotion, emotional_triggers, self_regulation, CAST(emotional_patterns, 'String') AS emotional_patterns, communication_style, conflict_resolution_style, listening_effectiveness, boundaries_maintained, resolution_achieved, CAST(communication_patterns, 'String') AS communication_patterns, unmet_needs, escalation_triggers, intimacy_level, trust_level, effort_balance, conflict_frequency, conflict_resolution, relationship_growth, personal_growth_support, relationship_insights, improvement_areas, strengths_identified, relationship_health, relationship_satisfaction, relationship_stability, CAST(relationship_patterns, 'String') AS relationship_patterns, CAST(behavioral_patterns, 'String') AS behavioral_patterns, CAST(behavioral_cycles, 'String') AS behavioral_cycles, growth_opportunities, your_attachment_style, their_attachment_style, attachment_triggered, CAST(attachment_patterns, 'String') AS attachment_patterns, your_primary_trauma_response, their_primary_trauma_response, trauma_triggers, CAST(trauma_patterns, 'String') AS trauma_patterns, unhealthy_coping_used, healthy_coping_used, healing_recommendations, CAST(thinking_traps, 'String') AS thinking_traps, emotional_reasoning, perspective_taking, assumptions_made, is_abusive, is_at_immediate_risk, warning_signs, suggested_actions_to_take, abuse_triggers, CAST(abusive_patterns, 'String') AS abusive_patterns, health_score, confidence_level, summary, key_insights, warning_flags, positive_highlights, analysis_duration_ms, ai_model_used, user_plan, CAST(connection_patterns, 'String') AS connection_patterns, love_languages_expressed, connection_attempts, connection_barriers, connection_insights, connection_recommendations, reflection_created_at, analysis_created_at, timestamp, deleted, deleted_at
+  SELECT user_id, workspace_id, reflection_id, dominant_emotion, emotional_triggers, self_regulation, CAST(emotional_patterns, 'String') AS emotional_patterns, communication_style, conflict_resolution_style, listening_effectiveness, boundaries_maintained, resolution_achieved, CAST(communication_patterns, 'String') AS communication_patterns, unmet_needs, escalation_triggers, intimacy_level, trust_level, effort_balance, CAST(conflict_frequency, 'Nullable(String)') AS conflict_frequency, CAST(conflict_resolution, 'Nullable(String)') AS conflict_resolution, CAST(relationship_growth, 'Nullable(String)') AS relationship_growth, CAST(personal_growth_support, 'Nullable(String)') AS personal_growth_support, relationship_insights, improvement_areas, strengths_identified, relationship_health, relationship_satisfaction, relationship_stability, CAST(relationship_patterns, 'String') AS relationship_patterns, CAST(behavioral_patterns, 'String') AS behavioral_patterns, CAST(behavioral_cycles, 'String') AS behavioral_cycles, growth_opportunities, your_attachment_style, their_attachment_style, attachment_triggered, CAST(attachment_patterns, 'String') AS attachment_patterns, your_primary_trauma_response, their_primary_trauma_response, trauma_triggers, CAST(trauma_patterns, 'String') AS trauma_patterns, unhealthy_coping_used, healthy_coping_used, healing_recommendations, CAST(thinking_traps, 'String') AS thinking_traps, emotional_reasoning, perspective_taking, assumptions_made, is_abusive, is_at_immediate_risk, warning_signs, suggested_actions_to_take, abuse_triggers, CAST(abusive_patterns, 'String') AS abusive_patterns, health_score, confidence_level, summary, key_insights, warning_flags, positive_highlights, analysis_duration_ms, ai_model_used, user_plan, CAST(connection_patterns, 'String') AS connection_patterns, love_languages_expressed, connection_attempts, connection_barriers, connection_insights, connection_recommendations, reflection_created_at, analysis_created_at, timestamp, deleted, CAST(deleted_at, 'Nullable(DateTime)') AS deleted_at

@@ -314,7 +314,9 @@ export default function TermsAndConditions() {
             Subscription fees are processed through Paddle, our payment
             processor
           </li>
-          <li>All fees are non-refundable unless otherwise specified</li>
+          <li>15-day money-back guarantee for new subscriptions</li>
+          <li>No refunds after 15 days or for existing subscriptions</li>
+          <li>Refunds processed through Paddle within 5-10 business days</li>
           <li>
             We may change pricing with 30 days' notice to existing subscribers
           </li>
@@ -334,6 +336,51 @@ export default function TermsAndConditions() {
           </li>
           <li>
             We may suspend accounts for non-payment after reasonable notice
+          </li>
+        </ul>
+
+        <h3 className="text-xl font-medium mt-6 mb-3">7.3 Refund Policy</h3>
+        <ul className="list-disc pl-6 mb-6">
+          <li>
+            <strong>15-Day Money-Back Guarantee:</strong> We offer a 15-day
+            money-back guarantee for new subscriptions only. If you're not
+            completely satisfied with PatternReveal Pro, you can request a full
+            refund within 15 days of your initial purchase.
+          </li>
+          <li>
+            <strong>No Refunds After 15 Days:</strong> Refunds are not available
+            after the 15-day period or for existing subscriptions that have been
+            active beyond the initial 15 days.
+          </li>
+          <li>
+            <strong>Refund Requests:</strong> To request a refund, contact us at{" "}
+            <a
+              href="mailto:support@patternreveal.xyz"
+              className="text-blue-600"
+            >
+              support@patternreveal.xyz
+            </a>{" "}
+            with your account details and reason for the refund request.
+          </li>
+          <li>
+            <strong>Processing Time:</strong> Refunds are processed through
+            Paddle within 5-10 business days and will appear on your original
+            payment method.
+          </li>
+          <li>
+            <strong>Account Changes:</strong> Upon refund, your account will be
+            immediately downgraded to the free plan, but you'll retain access to
+            your journal entries and basic features.
+          </li>
+          <li>
+            <strong>Refund Exceptions:</strong> Refunds may not be available in
+            cases of Terms of Service violations, fraudulent activity, abuse of
+            the refund policy, or requests made after 15 days from initial
+            purchase.
+          </li>
+          <li>
+            <strong>No Pro-Rated Refunds:</strong> We do not offer pro-rated
+            refunds for partial subscription periods.
           </li>
         </ul>
 
