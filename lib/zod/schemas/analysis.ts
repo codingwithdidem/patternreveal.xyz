@@ -1516,7 +1516,7 @@ export const attachmentPatternsSchema = z.object({
     .describe("Your attachment style evident in this interaction")
     .optional(),
   theirAttachmentStyle: z
-    .enum(["secure", "anxious", "avoidant", "disorganized"])
+    .enum(["secure", "anxious", "avoidant", "disorganized", "unknown"])
     .describe("Their apparent attachment style")
     .optional(),
   attachmentTriggered: z
