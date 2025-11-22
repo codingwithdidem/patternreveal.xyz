@@ -35,7 +35,7 @@ export default function BillingPageClient() {
           {workspace.plan.toLowerCase() === "free" && (
             <Button className="flex items-center gap-2">Upgrade</Button>
           )}
-          <Link href={`/${workspace.slug}/settings/workspace/billing/invoices`}>
+          <Link href={`/app/${workspace.slug}/settings/billing/invoices`}>
             <Button variant="outline" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               View Invoices

@@ -7,7 +7,7 @@ import {
   MoreHorizontal,
   Shield,
   UserMinus,
-  Copy
+  Copy,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import UserAvatar from "@/components/UserAvatar";
 import { format } from "date-fns";
@@ -36,7 +36,7 @@ interface UserCardProps {
 export default function UserCard({
   type,
   user,
-  className = ""
+  className = "",
 }: UserCardProps) {
   const { data: session } = useSession();
   const { slug: workspaceSlug } = useParams() as { slug: string };
@@ -44,7 +44,7 @@ export default function UserCard({
   const { setShow: setShowRemoveTeammateModal, RemoveTeammateModal } =
     useRemoveTeammateModal({
       user,
-      invite: type === "invite"
+      invite: type === "invite",
     });
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -52,7 +52,7 @@ export default function UserCard({
   const handleCopyInviteLink = () => {
     if (workspaceSlug) {
       navigator.clipboard.writeText(
-        `Join my PatternReveal workspace: ${window.location.origin}/${workspaceSlug}`
+        `Join my PatternReveal workspace: ${window.location.origin}/app/${workspaceSlug}`
       );
       toast.success("Invite link copied to clipboard!");
     }

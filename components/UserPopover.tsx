@@ -8,7 +8,7 @@ import {
 import { cn } from "@/lib/utils";
 import { truncate } from "@/utils/functions/truncate";
 import UserAvatar from "@components/UserAvatar";
-import { LogOut, Settings } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
@@ -59,9 +59,9 @@ export default function UserPopover() {
           <div className="flex flex-col gap-0.5">
             <PopoverOption
               as="a"
-              href="/settings"
-              icon={Settings}
-              label="Settings"
+              href="/app/account/settings"
+              icon={User}
+              label="Account Settings"
             />
             <PopoverOption
               as="button"

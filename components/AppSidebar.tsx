@@ -116,34 +116,23 @@ const NAV_AREAS: SidebarNavAreas<{
     backHref: `/${slug}`,
     content: [
       {
-        name: "Account",
-        items: [
-          {
-            name: "General",
-            icon: CogIcon,
-            href: `/${slug}/settings`,
-            exact: true,
-          },
-        ],
-      },
-      {
         name: "Workspace",
         items: [
           {
             name: "General",
             icon: CogIcon,
-            href: `/${slug}/settings/workspace`,
+            href: `/app/${slug}/settings`,
             exact: true,
           },
           {
             name: "Billing",
             icon: CreditCardIcon,
-            href: `/${slug}/settings/workspace/billing`,
+            href: `/app/${slug}/settings/billing`,
           },
           {
             name: "Members",
             icon: UsersRoundIcon,
-            href: `/${slug}/settings/workspace/members`,
+            href: `/app/${slug}/settings/members`,
           },
         ],
       },
@@ -162,7 +151,9 @@ export default function AppSidebar() {
   });
 
   const currentArea = useMemo(() => {
-    return pathname.startsWith(`/${slug}/settings`) ? "settings" : "dashboard";
+    return pathname.startsWith(`/app/${slug}/settings`)
+      ? "settings"
+      : "dashboard";
   }, [pathname, slug]);
 
   return (

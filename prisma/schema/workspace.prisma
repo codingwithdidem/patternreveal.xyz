@@ -31,6 +31,9 @@ model Workspace {
   paddleSubscriptionId String? @unique // Paddle subscription id (unique per workspace)
   billingCycleStart Int? // Day of the month the billing cycle starts
   paymentFailedAt   DateTime?
+  cancellationEffectiveAt DateTime?
+  subscriptionCancelledAt DateTime?
+  subscriptionStatus String?
 
   totalReflections Int @default(0)
 

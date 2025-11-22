@@ -4,16 +4,14 @@ import { Button } from "@/components/ui/button";
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger
+  PopoverTrigger,
 } from "@/components/ui/popover";
 import {
   CreditCard,
   Loader2,
-  LucideIcon,
   MoreHorizontal,
-  Settings,
   SquareXIcon,
-  X
+  type LucideIcon,
 } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -30,13 +28,14 @@ export default function SubscriptionMenu() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleManageSubscription = async () => {
+    setIsOpen(false);
     setIsLoading(true);
     try {
       // Redirect to Paddle's customer portal
       const response = await fetch(
         `/api/workspaces/${workspaceId}/billing/portal`,
         {
-          method: "POST"
+          method: "POST",
         }
       );
 
@@ -56,28 +55,25 @@ export default function SubscriptionMenu() {
   };
 
   const handleCancelSubscription = async () => {
-    if (
-      !confirm(
-        "Are you sure you want to cancel your subscription? You will lose access to Pro features at the end of your current billing period."
-      )
-    ) {
-      return;
-    }
-
+    setIsOpen(false);
     setIsLoading(true);
     try {
       const response = await fetch(
         `/api/workspaces/${workspaceId}/billing/cancel`,
         {
-          method: "POST"
+          method: "POST",
         }
       );
 
       if (response.ok) {
         const data = await response.json();
-        router.push(data.url);
+        toast.success(
+          "Your subscription will be cancelled at the end of the current billing period. You will be able to use the workspace until the end of the current billing period."
+        );
+        console.log({ data });
       } else {
-        toast.error("Failed to cancel subscription. Please try again.");
+        const { error } = await response.json();
+        toast.error(error.message);
       }
     } catch (error) {
       console.error("Error canceling subscription:", error);
@@ -93,9 +89,9 @@ export default function SubscriptionMenu() {
       <PopoverTrigger asChild>
         <Button variant="outline" size="sm" disabled={isLoading}>
           {isLoading ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <Loader2 className="size-4 shrink-0 animate-spin" />
           ) : (
-            <MoreHorizontal className="h-4 w-4" />
+            <MoreHorizontal className="size-4 shrink-0" />
           )}
         </Button>
       </PopoverTrigger>
@@ -125,7 +121,7 @@ function MenuItem({
   icon: IconComp,
   label,
   onSelect,
-  disabled
+  disabled,
 }: {
   icon: LucideIcon;
   label: string;

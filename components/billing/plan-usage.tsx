@@ -5,7 +5,7 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -18,10 +18,12 @@ import {
   FileText,
   Check,
   TrendingUp,
-  FileText as FileTextIcon
+  FileText as FileTextIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useMemo } from "react";
+import { getFirstAndLastDay } from "@/utils/functions/datetime/get-first-and-last-day";
 
 interface CurrentPlanCardProps {
   plan: string;
@@ -44,42 +46,36 @@ export default function PlanUsage({
   aiLimit,
   usersLimit,
   totalUsers,
-  workspaceSlug
+  workspaceSlug,
 }: CurrentPlanCardProps) {
   const currentPlan = PLANS.find(
     (p) => p.name.toLowerCase() === plan.toLowerCase()
   );
   const isPro = plan.toLowerCase() === "pro";
 
-  // Calculate billing cycle dates
-  const now = new Date();
-  const currentDay = now.getDate();
-  const cycleStartDay = billingCycleStart || 1;
-
-  let cycleStartDate: Date;
-  let cycleEndDate: Date;
-
-  if (currentDay >= cycleStartDay) {
-    cycleStartDate = new Date(now.getFullYear(), now.getMonth(), cycleStartDay);
-    cycleEndDate = new Date(
-      now.getFullYear(),
-      now.getMonth() + 1,
-      cycleStartDay
-    );
-  } else {
-    cycleStartDate = new Date(
-      now.getFullYear(),
-      now.getMonth() - 1,
-      cycleStartDay
-    );
-    cycleEndDate = new Date(now.getFullYear(), now.getMonth(), cycleStartDay);
-  }
+  const [billingStart, billingEnd] = useMemo(() => {
+    if (billingCycleStart) {
+      const { firstDay, lastDay } = getFirstAndLastDay(billingCycleStart);
+      const start = firstDay.toLocaleDateString("en-us", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+      const end = lastDay.toLocaleDateString("en-us", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+      return [start, end];
+    }
+    return [];
+  }, [billingCycleStart]);
 
   const formatDate = (date: Date) => {
     return date.toLocaleDateString("en-US", {
       month: "short",
       day: "numeric",
-      year: "numeric"
+      year: "numeric",
     });
   };
 
@@ -137,24 +133,14 @@ export default function PlanUsage({
 
       <CardContent className="space-y-8">
         {/* Billing Cycle */}
-        <div className="space-y-4">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-base font-medium text-muted-foreground">
-              <Calendar className="h-5 w-5" />
-              Next Billing Date
-            </div>
-            <div className="text-lg font-medium">
-              {formatDate(cycleEndDate)}
-            </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+            <Calendar className="h-5 w-5" />
+            Billing Cycle
           </div>
-          <div className="space-y-2">
-            <div className="flex items-center gap-2 text-base font-medium text-muted-foreground">
-              <Calendar className="h-5 w-5" />
-              Billing Cycle
-            </div>
-            <div className="text-lg font-medium">
-              {isPro ? "Yearly" : "Monthly"}
-            </div>
+          <div className="text-lg font-medium">
+            {billingStart} - {billingEnd}
           </div>
         </div>
 
@@ -190,14 +176,17 @@ export default function PlanUsage({
                     getUsagePercentage(reflectionsUsage, reflectionsLimit) >= 90
                       ? "bg-red-500"
                       : getUsagePercentage(
-                            reflectionsUsage,
-                            reflectionsLimit
-                          ) >= 75
-                        ? "bg-yellow-500"
-                        : "bg-green-500"
+                          reflectionsUsage,
+                          reflectionsLimit
+                        ) >= 75
+                      ? "bg-yellow-500"
+                      : "bg-green-500"
                   )}
                   style={{
-                    width: `${getUsagePercentage(reflectionsUsage, reflectionsLimit)}%`
+                    width: `${getUsagePercentage(
+                      reflectionsUsage,
+                      reflectionsLimit
+                    )}%`,
                   }}
                 />
               </div>
@@ -226,8 +215,8 @@ export default function PlanUsage({
                     getUsagePercentage(aiUsage, aiLimit) >= 90
                       ? "bg-red-500"
                       : getUsagePercentage(aiUsage, aiLimit) >= 75
-                        ? "bg-yellow-500"
-                        : "bg-green-500"
+                      ? "bg-yellow-500"
+                      : "bg-green-500"
                   )}
                   style={{ width: `${getUsagePercentage(aiUsage, aiLimit)}%` }}
                 />
@@ -249,7 +238,7 @@ export default function PlanUsage({
                 <div
                   className="h-full bg-blue-500 transition-all duration-300"
                   style={{
-                    width: `${getUsagePercentage(totalUsers, usersLimit)}%`
+                    width: `${getUsagePercentage(totalUsers, usersLimit)}%`,
                   }}
                 />
               </div>

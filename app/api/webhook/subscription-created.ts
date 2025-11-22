@@ -58,6 +58,9 @@ export async function handleSubscriptionCreated(
       aiLimit: plan.limits["ai-analysis"] + plan.limits["ask-ai"],
       usersLimit: plan.limits.users,
       paymentFailedAt: null,
+      cancellationEffectiveAt: null,
+      subscriptionStatus: event.data.status ?? null,
+      subscriptionCancelledAt: null,
     },
     select: {
       users: {

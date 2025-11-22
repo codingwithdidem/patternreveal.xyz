@@ -27,7 +27,7 @@ export async function handleSubscriptionCancelled(
     });
   }
 
-  const workspace = await prisma.workspace.findFirst({
+  const workspace = await prisma.workspace.findUnique({
     where: {
       paddleCustomerId,
       id: workspaceId,
@@ -54,11 +54,18 @@ export async function handleSubscriptionCancelled(
           (FREE_PLAN?.limits["ask-ai"] ?? 0) +
           (FREE_PLAN?.limits["ai-analysis"] ?? 0),
         paymentFailedAt: null,
+        cancellationEffectiveAt: event.data.scheduledChange?.effectiveAt
+          ? new Date(event.data.scheduledChange?.effectiveAt)
+          : null,
+        subscriptionCancelledAt: event.data.canceledAt
+          ? new Date(event.data.canceledAt)
+          : null,
+        subscriptionStatus: event.data.status ?? null,
       },
     }),
 
     log({
-      message: `Workspace ${workspaceId} has been downgraded to free plan`,
+      message: `Workspace ${workspaceId} has cancelled their subscription`,
       type: "workspaces",
       mention: true,
     }),

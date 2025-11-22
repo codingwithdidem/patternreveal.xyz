@@ -82,7 +82,7 @@ export default function InvoicesPageClient() {
     return (
       <div className="max-w-7xl mx-auto space-y-6 p-6 font-[family-name:var(--font-satoshi)]">
         <div className="flex items-center gap-4">
-          <Link href={`/${workspace.slug}/settings/workspace/billing`}>
+          <Link href={`/app/${workspace.slug}/settings/billing`}>
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Billing

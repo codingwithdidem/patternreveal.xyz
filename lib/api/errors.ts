@@ -182,7 +182,7 @@ export const exceededLimitError = ({
   type: "reflections" | "AI" | "tags" | "users";
 }) => {
   return `You've reached your ${
-    ["AI", "tags", "users"].includes(type) ? "monthly" : ""
+    ["AI", "tags", "users", "reflections"].includes(type) ? "monthly" : ""
   } limit of ${
     type === "AI"
       ? currencyFormatter(limit / 100)

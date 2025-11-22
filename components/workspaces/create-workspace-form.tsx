@@ -120,7 +120,7 @@ export default function CreateWorkspaceForm({
               <FormControl>
                 <div className="relative flex rounded-md">
                   <span className="inline-flex items-center rounded-l-md border border-r-0 border-neutral-300 bg-neutral-900 px-5 text-neutral-200 sm:text-sm">
-                    app.{process.env.NEXT_PUBLIC_APP_DOMAIN}
+                    {process.env.NEXT_PUBLIC_APP_DOMAIN}/app/
                   </span>
 
                   <Input

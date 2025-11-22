@@ -18,8 +18,8 @@ export default function InvitePage() {
         Invite others
       </h1>
       <p className="text-neutral-400 text-sm mt-3 mb-6 max-w-sm text-center">
-        Invite your friends, family, or colleagues to your workspace.
-        They&apos;ll be able to view and comment on your reflections.
+        Invite your friends, family, or colleagues to your workspace. People
+        will be able to view reflections and create their own.
       </p>
       <InviteForm />
       <div className="mt-4">

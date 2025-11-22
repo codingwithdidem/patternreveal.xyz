@@ -14,7 +14,7 @@ export async function inviteUser({
   email,
   role = "MEMBER",
   workspace,
-  session
+  session,
 }: {
   email: string;
   role?: Role;
@@ -34,8 +34,8 @@ export async function inviteUser({
         email,
         role,
         expires,
-        workspaceId: workspace.id
-      }
+        workspaceId: workspace.id,
+      },
     });
   } catch (error) {
     if (
@@ -44,7 +44,7 @@ export async function inviteUser({
     ) {
       throw new PatternRevealApiError({
         code: "conflict",
-        message: "User has already been invited to this workspace."
+        message: "User has already been invited to this workspace.",
       });
     }
   }
@@ -53,14 +53,14 @@ export async function inviteUser({
     data: {
       identifier: email,
       token: await hashToken(token, { secret: true }),
-      expires
-    }
+      expires,
+    },
   });
 
   const params = new URLSearchParams({
-    callbackUrl: `${process.env.NEXTAUTH_URL}/${workspace.slug}?invite=1`,
+    callbackUrl: `${process.env.NEXTAUTH_URL}/app/${workspace.slug}?invite=1`,
     email,
-    token
+    token,
   });
 
   const url = `${process.env.NEXTAUTH_URL}/api/auth/callback/email?${params}`;
@@ -73,7 +73,7 @@ export async function inviteUser({
       url,
       workspaceName: workspace.name,
       workspaceUser: session?.user.name || null,
-      workspaceUserEmail: session?.user.email || null
-    })
+      workspaceUserEmail: session?.user.email || null,
+    }),
   });
 }
