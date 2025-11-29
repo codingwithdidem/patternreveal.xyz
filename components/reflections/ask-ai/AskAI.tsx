@@ -12,8 +12,13 @@ import UpgradeToProButton from "@/components/UpgradeToProButton";
 import { Tooltip } from "@/components/ui/tooltip";
 import useWorkspace from "@/lib/swr/use-workspace";
 import { useMemo } from "react";
+import type { AnalysisStatus } from "@prisma/client";
 
-export default function AskAI() {
+interface AskAIProps {
+  analysisStatus?: AnalysisStatus;
+}
+
+export default function AskAI({ analysisStatus }: AskAIProps) {
   const { editor } = useEditorStore();
   const { plan, exceededAI } = useWorkspace();
   const [messagesContainerRef, messagesEndRef] =
@@ -37,7 +42,30 @@ export default function AskAI() {
       ],
     });
 
+  const isAnalysisReady = analysisStatus === "COMPLETED";
+  const isAnalysisInProgress = analysisStatus === "IN_PROGRESS";
+
   const tooltipContent = useMemo(() => {
+    if (!isAnalysisReady) {
+      if (isAnalysisInProgress) {
+        return (
+          <div className="flex flex-col items-center space-y-2 text-center max-w-xs px-4 py-3">
+            <p className="text-sm text-muted-foreground">
+              Analysis is in progress. Please wait for the analysis to complete
+              before asking questions.
+            </p>
+          </div>
+        );
+      }
+      return (
+        <div className="flex flex-col items-center space-y-2 text-center max-w-xs px-4 py-3">
+          <p className="text-sm text-muted-foreground">
+            Please analyze this reflection first before asking questions.
+          </p>
+        </div>
+      );
+    }
+
     if (plan === "free") {
       return (
         <div className="flex flex-col items-center space-y-2 text-center max-w-xs px-4 py-3">
@@ -63,7 +91,7 @@ export default function AskAI() {
     }
 
     return null;
-  }, [plan, exceededAI]);
+  }, [plan, exceededAI, isAnalysisReady, isAnalysisInProgress]);
 
   return (
     <div className="flex flex-col w-full p-2">
@@ -109,9 +137,17 @@ export default function AskAI() {
             <Input
               className="rounded-full bg-white h-12 px-4 pl-14"
               value={input}
-              placeholder="Ask anything..."
+              placeholder={
+                !isAnalysisReady
+                  ? isAnalysisInProgress
+                    ? "Analysis in progress..."
+                    : "Analyze reflection first..."
+                  : "Ask anything..."
+              }
               onChange={handleInputChange}
-              disabled={isLoading || plan === "free" || exceededAI}
+              disabled={
+                isLoading || !isAnalysisReady || plan === "free" || exceededAI
+              }
             />
 
             <SendIcon className="absolute right-5 top-1/2 transform -translate-y-1/2 cursor-pointer size-5 text-slate-600" />

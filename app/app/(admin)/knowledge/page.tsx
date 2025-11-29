@@ -29,7 +29,7 @@ export default function Home() {
               file,
               {
                 access: "public",
-                handleUploadUrl: "/api/knowledgebase/upload"
+                handleUploadUrl: "/api/knowledgebase/upload",
               }
             );
 

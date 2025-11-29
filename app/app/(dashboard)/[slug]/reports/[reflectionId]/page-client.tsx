@@ -361,7 +361,13 @@ export default function ReflectionEditorClientPage() {
                           Analysis
                         </TabsTrigger>
 
-                        <TabsTrigger value="ask-ai">
+                        <TabsTrigger
+                          value="ask-ai"
+                          disabled={
+                            !reflection ||
+                            reflection.analysisStatus !== "COMPLETED"
+                          }
+                        >
                           <SparklesIcon className="w-4 h-4 mr-2" />
                           Ask AI
                         </TabsTrigger>
@@ -377,7 +383,7 @@ export default function ReflectionEditorClientPage() {
                       </TabsContent>
 
                       <TabsContent value="ask-ai">
-                        <AskAI />
+                        <AskAI analysisStatus={reflection?.analysisStatus} />
                       </TabsContent>
                     </Tabs>
                   </div>

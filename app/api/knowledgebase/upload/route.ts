@@ -33,6 +33,7 @@ async function loadDocument(url: string, type: "pdf" | "txt") {
 
 async function processDocument(blob: PutBlobResult) {
   try {
+    console.log("Processing document", blob);
     // Load document based on file type
     const docs = await loadDocument(
       blob.url,
@@ -108,12 +109,17 @@ export async function POST(request: Request): Promise<NextResponse> {
         };
       },
       onUploadCompleted: async ({ blob }) => {
+        // Called by Vercel API on client upload completion
+        // Use tools like ngrok if you want this to work locally
+        console.log("blob uploaded", blob);
         await processDocument(blob);
       },
     });
 
+    console.log("jsonResponse", jsonResponse);
     return NextResponse.json(jsonResponse);
   } catch (error) {
+    console.error("Error uploading document:", error);
     return NextResponse.json(
       { error: (error as Error).message },
       { status: 400 }
