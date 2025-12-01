@@ -101,12 +101,13 @@ export async function POST(request: Request): Promise<NextResponse> {
   const body = (await request.json()) as HandleUploadBody;
 
   console.log("body", body);
-  console.log("token", process.env.BLOB_READ_WRITE_TOKEN);
+  console.log("token", process.env.BLOB_VERCEL_READ_WRITE_TOKEN);
 
   try {
     const jsonResponse = await handleUpload({
       body,
       request,
+      token: process.env.BLOB_VERCEL_READ_WRITE_TOKEN,
       onBeforeGenerateToken: async () => {
         return {
           allowedContentTypes: ["application/pdf", "text/plain"],
