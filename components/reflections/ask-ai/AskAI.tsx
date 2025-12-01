@@ -20,13 +20,17 @@ interface AskAIProps {
 
 export default function AskAI({ analysisStatus }: AskAIProps) {
   const { editor } = useEditorStore();
-  const { plan, exceededAI } = useWorkspace();
+  const workspace = useWorkspace();
+  const { plan, exceededAI } = workspace;
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
 
   const { messages, isLoading, input, handleInputChange, handleSubmit } =
     useChat({
       maxSteps: 3,
+      api: workspace?.id
+        ? `/api/chat?workspaceId=${workspace.id}`
+        : "/api/chat",
       initialMessages: [
         {
           id: "reflection",
