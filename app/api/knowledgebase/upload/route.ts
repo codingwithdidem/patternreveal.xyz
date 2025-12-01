@@ -16,6 +16,7 @@ const embeddings = new OpenAIEmbeddings({
 });
 
 async function loadDocument(url: string, type: "pdf" | "txt") {
+  console.log("Loading document ", url);
   const response = await fetch(url);
   const blob = await response.blob();
 
@@ -27,13 +28,14 @@ async function loadDocument(url: string, type: "pdf" | "txt") {
   }
 
   const text = await blob.text();
+  console.log("Text ", text);
   const loader = new TextLoader(new Blob([text]));
   return loader.load();
 }
 
 async function processDocument(blob: PutBlobResult) {
   try {
-    console.log("Processing document", blob);
+    console.log("Processing document ", blob);
     // Load document based on file type
     const docs = await loadDocument(
       blob.url,
