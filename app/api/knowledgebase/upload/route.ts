@@ -111,7 +111,6 @@ export async function POST(request: Request): Promise<NextResponse> {
       onBeforeGenerateToken: async (pathname) => {
         return {
           allowedContentTypes: ["application/pdf", "text/plain"],
-          tokenPayload: JSON.stringify({}),
         };
       },
       onUploadCompleted: async ({ blob }) => {
