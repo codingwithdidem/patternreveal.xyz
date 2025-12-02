@@ -12,7 +12,7 @@ export default function PreviewMessage({ message }: PreviewMessageProps) {
   return (
     <AnimatePresence>
       <motion.div
-        className="w-full mx-auto max-w-3xl px-4 group/message max-h-[45dvh] overflow-y-auto"
+        className="w-full mx-auto max-w-3xl px-4 group/message"
         initial={{ y: 5, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         data-role={message.role}

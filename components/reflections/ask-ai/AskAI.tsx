@@ -1,5 +1,5 @@
 import { useEditorStore } from "@/lib/store/useEditorStore";
-import { useChat } from "ai/react";
+import { useChat, type Message } from "ai/react";
 import { Input } from "@components/ui/input";
 import { SendIcon } from "lucide-react";
 import { Separator } from "@components/ui/separator";
@@ -11,40 +11,102 @@ import PremiumFeatureBadge from "@/components/PremiumFeatureBadge";
 import UpgradeToProButton from "@/components/UpgradeToProButton";
 import { Tooltip } from "@/components/ui/tooltip";
 import useWorkspace from "@/lib/swr/use-workspace";
-import { useMemo } from "react";
+import useChatMessages from "@/lib/swr/use-chat-messages";
+import { useMemo, useEffect, useCallback, useRef } from "react";
 import type { AnalysisStatus } from "@prisma/client";
+import { useParams } from "next/navigation";
 
 interface AskAIProps {
   analysisStatus?: AnalysisStatus;
 }
 
 export default function AskAI({ analysisStatus }: AskAIProps) {
+  const params = useParams<{ reflectionId: string }>();
+  const reflectionId = params?.reflectionId;
   const { editor } = useEditorStore();
   const workspace = useWorkspace();
   const { plan, exceededAI } = workspace;
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
+  const lastSavedMessagesRef = useRef<string>("");
+
+  // Fetch existing chat history
+  const {
+    chatMessages,
+    isLoading: isLoadingHistory,
+    workspaceId,
+  } = useChatMessages(reflectionId);
+
+  // Build initial messages from chat history or default
+  const initialMessages = useMemo((): Message[] => {
+    const baseMessages: Message[] = [
+      {
+        id: "reflection",
+        role: "assistant",
+        content:
+          "The following is the user's reflection that needs to be analyzed:",
+      },
+      {
+        id: "reflection-content",
+        role: "user",
+        content: editor?.getText() || "",
+      },
+    ];
+
+    if (chatMessages && chatMessages.length > 0) {
+      const historyMessages: Message[] = chatMessages.map((m) => ({
+        id: m.id,
+        role: m.role as Message["role"],
+        content: m.content,
+      }));
+      return [...baseMessages, ...historyMessages];
+    }
+
+    return baseMessages;
+  }, [chatMessages, editor]);
 
   const { messages, isLoading, input, handleInputChange, handleSubmit } =
     useChat({
       maxSteps: 3,
-      api: workspace?.id
-        ? `/api/chat?workspaceId=${workspace.id}`
-        : "/api/chat",
-      initialMessages: [
-        {
-          id: "reflection",
-          role: "assistant",
-          content:
-            "The following is the user's reflection that needs to be analyzed:",
-        },
-        {
-          id: "reflection-content",
-          role: "user",
-          content: editor?.getText() || "",
-        },
-      ],
+      api: workspaceId ? `/api/chat?workspaceId=${workspaceId}` : "/api/chat",
+      initialMessages,
     });
+
+  // Save messages to database when they change
+  const saveMessages = useCallback(async () => {
+    if (!reflectionId || !workspaceId || messages.length <= 2) return;
+
+    // Filter out the initial context messages
+    const messagesToSave = messages.filter(
+      (m) => !["reflection", "reflection-content"].includes(m.id)
+    );
+
+    if (messagesToSave.length === 0) return;
+
+    // Create a simple hash of message IDs to check if we need to save
+    const messagesHash = messagesToSave.map((m) => m.id).join(",");
+    if (messagesHash === lastSavedMessagesRef.current) return;
+
+    try {
+      await fetch(`/api/chat/${reflectionId}?workspaceId=${workspaceId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ messages: messagesToSave }),
+      });
+      lastSavedMessagesRef.current = messagesHash;
+    } catch (error) {
+      console.error("Failed to save chat messages:", error);
+    }
+  }, [messages, reflectionId, workspaceId]);
+
+  // Save messages when they change and we're not loading
+  useEffect(() => {
+    if (!isLoading && messages.length > 2) {
+      saveMessages();
+    }
+  }, [isLoading, messages.length, saveMessages]);
 
   const isAnalysisReady = analysisStatus === "COMPLETED";
   const isAnalysisInProgress = analysisStatus === "IN_PROGRESS";
@@ -96,6 +158,23 @@ export default function AskAI({ analysisStatus }: AskAIProps) {
 
     return null;
   }, [plan, exceededAI, isAnalysisReady, isAnalysisInProgress]);
+
+  // Show loading state while fetching history
+  if (isLoadingHistory) {
+    return (
+      <div className="flex flex-col w-full p-2">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-sm font-medium">Ask AI</h3>
+          <PremiumFeatureBadge feature="ask-ai" />
+        </div>
+        <div className="flex items-center justify-center py-8">
+          <p className="text-sm text-muted-foreground">
+            Loading chat history...
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col w-full p-2">

@@ -18,4 +18,16 @@ model Reflection {
   report         Report?
   Workspace      Workspace?      @relation(fields: [workspaceId], references: [id])
   workspaceId    String?
+  chatMessages   ChatMessage[]
+}
+
+model ChatMessage {
+  id           String     @id @default(cuid())
+  reflectionId String
+  role         String     // 'user', 'assistant', 'system'
+  content      String     @db.Text
+  createdAt    DateTime   @default(now())
+  reflection   Reflection @relation(fields: [reflectionId], references: [id], onDelete: Cascade)
+
+  @@index([reflectionId, createdAt])
 }
