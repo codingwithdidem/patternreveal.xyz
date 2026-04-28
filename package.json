@@ -97,7 +97,7 @@
     "nanoid": "^5.1.5",
     "next": "15.5.8",
     "next-auth": "^4.24.10",
-    "next-axiom": "^1.9.2",
+    "next-axiom": "^1.10.0",
     "next-safe-action": "^7.10.4",
     "nuqs": "^2.4.3",
     "onnxruntime-node": "^1.20.1",

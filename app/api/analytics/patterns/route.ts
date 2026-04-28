@@ -169,11 +169,11 @@ export const GET = withWorkspace(
           error: "Failed to fetch analytics data",
           details: error instanceof Error ? error.message : "Unknown error",
         },
-        { status: 500 }
+        { status: 500 },
       );
     }
   },
   {
     requiredPermissions: ["reflection.read"],
-  }
+  },
 );
