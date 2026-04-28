@@ -2,7 +2,7 @@ import { resend } from "../resend";
 
 export const subscribe = async ({
   email,
-  name
+  name,
 }: {
   email: string;
   name: string;
@@ -18,8 +18,10 @@ export const subscribe = async ({
     firstName: name.split(" ")[0],
     lastName: name.split(" ")[1] ?? "",
     unsubscribed: false,
-    audienceId
+    audienceId,
   });
+
+  console.log(response);
 
   return response;
 };

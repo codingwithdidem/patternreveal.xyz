@@ -31,146 +31,144 @@ export const withWorkspace = (
     requiredPlan?: Array<PlanProps>;
     requiredPermissions?: PermissionAction[];
     skipPermissionChecks?: boolean;
-  } = {}
+  } = {},
 ) => {
-  return withAxiom(
-    async (
-      req: AxiomRequest,
-      { params }: { params: Promise<Record<string, string>> }
-    ) => {
-      const searchParams = getSearchParams(req.url);
-      const awaitedParams = await params;
-      const awaitedSearchParams = await searchParams;
+  return async (
+    req: AxiomRequest,
+    { params }: { params: Promise<Record<string, string>> },
+  ) => {
+    const searchParams = getSearchParams(req.url);
+    const awaitedParams = await params;
+    const awaitedSearchParams = await searchParams;
 
-      const headers = {};
-      let workspace: WorkspaceWithUsers | undefined;
+    const headers = {};
+    let workspace: WorkspaceWithUsers | undefined;
 
-      try {
-        let session: Session | undefined;
-        let permissions: PermissionAction[] = [];
+    try {
+      let session: Session | undefined;
+      let permissions: PermissionAction[] = [];
 
-        const idOrSlug =
-          awaitedParams?.idOrSlug ||
-          awaitedSearchParams.workspaceId ||
-          awaitedParams?.slug ||
-          awaitedSearchParams.projectSlug;
+      const idOrSlug =
+        awaitedParams?.idOrSlug ||
+        awaitedSearchParams.workspaceId ||
+        awaitedParams?.slug ||
+        awaitedSearchParams.projectSlug;
 
-        if (!idOrSlug) {
-          throw new PatternRevealApiError({
-            code: "bad_request",
-            message: "Workspace ID or slug is required.",
-          });
-        }
+      if (!idOrSlug) {
+        throw new PatternRevealApiError({
+          code: "bad_request",
+          message: "Workspace ID or slug is required.",
+        });
+      }
 
-        // Check if idOrSlug is a UUID or starts with ws_ (workspace ID) or is a slug
-        const isUUID =
-          /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
-            idOrSlug
-          );
-        const isWorkspaceId = isUUID;
-        const workspaceId = isWorkspaceId ? idOrSlug : undefined;
-        const workspaceSlug = !isWorkspaceId ? idOrSlug : undefined;
+      // Check if idOrSlug is a UUID or starts with ws_ (workspace ID) or is a slug
+      const isUUID =
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+          idOrSlug,
+        );
+      const isWorkspaceId = isUUID;
+      const workspaceId = isWorkspaceId ? idOrSlug : undefined;
+      const workspaceSlug = !isWorkspaceId ? idOrSlug : undefined;
 
-        session = await getSession();
+      session = await getSession();
 
-        if (!session?.user?.id) {
-          throw new PatternRevealApiError({
-            code: "unauthorized",
-            message: "You need to be logged in to access this resource.",
-          });
-        }
+      if (!session?.user?.id) {
+        throw new PatternRevealApiError({
+          code: "unauthorized",
+          message: "You need to be logged in to access this resource.",
+        });
+      }
 
-        workspace = (await prisma.workspace.findFirst({
-          where: workspaceId ? { id: workspaceId } : { slug: workspaceSlug },
-          include: {
-            users: {
-              where: {
-                userId: session.user.id,
-              },
-              select: {
-                role: true,
-              },
+      workspace = (await prisma.workspace.findFirst({
+        where: workspaceId ? { id: workspaceId } : { slug: workspaceSlug },
+        include: {
+          users: {
+            where: {
+              userId: session.user.id,
+            },
+            select: {
+              role: true,
             },
           },
-        })) as WorkspaceWithUsers;
+        },
+      })) as WorkspaceWithUsers;
 
-        // workspace doesn't exist
-        if (!workspace || !workspace.users) {
+      // workspace doesn't exist
+      if (!workspace || !workspace.users) {
+        throw new PatternRevealApiError({
+          code: "not_found",
+          message: "Workspace not found.",
+        });
+      }
+
+      // workspace exists but user is not part of it
+      if (workspace.users.length === 0) {
+        const pendingInvites = await prisma.workspaceInvite.findUnique({
+          where: {
+            email_workspaceId: {
+              email: session.user.email,
+              workspaceId: workspace.id,
+            },
+          },
+          select: {
+            expires: true,
+          },
+        });
+
+        if (!pendingInvites) {
           throw new PatternRevealApiError({
             code: "not_found",
             message: "Workspace not found.",
           });
         }
 
-        // workspace exists but user is not part of it
-        if (workspace.users.length === 0) {
-          const pendingInvites = await prisma.workspaceInvite.findUnique({
-            where: {
-              email_workspaceId: {
-                email: session.user.email,
-                workspaceId: workspace.id,
-              },
-            },
-            select: {
-              expires: true,
-            },
-          });
-
-          if (!pendingInvites) {
-            throw new PatternRevealApiError({
-              code: "not_found",
-              message: "Workspace not found.",
-            });
-          }
-
-          if (pendingInvites.expires < new Date()) {
-            throw new PatternRevealApiError({
-              code: "invite_expired",
-              message: "Workspace invite expired.",
-            });
-          }
-
+        if (pendingInvites.expires < new Date()) {
           throw new PatternRevealApiError({
-            code: "invite_pending",
-            message: "Workspace invite pending.",
+            code: "invite_expired",
+            message: "Workspace invite expired.",
           });
         }
 
-        permissions = getPermissions(workspace.users[0].role);
-
-        // Check user has permission to make the action
-        if (!skipPermissionChecks) {
-          throwIfNoAccess({
-            permissions,
-            requiredPermissions,
-          });
-        }
-
-        // plan checks
-        if (!requiredPlan.includes(workspace.plan)) {
-          throw new PatternRevealApiError({
-            code: "forbidden",
-            message: "Unauthorized: Need higher plan.",
-          });
-        }
-
-        return await handler({
-          req,
-          params: awaitedParams,
-          searchParams,
-          headers,
-          session,
-          workspace,
-          permissions,
+        throw new PatternRevealApiError({
+          code: "invite_pending",
+          message: "Workspace invite pending.",
         });
-      } catch (error) {
-        req.log.error(error instanceof Error ? error.message : String(error));
-        console.log(
-          "error",
-          error instanceof Error ? error.stack : String(error)
-        );
-        return handleAndReturnErrorResponse(error);
       }
+
+      permissions = getPermissions(workspace.users[0].role);
+
+      // Check user has permission to make the action
+      if (!skipPermissionChecks) {
+        throwIfNoAccess({
+          permissions,
+          requiredPermissions,
+        });
+      }
+
+      // plan checks
+      if (!requiredPlan.includes(workspace.plan)) {
+        throw new PatternRevealApiError({
+          code: "forbidden",
+          message: "Unauthorized: Need higher plan.",
+        });
+      }
+
+      return await handler({
+        req,
+        params: awaitedParams,
+        searchParams,
+        headers,
+        session,
+        workspace,
+        permissions,
+      });
+    } catch (error) {
+      req.log?.error(error instanceof Error ? error.message : String(error));
+      console.log(
+        "error",
+        error instanceof Error ? error.stack : String(error),
+      );
+      return handleAndReturnErrorResponse(error);
     }
-  );
+  };
 };

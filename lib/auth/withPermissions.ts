@@ -25,39 +25,37 @@ interface WithPermissionsOptions {
 
 export const withPermissions = (
   handler: WithPermissionsHandler,
-  options: WithPermissionsOptions = { requiredPermissions: [] }
+  options: WithPermissionsOptions = { requiredPermissions: [] },
 ) => {
-  return withAxiom(
-    async (
-      req: AxiomRequest,
-      { params }: { params: Promise<Record<string, string>> }
-    ) => {
-      try {
-        const headers = {};
-        const permissions: PermissionAction[] = [];
-        const searchParams = Object.fromEntries(new URL(req.url).searchParams);
-        const session = await getSession();
-        const awaitedParams = await params;
+  return async (
+    req,
+    { params }: { params: Promise<Record<string, string>> },
+  ) => {
+    try {
+      const headers = {};
+      const permissions: PermissionAction[] = [];
+      const searchParams = Object.fromEntries(new URL(req.url).searchParams);
+      const session = await getSession();
+      const awaitedParams = await params;
 
-        if (!session?.user?.id) {
-          throw new PatternRevealApiError({
-            code: "unauthorized",
-            message: "You need to be logged in to access this resource.",
-          });
-        }
-
-        return await handler({
-          req,
-          params: awaitedParams,
-          searchParams,
-          headers,
-          session,
-          permissions,
+      if (!session?.user?.id) {
+        throw new PatternRevealApiError({
+          code: "unauthorized",
+          message: "You need to be logged in to access this resource.",
         });
-      } catch (error) {
-        req.log.error(error instanceof Error ? error.message : String(error));
-        return handleAndReturnErrorResponse(error);
       }
+
+      return await handler({
+        req,
+        params: awaitedParams,
+        searchParams,
+        headers,
+        session,
+        permissions,
+      });
+    } catch (error) {
+      req.log?.error(error instanceof Error ? error.message : String(error));
+      return handleAndReturnErrorResponse(error);
     }
-  );
+  };
 };

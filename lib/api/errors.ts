@@ -106,7 +106,7 @@ export function fromZodError(error: ZodError): ErrorResponse {
 }
 
 export function handleApiError(
-  error: unknown
+  error: unknown,
 ): ErrorResponse & { status: number } {
   // Zod errors
   if (error instanceof ZodError) {
@@ -165,7 +165,7 @@ export function handleApiError(
 
 export function handleAndReturnErrorResponse(
   err: unknown,
-  headers?: Record<string, string>
+  headers?: Record<string, string>,
 ) {
   const { error, status } = handleApiError(err);
 
@@ -188,13 +188,13 @@ export const exceededLimitError = ({
       ? currencyFormatter(limit / 100)
       : `${limit} ${limit === 1 ? type.slice(0, -1) : type}`
   } on the ${capitalizeFirstChar(
-    plan
+    plan,
   )} plan. Please upgrade for higher limits.`;
 };
 
 export const errorSchemaFactory = (
   code: z.infer<typeof ErrorCode>,
-  description: string
+  description: string,
 ): ZodOpenApiResponseObject => {
   return {
     description,
@@ -227,7 +227,7 @@ export const errorSchemaFactory = (
                     "A link to our documentation with more details about this error code",
                   example: `https://docs.patternreveal.xyz/errors#${code.replace(
                     "_",
-                    "-"
+                    "-",
                   )}`,
                 },
               },

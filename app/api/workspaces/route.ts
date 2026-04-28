@@ -32,12 +32,12 @@ export const GET = withPermissions(
   },
   {
     requiredPermissions: ["workspaces.read"],
-  }
+  },
 );
 
 export const POST = withPermissions(async ({ req, session }) => {
   const { name, slug } = await createWorkspaceSchema.parseAsync(
-    await parseRequestBody(req)
+    await parseRequestBody(req),
   );
 
   try {
@@ -93,7 +93,7 @@ export const POST = withPermissions(async ({ req, session }) => {
         isolationLevel: Prisma.TransactionIsolationLevel.Serializable,
         maxWait: 5000,
         timeout: 5000,
-      }
+      },
     );
 
     waitUntil(
@@ -114,7 +114,7 @@ export const POST = withPermissions(async ({ req, session }) => {
           email: session.user.email,
           name: session.user.name || "User",
         }),
-      ])
+      ]),
     );
 
     return NextResponse.json(WorkspaceSchema.parse(workspace));
@@ -170,7 +170,7 @@ export const DELETE = withWorkspace(
         queueWorkspaceDeletion({
           workspaceId: workspace.id,
         }),
-      ])
+      ]),
     );
 
     return NextResponse.json(
@@ -179,10 +179,10 @@ export const DELETE = withWorkspace(
           ...workspace,
         }),
       },
-      { headers }
+      { headers },
     );
   },
   {
     requiredPermissions: ["workspaces.write"],
-  }
+  },
 );
