@@ -10,6 +10,7 @@ import type { PlanProps, WorkspaceWithUsers } from "../types";
 import { throwIfNoAccess } from "../tokens/permissions";
 import { withAxiom } from "next-axiom";
 import type { AxiomRequest } from "next-axiom";
+import { NextRequest } from "next/server";
 
 type WithWorkspaceHandler = (args: {
   req: Request;
@@ -34,7 +35,7 @@ export const withWorkspace = (
   } = {},
 ) => {
   return async (
-    req: AxiomRequest,
+    req: NextRequest,
     { params }: { params: Promise<Record<string, string>> },
   ) => {
     const searchParams = getSearchParams(req.url);
@@ -163,7 +164,7 @@ export const withWorkspace = (
         permissions,
       });
     } catch (error) {
-      req.log?.error(error instanceof Error ? error.message : String(error));
+      // req.log?.error(error instanceof Error ? error.message : String(error));
       console.log(
         "error",
         error instanceof Error ? error.stack : String(error),

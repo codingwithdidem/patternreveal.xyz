@@ -6,6 +6,7 @@ import {
   PatternRevealApiError,
 } from "../api/errors";
 import { type AxiomRequest, withAxiom } from "next-axiom";
+import { NextRequest } from "next/server";
 
 type WithPermissionsHandler = (args: {
   req: Request;
@@ -28,7 +29,7 @@ export const withPermissions = (
   options: WithPermissionsOptions = { requiredPermissions: [] },
 ) => {
   return async (
-    req,
+    req: NextRequest,
     { params }: { params: Promise<Record<string, string>> },
   ) => {
     try {
@@ -54,7 +55,7 @@ export const withPermissions = (
         permissions,
       });
     } catch (error) {
-      req.log?.error(error instanceof Error ? error.message : String(error));
+      // req.log?.error(error instanceof Error ? error.message : String(error));
       return handleAndReturnErrorResponse(error);
     }
   };
